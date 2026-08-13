@@ -9,11 +9,7 @@
     #__bundler_loading { position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; font: 500 11px/1.4 -apple-system, BlinkMacSystemFont, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(242,239,234,0.72); z-index: 10000; transition: opacity .25s ease; }
     #__bundler_loading .ja-bar { width: 140px; height: 2px; background: rgba(242,239,234,0.16); overflow: hidden; }
     #__bundler_loading .ja-bar-fill { width: 0%; height: 100%; background: #1F2ED6; transition: width .25s ease; }
-    #__bundler_thumbnail { position: fixed; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #0A0A0A; z-index: 9999; transition: opacity .3s ease; }
-    #__bundler_thumbnail svg { width: 100%; height: 100%; object-fit: contain; animation: ja-pulse 1.8s ease-in-out infinite; }
     #__bundler_placeholder { color: #999; font-size: 14px; }
-    @keyframes ja-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
-    @media (prefers-reduced-motion: reduce) { #__bundler_thumbnail svg { animation: none; } }
   </style>
   <noscript>
     <style>#__bundler_loading { display: none; }</style>
@@ -23,13 +19,6 @@
   </noscript>
 </head>
 <body>
-  <div id="__bundler_thumbnail">
-  <svg sc-camel-view-box="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-    <rect width="1200" height="800" fill="#0A0A0A"></rect>
-    <rect x="130" y="520" width="600" height="170" fill="#1F2ED6"></rect>
-    <text x="150" y="430" font-family="Arial, sans-serif" font-weight="700" font-size="220" fill="#F2EFEA">JA</text>
-  </svg>
-</div>
   <div id="__bundler_loading"><span id="__bundler_loading_text">A carregar…</span><span class="ja-bar"><span class="ja-bar-fill" id="__bundler_loading_fill"></span></span></div>
 
   <script>
@@ -330,11 +319,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     // DOMParser/replaceWith are inert per spec — re-create each with
     // createElement so they execute, awaiting onload for src scripts to
     // preserve ordering (React before ReactDOM before Babel before text/babel).
-    const thumbEl = document.getElementById('__bundler_thumbnail');
     const loadingWrap = document.getElementById('__bundler_loading');
-    if (thumbEl) thumbEl.style.opacity = '0';
     if (loadingWrap) loadingWrap.style.opacity = '0';
-    await new Promise(function(r) { setTimeout(r, 220); });
+    await new Promise(function(r) { setTimeout(r, 120); });
 
     const doc = new DOMParser().parseFromString(template, 'text/html');
     document.documentElement.replaceWith(doc.documentElement);
