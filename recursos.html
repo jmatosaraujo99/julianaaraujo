@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design de Recursos Pedagógicos | Juliana Araújo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cobalto: #1F2ED6;
+    --creme: #F2EFEA;
+    --preto: #0A0A0A;
+    --areia: #D9D2C5;
+    --cinza: #6B665D;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--creme);
+    color: var(--preto);
+    font-family: Archivo, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  a { color: var(--cobalto); }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 20px clamp(18px, 6vw, 96px);
+    border-bottom: 1px solid rgba(10, 10, 10, 0.12);
+  }
+
+  header .logo {
+    font-family: Anton, Impact, sans-serif;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--preto);
+    text-decoration: none;
+  }
+
+  header nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(14px, 2vw, 28px);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  header nav a {
+    color: var(--preto);
+    text-decoration: none;
+  }
+
+  header nav a:hover { color: var(--cobalto); }
+
+  main {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: clamp(56px, 8vw, 120px) clamp(18px, 6vw, 96px) clamp(80px, 10vw, 140px);
+  }
+
+  .etiqueta {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--cinza);
+    margin-bottom: clamp(20px, 3vw, 34px);
+  }
+
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: clamp(32px, 4.6vw, 68px);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--preto);
+    max-width: 20ch;
+  }
+
+  .intro {
+    max-width: 62ch;
+    font-family: Archivo, sans-serif;
+    font-size: clamp(16px, 1.25vw, 20px);
+    line-height: 1.6;
+    color: rgba(10, 10, 10, 0.72);
+    margin-top: clamp(20px, 3vw, 28px);
+  }
+
+  .lista {
+    display: flex;
+    flex-direction: column;
+    margin-top: clamp(44px, 6vw, 80px);
+  }
+
+  .item {
+    border-top: 1px solid rgba(10, 10, 10, 0.16);
+    padding: clamp(28px, 4vw, 44px) 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(18px, 2.5vw, 26px);
+  }
+
+  .lista .item:last-child {
+    border-bottom: 1px solid rgba(10, 10, 10, 0.16);
+  }
+
+  .item-head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(14px, 2.5vw, 32px);
+    align-items: center;
+  }
+
+  .badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(40px, 4vw, 56px);
+    height: clamp(40px, 4vw, 56px);
+    color: #0A0A0A;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+  }
+
+  .item-title {
+    font-family: Anton, Impact, sans-serif;
+    font-size: clamp(21px, 2.6vw, 38px);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--preto);
+  }
+
+  .item-desc {
+    font-family: Archivo, sans-serif;
+    font-size: clamp(16px, 1.2vw, 19px);
+    line-height: 1.55;
+    color: rgba(10, 10, 10, 0.78);
+    max-width: 70ch;
+  }
+
+  .item-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: clamp(20px, 3vw, 48px);
+    border-top: 1px solid rgba(10, 10, 10, 0.12);
+    padding-top: clamp(18px, 2.5vw, 26px);
+  }
+
+  .meta-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--cinza);
+    margin-bottom: 10px;
+  }
+
+  .badge-1 { background: #1DB954; }
+  .badge-2 { background: #7B2FF7; }
+  .badge-3 { background: #FF6B35; }
+  .badge-4 { background: #00B4D8; }
+  .badge-5 { background: #FFC400; }
+
+  .meta-value {
+    font-family: Archivo, sans-serif;
+    font-size: clamp(16px, 1.2vw, 19px);
+    line-height: 1.55;
+    color: var(--preto);
+  }
+
+  footer {
+    padding: clamp(40px, 5vw, 64px) clamp(18px, 6vw, 96px);
+    border-top: 1px solid rgba(10, 10, 10, 0.14);
+  }
+
+  footer .rodape-wrap {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 24px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--cinza);
+  }
+
+  footer a { color: var(--cinza); }
+  footer a:hover { color: var(--cobalto); }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">Juliana Araújo</a>
+  <nav>
+    <a href="index.html#sobre">Sobre mim</a>
+    <a href="index.html#formacoes">Formações</a>
+    <a href="index.html#contactos">Contactos</a>
+  </nav>
+</header>
+
+<main>
+  <p class="etiqueta">Design de Recursos Pedagógicos</p>
+  <h1>Material que funciona<br>na sala, não só no papel</h1>
+
+  <p class="intro">Muitas organizações têm formadores competentes e referenciais bem definidos, e mesmo assim entregam formação com materiais improvisados na véspera. Não é falta de vontade: é falta de tempo e de estrutura.</p>
+  <p class="intro">É esse o trabalho que faço. Concebo os programas, os manuais e os recursos que os formadores usam — para que possam concentrar-se em facilitar.</p>
+
+  <div class="lista">
+    <div class="item">
+      <div class="item-head">
+        <span class="badge badge-1">01</span>
+        <span class="item-title">Desenho de programas de formação</span>
+      </div>
+      <p class="item-desc">Do referencial ao plano de sessão. Estrutura de módulos, distribuição de horas, sequência pedagógica, atividades, instrumentos de avaliação e grelhas de observação.</p>
+      <div class="item-meta">
+        <div>
+          <p class="meta-label">Entrego</p>
+          <p class="meta-value">Programa completo, planificação no modelo da entidade, planos de sessão e instrumentos de avaliação.</p>
+        </div>
+        <div>
+          <p class="meta-label">Indicado para</p>
+          <p class="meta-value">Entidades formadoras certificadas, centros de formação, departamentos de formação.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-head">
+        <span class="badge badge-2">02</span>
+        <span class="item-title">Manuais e materiais de apoio</span>
+      </div>
+      <p class="item-desc">Manuais do formando e guias do formador, escritos para serem usados e não arquivados. Adaptados ao nível de literacia real do público a que se destinam.</p>
+      <div class="item-meta">
+        <div>
+          <p class="meta-label">Entrego</p>
+          <p class="meta-value">Manual em formato editável, guia de facilitação e materiais de sessão.</p>
+        </div>
+        <div>
+          <p class="meta-label">Indicado para</p>
+          <p class="meta-value">Formação certificada, formação em contexto empresarial, programas de longa duração.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-head">
+        <span class="badge badge-3">03</span>
+        <span class="item-title">Kits de atividades e dinâmicas</span>
+      </div>
+      <p class="item-desc">Atividades experienciais desenhadas de raiz ou adaptadas, com todos os materiais necessários: cartas, fichas, grelhas de registo e guiões de debrief.</p>
+      <div class="item-meta">
+        <div>
+          <p class="meta-label">Entrego</p>
+          <p class="meta-value">Materiais prontos a imprimir, instruções de facilitação e perguntas de debrief.</p>
+        </div>
+        <div>
+          <p class="meta-label">Indicado para</p>
+          <p class="meta-value">Formadores, facilitadores, equipas de recursos humanos.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-head">
+        <span class="badge badge-4">04</span>
+        <span class="item-title">Conteúdos para e-learning</span>
+      </div>
+      <p class="item-desc">Desenho instrucional para formação à distância: estrutura do percurso, guiões de conteúdo, materiais de apoio e atividades para plataformas LMS.</p>
+      <div class="item-meta">
+        <div>
+          <p class="meta-label">Entrego</p>
+          <p class="meta-value">Estrutura do curso, guiões, materiais e recomendações de implementação.</p>
+        </div>
+        <div>
+          <p class="meta-label">Indicado para</p>
+          <p class="meta-value">Unidades de e-learning, gabinetes de inovação pedagógica, instituições de ensino superior.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-head">
+        <span class="badge badge-5">05</span>
+        <span class="item-title">Formação de formadores e supervisão</span>
+      </div>
+      <p class="item-desc">Capacitação de equipas de formadores internos e acompanhamento de quem está a começar. Inclui observação de sessões e devolução estruturada.</p>
+      <!-- FALTA: o pedido não incluiu um "Entrego" para este item (só "Indicado para") — mantive apenas o campo dado, para não inventar conteúdo. -->
+      <div class="item-meta">
+        <div>
+          <p class="meta-label">Indicado para</p>
+          <p class="meta-value">Organizações com formadores internos, entidades formadoras, escolas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="rodape-wrap">
+    <span>© 2026 Juliana Araújo</span>
+    <a href="index.html">Voltar ao site</a>
+  </div>
+</footer>
+
+</body>
+</html>
