@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jmatosaraujo99.github.io/julianaaraujo/sitemap.xml
+Sitemap: https://julianaaraujo.pt/sitemap.xml
