@@ -11,21 +11,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
 <style>
-  :root {
-    --cobalto: #1F2ED6;
-    --creme: #F2EFEA;
-    --preto: #0A0A0A;
-    --areia: #D9D2C5;
-    --cinza: #6B665D;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     background: var(--creme);
     color: var(--preto);
-    font-family: Archivo, sans-serif;
+    font-family: var(--fonte-corpo);
     font-size: 17px;
     line-height: 1.7;
   }
@@ -43,10 +36,10 @@
   }
 
   header .logo {
-    font-family: Anton, Impact, sans-serif;
+    font-family: var(--fonte-display);
     font-size: 20px;
     line-height: 1;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--ls-display);
     text-transform: uppercase;
     color: var(--preto);
     text-decoration: none;
@@ -56,9 +49,9 @@
     display: flex;
     align-items: center;
     gap: clamp(14px, 2vw, 28px);
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: var(--fonte-etiqueta);
     font-size: 12px;
-    letter-spacing: 0.16em;
+    letter-spacing: var(--ls-etiqueta-16);
     text-transform: uppercase;
   }
 
@@ -76,27 +69,27 @@
   }
 
   main > p.etiqueta {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: var(--fonte-etiqueta);
     font-size: 11px;
     font-weight: 500;
-    letter-spacing: 0.22em;
+    letter-spacing: var(--ls-etiqueta-22);
     text-transform: uppercase;
     color: var(--cinza);
     margin-bottom: 20px;
   }
 
   h1 {
-    font-family: Anton, Impact, sans-serif;
+    font-family: var(--fonte-display);
     font-size: clamp(32px, 5vw, 54px);
     line-height: 1.05;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--ls-display);
     text-transform: uppercase;
     color: var(--preto);
     margin-bottom: 12px;
   }
 
   main > p.atualizado {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: var(--fonte-etiqueta);
     font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -115,10 +108,10 @@
   }
 
   h2 {
-    font-family: Anton, Impact, sans-serif;
+    font-family: var(--fonte-display);
     font-size: clamp(20px, 2.4vw, 26px);
     line-height: 1.2;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--ls-display);
     text-transform: uppercase;
     color: var(--cobalto);
     margin-bottom: 18px;
@@ -151,9 +144,9 @@
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 24px;
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: var(--fonte-etiqueta);
     font-size: 11px;
-    letter-spacing: 0.16em;
+    letter-spacing: var(--ls-etiqueta-16);
     text-transform: uppercase;
     color: var(--cinza);
   }

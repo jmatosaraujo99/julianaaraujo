@@ -1,0 +1,71 @@
+/* ============================================================================
+   julianaaraujo.pt — folha de tokens
+   ----------------------------------------------------------------------------
+   Fonte única dos valores visuais do site. Alterar aqui muda o site inteiro.
+
+   As seis páginas estáticas carregam este ficheiro com <link>.
+   O index.html é um bundle autónomo e não carrega ficheiros externos: tem uma
+   cópia deste bloco :root dentro do seu próprio <style>, mantida em sincronia
+   por _sincronizar_tokens.js, que também confirma que as duas são iguais.
+
+   Depois de mexer aqui:   node _sincronizar_tokens.js
+   ========================================================================== */
+
+:root {
+
+  /* --- Cores da marca ---------------------------------------------------- */
+
+  --cobalto: #1F2ED6;   /* azul de assinatura: fundos de secção, ligações, seleção */
+  --creme:   #F2EFEA;   /* fundo claro e texto sobre fundo escuro */
+  --preto:   #0A0A0A;   /* fundo escuro e texto sobre fundo claro */
+  --areia:   #D9D2C5;   /* realce discreto, estados :hover, contornos de foco */
+
+  /* Cinzentos: qual usar depende do fundo, não são intercambiáveis.
+     Os rácios são contra o fundo indicado. */
+  --cinza:             #6B665D;   /* sobre creme — 4.9:1  (texto secundário) */
+  --cinza-forte:       #57524B;   /* sobre creme — 7.0:1  (texto de apoio mais legível) */
+  --cinza-sobre-preto: #8C877F;   /* sobre preto — 4.6:1  (texto secundário no bundle) */
+
+  /* --- Acentos ----------------------------------------------------------- */
+  /* Distinguem categorias e áreas. Nenhum passa contraste sobre cobalto:
+     sobre fundo cobalto usar --creme-suave, nunca um acento. */
+
+  --acento-verde:    #1DB954;
+  --acento-roxo:     #7B2FF7;
+  --acento-laranja:  #FF6B35;
+  --acento-ciano:    #00B4D8;
+  --acento-amarelo:  #FFC400;
+  --acento-turquesa: #00BFA6;
+  --acento-rosa:     #FF4D8D;
+  --acento-coral:    #FF5747;
+
+  /* --- Transparências recorrentes ---------------------------------------- */
+
+  --creme-suave: rgba(242, 239, 234, 0.72);   /* texto secundário sobre cobalto — 7.57:1 */
+  --linha-creme: rgba(242, 239, 234, 0.28);   /* filetes e contornos sobre fundo escuro */
+  --linha-preta: rgba(10, 10, 10, 0.14);      /* filetes e contornos sobre fundo claro */
+
+  /* --- Tipos de letra ---------------------------------------------------- */
+
+  --fonte-display:  Anton, Impact, sans-serif;                       /* títulos, sempre em maiúsculas */
+  --fonte-corpo:    Archivo, Helvetica, Arial, sans-serif;           /* texto corrido */
+  --fonte-etiqueta: 'Space Grotesk', sans-serif;                     /* sobrancelhas e títulos grandes leves */
+  --fonte-mono:     ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* --- Espaçamento entre letras ------------------------------------------ */
+
+  --ls-display:       0.04em;    /* Anton em maiúsculas */
+  --ls-display-junto: -0.02em;   /* Anton em corpo pequeno, e Space Grotesk 300 grande */
+  --ls-corpo:         0.012em;   /* Space Grotesk 300 em títulos grandes */
+
+  /* Sobrancelhas: Space Grotesk 11–12px em maiúsculas. Existem seis variantes
+     para o que é visualmente o mesmo elemento — herdado, não desenhado.
+     --ls-etiqueta é o valor dominante e o que se deve usar em coisas novas. */
+  --ls-etiqueta-14: 0.14em;
+  --ls-etiqueta-16: 0.16em;
+  --ls-etiqueta-18: 0.18em;
+  --ls-etiqueta-20: 0.2em;
+  --ls-etiqueta-22: 0.22em;
+  --ls-etiqueta-24: 0.24em;
+  --ls-etiqueta:    var(--ls-etiqueta-16);
+}
