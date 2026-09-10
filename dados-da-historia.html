@@ -653,8 +653,18 @@ const DESENHOS = {
     '<path d="M10 44 L10 54 M54 44 L54 54" ' + T + '></path>',
 
   no: c =>
-    '<path d="M14 16 C36 16 36 48 14 48" ' + T + ' stroke-width="5"></path>' +
-    '<path d="M50 16 C28 16 28 48 50 48" ' + T + ' stroke-width="5" stroke="' + c + '"></path>',
+    // Dois cordéis entrançados. O que faz isto ler-se como nó, e não como um
+    // cruzamento, é a alternância: no cruzamento da esquerda passa um por
+    // cima, no da direita passa o outro. A interrupção em var(--surface) é o
+    // "por baixo" — sem ela ficam duas linhas sobrepostas.
+    '<path d="M6 40 C18 40 22 24 32 24 C42 24 46 40 58 40" fill="none" stroke="' + c + '" stroke-width="6.5" stroke-linecap="round"></path>' +
+    '<path d="M6 40 C18 40 22 24 32 24 C42 24 46 40 58 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>' +
+    '<path d="M20 28 C23 32 25 36 28 41" fill="none" stroke="var(--surface)" stroke-width="14" stroke-linecap="round"></path>' +
+    '<path d="M6 24 C18 24 22 40 32 40 C42 40 46 24 58 24" fill="none" stroke="' + c + '" stroke-width="6.5" stroke-linecap="round"></path>' +
+    '<path d="M6 24 C18 24 22 40 32 40 C42 40 46 24 58 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>' +
+    '<path d="M40 28 C43 31 45 35 48 38" fill="none" stroke="var(--surface)" stroke-width="14" stroke-linecap="round"></path>' +
+    '<path d="M32 24 C42 24 46 40 58 40" fill="none" stroke="' + c + '" stroke-width="6.5" stroke-linecap="round"></path>' +
+    '<path d="M32 24 C42 24 46 40 58 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>',
 
   semaforo: c =>
     '<rect x="20" y="6" width="24" height="42" rx="7" fill="' + c + '" ' + F + '></rect>' +
