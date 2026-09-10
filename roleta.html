@@ -360,6 +360,7 @@ kbd{
 }
 .btn:hover{background:var(--surface-2)}
 .btn-cheio{background:var(--cobalto);border-color:var(--cobalto);color:var(--creme)}
+.acts-modal .btn[hidden]{display:none}
 .btn-cheio:hover{background:#1826b4;border-color:#1826b4}
 .btn-mini{padding:5px 9px;font-size:10px;letter-spacing:.08em;border-radius:7px}
 .btn-icone{
@@ -798,7 +799,7 @@ body.projecao .credito-proj{display:block}
     <h2>Na sala de aula e na formação</h2>
 
     <h3 class="uso">Sortear alunos ou participantes</h3>
-    <p>Escreve a turma na lista e roda sempre que precisares de uma resposta. Com a opção <b>Tirar quem sair</b> ligada, cada nome sai uma só vez: dás a volta ao grupo inteiro sem repetir ninguém e sem deixar ninguém de fora.</p>
+    <p>Escreve a turma na lista e roda sempre que precisares de uma resposta. Com a opção <b>Tirar quem sair</b> ligada, cada nome sai uma só vez: dás a volta ao grupo inteiro sem repetir ninguém e sem deixar ninguém de fora. Se preferires decidir caso a caso, o cartão do resultado tem o botão <b>Tirar da roleta</b>.</p>
 
     <h3 class="uso">Dividir em grupos</h3>
     <p>Com a mesma opção ligada, roda tantas vezes quantas as pessoas que queres no primeiro grupo. Depois no segundo. Como nenhum nome se repete, os grupos saem equilibrados sem ser preciso apontar nada num papel.</p>
@@ -866,6 +867,7 @@ body.projecao .credito-proj{display:block}
     </div>
     <div class="acts-modal">
       <button class="btn btn-cheio" id="btnOutra">Rodar outra vez</button>
+      <button class="btn" id="btnTirar">Tirar da roleta</button>
       <button class="btn" id="btnCopiarRes">Copiar</button>
       <button class="btn" id="btnFechar">Fechar</button>
     </div>
@@ -1276,6 +1278,13 @@ arco.style.strokeDasharray = PERIM.toFixed(2);
 
 let saiu = null, fxRaf = null, relRaf = null;
 
+function tirarDaRoleta(item){
+  estado.itens = estado.itens.filter(x => x.id !== item.id);
+  pintar(); desenharLista(); desenhar();
+  if(estado.itens.length === 0) estadoTexto("Lista esgotada — Limpar repõe os exemplos");
+  guardar();
+}
+
 function mostrar(item){
   if(!item) return;
   saiu = item;
@@ -1293,11 +1302,8 @@ function mostrar(item){
   if(estado.historico.length > 200) estado.historico.length = 200;
   desenharHistorico();
 
-  if(estado.remover){
-    estado.itens = estado.itens.filter(x => x.id !== item.id);
-    pintar(); desenharLista(); desenhar();
-    if(estado.itens.length === 0) estadoTexto("Lista esgotada — Limpar repõe os exemplos");
-  }
+  document.getElementById("btnTirar").hidden = estado.remover;
+  if(estado.remover) tirarDaRoleta(item);
 
   guardar();
   iniciarRelogio();
@@ -1719,6 +1725,12 @@ function arrancar(){
 /* ---- eventos ---- */
 btnRodar.addEventListener("click", rodar);
 document.getElementById("btnOutra").addEventListener("click", function(){ fecharModal(true); rodar(); });
+document.getElementById("btnTirar").addEventListener("click", function(){
+  if(!saiu) return;
+  tirarDaRoleta(saiu);
+  fecharModal(true);
+});
+
 document.getElementById("btnFechar").addEventListener("click", function(){ fecharModal(false); });
 document.getElementById("veu").addEventListener("click", function(){ fecharModal(false); });
 document.getElementById("btnCopiarRes").addEventListener("click", function(){
