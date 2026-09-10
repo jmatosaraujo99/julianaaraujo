@@ -1315,7 +1315,9 @@ function fluxoDeLuz(cor){
   const DUR = 2600, t0 = performance.now(), base = Math.random()*Math.PI*2, N = 9;
 
   function quadro(agora){
-    const t = Math.min(1, (agora - t0)/DUR);
+    // travar tambem em baixo: com o separador em segundo plano o carimbo do
+    // requestAnimationFrame pode vir anterior a t0, e um t negativo dava raio negativo
+    const t = Math.min(1, Math.max(0, (agora - t0)/DUR));
     const abre = 1 - Math.pow(1 - t, 3);
     const fade = t < .16 ? t/.16 : Math.pow(1 - (t-.16)/.84, 1.7);
 
