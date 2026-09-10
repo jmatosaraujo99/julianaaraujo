@@ -29,7 +29,8 @@ function morrer(msg) { console.error('ABORTADO: ' + msg); process.exit(1); }
 function relatorioDeriva() {
   const PAGINAS = ['privacidade.html', 'recursos.html', 'formacao-comunicacao.html',
     'formacao-desenvolvimento-pessoal.html', 'formacao-lideranca-equipas.html',
-    'formacao-inteligencia-artificial.html', 'roleta.html'];
+    'formacao-inteligencia-artificial.html', 'roleta.html',
+    'dados-da-historia.html'];
   const RE = /(#(?:1F2ED6|F2EFEA|0A0A0A|D9D2C5|6B665D|57524B|8C877F|1DB954|7B2FF7|FF6B35|00B4D8|FFC400|00BFA6|FF4D8D|FF5747)\b)|(letter-spacing:\s*-?\.?[0-9][^;}"']*)|(font-family:\s*(?:Anton|Archivo)[^;}"']*)/gi;
 
   const achados = [];
@@ -55,8 +56,10 @@ function relatorioDeriva() {
     console.log('  — se for novo, troca por var(--token); se for exceção, deixa e regista aqui');
   }
   console.log('exceções conhecidas: privacidade.html 0.12em (valor único);');
-  console.log('  roleta.html — letter-spacing .06/.08/.1em e 0 são da micro-tipografia da');
-  console.log('  própria ferramenta, não da marca;');
+  console.log('  roleta.html e dados-da-historia.html — letter-spacing .06/.08/.1/.12em');
+  console.log('  e 0 são da micro-tipografia das próprias ferramentas, não da marca;');
+  console.log('  os dois hex no <svg> do ponteiro da roleta são atributos de apresentação,');
+  console.log('  onde var() não é de confiança em todos os motores;');
   console.log('  index.html — @font-face, o <style> de recurso pré-JS e o código do Component');
 }
 

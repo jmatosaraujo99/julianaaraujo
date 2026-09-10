@@ -281,6 +281,17 @@
   }
 
   .ferramenta-botao:hover { opacity: .88; }
+
+  .ferramenta-lista {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(28px, 4vw, 44px);
+  }
+
+  .ferramenta-item + .ferramenta-item {
+    border-top: 1px solid var(--linha-creme);
+    padding-top: clamp(28px, 4vw, 44px);
+  }
 </style>
 </head>
 <body>
@@ -392,10 +403,19 @@
   </div>
 
   <section class="ferramenta">
-    <p class="ferramenta-etiqueta">Ferramenta gratuita</p>
-    <h2 class="ferramenta-titulo">Roleta</h2>
-    <p class="ferramenta-texto">Um recurso para sortear na sala: nomes, perguntas, temas ou tarefas. Escreve-se a lista, projeta-se, roda. Foi feita para as minhas sessões e fica aberta a quem dá formação.</p>
-    <a class="ferramenta-botao" href="roleta.html">Abrir a roleta <span aria-hidden="true">&rarr;</span></a>
+    <p class="ferramenta-etiqueta">Ferramentas de sala</p>
+    <div class="ferramenta-lista">
+      <div class="ferramenta-item">
+        <h2 class="ferramenta-titulo">Roleta</h2>
+        <p class="ferramenta-texto">Um recurso para sortear na sala: nomes, perguntas, temas ou tarefas. Escreve-se a lista, projeta-se, roda. Foi feita para as minhas sessões e fica aberta a quem dá formação.</p>
+        <a class="ferramenta-botao" href="roleta.html">Abrir a roleta <span aria-hidden="true">&rarr;</span></a>
+      </div>
+      <div class="ferramenta-item">
+        <h2 class="ferramenta-titulo">Dados da História</h2>
+        <p class="ferramenta-texto">Dados com objetos desenhados, para destravar quem tem de falar de si. Lança-se, olha-se, conta-se. Cinco conjuntos: um geral e um para cada área que dou.</p>
+        <a class="ferramenta-botao" href="dados-da-historia.html">Abrir os dados <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
   </section>
 </main>
 
