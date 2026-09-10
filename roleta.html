@@ -10,10 +10,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Roleta para Sortear Nomes e Perguntas | Juliana Araújo</title>
-<meta name="description" content="Recurso pedagógico gratuito para sortear na sala: nomes, perguntas, temas ou tarefas. Com som, modo projeção e listas guardadas. Sem registo e sem instalar nada.">
+<meta name="description" content="Roleta gratuita para sortear alunos, participantes, perguntas ou tarefas na sala de aula e na formação. Com som, modo projeção e a opção de tirar quem já saiu. Sem registo.">
 <link rel="canonical" href="https://julianaaraujo.pt/roleta.html">
 <meta property="og:title" content="Roleta para Sortear Nomes e Perguntas | Juliana Araújo">
-<meta property="og:description" content="Recurso pedagógico gratuito para sortear na sala: nomes, perguntas, temas ou tarefas. Com som, modo projeção e listas guardadas. Sem registo e sem instalar nada.">
+<meta property="og:description" content="Roleta gratuita para sortear alunos, participantes, perguntas ou tarefas na sala de aula e na formação. Com som, modo projeção e a opção de tirar quem já saiu. Sem registo.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://julianaaraujo.pt/roleta.html">
 <meta property="og:site_name" content="Juliana Araújo">
@@ -25,7 +25,7 @@
 <meta property="og:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Roleta para Sortear Nomes e Perguntas | Juliana Araújo">
-<meta name="twitter:description" content="Recurso pedagógico gratuito para sortear na sala: nomes, perguntas, temas ou tarefas. Com som, modo projeção e listas guardadas. Sem registo e sem instalar nada.">
+<meta name="twitter:description" content="Roleta gratuita para sortear alunos, participantes, perguntas ou tarefas na sala de aula e na formação. Com som, modo projeção e a opção de tirar quem já saiu. Sem registo.">
 <meta name="twitter:image" content="https://julianaaraujo.pt/media/og-cartao.jpg">
 <meta name="twitter:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Roleta","applicationCategory":"EducationalApplication","operatingSystem":"Browser","description":"Roleta de sorteio para a sala de formação: sorteia nomes ou perguntas, com som, modo projeção e listas guardadas no navegador.","url":"https://julianaaraujo.pt/roleta.html","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"copyrightHolder":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/"},"copyrightYear":2026,"creator":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"inLanguage":"pt-PT"}</script>
@@ -621,6 +621,12 @@ body.projecao .sobre{display:none}
   font-family:var(--fonte-etiqueta);font-size:11px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--ink-3);opacity:.7;pointer-events:none}
 body.projecao .credito-proj{display:block}
+
+.tagline{font-family:var(--fonte-corpo);font-size:clamp(13px,1.1vw,15px);line-height:1.45;
+  color:var(--ink-3);margin:6px 0 0;max-width:46ch}
+.sobre h3.uso{font-family:var(--fonte-etiqueta);font-size:clamp(15px,1.5vw,18px);font-weight:600;
+  line-height:1.3;color:var(--ink);margin:26px 0 8px}
+.sobre .faq summary h3{display:inline;font:inherit;color:inherit;margin:0}
 </style>
 </head>
 <body>
@@ -640,6 +646,7 @@ body.projecao .credito-proj{display:block}
     <div class="marca">
       <p class="sobrancelha">Juliana Araújo &middot; Recurso pedagógico</p>
       <h1>Roleta</h1>
+      <p class="tagline">Sorteio de nomes, perguntas e tarefas &mdash; para a sala de aula e a formação.</p>
     </div>
     <div class="topo-acts">
       <button class="btn btn-icone" id="btnSom" aria-pressed="true" title="Ligar ou desligar o som">🔊 Som</button>
@@ -788,30 +795,44 @@ body.projecao .credito-proj{display:block}
       <li>Formar grupos, com rodas sucessivas</li>
     </ul>
 
+    <h2>Na sala de aula e na formação</h2>
+
+    <h3 class="uso">Sortear alunos ou participantes</h3>
+    <p>Escreve a turma na lista e roda sempre que precisares de uma resposta. Com a opção <b>Tirar quem sair</b> ligada, cada nome sai uma só vez: dás a volta ao grupo inteiro sem repetir ninguém e sem deixar ninguém de fora.</p>
+
+    <h3 class="uso">Dividir em grupos</h3>
+    <p>Com a mesma opção ligada, roda tantas vezes quantas as pessoas que queres no primeiro grupo. Depois no segundo. Como nenhum nome se repete, os grupos saem equilibrados sem ser preciso apontar nada num papel.</p>
+
+    <h3 class="uso">Sortear perguntas de revisão</h3>
+    <p>No separador <b>Perguntas</b>, a roda passa a ter perguntas em vez de nomes. Escreve as perguntas de revisão de um módulo, projeta, e o sorteio decide por onde começar.</p>
+
+    <h3 class="uso">Decidir ordens e tarefas</h3>
+    <p>Ordem das apresentações, quem fica com que tema, quem trata do quê. A lista aceita qualquer texto, e como o sorteio é aleatório ninguém tem de justificar a escolha.</p>
+
     <h2>Perguntas frequentes</h2>
     <div class="faq">
       <details>
-        <summary>É preciso criar conta ou instalar alguma coisa?</summary>
+        <summary><h3>É preciso criar conta ou instalar alguma coisa?</h3></summary>
         <p>Não. Abres a página e usas.</p>
       </details>
       <details>
-        <summary>O que posso pôr na roleta?</summary>
+        <summary><h3>O que posso pôr na roleta?</h3></summary>
         <p>O que precisares: nomes de participantes, perguntas de revisão, temas para debate, tarefas a distribuir. A roleta sorteia o que estiver na lista.</p>
       </details>
       <details>
-        <summary>Os nomes que escrevo vão para algum lado?</summary>
+        <summary><h3>Os nomes que escrevo vão para algum lado?</h3></summary>
         <p>Não saem do teu computador. A roleta não comunica com nenhum servidor — a lista fica guardada no teu próprio navegador, e só lá.</p>
       </details>
       <details>
-        <summary>As minhas listas ficam guardadas?</summary>
+        <summary><h3>As minhas listas ficam guardadas?</h3></summary>
         <p>Ficam, no navegador que usaste. Se limpares os dados de navegação ou passares para outro computador, tens de as escrever de novo.</p>
       </details>
       <details>
-        <summary>Posso usá-la nas minhas formações ou aulas?</summary>
+        <summary><h3>Posso usá-la nas minhas formações ou aulas?</h3></summary>
         <p>Sim. É gratuita para formadores, professores e quem dinamize grupos.</p>
       </details>
       <details>
-        <summary>Funciona no telemóvel?</summary>
+        <summary><h3>Funciona no telemóvel?</h3></summary>
         <p>Funciona. A roda ajusta-se ao ecrã e o som também.</p>
       </details>
     </div>
