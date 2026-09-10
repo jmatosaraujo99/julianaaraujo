@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roleta de Nomes para Sortear Online | Juliana Araújo</title>
+<meta name="description" content="Roleta gratuita para sortear nomes ou perguntas na sala de formação. Sem anúncios, sem registo e sem instalar nada — com som, modo projeção e listas guardadas.">
+<link rel="canonical" href="https://julianaaraujo.pt/roleta.html">
+<meta property="og:title" content="Roleta de Nomes para Sortear Online | Juliana Araújo">
+<meta property="og:description" content="Roleta gratuita para sortear nomes ou perguntas na sala de formação. Sem anúncios, sem registo e sem instalar nada — com som, modo projeção e listas guardadas.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://julianaaraujo.pt/roleta.html">
+<meta property="og:site_name" content="Juliana Araújo">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:image" content="https://julianaaraujo.pt/media/og-cartao.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Roleta de Nomes para Sortear Online | Juliana Araújo">
+<meta name="twitter:description" content="Roleta gratuita para sortear nomes ou perguntas na sala de formação. Sem anúncios, sem registo e sem instalar nada — com som, modo projeção e listas guardadas.">
+<meta name="twitter:image" content="https://julianaaraujo.pt/media/og-cartao.jpg">
+<meta name="twitter:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Roleta da Sessão","applicationCategory":"EducationalApplication","operatingSystem":"Browser","description":"Roleta de sorteio para a sala de formação: sorteia nomes ou perguntas, com som, modo projeção e listas guardadas no navegador.","url":"https://julianaaraujo.pt/roleta.html","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://julianaaraujo.pt/"},{"@type":"ListItem","position":2,"name":"Roleta da Sessão","item":"https://julianaaraujo.pt/roleta.html"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"É preciso criar conta ou instalar alguma coisa?","acceptedAnswer":{"@type":"Answer","text":"Não. Abres a página e usas."}},{"@type":"Question","name":"Os nomes que escrevo vão para algum lado?","acceptedAnswer":{"@type":"Answer","text":"Não saem do teu computador. A roleta não comunica com nenhum servidor — a lista fica guardada no teu próprio navegador, e só lá."}},{"@type":"Question","name":"As minhas listas ficam guardadas?","acceptedAnswer":{"@type":"Answer","text":"Ficam, no navegador que usaste. Se limpares os dados de navegação ou passares para outro computador, tens de as escrever de novo."}},{"@type":"Question","name":"Posso usá-la nas minhas formações ou aulas?","acceptedAnswer":{"@type":"Answer","text":"Sim. É gratuita para formadores, professores e quem dinamize grupos."}},{"@type":"Question","name":"Funciona no telemóvel?","acceptedAnswer":{"@type":"Answer","text":"Funciona. A roda ajusta-se ao ecrã e o som também."}}]}</script>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* ==========================================================================
+   Roleta da Sessão — julianaaraujo.pt
+   Tokens alinhados com tokens.css do site (cobalto / creme / preto / areia).
+   ========================================================================== */
+
+:root{
+  /* Marca, fontes e espacamento vem do tokens.css. */
+
+  /* superfícies — tema claro */
+  --ground:var(--creme);
+  --surface:#FBFAF7;
+  --surface-2:#EFEBE4;
+  --ink:var(--preto);
+  --ink-2:var(--cinza-forte);
+  --ink-3:var(--cinza);
+  --line:var(--linha-preta);
+  --line-forte:rgba(10,10,10,.28);
+  --acc:var(--cobalto);
+  --acc-suave:rgba(31,46,214,.10);
+  --on-acc:var(--creme);
+  --sombra:0 18px 40px -24px rgba(10,10,10,.45);
+  --hub:var(--creme);
+
+  /* --- Vidro e ambiente --------------------------------------------------- */
+  /* O vidro so existe se houver algo por baixo: as lavagens e o grao sao o
+     que o desfoque tem para refratar. Sobre cor lisa nao passa de caixa clara. */
+
+  --vidro:            rgba(251, 250, 247, 0.62);
+  --vidro-cubo:       rgba(251, 250, 247, 0.74);   /* sobre a roda, mais opaco para o texto aguentar */
+  --vidro-borda:      rgba(10, 10, 10, 0.10);
+  --vidro-brilho:     rgba(255, 255, 255, 0.75);   /* filete especular de cima, e o que da espessura */
+  --vidro-desfoque:   blur(16px) saturate(180%);
+
+  --lavagem-1: rgba(31, 46, 214, 0.10);
+  --lavagem-2: rgba(0, 191, 166, 0.09);
+  --lavagem-3: rgba(255, 107, 53, 0.07);
+  --grao: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='.045'/%3E%3C/svg%3E");
+
+
+
+  /* ritmo */
+  --s1:6px; --s2:10px; --s3:16px; --s4:24px; --s5:36px; --s6:56px;
+  --r:14px;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:var(--preto);
+    --surface:#151514;
+    --surface-2:#1E1E1C;
+    --ink:var(--creme);
+    --ink-2:#A8A29A;
+    --ink-3:var(--cinza-sobre-preto);
+    --line:rgba(242,239,234,.16);
+    --line-forte:rgba(242,239,234,.32);
+    --acc:#8791FF;
+    --acc-suave:rgba(135,145,255,.14);
+    --sombra:0 18px 44px -22px rgba(0,0,0,.9);
+    --vidro:rgba(21,21,20,.55);
+    --vidro-cubo:rgba(15,15,14,.74);
+    --vidro-borda:rgba(242,239,234,.14);
+    --vidro-brilho:rgba(255,255,255,.13);
+    --lavagem-1:rgba(31,46,214,.22);
+    --lavagem-2:rgba(0,191,166,.15);
+    --lavagem-3:rgba(255,107,53,.12);
+    --grao: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='.08'/%3E%3C/svg%3E");
+    --hub:#151514;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:var(--preto);
+  --surface:#151514;
+  --surface-2:#1E1E1C;
+  --ink:var(--creme);
+  --ink-2:#A8A29A;
+  --ink-3:var(--cinza-sobre-preto);
+  --line:rgba(242,239,234,.16);
+  --line-forte:rgba(242,239,234,.32);
+  --acc:#8791FF;
+  --acc-suave:rgba(135,145,255,.14);
+  --sombra:0 18px 44px -22px rgba(0,0,0,.9);
+  --vidro:rgba(21,21,20,.55);
+  --vidro-cubo:rgba(15,15,14,.74);
+  --vidro-borda:rgba(242,239,234,.14);
+  --vidro-brilho:rgba(255,255,255,.13);
+  --lavagem-1:rgba(31,46,214,.22);
+  --lavagem-2:rgba(0,191,166,.15);
+  --lavagem-3:rgba(255,107,53,.12);
+  --grao: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='.08'/%3E%3C/svg%3E");
+  --hub:#151514;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;
+  background:
+    var(--grao),
+    radial-gradient(58% 48% at 12% 6%, var(--lavagem-1), transparent 70%),
+    radial-gradient(52% 46% at 90% 16%, var(--lavagem-2), transparent 70%),
+    radial-gradient(60% 50% at 46% 104%, var(--lavagem-3), transparent 70%),
+    var(--ground);
+  background-repeat:repeat,no-repeat,no-repeat,no-repeat,repeat;
+  background-size:180px 180px,auto,auto,auto,auto;
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--fonte-corpo);
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+
+/* ---------- estrutura ---------- */
+.app{
+  max-width:1180px;
+  margin:0 auto;
+  padding:var(--s4) var(--s4) var(--s6);
+  display:flex;
+  flex-direction:column;
+  gap:var(--s4);
+}
+.topo{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s3);flex-wrap:wrap}
+.marca{display:flex;flex-direction:column;gap:2px}
+.sobrancelha{
+  font-family:var(--fonte-etiqueta);
+  font-size:11px;
+  font-weight:500;
+  text-transform:uppercase;
+  letter-spacing:var(--ls-etiqueta);
+  color:var(--ink-3);
+  margin:0;
+}
+h1{
+  font-family:var(--fonte-display);
+  font-weight:400;
+  text-transform:uppercase;
+  letter-spacing:var(--ls-display);
+  font-size:clamp(28px,4.4vw,44px);
+  line-height:.98;
+  margin:0;
+  text-wrap:balance;
+}
+.topo-acts{display:flex;gap:var(--s1)}
+
+.palco{
+  display:grid;
+  grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr);
+  gap:var(--s5);
+  align-items:start;
+}
+@media (max-width:900px){
+  .palco{grid-template-columns:1fr;gap:var(--s4)}
+  .app{padding:var(--s3) var(--s3) var(--s5)}
+}
+
+/* ---------- roda ---------- */
+.roda-col{display:flex;flex-direction:column;gap:var(--s3);align-items:center}
+.roda-wrap{
+  position:relative;
+  width:100%;
+  max-width:560px;
+  aspect-ratio:1;
+}
+.roda-wrap canvas{display:block;width:100%;height:100%}
+.ponteiro{
+  position:absolute;
+  top:-2px;left:50%;
+  transform:translateX(-50%);
+  width:26px;height:34px;
+  z-index:3;
+  filter:drop-shadow(0 3px 5px rgba(10,10,10,.35));
+  pointer-events:none;
+}
+.hub{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:23%;height:23%;
+  border-radius:50%;
+  border:1px solid var(--vidro-borda);
+  background:var(--vidro-cubo);
+  backdrop-filter:var(--vidro-desfoque);
+  -webkit-backdrop-filter:var(--vidro-desfoque);
+  box-shadow:0 6px 20px -14px rgba(10,10,10,.5),inset 0 1px 0 var(--vidro-brilho);
+  color:var(--ink);
+  font-family:var(--fonte-display);
+  text-transform:uppercase;
+  letter-spacing:var(--ls-display);
+  font-size:clamp(12px,2.1vw,17px);
+  cursor:pointer;
+  z-index:2;
+  transition:transform .18s cubic-bezier(.2,.7,.2,1),background .18s,color .18s;
+}
+.hub:hover:not(:disabled){background:var(--cobalto);color:var(--creme);border-color:var(--cobalto);transform:translate(-50%,-50%) scale(1.05)}
+.hub:disabled{cursor:default;color:var(--ink-3)}
+.roda-legenda{
+  font-family:var(--fonte-etiqueta);
+  font-size:11px;
+  letter-spacing:var(--ls-etiqueta);
+  text-transform:uppercase;
+  color:var(--ink-3);
+  text-align:center;
+  margin:0;
+}
+kbd{
+  font-family:var(--fonte-etiqueta);
+  font-size:10px;
+  letter-spacing:.08em;
+  border:1px solid var(--line);
+  border-bottom-width:2px;
+  border-radius:5px;
+  padding:1px 5px;
+  color:var(--ink-2);
+}
+
+/* ---------- painel ---------- */
+.painel{
+  background:var(--vidro);
+  backdrop-filter:var(--vidro-desfoque);
+  -webkit-backdrop-filter:var(--vidro-desfoque);
+  border:1px solid var(--vidro-borda);
+  box-shadow:0 8px 30px -20px rgba(10,10,10,.45),inset 0 1px 0 var(--vidro-brilho);
+  border-radius:var(--r);
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+.abas{display:flex;border-bottom:1px solid var(--line)}
+.aba{
+  flex:1;
+  background:none;
+  border:0;
+  border-bottom:2px solid transparent;
+  padding:12px 8px;
+  cursor:pointer;
+  font-family:var(--fonte-etiqueta);
+  font-size:11px;
+  font-weight:500;
+  text-transform:uppercase;
+  letter-spacing:var(--ls-etiqueta);
+  color:var(--ink-3);
+  transition:color .18s,border-color .18s;
+}
+.aba[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--cobalto)}
+.aba:hover{color:var(--ink)}
+.folha{padding:var(--s3);display:flex;flex-direction:column;gap:var(--s3)}
+
+.modo{display:flex;gap:2px;background:var(--surface-2);border-radius:9px;padding:3px}
+.modo button{
+  flex:1;background:none;border:0;border-radius:7px;padding:7px 6px;cursor:pointer;
+  font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);
+  transition:background .16s,color .16s;
+}
+.modo button[aria-pressed="true"]{background:var(--cobalto);color:var(--creme)}
+
+.linha-add{display:flex;gap:var(--s1)}
+.campo{
+  flex:1;min-width:0;
+  background:var(--ground);
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:9px 11px;
+}
+.campo::placeholder{color:var(--ink-3)}
+
+/* lista */
+.contagem{display:flex;align-items:center;justify-content:space-between;gap:var(--s2)}
+.contagem span{font-family:var(--fonte-etiqueta);font-size:11px;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--ink-3)}
+.mini-acts{display:flex;gap:var(--s1);flex-wrap:wrap}
+.itens{
+  list-style:none;margin:0;padding:0;
+  display:flex;flex-direction:column;
+  max-height:330px;overflow-y:auto;
+}
+.item{
+  display:flex;align-items:center;gap:var(--s2);
+  padding:5px 2px;
+  border-bottom:1px solid var(--line);
+}
+.item:last-child{border-bottom:0}
+.item.fora .txt{text-decoration:line-through;color:var(--ink-3)}
+.swatch{
+  appearance:none;-webkit-appearance:none;
+  width:20px;height:20px;flex:0 0 20px;padding:0;
+  border:1px solid var(--line-forte);border-radius:50%;
+  background:none;cursor:pointer;overflow:hidden;
+}
+.swatch::-webkit-color-swatch-wrapper{padding:0}
+.swatch::-webkit-color-swatch{border:0;border-radius:50%}
+.swatch::-moz-color-swatch{border:0;border-radius:50%}
+.txt{flex:1;min-width:0;background:none;border:0;padding:4px 2px;border-radius:5px}
+.txt:hover{background:var(--surface-2)}
+.n{font-family:var(--fonte-etiqueta);font-size:10px;color:var(--ink-3);width:20px;text-align:right;font-variant-numeric:tabular-nums}
+.rem{
+  background:none;border:0;cursor:pointer;color:var(--ink-3);
+  width:26px;height:26px;border-radius:50%;line-height:1;font-size:17px;
+}
+.rem:hover{background:var(--surface-2);color:var(--ink)}
+
+.vazio{color:var(--ink-3);font-size:14px;margin:0;padding:var(--s3) 0;text-align:center}
+
+/* botões */
+.btn{
+  background:none;
+  border:1px solid var(--line-forte);
+  border-radius:9px;
+  padding:8px 13px;
+  cursor:pointer;
+  font-family:var(--fonte-etiqueta);
+  font-size:11px;
+  font-weight:500;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--ink);
+  transition:background .16s,border-color .16s,color .16s;
+}
+.btn:hover{background:var(--surface-2)}
+.btn-cheio{background:var(--cobalto);border-color:var(--cobalto);color:var(--creme)}
+.btn-cheio:hover{background:#1826b4;border-color:#1826b4}
+.btn-mini{padding:5px 9px;font-size:10px;letter-spacing:.08em;border-radius:7px}
+.btn-icone{
+  padding:7px 10px;font-size:13px;letter-spacing:0;text-transform:none;
+  font-family:var(--fonte-corpo);
+  background:var(--vidro);
+  backdrop-filter:var(--vidro-desfoque);
+  -webkit-backdrop-filter:var(--vidro-desfoque);
+  border-color:var(--vidro-borda);
+  box-shadow:inset 0 1px 0 var(--vidro-brilho);
+}
+.btn-icone:hover{background:var(--vidro-cubo)}
+
+/* interruptores e definições */
+.def{display:flex;flex-direction:column;gap:var(--s2)}
+.def-linha{display:flex;align-items:center;justify-content:space-between;gap:var(--s2)}
+.def-linha p{margin:0;font-size:13px}
+.def-linha small{display:block;color:var(--ink-3);font-size:11.5px;line-height:1.4}
+.sw{
+  position:relative;flex:0 0 42px;width:42px;height:24px;border-radius:12px;
+  border:1px solid var(--line-forte);background:var(--surface-2);cursor:pointer;padding:0;
+  transition:background .18s,border-color .18s;
+}
+.sw::after{
+  content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;
+  background:var(--ink-3);transition:transform .2s cubic-bezier(.2,.7,.2,1),background .2s;
+}
+.sw[aria-pressed="true"]{background:var(--cobalto);border-color:var(--cobalto)}
+.sw[aria-pressed="true"]::after{transform:translateX(18px);background:var(--creme)}
+
+.seg{display:flex;gap:2px;background:var(--surface-2);border-radius:8px;padding:3px}
+.seg button{
+  background:none;border:0;border-radius:6px;padding:5px 9px;cursor:pointer;
+  font-family:var(--fonte-etiqueta);font-size:10.5px;letter-spacing:.06em;color:var(--ink-3);
+}
+.seg button[aria-pressed="true"]{background:var(--ground);color:var(--ink);box-shadow:0 1px 2px rgba(10,10,10,.12)}
+
+.paletas{display:flex;flex-direction:column;gap:var(--s1)}
+.paleta{
+  display:flex;align-items:center;gap:var(--s2);
+  border:1px solid var(--line);border-radius:9px;padding:7px 9px;
+  background:none;cursor:pointer;text-align:left;
+}
+.paleta[aria-pressed="true"]{border-color:var(--cobalto);background:var(--acc-suave)}
+.paleta b{font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;letter-spacing:.06em;flex:1}
+.tiras{display:flex;gap:0;border-radius:4px;overflow:hidden}
+.tiras i{width:13px;height:13px;display:block}
+
+.sep{height:1px;background:var(--line);border:0;margin:2px 0}
+.titulo-bloco{
+  font-family:var(--fonte-etiqueta);font-size:10.5px;font-weight:500;
+  text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--ink-3);margin:0;
+}
+
+textarea.campo{min-height:96px;resize:vertical;font-size:14px;line-height:1.5}
+
+/* histórico */
+.hist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;max-height:340px;overflow-y:auto}
+.hist li{display:flex;gap:var(--s2);align-items:baseline;padding:7px 0;border-bottom:1px solid var(--line)}
+.hist li:last-child{border-bottom:0}
+.hist time{font-family:var(--fonte-etiqueta);font-size:10.5px;color:var(--ink-3);font-variant-numeric:tabular-nums;flex:0 0 44px}
+.hist span{flex:1;min-width:0;font-size:14px}
+.hist b{font-family:var(--fonte-etiqueta);font-size:10.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+/* listas guardadas */
+.guardadas{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--s1)}
+.guardadas li{display:flex;align-items:center;gap:var(--s1)}
+.guardadas .nome{
+  flex:1;min-width:0;text-align:left;background:none;border:1px solid var(--line);
+  border-radius:8px;padding:7px 10px;cursor:pointer;font-size:13px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.guardadas .nome:hover{background:var(--surface-2)}
+.guardadas .nome em{font-style:normal;color:var(--ink-3);font-size:11px}
+
+/* ---------- resultado ---------- */
+.modal[hidden]{display:none!important}
+.modal{
+  position:fixed;inset:0;z-index:50;
+  display:flex;align-items:center;justify-content:center;
+  padding:var(--s4);
+}
+.veu{
+  position:absolute;inset:0;
+  background:var(--ground);
+  background:color-mix(in srgb,var(--ground) 68%,transparent);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+#fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.cartao{
+  position:relative;
+  background:var(--vidro);
+  backdrop-filter:var(--vidro-desfoque);
+  -webkit-backdrop-filter:var(--vidro-desfoque);
+  border:1px solid var(--vidro-borda);
+  border-radius:20px;
+  box-shadow:var(--sombra),inset 0 1px 0 var(--vidro-brilho);
+  padding:var(--s5) var(--s4) var(--s4);
+  width:min(620px,100%);
+  text-align:center;
+  display:flex;flex-direction:column;gap:var(--s3);align-items:center;
+  animation:entra .5s cubic-bezier(.16,.9,.24,1) both;
+}
+@keyframes entra{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+.res-nome{
+  font-family:var(--fonte-display);
+  text-transform:uppercase;
+  letter-spacing:var(--ls-display);
+  font-size:clamp(34px,7.4vw,68px);
+  line-height:.95;
+  margin:0;
+  text-wrap:balance;
+  overflow-wrap:anywhere;
+}
+.res-pergunta{
+  font-family:var(--fonte-corpo);
+  font-weight:500;
+  font-size:clamp(20px,3.4vw,30px);
+  line-height:1.28;
+  margin:0;
+  text-wrap:balance;
+}
+.marcador{width:52px;height:4px;border-radius:2px}
+.acts-modal{display:flex;gap:var(--s1);flex-wrap:wrap;justify-content:center}
+
+.relogio{display:flex;align-items:center;gap:var(--s2)}
+.relogio svg{transform:rotate(-90deg)}
+.relogio circle{fill:none;stroke-width:5}
+.relogio .trilho{stroke:var(--line)}
+.relogio .arco{stroke:var(--cobalto);stroke-linecap:round;transition:stroke-dashoffset .25s linear}
+.relogio b{
+  font-family:var(--fonte-etiqueta);font-size:15px;font-variant-numeric:tabular-nums;
+  min-width:34px;text-align:left;
+}
+.relogio.fim .arco{stroke:var(--acento-fim,var(--acento-coral))}
+
+/* ---------- modo projeção ---------- */
+body.projecao .painel,
+body.projecao .topo .sobrancelha,
+body.projecao .rodape{display:none}
+body.projecao .palco{grid-template-columns:1fr}
+body.projecao .roda-wrap{max-width:min(78vh,760px)}
+body.projecao .app{max-width:none;padding-top:var(--s3)}
+
+.rodape{
+  display:flex;justify-content:space-between;gap:var(--s3);flex-wrap:wrap;
+  border-top:1px solid var(--line);padding-top:var(--s3);
+  font-family:var(--fonte-etiqueta);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-3);
+}
+.rodape a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-forte)}
+.rodape a:hover{color:var(--acc);border-bottom-color:var(--acc)}
+
+.aviso{
+  font-size:12px;color:var(--ink-3);margin:0;
+}
+
+/* Safari e Firefox fazem o desfoque, mas ha contextos onde nao ha nenhum:
+   ai o vidro tem de virar superficie opaca, nao caixa transparente. */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .painel,.cartao,.btn-icone{background:var(--surface);border-color:var(--line)}
+  .hub{background:var(--hub);border-color:var(--line-forte)}
+}
+@media (prefers-reduced-transparency: reduce){
+  .painel,.cartao,.btn-icone,.hub{
+    backdrop-filter:none;-webkit-backdrop-filter:none;
+    background:var(--surface);border-color:var(--line);
+  }
+  .veu{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--ground)}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
+/* --- Cromo do site ------------------------------------------------------- */
+/* Mesma estrutura das outras seis paginas. Estilado com os tokens desta
+   pagina (--ink, --ink-3, --line) e nao com --preto/--cinza, para acompanhar
+   o modo escuro da roleta em vez de ficar preto sobre preto. */
+
+.cabeca-site{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+  padding:20px clamp(18px,6vw,96px);
+  border-bottom:1px solid var(--line);
+}
+.cabeca-site .logo{
+  font-family:var(--fonte-display);font-size:20px;line-height:1;
+  letter-spacing:var(--ls-display);text-transform:uppercase;
+  color:var(--ink);text-decoration:none;
+}
+.cabeca-site nav{display:flex;gap:clamp(14px,2.4vw,28px);flex-wrap:wrap}
+.cabeca-site nav a{
+  color:var(--ink);text-decoration:none;
+  font-family:var(--fonte-etiqueta);font-size:12px;
+  text-transform:uppercase;letter-spacing:var(--ls-etiqueta);
+  padding:6px 0;
+}
+.cabeca-site nav a:hover{color:var(--acc)}
+
+.rodape-site{
+  padding:clamp(40px,5vw,64px) clamp(18px,6vw,96px);
+  border-top:1px solid var(--line);
+}
+.rodape-site .rodape-wrap{
+  max-width:1440px;margin:0 auto;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;
+  font-family:var(--fonte-etiqueta);font-size:11px;
+  letter-spacing:var(--ls-etiqueta);text-transform:uppercase;
+  color:var(--ink-3);
+}
+.rodape-site a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line-forte)}
+.rodape-site a:hover{color:var(--acc);border-bottom-color:var(--acc)}
+
+/* O credito dentro da ferramenta existe para quando ela e partilhada
+   sozinha. Aqui ja estamos no site — seria dizer o mesmo duas vezes. */
+.rodape span:last-child{display:none}
+
+/* --- Texto de apoio, por baixo da ferramenta ----------------------------- */
+.sobre{border-top:1px solid var(--line);background:var(--ground);
+  padding:clamp(48px,7vw,88px) clamp(18px,5vw,64px) clamp(56px,8vw,104px)}
+.sobre-wrap{max-width:70ch;margin:0 auto}
+.sobre h2{font-family:var(--fonte-display);font-size:clamp(20px,2.4vw,28px);line-height:1.15;
+  letter-spacing:var(--ls-display);text-transform:uppercase;color:var(--ink);
+  margin:clamp(34px,4vw,52px) 0 14px}
+.sobre h2:first-child{margin-top:0}
+.sobre p,.sobre li{font-family:var(--fonte-corpo);font-size:16.5px;line-height:1.72;color:var(--ink-2)}
+.sobre p{margin:0 0 14px}
+.sobre ol,.sobre ul{margin:0 0 16px;padding-left:1.35em}
+.sobre li{margin-bottom:9px}
+.sobre b{color:var(--ink);font-weight:600}
+.sobre a{color:var(--acc);text-decoration:none;border-bottom:1px solid var(--acc-suave)}
+.sobre a:hover{border-bottom-color:var(--acc)}
+.sobre .faq h3{font-family:var(--fonte-etiqueta);font-size:15px;font-weight:600;line-height:1.4;
+  color:var(--ink);margin:24px 0 6px}
+.sobre-cta{margin-top:clamp(40px,5vw,64px);padding-top:clamp(26px,3vw,36px);
+  border-top:1px solid var(--line)}
+body.projecao .sobre{display:none}
+
+.ponteiro path{fill:var(--cobalto)}
+.ponteiro circle{fill:var(--creme)}
+</style>
+</head>
+<body>
+
+<header class="cabeca-site">
+  <a class="logo" href="index.html">Juliana Araújo</a>
+  <nav>
+    <a href="index.html#sobre">Sobre mim</a>
+    <a href="index.html#formacoes">Formações</a>
+    <a href="index.html#contactos">Contactos</a>
+  </nav>
+</header>
+
+<div class="app">
+
+  <header class="topo">
+    <div class="marca">
+      <p class="sobrancelha">Juliana Araújo &middot; Ferramentas de sala</p>
+      <h1>Roleta da Sessão</h1>
+    </div>
+    <div class="topo-acts">
+      <button class="btn btn-icone" id="btnSom" aria-pressed="true" title="Ligar ou desligar o som">🔊 Som</button>
+      <button class="btn btn-icone" id="btnTema" title="Alternar claro e escuro">◐ Tema</button>
+      <button class="btn btn-icone" id="btnProj" title="Ecrã inteiro para projetar">⛶ Projetar</button>
+    </div>
+  </header>
+
+  <main class="palco">
+
+    <section class="roda-col">
+      <div class="roda-wrap" id="rodaWrap">
+        <svg class="ponteiro" viewBox="0 0 26 34" aria-hidden="true">
+          <path d="M13 34 L2 8 A13 13 0 0 1 24 8 Z"></path>
+          <circle cx="13" cy="10" r="4"></circle>
+        </svg>
+        <canvas id="roda"></canvas>
+        <button class="hub" id="btnRodar">Rodar</button>
+      </div>
+      <p class="roda-legenda"><kbd>Espaço</kbd> roda &nbsp;·&nbsp; <kbd>Esc</kbd> fecha</p>
+    </section>
+
+    <section class="painel">
+      <div class="abas" role="tablist">
+        <button class="aba" role="tab" id="aba-lista" aria-controls="folha-lista" aria-selected="true">Lista</button>
+        <button class="aba" role="tab" id="aba-aspeto" aria-controls="folha-aspeto" aria-selected="false">Aspeto</button>
+        <button class="aba" role="tab" id="aba-hist" aria-controls="folha-hist" aria-selected="false">Histórico</button>
+      </div>
+
+      <!-- LISTA -->
+      <div class="folha" id="folha-lista" role="tabpanel" aria-labelledby="aba-lista">
+        <div class="modo" role="group" aria-label="Tipo de conteúdo">
+          <button id="modoNomes" aria-pressed="true">Nomes</button>
+          <button id="modoPerguntas" aria-pressed="false">Perguntas</button>
+        </div>
+
+        <form class="linha-add" id="formAdd">
+          <input class="campo" id="novoItem" placeholder="Escrever e carregar em Enter" aria-label="Novo item">
+          <button class="btn btn-cheio" type="submit">Juntar</button>
+        </form>
+
+        <div class="contagem">
+          <span id="contador">0 itens</span>
+          <div class="mini-acts">
+            <button class="btn btn-mini" id="btnBaralhar">Baralhar</button>
+            <button class="btn btn-mini" id="btnCores">Cores</button>
+            <button class="btn btn-mini" id="btnLimpar">Limpar</button>
+          </div>
+        </div>
+
+        <ul class="itens" id="listaItens"></ul>
+
+        <hr class="sep">
+
+        <p class="titulo-bloco">Colar uma lista inteira</p>
+        <textarea class="campo" id="colar" placeholder="Um nome ou uma pergunta por linha.&#10;Também aceita separados por vírgula."></textarea>
+        <div class="mini-acts">
+          <button class="btn btn-mini" id="btnSubstituir">Substituir lista</button>
+          <button class="btn btn-mini" id="btnAcrescentar">Acrescentar</button>
+          <button class="btn btn-mini" id="btnCopiarLista">Copiar lista</button>
+        </div>
+
+        <hr class="sep">
+
+        <p class="titulo-bloco">As minhas listas</p>
+        <div class="linha-add">
+          <input class="campo" id="nomeLista" placeholder="Nome desta lista" aria-label="Nome da lista a guardar">
+          <button class="btn" id="btnGuardar">Guardar</button>
+        </div>
+        <ul class="guardadas" id="guardadas"></ul>
+      </div>
+
+      <!-- ASPETO -->
+      <div class="folha" id="folha-aspeto" role="tabpanel" aria-labelledby="aba-aspeto" hidden>
+        <p class="titulo-bloco">Paleta da roda</p>
+        <div class="paletas" id="paletas"></div>
+        <p class="aviso">Cada item também tem a sua bola de cor na lista — clica para escolher à mão.</p>
+
+        <hr class="sep">
+
+        <div class="def">
+          <div class="def-linha">
+            <p>Tirar quem sair<small>Não repete até a lista esgotar. Ideal para distribuir tarefas.</small></p>
+            <button class="sw" id="swRemover" aria-pressed="false" aria-label="Tirar quem sair"></button>
+          </div>
+          <div class="def-linha">
+            <p>Fluxo de luz<small>A animação suave que acompanha o resultado.</small></p>
+            <button class="sw" id="swLuz" aria-pressed="true" aria-label="Fluxo de luz"></button>
+          </div>
+          <div class="def-linha">
+            <p>Duração do giro</p>
+            <div class="seg" id="segDuracao" role="group" aria-label="Duração do giro">
+              <button data-v="curta" aria-pressed="false">Curta</button>
+              <button data-v="normal" aria-pressed="true">Normal</button>
+              <button data-v="longa" aria-pressed="false">Longa</button>
+            </div>
+          </div>
+          <div class="def-linha">
+            <p>Tempo para responder<small>Conta decrescente no cartão do resultado.</small></p>
+            <div class="seg" id="segTempo" role="group" aria-label="Tempo para responder">
+              <button data-v="0" aria-pressed="true">Sem</button>
+              <button data-v="30" aria-pressed="false">30s</button>
+              <button data-v="60" aria-pressed="false">60s</button>
+              <button data-v="120" aria-pressed="false">2 min</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTÓRICO -->
+      <div class="folha" id="folha-hist" role="tabpanel" aria-labelledby="aba-hist" hidden>
+        <div class="contagem">
+          <span id="contHist">Ainda não saiu nada</span>
+          <div class="mini-acts">
+            <button class="btn btn-mini" id="btnCopiarHist">Copiar</button>
+            <button class="btn btn-mini" id="btnLimparHist">Limpar</button>
+          </div>
+        </div>
+        <ul class="hist" id="listaHist"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <span id="estado">Pronta a rodar</span>
+    <span>Feita por <a href="https://julianaaraujo.pt" target="_blank" rel="noopener">julianaaraujo.pt</a></span>
+  </footer>
+</div>
+
+<section class="sobre" id="sobre-roleta">
+  <div class="sobre-wrap">
+
+    <h2>Uma roleta de nomes sem anúncios</h2>
+    <p>As roletas que se encontram online funcionam, mas vêm quase sempre acompanhadas: banners a piscar, uma janela que abre sozinha, um pedido de subscrição a meio. Nada disso ajuda quando há vinte pessoas a olhar para o projetor.</p>
+    <p>Esta foi feita para resolver isso. Escreves os nomes, rodas, sai um. Sem conta, sem instalação, sem custo.</p>
+
+    <h2>Como se usa</h2>
+    <ol>
+      <li><b>Escreve a lista.</b> Um nome de cada vez com Enter, ou cola a turma toda de uma vez — aceita um por linha e também separados por vírgula.</li>
+      <li><b>Roda.</b> Clica no centro da roda, ou carrega na barra de espaços.</li>
+      <li><b>Continua.</b> Sai o resultado, fica registado no histórico, e rodas outra vez sem fechar nada.</li>
+    </ol>
+    <p>O separador <b>Perguntas</b> troca os nomes por perguntas, para sortear o que se responde em vez de quem responde. O botão <b>Projetar</b> põe a roda em ecrã inteiro. Em <b>Aspeto</b> mudas a paleta de cores, a duração do giro e o tempo de resposta.</p>
+
+    <h2>Para que serve numa sessão</h2>
+    <ul>
+      <li>Escolher quem responde, sem ser sempre o mesmo a levantar o braço</li>
+      <li>Definir a ordem das apresentações</li>
+      <li>Sortear perguntas de revisão no fim de um módulo</li>
+      <li>Formar grupos, com rodas sucessivas</li>
+    </ul>
+
+    <h2>Perguntas frequentes</h2>
+    <div class="faq">
+      <h3>É preciso criar conta ou instalar alguma coisa?</h3>
+      <p>Não. Abres a página e usas.</p>
+
+      <h3>Os nomes que escrevo vão para algum lado?</h3>
+      <p>Não saem do teu computador. A roleta não comunica com nenhum servidor — a lista fica guardada no teu próprio navegador, e só lá.</p>
+
+      <h3>As minhas listas ficam guardadas?</h3>
+      <p>Ficam, no navegador que usaste. Se limpares os dados de navegação ou passares para outro computador, tens de as escrever de novo.</p>
+
+      <h3>Posso usá-la nas minhas formações ou aulas?</h3>
+      <p>Sim, à vontade — é para isso que aqui está. É gratuita para formadores, professores e quem dinamize grupos.</p>
+
+      <h3>Funciona no telemóvel?</h3>
+      <p>Funciona. A roda ajusta-se ao ecrã e o som também.</p>
+    </div>
+
+    <div class="sobre-cta">
+      <p>Fiz esta ferramenta para as minhas próprias sessões. Se estiveres a preparar formação para a tua equipa ou organização, vê a <a href="index.html#formacoes">oferta formativa</a> ou os <a href="recursos.html">recursos pedagógicos</a> que desenho à medida.</p>
+    </div>
+
+  </div>
+</section>
+
+<div class="modal" id="modal" hidden>
+  <div class="veu" id="veu"></div>
+  <canvas id="fx"></canvas>
+  <div class="cartao" role="dialog" aria-modal="true" aria-labelledby="resTexto">
+    <p class="sobrancelha" id="resEtiqueta">Saiu</p>
+    <p class="res-nome" id="resTexto"></p>
+    <div class="marcador" id="resMarcador"></div>
+    <div class="relogio" id="relogio" hidden>
+      <svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true">
+        <circle class="trilho" cx="23" cy="23" r="19"></circle>
+        <circle class="arco" cx="23" cy="23" r="19" id="arco"></circle>
+      </svg>
+      <b id="relogioNum">30</b>
+    </div>
+    <div class="acts-modal">
+      <button class="btn btn-cheio" id="btnOutra">Rodar outra vez</button>
+      <button class="btn" id="btnCopiarRes">Copiar</button>
+      <button class="btn" id="btnFechar">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ======================================================================
+   Estado
+   ====================================================================== */
+
+const PALETAS = {
+  marca:{nome:"Marca",cores:["#1F2ED6","#1DB954","#FF6B35","#7B2FF7","#00B4D8","#FFC400","#FF4D8D","#00BFA6"]},
+  cobalto:{nome:"Cobalto",cores:["#1F2ED6","#3B49E0","#5A66E9","#7A84F0","#98A0F5","#B6BCF9","#D9D2C5","#8C93EE"]},
+  terra:{nome:"Terra",cores:["#0A0A0A","#57524B","#8C877F","#D9D2C5","#B08968","#7F5539","#E6CCB2","#3A3630"]},
+  citrino:{nome:"Citrino",cores:["#FFC400","#FF6B35","#FF5747","#E63946","#F4A261","#FFD97D","#C1440E","#FFB703"]},
+  fria:{nome:"Fria",cores:["#00B4D8","#0077B6","#00BFA6","#1DB954","#48CAE4","#023E8A","#90E0EF","#0E6E5A"]}
+};
+
+const SEMENTES = {
+  nomes:["Ana Rita","Bruno Faria","Carolina Melo","Diogo Sá","Filipa Nunes","Gonçalo Vieira","Inês Carvalho","João Pedro","Mariana Costa","Rui Barbosa","Sofia Lemos","Tiago Rocha"],
+  perguntas:[
+    "O que trazes de novo para esta sessão?",
+    "Uma coisa que aprendeste esta semana",
+    "Qual foi o momento mais difícil do módulo?",
+    "Explica o conceito anterior por palavras tuas",
+    "Que dúvida ficou por esclarecer?",
+    "Dá um exemplo do teu contexto de trabalho",
+    "O que farias diferente da próxima vez?",
+    "Que competência queres treinar hoje?"
+  ]
+};
+
+const CHAVE = "roleta-sessao-v1";
+
+let estado = {
+  modo:"nomes",
+  itens:[],
+  paleta:"marca",
+  som:true,
+  luz:true,
+  remover:false,
+  duracao:"normal",
+  tempo:0,
+  tema:null,
+  historico:[],
+  listas:{}
+};
+
+/* ---- persistência (nunca deve partir a página) ---- */
+function guardar(){
+  try{ localStorage.setItem(CHAVE, JSON.stringify(estado)); }catch(e){}
+}
+function ler(){
+  try{
+    const bruto = localStorage.getItem(CHAVE);
+    if(!bruto) return null;
+    return JSON.parse(bruto);
+  }catch(e){ return null; }
+}
+
+/* ======================================================================
+   Utilitários
+   ====================================================================== */
+
+let seqId = 0;
+const novoId = () => "i" + (++seqId) + Date.now().toString(36).slice(-4);
+
+function coresDaPaleta(){ return PALETAS[estado.paleta] ? PALETAS[estado.paleta].cores : PALETAS.marca.cores; }
+
+function pintar(){
+  const cores = coresDaPaleta();
+  estado.itens.forEach((it,i)=>{ it.cor = cores[i % cores.length]; });
+  // evita que o último e o primeiro setor fiquem com a mesma cor
+  const n = estado.itens.length;
+  if(n > 2 && estado.itens[n-1].cor === estado.itens[0].cor){
+    estado.itens[n-1].cor = cores[(n) % cores.length] === estado.itens[0].cor
+      ? cores[(n+1) % cores.length] : cores[n % cores.length];
+  }
+}
+
+function luminancia(hex){
+  const h = hex.replace("#","");
+  const v = h.length === 3 ? h.split("").map(c=>c+c).join("") : h;
+  const r = parseInt(v.slice(0,2),16)/255, g = parseInt(v.slice(2,4),16)/255, b = parseInt(v.slice(4,6),16)/255;
+  const f = c => c <= .03928 ? c/12.92 : Math.pow((c+.055)/1.055, 2.4);
+  return .2126*f(r) + .7152*f(g) + .0722*f(b);
+}
+// O ponto onde o contraste com o preto iguala o contraste com o creme
+// e L = 0.170: (L+.05)^2 = (0.003+.05)*(0.8653+.05). Com .42, sete das
+// oito cores da paleta levavam creme a 2:1 em vez de preto a 8:1.
+const tintaSobre = hex => luminancia(hex) > .170 ? "#0A0A0A" : "#F2EFEA";
+
+function copiar(texto, aviso){
+  const feito = () => estadoTexto(aviso || "Copiado");
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(texto).then(feito, ()=>fallback());
+      return;
+    }
+  }catch(e){}
+  fallback();
+  function fallback(){
+    try{
+      const ta = document.createElement("textarea");
+      ta.value = texto; ta.style.position="fixed"; ta.style.opacity="0";
+      document.body.appendChild(ta); ta.select(); document.execCommand("copy");
+      document.body.removeChild(ta); feito();
+    }catch(e){ estadoTexto("Não consegui copiar — seleciona o texto à mão"); }
+  }
+}
+
+let temporizadorEstado = null;
+function estadoTexto(t){
+  const el = document.getElementById("estado");
+  el.textContent = t;
+  clearTimeout(temporizadorEstado);
+  temporizadorEstado = setTimeout(()=>{ el.textContent = "Pronta a rodar"; }, 3200);
+}
+
+const semMovimento = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ======================================================================
+   Roda
+   ====================================================================== */
+
+const wrap = document.getElementById("rodaWrap");
+const cv = document.getElementById("roda");
+const ctx = cv.getContext("2d");
+const btnRodar = document.getElementById("btnRodar");
+let S = 520, dpr = 1, rot = -Math.PI/2, aGirar = false, brilho = 0;
+
+function medir(){
+  const r = wrap.getBoundingClientRect();
+  S = Math.max(220, Math.round(r.width));
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  cv.width = Math.round(S*dpr);
+  cv.height = Math.round(S*dpr);
+  desenhar();
+}
+
+function rotulo(texto, arco, raio, ctxRef){
+  // corta o texto ao que cabe no setor; se ficar curto demais, usa o número
+  const max = Math.max(0, raio - raio*0.30);
+  if(ctxRef.measureText(texto).width <= max) return texto;
+  let t = texto;
+  while(t.length > 3 && ctxRef.measureText(t + "…").width > max) t = t.slice(0,-1);
+  return t.length >= 4 ? t + "…" : null;
+}
+
+function desenhar(){
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,S,S);
+  const cx = S/2, cy = S/2, R = S/2 - 4;
+  const n = estado.itens.length;
+
+  const estiloLinha = getComputedStyle(document.body).getPropertyValue("--line-forte").trim();
+  const estiloInk = getComputedStyle(document.body).getPropertyValue("--ink-3").trim();
+
+  if(n === 0){
+    ctx.beginPath(); ctx.arc(cx,cy,R-2,0,Math.PI*2);
+    ctx.strokeStyle = estiloLinha; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = estiloInk;
+    ctx.font = "500 14px 'Space Grotesk', sans-serif";
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText("Lista vazia — junta nomes ou perguntas", cx, cy + R*0.42);
+    return;
+  }
+
+  const passo = (Math.PI*2)/n;
+  const fonte = Math.min(20, Math.max(10, Math.min(passo*R*0.42, R*0.075)));
+
+  for(let i=0;i<n;i++){
+    const it = estado.itens[i];
+    const a0 = rot + i*passo - passo/2, a1 = a0 + passo;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,R,a0,a1);
+    ctx.closePath();
+    ctx.fillStyle = it.cor;
+    ctx.fill();
+    if(n <= 40){
+      ctx.strokeStyle = "rgba(242,239,234,.55)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    ctx.save();
+    ctx.translate(cx,cy);
+    ctx.rotate(a0 + passo/2);
+    ctx.fillStyle = tintaSobre(it.cor);
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+    ctx.font = "500 " + fonte.toFixed(1) + "px 'Space Grotesk', sans-serif";
+    const t = rotulo(it.texto, passo, R, ctx);
+    if(t){
+      ctx.fillText(t, R - R*0.07, 0);
+    }else{
+      ctx.font = "600 " + fonte.toFixed(1) + "px 'Space Grotesk', sans-serif";
+      ctx.fillText(String(i+1), R - R*0.07, 0);
+    }
+    ctx.restore();
+  }
+
+  // aro: filete duplo, no espírito das réguas do site
+  ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2);
+  ctx.strokeStyle = estiloLinha; ctx.lineWidth = 1.5; ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx,cy,R-5,0,Math.PI*2);
+  ctx.strokeStyle = "rgba(242,239,234,.35)"; ctx.lineWidth = 1; ctx.stroke();
+
+  // luz que corre o aro enquanto gira
+  if(brilho > 0.01 && !semMovimento()){
+    const p = (performance.now()/420) % (Math.PI*2);
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    for(let k=0;k<3;k++){
+      const g = ctx.createLinearGradient(cx + Math.cos(p+k)*R, cy + Math.sin(p+k)*R, cx, cy);
+      g.addColorStop(0, "rgba(255,255,255," + (0.5*brilho) + ")");
+      g.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.beginPath();
+      ctx.arc(cx,cy,R-2.5, p + k*2.09, p + k*2.09 + 0.5);
+      ctx.strokeStyle = g; ctx.lineWidth = 4; ctx.stroke();
+    }
+    ctx.restore();
+  }
+}
+
+/* ---- índice sob o ponteiro (topo, -90°) ---- */
+function indiceSobPonteiro(r){
+  const n = estado.itens.length;
+  if(!n) return -1;
+  const passo = (Math.PI*2)/n;
+  let rel = (-Math.PI/2 - r + passo/2) % (Math.PI*2);
+  if(rel < 0) rel += Math.PI*2;
+  return Math.floor(rel/passo) % n;
+}
+
+/* ======================================================================
+   Som — tudo gerado no browser, sem ficheiros externos
+   ====================================================================== */
+
+let ac = null, ruido = null;
+function audio(){
+  if(!estado.som) return null;
+  try{
+    if(!ac){
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if(!AC) return null;
+      ac = new AC();
+      const len = Math.floor(ac.sampleRate * 1.5);
+      ruido = ac.createBuffer(1, len, ac.sampleRate);
+      const d = ruido.getChannelData(0);
+      for(let i=0;i<len;i++) d[i] = Math.random()*2 - 1;
+    }
+    if(ac.state === "suspended") ac.resume();
+    return ac;
+  }catch(e){ return null; }
+}
+
+function tique(forca){
+  const a = audio(); if(!a) return;
+  const o = a.createOscillator(), g = a.createGain(), f = a.createBiquadFilter();
+  f.type = "bandpass"; f.frequency.value = 2100; f.Q.value = 2.5;
+  o.type = "square";
+  o.frequency.value = 1500 + Math.random()*260;
+  const v = Math.min(0.09, 0.02 + forca*0.07);
+  g.gain.setValueAtTime(v, a.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.0001, a.currentTime + 0.045);
+  o.connect(f); f.connect(g); g.connect(a.destination);
+  o.start(); o.stop(a.currentTime + 0.05);
+}
+
+let sopro = null;
+function sopraInicio(){
+  const a = audio(); if(!a || !ruido) return;
+  const src = a.createBufferSource(); src.buffer = ruido; src.loop = true;
+  const f = a.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = 700; f.Q.value = 0.8;
+  const g = a.createGain(); g.gain.value = 0;
+  src.connect(f); f.connect(g); g.connect(a.destination);
+  src.start();
+  sopro = {src:src, g:g, f:f};
+}
+function sopraNivel(v){
+  if(!sopro || !ac) return;
+  try{
+    sopro.g.gain.setTargetAtTime(Math.min(0.055, v*0.05), ac.currentTime, 0.05);
+    sopro.f.frequency.setTargetAtTime(400 + v*900, ac.currentTime, 0.08);
+  }catch(e){}
+}
+function sopraFim(){
+  if(!sopro || !ac) return;
+  try{
+    sopro.g.gain.setTargetAtTime(0, ac.currentTime, 0.12);
+    const s = sopro.src;
+    setTimeout(()=>{ try{ s.stop(); }catch(e){} }, 700);
+  }catch(e){}
+  sopro = null;
+}
+
+function carrilhao(){
+  const a = audio(); if(!a) return;
+  const t0 = a.currentTime;
+  // acorde ascendente, timbre suave
+  [[523.25,0],[659.25,.09],[783.99,.18],[1046.5,.28]].forEach(function(par){
+    const fr = par[0], atraso = par[1];
+    const o = a.createOscillator(), g = a.createGain();
+    o.type = "triangle"; o.frequency.value = fr;
+    g.gain.setValueAtTime(0, t0 + atraso);
+    g.gain.linearRampToValueAtTime(0.16, t0 + atraso + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + atraso + 1.25);
+    o.connect(g); g.connect(a.destination);
+    o.start(t0 + atraso); o.stop(t0 + atraso + 1.3);
+  });
+  // almofada grave, dá corpo sem ser estridente
+  const o2 = a.createOscillator(), g2 = a.createGain();
+  o2.type = "sine"; o2.frequency.value = 130.8;
+  g2.gain.setValueAtTime(0, t0);
+  g2.gain.linearRampToValueAtTime(0.07, t0 + 0.18);
+  g2.gain.exponentialRampToValueAtTime(0.0001, t0 + 1.6);
+  o2.connect(g2); g2.connect(a.destination);
+  o2.start(t0); o2.stop(t0 + 1.7);
+}
+
+function bip(agudo){
+  const a = audio(); if(!a) return;
+  const o = a.createOscillator(), g = a.createGain();
+  o.type = "sine"; o.frequency.value = agudo ? 880 : 440;
+  g.gain.setValueAtTime(0.09, a.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.0001, a.currentTime + 0.28);
+  o.connect(g); g.connect(a.destination);
+  o.start(); o.stop(a.currentTime + 0.3);
+}
+
+/* ======================================================================
+   Girar
+   ====================================================================== */
+
+const DURACOES = {curta:3200, normal:5000, longa:7400};
+
+function rodar(){
+  if(aGirar) return;
+  const vivos = estado.itens.length;
+  if(vivos === 0){ estadoTexto("A lista está vazia"); return; }
+  if(vivos === 1){ mostrar(estado.itens[0]); return; }
+
+  aGirar = true;
+  btnRodar.disabled = true;
+  fecharModal(true);
+
+  const dur = semMovimento() ? 700 : DURACOES[estado.duracao];
+  const voltas = 4 + Math.random()*3;
+  const inicio = rot;
+  const alvo = inicio + voltas*Math.PI*2 + Math.random()*Math.PI*2;
+  const t0 = performance.now();
+  let ultimo = indiceSobPonteiro(rot);
+
+  sopraInicio();
+
+  function passo(agora){
+    const t = Math.min(1, (agora - t0)/dur);
+    const e = 1 - Math.pow(1 - t, 4.2);
+    const anterior = rot;
+    rot = inicio + (alvo - inicio)*e;
+
+    const vel = Math.abs(rot - anterior);
+    brilho = Math.min(1, vel*7);
+    sopraNivel(Math.min(1, vel*9));
+
+    const idx = indiceSobPonteiro(rot);
+    if(idx !== ultimo){ tique(Math.min(1, vel*7)); ultimo = idx; }
+
+    desenhar();
+
+    if(t < 1){
+      requestAnimationFrame(passo);
+    }else{
+      brilho = 0;
+      desenhar();
+      sopraFim();
+      aGirar = false;
+      btnRodar.disabled = false;
+      const i = indiceSobPonteiro(rot);
+      mostrar(estado.itens[i]);
+    }
+  }
+  requestAnimationFrame(passo);
+}
+
+/* ======================================================================
+   Resultado, fluxo de luz e contagem
+   ====================================================================== */
+
+const modal = document.getElementById("modal");
+const resTexto = document.getElementById("resTexto");
+const resEtiqueta = document.getElementById("resEtiqueta");
+const resMarcador = document.getElementById("resMarcador");
+const relogio = document.getElementById("relogio");
+const relogioNum = document.getElementById("relogioNum");
+const arco = document.getElementById("arco");
+const fx = document.getElementById("fx");
+const fxCtx = fx.getContext("2d");
+
+const PERIM = 2*Math.PI*19;
+arco.style.strokeDasharray = PERIM.toFixed(2);
+
+let saiu = null, fxRaf = null, relRaf = null;
+
+function mostrar(item){
+  if(!item) return;
+  saiu = item;
+
+  resEtiqueta.textContent = estado.modo === "nomes" ? "Saiu" : "A pergunta é";
+  resTexto.textContent = item.texto;
+  resTexto.className = estado.modo === "nomes" ? "res-nome" : "res-pergunta";
+  resMarcador.style.background = item.cor;
+
+  modal.hidden = false;
+  carrilhao();
+  fluxoDeLuz(item.cor);
+
+  estado.historico.unshift({texto:item.texto, ts:Date.now(), modo:estado.modo});
+  if(estado.historico.length > 200) estado.historico.length = 200;
+  desenharHistorico();
+
+  if(estado.remover){
+    estado.itens = estado.itens.filter(x => x.id !== item.id);
+    pintar(); desenharLista(); desenhar();
+    if(estado.itens.length === 0) estadoTexto("Lista esgotada — Limpar repõe os exemplos");
+  }
+
+  guardar();
+  iniciarRelogio();
+  document.getElementById("btnFechar").focus();
+}
+
+function fecharModal(silencioso){
+  if(modal.hidden) return;
+  modal.hidden = true;
+  pararRelogio();
+  if(fxRaf){ cancelAnimationFrame(fxRaf); fxRaf = null; }
+  if(!silencioso) btnRodar.focus();
+}
+
+/* ---- fluxo de luz: feixes suaves que se abrem e apagam ---- */
+function fluxoDeLuz(cor){
+  if(!estado.luz) return;
+  const w = fx.clientWidth, h = fx.clientHeight;
+  const d = Math.min(window.devicePixelRatio || 1, 2);
+  fx.width = Math.round(w*d); fx.height = Math.round(h*d);
+  fxCtx.setTransform(d,0,0,d,0,0);
+
+  const cx = w/2, cy = h/2;
+  const maxR = Math.hypot(w,h)/2;
+  const rgb = hexRgb(cor);
+
+  if(semMovimento()){
+    fxCtx.clearRect(0,0,w,h);
+    const g = fxCtx.createRadialGradient(cx,cy,0,cx,cy,maxR*0.8);
+    g.addColorStop(0,"rgba(" + rgb + ",.22)");
+    g.addColorStop(1,"rgba(" + rgb + ",0)");
+    fxCtx.fillStyle = g; fxCtx.fillRect(0,0,w,h);
+    return;
+  }
+
+  const DUR = 2600, t0 = performance.now(), base = Math.random()*Math.PI*2, N = 9;
+
+  function quadro(agora){
+    const t = Math.min(1, (agora - t0)/DUR);
+    const abre = 1 - Math.pow(1 - t, 3);
+    const fade = t < .16 ? t/.16 : Math.pow(1 - (t-.16)/.84, 1.7);
+
+    fxCtx.clearRect(0,0,w,h);
+    fxCtx.save();
+    fxCtx.globalCompositeOperation = "lighter";
+
+    // bloom central
+    const bloom = fxCtx.createRadialGradient(cx,cy,0,cx,cy,maxR*(0.25 + abre*0.7));
+    bloom.addColorStop(0,"rgba(" + rgb + "," + (0.30*fade) + ")");
+    bloom.addColorStop(.45,"rgba(" + rgb + "," + (0.10*fade) + ")");
+    bloom.addColorStop(1,"rgba(" + rgb + ",0)");
+    fxCtx.fillStyle = bloom;
+    fxCtx.fillRect(0,0,w,h);
+
+    // feixes que rodam devagar
+    for(let i=0;i<N;i++){
+      const a = base + i*(Math.PI*2/N) + abre*0.55 + Math.sin(t*3 + i)*0.05;
+      const comp = maxR*(0.28 + abre*0.95);
+      const x2 = cx + Math.cos(a)*comp, y2 = cy + Math.sin(a)*comp;
+      const g = fxCtx.createLinearGradient(cx,cy,x2,y2);
+      const alfa = 0.20*fade*(0.55 + 0.45*Math.sin(t*5 + i*1.7));
+      g.addColorStop(0,"rgba(255,255,255," + (alfa*0.9) + ")");
+      g.addColorStop(.35,"rgba(" + rgb + "," + alfa + ")");
+      g.addColorStop(1,"rgba(" + rgb + ",0)");
+      fxCtx.strokeStyle = g;
+      fxCtx.lineWidth = Math.max(10, w*0.035*(1 - abre*0.35));
+      fxCtx.lineCap = "round";
+      fxCtx.beginPath();
+      fxCtx.moveTo(cx,cy);
+      fxCtx.lineTo(x2,y2);
+      fxCtx.stroke();
+    }
+
+    // anel a expandir
+    fxCtx.beginPath();
+    fxCtx.arc(cx,cy,maxR*abre*0.85,0,Math.PI*2);
+    fxCtx.strokeStyle = "rgba(" + rgb + "," + (0.16*fade) + ")";
+    fxCtx.lineWidth = 2 + 10*(1-abre);
+    fxCtx.stroke();
+
+    fxCtx.restore();
+
+    if(t < 1){ fxRaf = requestAnimationFrame(quadro); }
+    else{ fxCtx.clearRect(0,0,w,h); fxRaf = null; }
+  }
+  fxRaf = requestAnimationFrame(quadro);
+}
+
+function hexRgb(hex){
+  const h = hex.replace("#","");
+  const v = h.length === 3 ? h.split("").map(c=>c+c).join("") : h;
+  return parseInt(v.slice(0,2),16) + "," + parseInt(v.slice(2,4),16) + "," + parseInt(v.slice(4,6),16);
+}
+
+/* ---- contagem decrescente ---- */
+let relInt = null;
+function iniciarRelogio(){
+  pararRelogio();
+  if(!estado.tempo){ relogio.hidden = true; return; }
+  relogio.hidden = false;
+  relogio.classList.remove("fim");
+  let resta = estado.tempo;
+  pinta(resta);
+  relInt = setInterval(function(){
+    resta -= 1;
+    pinta(resta);
+    if(resta <= 5 && resta > 0) bip(false);
+    if(resta <= 0){
+      clearInterval(relInt); relInt = null;
+      relogio.classList.add("fim");
+      bip(true);
+    }
+  }, 1000);
+
+  function pinta(v){
+    relogioNum.textContent = v > 60 ? Math.floor(v/60) + ":" + String(v%60).padStart(2,"0") : v + "s";
+    arco.style.strokeDashoffset = (PERIM*(1 - v/estado.tempo)).toFixed(2);
+  }
+}
+function pararRelogio(){
+  if(relInt){ clearInterval(relInt); relInt = null; }
+  relogio.hidden = true;
+}
+
+/* ======================================================================
+   Painel — lista
+   ====================================================================== */
+
+const listaItens = document.getElementById("listaItens");
+const contador = document.getElementById("contador");
+
+function desenharLista(){
+  listaItens.innerHTML = "";
+  const n = estado.itens.length;
+  contador.textContent = n === 0 ? "Lista vazia"
+    : n + " " + (estado.modo === "nomes" ? (n === 1 ? "nome" : "nomes") : (n === 1 ? "pergunta" : "perguntas"));
+
+  if(n === 0){
+    const p = document.createElement("p");
+    p.className = "vazio";
+    p.textContent = "Junta o primeiro item aqui em cima, ou cola uma lista inteira.";
+    listaItens.appendChild(p);
+    return;
+  }
+
+  estado.itens.forEach(function(it, i){
+    const li = document.createElement("li");
+    li.className = "item";
+
+    const num = document.createElement("span");
+    num.className = "n";
+    num.textContent = String(i+1).padStart(2,"0");
+
+    const cor = document.createElement("input");
+    cor.type = "color"; cor.className = "swatch"; cor.value = it.cor;
+    cor.setAttribute("aria-label","Cor de " + it.texto);
+    cor.addEventListener("input", function(){ it.cor = cor.value; desenhar(); guardar(); });
+
+    const txt = document.createElement("input");
+    txt.className = "txt"; txt.value = it.texto;
+    txt.setAttribute("aria-label","Texto do item " + (i+1));
+    txt.addEventListener("input", function(){ it.texto = txt.value; desenhar(); });
+    txt.addEventListener("change", guardar);
+
+    const rem = document.createElement("button");
+    rem.className = "rem"; rem.innerHTML = "&times;";
+    rem.title = "Tirar da roda";
+    rem.setAttribute("aria-label","Tirar " + it.texto + " da roda");
+    rem.addEventListener("click", function(){
+      estado.itens = estado.itens.filter(x => x.id !== it.id);
+      pintar(); desenharLista(); desenhar(); guardar();
+    });
+
+    li.appendChild(num); li.appendChild(cor); li.appendChild(txt); li.appendChild(rem);
+    listaItens.appendChild(li);
+  });
+}
+
+function juntar(textos, substituir){
+  const limpos = textos
+    .map(t => t.trim())
+    .filter(t => t.length > 0)
+    .slice(0, 200);
+  if(!limpos.length) return 0;
+  const novos = limpos.map(t => ({id:novoId(), texto:t, cor:"#1F2ED6"}));
+  estado.itens = substituir ? novos : estado.itens.concat(novos);
+  if(estado.itens.length > 200) estado.itens.length = 200;
+  pintar(); desenharLista(); desenhar(); guardar();
+  return limpos.length;
+}
+
+function partirTexto(bruto){
+  const linhas = bruto.split(/\r?\n/);
+  if(linhas.filter(l => l.trim()).length <= 1 && bruto.indexOf(",") > -1){
+    return bruto.split(",");
+  }
+  return linhas;
+}
+
+/* ======================================================================
+   Painel — histórico
+   ====================================================================== */
+
+const listaHist = document.getElementById("listaHist");
+const contHist = document.getElementById("contHist");
+
+function desenharHistorico(){
+  listaHist.innerHTML = "";
+  const h = estado.historico;
+  contHist.textContent = h.length === 0 ? "Ainda não saiu nada"
+    : h.length + (h.length === 1 ? " resultado" : " resultados");
+
+  const contas = {};
+  h.forEach(r => { contas[r.texto] = (contas[r.texto] || 0) + 1; });
+
+  h.slice(0,60).forEach(function(r){
+    const li = document.createElement("li");
+    const t = document.createElement("time");
+    const d = new Date(r.ts);
+    t.dateTime = d.toISOString();
+    t.textContent = String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
+    const s = document.createElement("span");
+    s.textContent = r.texto;
+    const b = document.createElement("b");
+    b.textContent = contas[r.texto] > 1 ? "×" + contas[r.texto] : "";
+    b.title = "Já saiu " + contas[r.texto] + " vezes";
+    li.appendChild(t); li.appendChild(s); li.appendChild(b);
+    listaHist.appendChild(li);
+  });
+}
+
+/* ======================================================================
+   Painel — aspeto
+   ====================================================================== */
+
+const divPaletas = document.getElementById("paletas");
+function desenharPaletas(){
+  divPaletas.innerHTML = "";
+  Object.keys(PALETAS).forEach(function(chave){
+    const p = PALETAS[chave];
+    const b = document.createElement("button");
+    b.className = "paleta";
+    b.setAttribute("aria-pressed", String(estado.paleta === chave));
+    const nome = document.createElement("b");
+    nome.textContent = p.nome;
+    const tiras = document.createElement("span");
+    tiras.className = "tiras";
+    p.cores.forEach(function(c){
+      const i = document.createElement("i");
+      i.style.background = c;
+      tiras.appendChild(i);
+    });
+    b.appendChild(nome); b.appendChild(tiras);
+    b.addEventListener("click", function(){
+      estado.paleta = chave;
+      pintar(); desenharLista(); desenhar(); desenharPaletas(); guardar();
+    });
+    divPaletas.appendChild(b);
+  });
+}
+
+/* ======================================================================
+   Listas guardadas
+   ====================================================================== */
+
+const ulGuardadas = document.getElementById("guardadas");
+function desenharGuardadas(){
+  ulGuardadas.innerHTML = "";
+  const chaves = Object.keys(estado.listas);
+  if(!chaves.length){
+    const p = document.createElement("p");
+    p.className = "aviso";
+    p.textContent = "Guarda as listas que repetes — turmas, grupos, baterias de perguntas.";
+    ulGuardadas.appendChild(p);
+    return;
+  }
+  chaves.forEach(function(nome){
+    const reg = estado.listas[nome];
+    const li = document.createElement("li");
+    const b = document.createElement("button");
+    b.className = "nome";
+    b.innerHTML = "";
+    b.appendChild(document.createTextNode(nome + " "));
+    const em = document.createElement("em");
+    em.textContent = "· " + reg.itens.length + " · " + (reg.modo === "nomes" ? "nomes" : "perguntas");
+    b.appendChild(em);
+    b.addEventListener("click", function(){
+      trocarModo(reg.modo);
+      juntar(reg.itens.slice(), true);
+      estadoTexto("Carregada a lista " + nome);
+    });
+    const x = document.createElement("button");
+    x.className = "btn btn-mini";
+    x.textContent = "Apagar";
+    x.addEventListener("click", function(){
+      delete estado.listas[nome];
+      desenharGuardadas(); guardar();
+    });
+    li.appendChild(b); li.appendChild(x);
+    ulGuardadas.appendChild(li);
+  });
+}
+
+/* ======================================================================
+   Modo, tema, ligações
+   ====================================================================== */
+
+function trocarModo(m){
+  estado.modo = m;
+  document.getElementById("modoNomes").setAttribute("aria-pressed", String(m === "nomes"));
+  document.getElementById("modoPerguntas").setAttribute("aria-pressed", String(m === "perguntas"));
+  document.getElementById("novoItem").placeholder = m === "nomes"
+    ? "Escrever um nome e carregar em Enter"
+    : "Escrever uma pergunta e carregar em Enter";
+  desenharLista();
+  guardar();
+}
+
+function aplicarTema(){
+  if(estado.tema) document.documentElement.setAttribute("data-theme", estado.tema);
+  else document.documentElement.removeAttribute("data-theme");
+  desenhar();
+}
+
+function ligarAbas(){
+  const abas = [
+    ["aba-lista","folha-lista"],
+    ["aba-aspeto","folha-aspeto"],
+    ["aba-hist","folha-hist"]
+  ];
+  abas.forEach(function(par){
+    document.getElementById(par[0]).addEventListener("click", function(){
+      abas.forEach(function(p){
+        const sel = p[0] === par[0];
+        document.getElementById(p[0]).setAttribute("aria-selected", String(sel));
+        document.getElementById(p[1]).hidden = !sel;
+      });
+    });
+  });
+}
+
+function ligarInterruptor(id, chave, aoMudar){
+  const b = document.getElementById(id);
+  b.setAttribute("aria-pressed", String(!!estado[chave]));
+  b.addEventListener("click", function(){
+    estado[chave] = !estado[chave];
+    b.setAttribute("aria-pressed", String(estado[chave]));
+    if(aoMudar) aoMudar();
+    guardar();
+  });
+}
+
+function ligarSegmento(id, chave, numerico){
+  const cx = document.getElementById(id);
+  Array.prototype.forEach.call(cx.querySelectorAll("button"), function(b){
+    b.addEventListener("click", function(){
+      const v = numerico ? parseInt(b.dataset.v,10) : b.dataset.v;
+      estado[chave] = v;
+      Array.prototype.forEach.call(cx.querySelectorAll("button"), function(o){
+        o.setAttribute("aria-pressed", String(o === b));
+      });
+      guardar();
+    });
+  });
+  Array.prototype.forEach.call(cx.querySelectorAll("button"), function(b){
+    const v = numerico ? parseInt(b.dataset.v,10) : b.dataset.v;
+    b.setAttribute("aria-pressed", String(v === estado[chave]));
+  });
+}
+
+/* ======================================================================
+   Arranque
+   ====================================================================== */
+
+function arrancar(){
+  const gravado = ler();
+  if(gravado && typeof gravado === "object"){
+    estado = Object.assign(estado, gravado);
+    if(!Array.isArray(estado.itens)) estado.itens = [];
+    if(!Array.isArray(estado.historico)) estado.historico = [];
+    if(!estado.listas || typeof estado.listas !== "object") estado.listas = {};
+    estado.itens.forEach(function(it){ if(!it.id) it.id = novoId(); });
+  }
+  if(!estado.itens.length){
+    estado.itens = SEMENTES.nomes.map(t => ({id:novoId(), texto:t, cor:"#1F2ED6"}));
+    estado.listas = Object.assign({
+      "Turma exemplo":{modo:"nomes", itens:SEMENTES.nomes.slice()},
+      "Aquecimento":{modo:"perguntas", itens:SEMENTES.perguntas.slice()}
+    }, estado.listas);
+  }
+  pintar();
+
+  aplicarTema();
+  trocarModo(estado.modo);
+  desenharLista();
+  desenharPaletas();
+  desenharGuardadas();
+  desenharHistorico();
+  ligarAbas();
+
+  document.getElementById("btnSom").setAttribute("aria-pressed", String(estado.som));
+  document.getElementById("btnSom").textContent = estado.som ? "🔊 Som" : "🔇 Som";
+  ligarInterruptor("swRemover","remover");
+  ligarInterruptor("swLuz","luz");
+  ligarSegmento("segDuracao","duracao",false);
+  ligarSegmento("segTempo","tempo",true);
+
+  medir();
+  if(window.ResizeObserver){
+    new ResizeObserver(medir).observe(wrap);
+  }else{
+    window.addEventListener("resize", medir);
+  }
+  document.fonts && document.fonts.ready.then(desenhar);
+}
+
+/* ---- eventos ---- */
+btnRodar.addEventListener("click", rodar);
+document.getElementById("btnOutra").addEventListener("click", function(){ fecharModal(true); rodar(); });
+document.getElementById("btnFechar").addEventListener("click", function(){ fecharModal(false); });
+document.getElementById("veu").addEventListener("click", function(){ fecharModal(false); });
+document.getElementById("btnCopiarRes").addEventListener("click", function(){
+  if(saiu) copiar(saiu.texto, "Resultado copiado");
+});
+
+document.getElementById("formAdd").addEventListener("submit", function(ev){
+  ev.preventDefault();
+  const inp = document.getElementById("novoItem");
+  if(juntar([inp.value], false)) inp.value = "";
+  inp.focus();
+});
+
+document.getElementById("modoNomes").addEventListener("click", function(){ trocarModo("nomes"); });
+document.getElementById("modoPerguntas").addEventListener("click", function(){ trocarModo("perguntas"); });
+
+document.getElementById("btnBaralhar").addEventListener("click", function(){
+  for(let i = estado.itens.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    const tmp = estado.itens[i]; estado.itens[i] = estado.itens[j]; estado.itens[j] = tmp;
+  }
+  pintar(); desenharLista(); desenhar(); guardar();
+  estadoTexto("Lista baralhada");
+});
+
+document.getElementById("btnCores").addEventListener("click", function(){
+  const cores = coresDaPaleta().slice();
+  for(let i = cores.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    const tmp = cores[i]; cores[i] = cores[j]; cores[j] = tmp;
+  }
+  estado.itens.forEach(function(it,i){ it.cor = cores[i % cores.length]; });
+  desenharLista(); desenhar(); guardar();
+});
+
+document.getElementById("btnLimpar").addEventListener("click", function(){
+  if(estado.itens.length && !confirm("Limpar a roda toda?")) return;
+  if(estado.itens.length){
+    estado.itens = [];
+  }else{
+    estado.itens = (estado.modo === "nomes" ? SEMENTES.nomes : SEMENTES.perguntas)
+      .map(t => ({id:novoId(), texto:t, cor:"#1F2ED6"}));
+    estadoTexto("Exemplos repostos");
+  }
+  pintar(); desenharLista(); desenhar(); guardar();
+});
+
+document.getElementById("btnSubstituir").addEventListener("click", function(){
+  const ta = document.getElementById("colar");
+  const q = juntar(partirTexto(ta.value), true);
+  if(q){ ta.value = ""; estadoTexto(q + " itens na roda"); }
+  else estadoTexto("Não havia nada para colar");
+});
+document.getElementById("btnAcrescentar").addEventListener("click", function(){
+  const ta = document.getElementById("colar");
+  const q = juntar(partirTexto(ta.value), false);
+  if(q){ ta.value = ""; estadoTexto("Juntei " + q + " itens"); }
+  else estadoTexto("Não havia nada para colar");
+});
+document.getElementById("btnCopiarLista").addEventListener("click", function(){
+  copiar(estado.itens.map(i => i.texto).join("\n"), "Lista copiada");
+});
+
+document.getElementById("btnGuardar").addEventListener("click", function(){
+  const inp = document.getElementById("nomeLista");
+  const nome = inp.value.trim();
+  if(!nome){ inp.focus(); estadoTexto("Dá um nome à lista primeiro"); return; }
+  if(!estado.itens.length){ estadoTexto("A roda está vazia"); return; }
+  estado.listas[nome] = {modo:estado.modo, itens:estado.itens.map(i => i.texto)};
+  inp.value = "";
+  desenharGuardadas(); guardar();
+  estadoTexto("Guardada como " + nome);
+});
+
+document.getElementById("btnCopiarHist").addEventListener("click", function(){
+  if(!estado.historico.length){ estadoTexto("O histórico está vazio"); return; }
+  const linhas = estado.historico.slice().reverse().map(function(r){
+    const d = new Date(r.ts);
+    return d.toLocaleString("pt-PT") + "\t" + r.texto;
+  });
+  copiar(linhas.join("\n"), "Histórico copiado");
+});
+document.getElementById("btnLimparHist").addEventListener("click", function(){
+  estado.historico = [];
+  desenharHistorico(); guardar();
+});
+
+document.getElementById("btnSom").addEventListener("click", function(){
+  estado.som = !estado.som;
+  this.setAttribute("aria-pressed", String(estado.som));
+  this.textContent = estado.som ? "🔊 Som" : "🔇 Som";
+  if(estado.som) tique(1);
+  guardar();
+});
+
+document.getElementById("btnTema").addEventListener("click", function(){
+  const escuroAgora = document.documentElement.getAttribute("data-theme") === "dark" ||
+    (!document.documentElement.getAttribute("data-theme") &&
+     window.matchMedia("(prefers-color-scheme: dark)").matches);
+  estado.tema = escuroAgora ? "light" : "dark";
+  aplicarTema(); guardar();
+});
+
+document.getElementById("btnProj").addEventListener("click", function(){
+  document.body.classList.toggle("projecao");
+  const ligado = document.body.classList.contains("projecao");
+  try{
+    if(ligado && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    else if(!ligado && document.exitFullscreen && document.fullscreenElement) document.exitFullscreen();
+  }catch(e){}
+  this.textContent = ligado ? "⤢ Sair" : "⛶ Projetar";
+  setTimeout(medir, 120);
+});
+
+document.addEventListener("keydown", function(ev){
+  const emCampo = /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
+  if(ev.key === "Escape"){
+    if(!modal.hidden){ fecharModal(false); }
+    else if(document.body.classList.contains("projecao")){ document.getElementById("btnProj").click(); }
+    return;
+  }
+  if(emCampo) return;
+  if(ev.code === "Space" || ev.key === "Enter"){
+    if(document.activeElement.tagName === "BUTTON") return;
+    ev.preventDefault();
+    if(!modal.hidden){ fecharModal(true); }
+    rodar();
+  }
+});
+
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", desenhar);
+
+arrancar();
+})();
+</script>
+
+<footer class="rodape-site">
+  <div class="rodape-wrap">
+    <span>© 2026 Juliana Araújo</span>
+    <a href="index.html">Voltar ao site</a>
+  </div>
+</footer>
+
+</body>
+</html>

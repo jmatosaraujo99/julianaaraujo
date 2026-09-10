@@ -29,13 +29,15 @@ function morrer(msg) { console.error('ABORTADO: ' + msg); process.exit(1); }
 function relatorioDeriva() {
   const PAGINAS = ['privacidade.html', 'recursos.html', 'formacao-comunicacao.html',
     'formacao-desenvolvimento-pessoal.html', 'formacao-lideranca-equipas.html',
-    'formacao-inteligencia-artificial.html'];
+    'formacao-inteligencia-artificial.html', 'roleta.html'];
   const RE = /(#(?:1F2ED6|F2EFEA|0A0A0A|D9D2C5|6B665D|57524B|8C877F|1DB954|7B2FF7|FF6B35|00B4D8|FFC400|00BFA6|FF4D8D|FF5747)\b)|(letter-spacing:\s*-?\.?[0-9][^;}"']*)|(font-family:\s*(?:Anton|Archivo)[^;}"']*)/gi;
 
   const achados = [];
   for (const p of PAGINAS) {
     if (!fs.existsSync(p)) continue;
-    const t = fs.readFileSync(p, 'utf8');
+    // fora os <script>: lá dentro as cores são dados (paletas da roda,
+    // cálculo de contraste), não estilo, e o canvas não lê var(--token)
+    const t = fs.readFileSync(p, 'utf8').replace(/<script[\s\S]*?<\/script>/gi, ' ');
     let m;
     const re = new RegExp(RE.source, 'gi');
     while ((m = re.exec(t))) {
@@ -53,6 +55,8 @@ function relatorioDeriva() {
     console.log('  — se for novo, troca por var(--token); se for exceção, deixa e regista aqui');
   }
   console.log('exceções conhecidas: privacidade.html 0.12em (valor único);');
+  console.log('  roleta.html — letter-spacing .06/.08/.1em e 0 são da micro-tipografia da');
+  console.log('  própria ferramenta, não da marca;');
   console.log('  index.html — @font-face, o <style> de recurso pré-JS e o código do Component');
 }
 
