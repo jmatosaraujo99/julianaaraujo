@@ -133,6 +133,10 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
+/* A .folha define display, o que ganha ao [hidden] do browser: sem isto os
+   tres paineis ficam visiveis ao mesmo tempo e os separadores nao parecem
+   fazer nada. Os Dados ja tinham esta regra; a roleta nao. */
+[hidden]{display:none!important}
 body{
   margin:0;
   background:
