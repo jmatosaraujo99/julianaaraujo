@@ -30,7 +30,7 @@
 <meta name="twitter:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Roleta","applicationCategory":"EducationalApplication","operatingSystem":"Browser","description":"Roleta de sorteio para a sala de formação: sorteia nomes ou perguntas, com som, modo projeção e listas guardadas no navegador.","url":"https://julianaaraujo.pt/roleta.html","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"copyrightHolder":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/"},"copyrightYear":2026,"creator":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"inLanguage":"pt-PT"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://julianaaraujo.pt/"},{"@type":"ListItem","position":2,"name":"Roleta","item":"https://julianaaraujo.pt/roleta.html"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"É preciso criar conta ou instalar alguma coisa?","acceptedAnswer":{"@type":"Answer","text":"Não. Abres a página e usas."}},{"@type":"Question","name":"O que posso pôr na roleta?","acceptedAnswer":{"@type":"Answer","text":"O que precisares: nomes de participantes, perguntas de revisão, temas para debate, tarefas a distribuir. A roleta sorteia o que estiver na lista."}},{"@type":"Question","name":"Posso pôr imagens em vez de palavras?","acceptedAnswer":{"@type":"Answer","text":"Podes. O botão Juntar imagens aceita várias de uma vez e cada imagem fica numa fatia da roda; o nome do ficheiro passa a ser a legenda, que podes mudar. As imagens são reduzidas antes de guardar e, tal como o resto, não saem do teu computador."}},{"@type":"Question","name":"Os nomes que escrevo vão para algum lado?","acceptedAnswer":{"@type":"Answer","text":"Não saem do teu computador. A roleta não comunica com nenhum servidor — a lista fica guardada no teu próprio navegador, e só lá."}},{"@type":"Question","name":"As minhas listas ficam guardadas?","acceptedAnswer":{"@type":"Answer","text":"Ficam, no navegador que usaste. Se limpares os dados de navegação ou passares para outro computador, tens de as escrever de novo."}},{"@type":"Question","name":"Posso usá-la nas minhas formações ou aulas?","acceptedAnswer":{"@type":"Answer","text":"Sim. É gratuita para formadores, professores e quem dinamize grupos."}},{"@type":"Question","name":"Funciona no telemóvel?","acceptedAnswer":{"@type":"Answer","text":"Funciona. A roda ajusta-se ao ecrã e o som também."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"É preciso criar conta ou instalar alguma coisa?","acceptedAnswer":{"@type":"Answer","text":"Não. Abres a página e usas."}},{"@type":"Question","name":"O que posso pôr na roleta?","acceptedAnswer":{"@type":"Answer","text":"O que precisares: nomes de participantes, perguntas de revisão, temas para debate, tarefas a distribuir. A roleta sorteia o que estiver na lista."}},{"@type":"Question","name":"Posso pôr imagens em vez de palavras?","acceptedAnswer":{"@type":"Answer","text":"Podes. O botão Juntar imagens aceita várias de uma vez e cada imagem fica numa fatia da roda; o nome do ficheiro passa a ser a legenda, que podes mudar. As imagens são reduzidas antes de guardar e, tal como o resto, não saem do teu computador."}},{"@type":"Question","name":"Os nomes que escrevo vão para algum lado?","acceptedAnswer":{"@type":"Answer","text":"Não saem do teu computador. A roleta não comunica com nenhum servidor — a lista fica guardada no teu próprio navegador, e só lá."}},{"@type":"Question","name":"As minhas listas ficam guardadas?","acceptedAnswer":{"@type":"Answer","text":"Ficam guardadas no navegador que usaste, e só aí — nada é enviado para nenhum servidor. Isso quer dizer que se limpares os dados de navegação, ou abrires a roleta noutro computador, não estão lá. Em Definições tens Guardar ficheiro: leva tudo — listas, imagens e histórico — para um ficheiro que depois abres onde quiseres."}},{"@type":"Question","name":"Posso usá-la nas minhas formações ou aulas?","acceptedAnswer":{"@type":"Answer","text":"Sim. É gratuita para formadores, professores e quem dinamize grupos."}},{"@type":"Question","name":"Funciona no telemóvel?","acceptedAnswer":{"@type":"Answer","text":"Funciona. A roda ajusta-se ao ecrã e o som também."}}]}</script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -644,6 +644,20 @@ body.projecao .credito-proj{display:block}
   width:30px;height:30px;flex:0 0 30px;border-radius:7px;
   object-fit:cover;border:1px solid var(--line-forte);
 }
+
+/* Só para leitores de ecrã: a roda é um canvas e não se lê. */
+.so-leitor{position:absolute;width:1px;height:1px;margin:-1px;padding:0;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.estado-wrap{display:flex;align-items:center;gap:var(--s2);min-width:0}
+#btnAnular{flex:none}
+
+.mini-troca{flex:0 0 30px;width:30px;height:30px;padding:0;border:0;background:none;
+  cursor:pointer;border-radius:7px;overflow:hidden;display:block}
+.mini-troca .mini-img{width:100%;height:100%;display:block;border-radius:7px}
+.mini-troca:hover .mini-img{opacity:.7}
+.mini-troca:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.def-copia{flex-direction:column;align-items:flex-start;gap:var(--s2)}
+.copia-acts{display:flex;gap:var(--s1);flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -690,7 +704,7 @@ body.projecao .credito-proj{display:block}
     <section class="painel">
       <div class="abas" role="tablist">
         <button class="aba" role="tab" id="aba-lista" aria-controls="folha-lista" aria-selected="true">Lista</button>
-        <button class="aba" role="tab" id="aba-aspeto" aria-controls="folha-aspeto" aria-selected="false">Tema</button>
+        <button class="aba" role="tab" id="aba-aspeto" aria-controls="folha-aspeto" aria-selected="false">Definições</button>
         <button class="aba" role="tab" id="aba-hist" aria-controls="folha-hist" aria-selected="false">Histórico</button>
       </div>
 
@@ -710,7 +724,7 @@ body.projecao .credito-proj{display:block}
           <span id="contador">0 itens</span>
           <div class="mini-acts">
             <button class="btn btn-mini" id="btnBaralhar">Baralhar</button>
-            <button class="btn btn-mini" id="btnCores">Cores</button>
+            <button class="btn btn-mini" id="btnCores">Trocar cores</button>
             <button class="btn btn-mini" id="btnImagens">Juntar imagens</button>
             <button class="btn btn-mini" id="btnLimpar">Limpar</button>
             <input type="file" id="ficheiroImagens" accept="image/*" multiple hidden>
@@ -773,8 +787,17 @@ body.projecao .credito-proj{display:block}
               <button data-v="120" aria-pressed="false">2 min</button>
             </div>
           </div>
+          <div class="def-linha def-copia">
+            <p>Cópia de segurança<small>As listas e as imagens ficam só neste navegador. Guarda um ficheiro para as levares para outro computador.</small></p>
+            <div class="copia-acts">
+              <button class="btn btn-mini" id="btnExportar">Guardar ficheiro</button>
+              <button class="btn btn-mini" id="btnImportar">Abrir ficheiro</button>
+            </div>
+          </div>
         </div>
       </div>
+      <input type="file" id="ficheiroImportar" accept="application/json,.json" hidden>
+      <input type="file" id="ficheiroTroca" accept="image/*" hidden>
 
       <!-- HISTÓRICO -->
       <div class="folha" id="folha-hist" role="tabpanel" aria-labelledby="aba-hist" hidden>
@@ -791,7 +814,10 @@ body.projecao .credito-proj{display:block}
   </main>
 
   <footer class="rodape">
-    <span id="estado">Pronta a rodar</span>
+    <span class="estado-wrap">
+      <span id="estado" role="status" aria-live="polite">Pronta a rodar</span>
+      <button class="btn btn-mini" id="btnAnular" hidden>Anular</button>
+    </span>
     <span>&copy; 2026 <a href="https://julianaaraujo.pt" target="_blank" rel="noopener">Juliana Araújo</a></span>
   </footer>
 </div>
@@ -805,7 +831,7 @@ body.projecao .credito-proj{display:block}
       <li><b>Roda.</b> Clica no centro da roda, ou carrega na barra de espaços.</li>
       <li><b>Continua.</b> Sai o resultado, fica registado no histórico, e rodas outra vez sem fechar nada.</li>
     </ol>
-    <p>O separador <b>Perguntas</b> troca os nomes por perguntas, para sortear o que se responde em vez de quem responde. O botão <b>Projetar</b> põe a roda em ecrã inteiro. Em <b>Tema</b> mudas a paleta de cores, a duração do giro e o tempo de resposta.</p>
+    <p>O separador <b>Perguntas</b> troca os nomes por perguntas, para sortear o que se responde em vez de quem responde. O botão <b>Projetar</b> põe a roda em ecrã inteiro. Em <b>Definições</b> mudas a paleta de cores, a duração do giro e o tempo de resposta.</p>
 
     <h2>Para que serve numa sessão</h2>
     <ul>
@@ -849,7 +875,7 @@ body.projecao .credito-proj{display:block}
       </details>
       <details>
         <summary><h3>As minhas listas ficam guardadas?</h3></summary>
-        <p>Ficam, no navegador que usaste. Se limpares os dados de navegação ou passares para outro computador, tens de as escrever de novo.</p>
+        <p>Ficam guardadas no navegador que usaste, e só aí — nada é enviado para nenhum servidor. Isso quer dizer que se limpares os dados de navegação, ou abrires a roleta noutro computador, não estão lá. Em <b>Definições</b> tens <i>Guardar ficheiro</i>: leva tudo — listas, imagens e histórico — para um ficheiro que depois abres onde quiseres.</p>
       </details>
       <details>
         <summary><h3>Posso usá-la nas minhas formações ou aulas?</h3></summary>
@@ -873,6 +899,8 @@ body.projecao .credito-proj{display:block}
 </section>
 
 <p class="credito-proj">&copy; 2026 Juliana Araújo &middot; julianaaraujo.pt</p>
+
+<p id="anuncio" class="so-leitor" role="status" aria-live="assertive"></p>
 
 <div class="modal" id="modal" hidden>
   <div class="veu" id="veu"></div>
@@ -1339,6 +1367,8 @@ function mostrar(item){
   resImg.hidden = !item.img;
   resImg.src = item.img || "";
   resImg.alt = item.img ? item.texto : "";
+  document.getElementById("anuncio").textContent =
+    (estado.modo === "nomes" ? "Saiu: " : "Pergunta: ") + item.texto;
   resTexto.textContent = item.texto;
   resTexto.className = estado.modo === "nomes" ? "res-nome" : "res-pergunta";
   resMarcador.style.background = item.cor;
@@ -1515,8 +1545,15 @@ function desenharLista(){
 
     let mini = null;
     if(it.img){
-      mini = document.createElement("img");
-      mini.className = "mini-img"; mini.src = it.img; mini.alt = "";
+      // a miniatura e um botao: clicar troca a imagem sem apagar o item
+      mini = document.createElement("button");
+      mini.className = "mini-troca";
+      mini.title = "Trocar a imagem";
+      mini.setAttribute("aria-label", "Trocar a imagem de " + (it.texto || "este item"));
+      const im = document.createElement("img");
+      im.className = "mini-img"; im.src = it.img; im.alt = "";
+      mini.appendChild(im);
+      mini.addEventListener("click", function(){ pedirTroca(it.id); });
     }
 
     const txt = document.createElement("input");
@@ -1530,8 +1567,11 @@ function desenharLista(){
     rem.title = "Remover da roda";
     rem.setAttribute("aria-label","Remover " + it.texto + " da roda");
     rem.addEventListener("click", function(){
+      const rotulo = it.texto || "imagem";
+      marcarParaAnular("a remoção de " + rotulo);
       estado.itens = estado.itens.filter(x => x.id !== it.id);
       pintar(); desenharLista(); desenhar(); guardar();
+      estadoTexto("Removido " + rotulo);
     });
 
     li.appendChild(num); li.appendChild(mini || cor); li.appendChild(txt); li.appendChild(rem);
@@ -1838,6 +1878,7 @@ document.getElementById("btnCores").addEventListener("click", function(){
 
 document.getElementById("btnLimpar").addEventListener("click", function(){
   if(estado.itens.length && !confirm("Limpar a roda toda?")) return;
+  if(estado.itens.length) marcarParaAnular("a limpeza da roda");
   if(estado.itens.length){
     estado.itens = [];
   }else{
@@ -1850,6 +1891,7 @@ document.getElementById("btnLimpar").addEventListener("click", function(){
 
 document.getElementById("btnSubstituir").addEventListener("click", function(){
   const ta = document.getElementById("colar");
+  if(estado.itens.length) marcarParaAnular("a substituição da lista");
   const q = juntar(partirTexto(ta.value), true);
   if(q){ ta.value = ""; estadoTexto(q + " itens na roda"); }
   else estadoTexto("Não havia nada para colar");
@@ -2016,6 +2058,107 @@ document.getElementById("btnImagens").addEventListener("click", function(){
 document.getElementById("ficheiroImagens").addEventListener("change", function(){
   juntarImagens(this.files);
   this.value = "";
+});
+
+/* ---------- Anular ---------------------------------------------------------
+   Um so nivel, e so para o que apaga itens. Numa sala, com pressa, engana-se —
+   e sem isto a unica saida era reescrever a lista toda. */
+
+let paraAnular = null, relogioAnular = null;
+
+function marcarParaAnular(descricao){
+  paraAnular = { itens: estado.itens.map(i => Object.assign({}, i)), descricao: descricao };
+  const b = document.getElementById("btnAnular");
+  b.hidden = false;
+  b.title = "Anular " + descricao;
+  b.setAttribute("aria-label", "Anular " + descricao);
+  clearTimeout(relogioAnular);
+  relogioAnular = setTimeout(function(){ paraAnular = null; b.hidden = true; }, 20000);
+}
+
+document.getElementById("btnAnular").addEventListener("click", function(){
+  if(!paraAnular) return;
+  const d = paraAnular.descricao;
+  estado.itens = paraAnular.itens;
+  paraAnular = null; this.hidden = true; clearTimeout(relogioAnular);
+  pintar(); desenharLista(); desenhar(); guardar();
+  estadoTexto("Anulado: " + d);
+});
+
+/* ---------- Trocar a imagem de um item ------------------------------------ */
+
+let idParaTrocar = null;
+
+function pedirTroca(id){
+  idParaTrocar = id;
+  document.getElementById("ficheiroTroca").click();
+}
+
+document.getElementById("ficheiroTroca").addEventListener("change", async function(){
+  const f = this.files && this.files[0];
+  this.value = "";
+  if(!f || !/^image\//.test(f.type) || !idParaTrocar) return;
+  const it = estado.itens.find(x => x.id === idParaTrocar);
+  idParaTrocar = null;
+  if(!it) return;
+  const anterior = it.img;
+  try{ it.img = await reduzirImagem(f, 200); }
+  catch(e){ estadoTexto("Imagem ilegível"); return; }
+  delete cacheImg[it.id];
+  desenharLista(); desenhar();
+  if(!guardar()){
+    it.img = anterior; delete cacheImg[it.id];
+    desenharLista(); desenhar(); guardar();
+    estadoTexto("Não coube no navegador");
+    return;
+  }
+  estadoTexto("Imagem trocada");
+});
+
+/* ---------- Copia de seguranca --------------------------------------------
+   Tudo o que se escreve na roleta vive no localStorage deste navegador, na
+   chave roleta-sessao-v1. Nao vai para servidor nenhum — o que e bom para a
+   privacidade e mau para quem muda de computador ou limpa o historico. O
+   ficheiro e a forma de levar as listas com as imagens, e de ter copia. */
+
+document.getElementById("btnExportar").addEventListener("click", function(){
+  const d = new Date();
+  const dois = n => String(n).padStart(2, "0");
+  const pacote = {
+    tipo: "roleta-julianaaraujo", versao: 1,
+    quando: d.toISOString(), estado: estado
+  };
+  const url = URL.createObjectURL(new Blob([JSON.stringify(pacote)], { type: "application/json" }));
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "roleta-" + d.getFullYear() + dois(d.getMonth()+1) + dois(d.getDate()) + ".json";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+  const n = estado.itens.length, l = Object.keys(estado.listas || {}).length;
+  estadoTexto("Ficheiro guardado — " + n + " na roda, " + l + (l === 1 ? " lista" : " listas"));
+});
+
+document.getElementById("btnImportar").addEventListener("click", function(){
+  document.getElementById("ficheiroImportar").click();
+});
+
+document.getElementById("ficheiroImportar").addEventListener("change", function(){
+  const f = this.files && this.files[0];
+  this.value = "";
+  if(!f) return;
+  const fr = new FileReader();
+  fr.onload = function(){
+    let d;
+    try{ d = JSON.parse(fr.result); }catch(e){ estadoTexto("Ficheiro não reconhecido"); return; }
+    const novo = (d && d.estado) ? d.estado : d;
+    if(!novo || !Array.isArray(novo.itens)){ estadoTexto("Ficheiro não reconhecido"); return; }
+    if(!confirm("Isto substitui o que está na roda, as listas guardadas e o histórico. Continuar?")) return;
+    try{ localStorage.setItem(CHAVE, JSON.stringify(novo)); }
+    catch(e){ estadoTexto("Não coube no navegador"); return; }
+    location.reload();
+  };
+  fr.onerror = function(){ estadoTexto("Não consegui ler o ficheiro"); };
+  fr.readAsText(f);
 });
 
 arrancar();
