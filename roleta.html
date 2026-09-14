@@ -1539,6 +1539,21 @@ function desenharLista(){
   });
 }
 
+/* Aceita as duas formas: as listas antigas sao strings, as novas trazem
+   objecto quando o item tem imagem. */
+function carregarLista(entradas){
+  const novos = (entradas || []).slice(0, 200).map(function(e){
+    const o = (typeof e === "string") ? { texto: e } : (e || {});
+    const it = { id: novoId(), texto: (o.texto || "").toString(), cor: "#1F2ED6" };
+    if(o.img) it.img = o.img;
+    return it;
+  }).filter(it => it.texto || it.img);
+  if(!novos.length) return true;
+  estado.itens = novos;
+  pintar(); desenharLista(); desenhar();
+  return guardar();
+}
+
 function juntar(textos, substituir){
   const limpos = textos
     .map(t => t.trim())
@@ -1649,7 +1664,7 @@ function desenharGuardadas(){
     b.appendChild(em);
     b.addEventListener("click", function(){
       trocarModo(reg.modo);
-      juntar(reg.itens.slice(), true);
+      if(!carregarLista(reg.itens)){ estadoTexto("Não coube no navegador"); return; }
       estadoTexto("Carregada a lista " + nome);
     });
     const x = document.createElement("button");
@@ -1854,9 +1869,13 @@ document.getElementById("btnGuardar").addEventListener("click", function(){
   const nome = inp.value.trim();
   if(!nome){ inp.focus(); estadoTexto("Dá um nome à lista primeiro"); return; }
   if(!estado.itens.length){ estadoTexto("A roda está vazia"); return; }
-  estado.listas[nome] = {modo:estado.modo, itens:estado.itens.map(i => i.texto)};
+  // so vira objecto quando ha imagem: as listas de texto continuam strings
+    estado.listas[nome] = {modo:estado.modo,
+      itens:estado.itens.map(i => i.img ? {texto:i.texto, img:i.img} : i.texto)};
   inp.value = "";
-  desenharGuardadas(); guardar();
+  desenharGuardadas();
+  if(!guardar()){ delete estado.listas[nome]; desenharGuardadas(); guardar();
+    estadoTexto("Não coube no navegador — guarda uma lista com menos imagens"); return; }
   estadoTexto("Guardada como " + nome);
 });
 
