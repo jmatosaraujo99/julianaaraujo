@@ -30,7 +30,7 @@
 <meta name="twitter:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Roleta","applicationCategory":"EducationalApplication","operatingSystem":"Browser","description":"Roleta de sorteio para a sala de formação: sorteia nomes ou perguntas, com som, modo projeção e listas guardadas no navegador.","url":"https://julianaaraujo.pt/roleta.html","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"copyrightHolder":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/"},"copyrightYear":2026,"creator":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"inLanguage":"pt-PT"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://julianaaraujo.pt/"},{"@type":"ListItem","position":2,"name":"Roleta","item":"https://julianaaraujo.pt/roleta.html"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"É preciso criar conta ou instalar alguma coisa?","acceptedAnswer":{"@type":"Answer","text":"Não. Abres a página e usas."}},{"@type":"Question","name":"O que posso pôr na roleta?","acceptedAnswer":{"@type":"Answer","text":"O que precisares: nomes de participantes, perguntas de revisão, temas para debate, tarefas a distribuir. A roleta sorteia o que estiver na lista."}},{"@type":"Question","name":"Os nomes que escrevo vão para algum lado?","acceptedAnswer":{"@type":"Answer","text":"Não saem do teu computador. A roleta não comunica com nenhum servidor — a lista fica guardada no teu próprio navegador, e só lá."}},{"@type":"Question","name":"As minhas listas ficam guardadas?","acceptedAnswer":{"@type":"Answer","text":"Ficam, no navegador que usaste. Se limpares os dados de navegação ou passares para outro computador, tens de as escrever de novo."}},{"@type":"Question","name":"Posso usá-la nas minhas formações ou aulas?","acceptedAnswer":{"@type":"Answer","text":"Sim. É gratuita para formadores, professores e quem dinamize grupos."}},{"@type":"Question","name":"Funciona no telemóvel?","acceptedAnswer":{"@type":"Answer","text":"Funciona. A roda ajusta-se ao ecrã e o som também."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"É preciso criar conta ou instalar alguma coisa?","acceptedAnswer":{"@type":"Answer","text":"Não. Abres a página e usas."}},{"@type":"Question","name":"O que posso pôr na roleta?","acceptedAnswer":{"@type":"Answer","text":"O que precisares: nomes de participantes, perguntas de revisão, temas para debate, tarefas a distribuir. A roleta sorteia o que estiver na lista."}},{"@type":"Question","name":"Posso pôr imagens em vez de palavras?","acceptedAnswer":{"@type":"Answer","text":"Podes. O botão Juntar imagens aceita várias de uma vez e cada imagem fica numa fatia da roda; o nome do ficheiro passa a ser a legenda, que podes mudar. As imagens são reduzidas antes de guardar e, tal como o resto, não saem do teu computador."}},{"@type":"Question","name":"Os nomes que escrevo vão para algum lado?","acceptedAnswer":{"@type":"Answer","text":"Não saem do teu computador. A roleta não comunica com nenhum servidor — a lista fica guardada no teu próprio navegador, e só lá."}},{"@type":"Question","name":"As minhas listas ficam guardadas?","acceptedAnswer":{"@type":"Answer","text":"Ficam, no navegador que usaste. Se limpares os dados de navegação ou passares para outro computador, tens de as escrever de novo."}},{"@type":"Question","name":"Posso usá-la nas minhas formações ou aulas?","acceptedAnswer":{"@type":"Answer","text":"Sim. É gratuita para formadores, professores e quem dinamize grupos."}},{"@type":"Question","name":"Funciona no telemóvel?","acceptedAnswer":{"@type":"Answer","text":"Funciona. A roda ajusta-se ao ecrã e o som também."}}]}</script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -628,6 +628,18 @@ body.projecao .credito-proj{display:block}
 .sobre h3.uso{font-family:var(--fonte-etiqueta);font-size:clamp(15px,1.5vw,18px);font-weight:600;
   line-height:1.3;color:var(--ink);margin:26px 0 8px}
 .sobre .faq summary h3{display:inline;font:inherit;color:inherit;margin:0}
+
+/* --- Itens com imagem ---------------------------------------------------- */
+.res-img{
+  display:block;margin:0 auto var(--s2);
+  max-width:min(58vw,300px);max-height:min(34vh,260px);
+  border-radius:14px;object-fit:contain;
+  box-shadow:0 18px 40px -24px rgba(10,10,10,.65);
+}
+.item .mini-img{
+  width:30px;height:30px;flex:0 0 30px;border-radius:7px;
+  object-fit:cover;border:1px solid var(--line-forte);
+}
 </style>
 </head>
 <body>
@@ -695,7 +707,9 @@ body.projecao .credito-proj{display:block}
           <div class="mini-acts">
             <button class="btn btn-mini" id="btnBaralhar">Baralhar</button>
             <button class="btn btn-mini" id="btnCores">Cores</button>
+            <button class="btn btn-mini" id="btnImagens">Juntar imagens</button>
             <button class="btn btn-mini" id="btnLimpar">Limpar</button>
+            <input type="file" id="ficheiroImagens" accept="image/*" multiple hidden>
           </div>
         </div>
 
@@ -783,7 +797,7 @@ body.projecao .credito-proj{display:block}
 
     <h2>Como se usa</h2>
     <ol>
-      <li><b>Escreve a lista.</b> Um nome de cada vez com Enter, ou cola a turma toda de uma vez — aceita um por linha e também separados por vírgula.</li>
+      <li><b>Escreve a lista.</b> Um nome de cada vez com Enter, ou cola a turma toda de uma vez — aceita um por linha e também separados por vírgula. Em vez de texto, podes pôr <b>imagens</b>: o botão <i>Juntar imagens</i> aceita várias de uma vez, e cada uma fica numa fatia da roda.</li>
       <li><b>Roda.</b> Clica no centro da roda, ou carrega na barra de espaços.</li>
       <li><b>Continua.</b> Sai o resultado, fica registado no histórico, e rodas outra vez sem fechar nada.</li>
     </ol>
@@ -822,6 +836,10 @@ body.projecao .credito-proj{display:block}
         <p>O que precisares: nomes de participantes, perguntas de revisão, temas para debate, tarefas a distribuir. A roleta sorteia o que estiver na lista.</p>
       </details>
       <details>
+        <summary><h3>Posso pôr imagens em vez de palavras?</h3></summary>
+        <p>Podes. O botão <i>Juntar imagens</i> aceita várias de uma vez e cada imagem fica numa fatia da roda; o nome do ficheiro passa a ser a legenda, que podes mudar. As imagens são reduzidas antes de guardar e, tal como o resto, não saem do teu computador.</p>
+      </details>
+      <details>
         <summary><h3>Os nomes que escrevo vão para algum lado?</h3></summary>
         <p>Não saem do teu computador. A roleta não comunica com nenhum servidor — a lista fica guardada no teu próprio navegador, e só lá.</p>
       </details>
@@ -857,6 +875,7 @@ body.projecao .credito-proj{display:block}
   <canvas id="fx"></canvas>
   <div class="cartao" role="dialog" aria-modal="true" aria-labelledby="resTexto">
     <p class="sobrancelha" id="resEtiqueta">Saiu</p>
+    <img class="res-img" id="resImg" alt="" hidden>
     <p class="res-nome" id="resTexto"></p>
     <div class="marcador" id="resMarcador"></div>
     <div class="relogio" id="relogio" hidden>
@@ -922,8 +941,11 @@ let estado = {
 };
 
 /* ---- persistência (nunca deve partir a página) ---- */
+/* Devolve false quando nao coube. Com imagens o limite do navegador chega-se
+   depressa, e falhar calado fazia perder listas sem ninguem dar por isso. */
 function guardar(){
-  try{ localStorage.setItem(CHAVE, JSON.stringify(estado)); }catch(e){}
+  try{ localStorage.setItem(CHAVE, JSON.stringify(estado)); return true; }
+  catch(e){ return false; }
 }
 function ler(){
   try{
@@ -1066,12 +1088,30 @@ function desenhar(){
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
     ctx.font = "500 " + fonte.toFixed(1) + "px 'Space Grotesk', sans-serif";
-    const t = rotulo(it.texto, passo, R, ctx);
-    if(t){
-      ctx.fillText(t, R - R*0.07, 0);
+    const im = imagemDe(it);
+    if(im){
+      // miniatura redonda, assente a meio do setor
+      const raio = Math.max(8, Math.min(passo*R*0.30, R*0.135));
+      const dist = R*0.64;
+      ctx.beginPath();
+      ctx.arc(dist, 0, raio, 0, Math.PI*2);
+      ctx.save();
+      ctx.clip();
+      const escala = Math.max(raio*2/im.naturalWidth, raio*2/im.naturalHeight);
+      const w = im.naturalWidth*escala, h = im.naturalHeight*escala;
+      ctx.drawImage(im, dist - w/2, -h/2, w, h);
+      ctx.restore();
+      ctx.strokeStyle = "rgba(242,239,234,.85)";
+      ctx.lineWidth = Math.max(1.5, raio*0.11);
+      ctx.stroke();
     }else{
-      ctx.font = "600 " + fonte.toFixed(1) + "px 'Space Grotesk', sans-serif";
-      ctx.fillText(String(i+1), R - R*0.07, 0);
+      const t = rotulo(it.texto, passo, R, ctx);
+      if(t){
+        ctx.fillText(t, R - R*0.07, 0);
+      }else{
+        ctx.font = "600 " + fonte.toFixed(1) + "px 'Space Grotesk', sans-serif";
+        ctx.fillText(String(i+1), R - R*0.07, 0);
+      }
     }
     ctx.restore();
   }
@@ -1291,6 +1331,10 @@ function mostrar(item){
   saiu = item;
 
   resEtiqueta.textContent = estado.modo === "nomes" ? "Saiu" : "A pergunta é";
+  const resImg = document.getElementById("resImg");
+  resImg.hidden = !item.img;
+  resImg.src = item.img || "";
+  resImg.alt = item.img ? item.texto : "";
   resTexto.textContent = item.texto;
   resTexto.className = estado.modo === "nomes" ? "res-nome" : "res-pergunta";
   resMarcador.style.background = item.cor;
@@ -1465,6 +1509,12 @@ function desenharLista(){
     cor.setAttribute("aria-label","Cor de " + it.texto);
     cor.addEventListener("input", function(){ it.cor = cor.value; desenhar(); guardar(); });
 
+    let mini = null;
+    if(it.img){
+      mini = document.createElement("img");
+      mini.className = "mini-img"; mini.src = it.img; mini.alt = "";
+    }
+
     const txt = document.createElement("input");
     txt.className = "txt"; txt.value = it.texto;
     txt.setAttribute("aria-label","Texto do item " + (i+1));
@@ -1480,7 +1530,7 @@ function desenharLista(){
       pintar(); desenharLista(); desenhar(); guardar();
     });
 
-    li.appendChild(num); li.appendChild(cor); li.appendChild(txt); li.appendChild(rem);
+    li.appendChild(num); li.appendChild(mini || cor); li.appendChild(txt); li.appendChild(rem);
     listaItens.appendChild(li);
   });
 }
@@ -1863,6 +1913,87 @@ document.addEventListener("keydown", function(ev){
 });
 
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", desenhar);
+
+/* ---------- Itens com imagem ----------------------------------------------
+   As imagens ficam no proprio item, reduzidas a 200px e em JPEG. Nada sai do
+   navegador. O cache evita descodificar a mesma imagem a cada quadro. */
+
+const cacheImg = Object.create(null);
+
+function imagemDe(it){
+  if(!it.img) return null;
+  const c = cacheImg[it.id];
+  if(c && c.src === it.img) return c.pronta ? c.el : null;
+  const el = new Image();
+  const reg = { el: el, src: it.img, pronta: false };
+  cacheImg[it.id] = reg;
+  el.onload = function(){ reg.pronta = true; desenhar(); };
+  el.src = it.img;
+  return null;
+}
+
+/* Reduz antes de guardar: uma foto de telemovel em bruto enchia sozinha o
+   espaco todo. O fundo branco e para os PNG com transparencia nao sairem
+   pretos ao passar a JPEG. */
+function reduzirImagem(ficheiro, lado){
+  return new Promise(function(ok, falha){
+    const url = URL.createObjectURL(ficheiro);
+    const im = new Image();
+    im.onload = function(){
+      const e = Math.min(1, lado / Math.max(im.naturalWidth, im.naturalHeight));
+      const w = Math.max(1, Math.round(im.naturalWidth*e));
+      const h = Math.max(1, Math.round(im.naturalHeight*e));
+      const c = document.createElement("canvas");
+      c.width = w; c.height = h;
+      const cc = c.getContext("2d");
+      cc.imageSmoothingQuality = "high";
+      cc.fillStyle = "#FFFFFF"; cc.fillRect(0,0,w,h);
+      cc.drawImage(im, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      ok(c.toDataURL("image/jpeg", 0.78));
+    };
+    im.onerror = function(){ URL.revokeObjectURL(url); falha(new Error("ilegivel")); };
+    im.src = url;
+  });
+}
+
+async function juntarImagens(ficheiros){
+  const lista = Array.prototype.slice.call(ficheiros)
+    .filter(f => /^image\//.test(f.type))
+    .slice(0, 200 - estado.itens.length);
+  if(!lista.length){
+    estadoTexto(estado.itens.length >= 200 ? "A roda já tem 200 itens" : "Nenhuma imagem reconhecida");
+    return;
+  }
+  estadoTexto("A preparar " + lista.length + (lista.length === 1 ? " imagem…" : " imagens…"));
+  const antes = estado.itens.slice();
+  let falhas = 0;
+  for(const f of lista){
+    try{
+      const dados = await reduzirImagem(f, 200);
+      const nome = f.name.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").trim();
+      estado.itens.push({ id: novoId(), texto: nome || "Imagem", cor: "#1F2ED6", img: dados });
+    }catch(e){ falhas++; }
+  }
+  pintar(); desenharLista(); desenhar();
+  if(!guardar()){
+    // nao coube: repoe o que la estava, senao ficava um estado que nao sobrevive ao recarregar
+    estado.itens = antes;
+    pintar(); desenharLista(); desenhar(); guardar();
+    estadoTexto("Não coube no navegador — junta menos imagens de cada vez");
+    return;
+  }
+  const n = lista.length - falhas;
+  estadoTexto(n + (n === 1 ? " imagem junta" : " imagens juntas") + (falhas ? " (" + falhas + " ilegíveis)" : ""));
+}
+
+document.getElementById("btnImagens").addEventListener("click", function(){
+  document.getElementById("ficheiroImagens").click();
+});
+document.getElementById("ficheiroImagens").addEventListener("change", function(){
+  juntarImagens(this.files);
+  this.value = "";
+});
 
 arrancar();
 })();
