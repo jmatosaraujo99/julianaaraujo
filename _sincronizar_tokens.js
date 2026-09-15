@@ -8,6 +8,10 @@
 // inteiro quando o JS corre. Se fosse buscar tokens.css por <link>, as cores
 // só chegariam depois de a folha carregar — piscadela em cada visita. A cópia
 // evita isso; este script garante que não diverge.
+//
+// Os @media que redefinem tokens (ex.: --fluido nos quadros interativos) vão
+// junto. Só se aceitam na forma  @media (…) { :root { … } }  — qualquer outro
+// @media em tokens.css aborta, para não ficar esquecido fora do bundle.
 
 const fs = require('fs');
 
@@ -30,45 +34,46 @@ function relatorioDeriva() {
   const PAGINAS = ['privacidade.html', 'recursos.html', 'formacao-comunicacao.html',
     'formacao-desenvolvimento-pessoal.html', 'formacao-lideranca-equipas.html',
     'formacao-inteligencia-artificial.html', 'roleta.html',
-    'dados-da-historia.html'];
+    'dados-storytelling.html', 'reaction.html'];
   const RE = /(#(?:1F2ED6|F2EFEA|0A0A0A|D9D2C5|6B665D|57524B|8C877F|1DB954|7B2FF7|FF6B35|00B4D8|FFC400|00BFA6|FF4D8D|FF5747)\b)|(letter-spacing:\s*-?\.?[0-9][^;}"']*)|(font-family:\s*(?:Anton|Archivo)[^;}"']*)/gi;
+  // Um Nvw dentro de clamp() cresce só com a largura e volta a ampliar o site
+  // nos quadros interativos. Deve ser calc(N * var(--fluido)).
+  const RE_VW = /clamp\([^()]*\dvw[^()]*\)/g;
 
   const achados = [];
   for (const p of PAGINAS) {
     if (!fs.existsSync(p)) continue;
+    const bruto = fs.readFileSync(p, 'utf8');
     // fora os <script>: lá dentro as cores são dados (paletas da roda,
     // cálculo de contraste), não estilo, e o canvas não lê var(--token)
-    const t = fs.readFileSync(p, 'utf8').replace(/<script[\s\S]*?<\/script>/gi, ' ');
+    const t = bruto.replace(/<script[\s\S]*?<\/script>/gi, ' ');
     let m;
     const re = new RegExp(RE.source, 'gi');
     while ((m = re.exec(t))) {
       if (m[0].indexOf('var(') >= 0) continue;
       achados.push(p + '  ' + m[0].trim().slice(0, 46));
     }
+    // o vw verifica-se também dentro dos <script>: os Dados escolhem o
+    // tamanho dos dados por JS com clamp()
+    (bruto.match(RE_VW) || []).forEach(v => achados.push(p + '  ' + v + '  (usa var(--fluido))'));
   }
+  (tpl.match(RE_VW) || []).forEach(v => achados.push('index.html  ' + v + '  (usa var(--fluido))'));
 
   console.log('');
   if (achados.length === 0) {
-    console.log('deriva nas páginas estáticas: nenhuma');
+    console.log('deriva nas páginas: nenhuma');
   } else {
-    console.log('valores à mão nas páginas estáticas (' + achados.length + '):');
+    console.log('valores à mão nas páginas (' + achados.length + '):');
     achados.forEach(a => console.log('  ' + a));
     console.log('  — se for novo, troca por var(--token); se for exceção, deixa e regista aqui');
   }
   console.log('exceções conhecidas: privacidade.html 0.12em (valor único);');
-  console.log('  roleta.html e dados-da-historia.html — letter-spacing .06/.08/.1/.12em');
-  console.log('  e 0 são da micro-tipografia das próprias ferramentas, não da marca;');
+  console.log('  roleta.html, dados-storytelling.html e reaction.html — letter-spacing');
+  console.log('  .06/.08/.1/.12em e 0 são da micro-tipografia das próprias ferramentas;');
   console.log('  os dois hex no <svg> do ponteiro da roleta são atributos de apresentação,');
   console.log('  onde var() não é de confiança em todos os motores;');
   console.log('  index.html — @font-face, o <style> de recurso pré-JS e o código do Component');
 }
-
-// ---------- ler tokens.css ----------
-const css = fs.readFileSync('tokens.css', 'utf8');
-const rIni = css.indexOf(':root');
-const rFim = css.indexOf('}', rIni);
-if (rIni < 0 || rFim < 0) morrer('não encontrei o bloco :root em tokens.css');
-const corpo = css.slice(css.indexOf('{', rIni) + 1, rFim);
 
 // declarações, sem comentários nem espaços supérfluos.
 // Apanha os pares --nome:valor diretamente, para não depender de o bloco vir
@@ -84,11 +89,35 @@ function declaracoes(texto) {
   return mapa;
 }
 
+// ---------- ler tokens.css ----------
+const css = fs.readFileSync('tokens.css', 'utf8');
+const rIni = css.indexOf(':root');
+const rFim = css.indexOf('}', rIni);
+if (rIni < 0 || rFim < 0) morrer('não encontrei o bloco :root em tokens.css');
+const corpo = css.slice(css.indexOf('{', rIni) + 1, rFim);
+
 const tokens = declaracoes(corpo);
 if (tokens.size === 0) morrer('tokens.css não tem declarações');
 
+const resto = css.slice(rFim + 1).replace(/\/\*[\s\S]*?\*\//g, ' ');
+const medias = [];
+{
+  const re = /@media([^{]+)\{\s*:root\s*\{([^}]*)\}\s*\}/g;
+  let m;
+  while ((m = re.exec(resto))) {
+    const decl = declaracoes(m[2]);
+    for (const n of decl.keys()) {
+      if (!tokens.has(n)) morrer('um @media redefine ' + n + ', que não existe no :root');
+    }
+    medias.push('@media ' + m[1].trim().replace(/\s+/g, ' ') + '{:root{' +
+      [...decl].map(([n, v]) => n + ':' + v).join(';') + '}}');
+  }
+  const total = (resto.match(/@media/g) || []).length;
+  if (total !== medias.length) morrer('há um @media em tokens.css que não é da forma @media (…) { :root { … } }');
+}
+
 const compacto = ':root{' + [...tokens].map(([n, v]) => n + ':' + v).join(';') + '}';
-const bloco = INICIO + NL + compacto + NL + FIM;
+const bloco = INICIO + NL + compacto + NL + medias.map(x => x + NL).join('') + FIM;
 
 // ---------- abrir o bundle ----------
 const html = fs.readFileSync('index.html', 'utf8');
@@ -101,12 +130,10 @@ const tpl = JSON.parse(html.slice(tS, tE));
 const jaIni = tpl.indexOf(INICIO);
 const jaFim = tpl.indexOf(FIM);
 
+console.log('em tokens.css: ' + tokens.size + ' tokens, ' + medias.length + ' @media');
 if (jaIni >= 0 && jaFim > jaIni) {
-  const atual = declaracoes(tpl.slice(jaIni + INICIO.length, jaFim));
-  const iguais = atual.size === tokens.size &&
-    [...tokens].every(([n, v]) => atual.get(n) === v);
-  console.log('tokens no bundle: ' + atual.size + ' | em tokens.css: ' + tokens.size);
-  console.log('iguais: ' + iguais);
+  const iguais = tpl.slice(jaIni, jaFim + FIM.length) === bloco;
+  console.log('bundle igual a tokens.css: ' + iguais);
   if (iguais) { console.log('nada a fazer'); relatorioDeriva(); process.exit(0); }
   if (soVerificar) morrer('o bundle está dessincronizado de tokens.css');
 } else {
@@ -147,5 +174,5 @@ if (volta !== novoTpl) morrer('o round-trip falhou');
 if (novoHtml.slice(tS, rE).indexOf(FECHO) >= 0) morrer('sobrou um ' + FECHO + ' literal');
 
 fs.writeFileSync('index.html', novoHtml, 'utf8');
-console.log('index.html sincronizado — ' + tokens.size + ' tokens');
+console.log('index.html sincronizado — ' + tokens.size + ' tokens, ' + medias.length + ' @media');
 relatorioDeriva();

@@ -31,7 +31,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="tokens.css?v=20260915">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -51,7 +51,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 16px;
-    padding: 20px clamp(18px, 6vw, 96px);
+    padding: 20px clamp(18px, calc(6 * var(--fluido)), 96px);
     border-bottom: 1px solid rgba(10, 10, 10, 0.12);
   }
 
@@ -68,7 +68,7 @@
   header nav {
     display: flex;
     align-items: center;
-    gap: clamp(14px, 2vw, 28px);
+    gap: clamp(14px, calc(2 * var(--fluido)), 28px);
     font-family: var(--fonte-etiqueta);
     font-size: 12px;
     letter-spacing: var(--ls-etiqueta-16);
@@ -85,7 +85,7 @@
   main {
     max-width: 1440px;
     margin: 0 auto;
-    padding: clamp(56px, 8vw, 120px) clamp(18px, 6vw, 96px) clamp(80px, 10vw, 140px);
+    padding: clamp(56px, calc(8 * var(--fluido)), 120px) clamp(18px, calc(6 * var(--fluido)), 96px) clamp(80px, calc(10 * var(--fluido)), 140px);
   }
 
   .etiqueta {
@@ -95,13 +95,13 @@
     letter-spacing: var(--ls-etiqueta-24);
     text-transform: uppercase;
     color: var(--cinza);
-    margin-bottom: clamp(20px, 3vw, 34px);
+    margin-bottom: clamp(20px, calc(3 * var(--fluido)), 34px);
   }
 
   h1 {
     font-family: var(--fonte-etiqueta);
     font-weight: 300;
-    font-size: clamp(32px, 4.6vw, 68px);
+    font-size: clamp(32px, calc(4.6 * var(--fluido)), 68px);
     line-height: 0.98;
     letter-spacing: var(--ls-corpo);
     text-transform: uppercase;
@@ -113,24 +113,24 @@
   .intro {
     max-width: 62ch;
     font-family: var(--fonte-corpo);
-    font-size: clamp(16px, 1.25vw, 20px);
+    font-size: clamp(16px, calc(1.25 * var(--fluido)), 20px);
     line-height: 1.6;
     color: rgba(10, 10, 10, 0.72);
-    margin-top: clamp(20px, 3vw, 28px);
+    margin-top: clamp(20px, calc(3 * var(--fluido)), 28px);
   }
 
   .lista {
     display: flex;
     flex-direction: column;
-    margin-top: clamp(44px, 6vw, 80px);
+    margin-top: clamp(44px, calc(6 * var(--fluido)), 80px);
   }
 
   .item {
     border-top: 1px solid rgba(10, 10, 10, 0.16);
-    padding: clamp(28px, 4vw, 44px) 0;
+    padding: clamp(28px, calc(4 * var(--fluido)), 44px) 0;
     display: flex;
     flex-direction: column;
-    gap: clamp(18px, 2.5vw, 26px);
+    gap: clamp(18px, calc(2.5 * var(--fluido)), 26px);
   }
 
   .lista .item:last-child {
@@ -140,7 +140,7 @@
   .item-head {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: clamp(14px, 2.5vw, 32px);
+    gap: clamp(14px, calc(2.5 * var(--fluido)), 32px);
     align-items: center;
   }
 
@@ -148,8 +148,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: clamp(40px, 4vw, 56px);
-    height: clamp(40px, 4vw, 56px);
+    width: clamp(40px, calc(4 * var(--fluido)), 56px);
+    height: clamp(40px, calc(4 * var(--fluido)), 56px);
     color: var(--preto);
     font-family: var(--fonte-etiqueta);
     font-size: 12px;
@@ -159,7 +159,7 @@
 
   .item-title {
     font-family: var(--fonte-display);
-    font-size: clamp(21px, 2.6vw, 38px);
+    font-size: clamp(21px, calc(2.6 * var(--fluido)), 38px);
     line-height: 1.06;
     letter-spacing: var(--ls-display);
     text-transform: uppercase;
@@ -169,7 +169,7 @@
 
   .item-desc {
     font-family: var(--fonte-corpo);
-    font-size: clamp(16px, 1.2vw, 19px);
+    font-size: clamp(16px, calc(1.2 * var(--fluido)), 19px);
     line-height: 1.55;
     color: rgba(10, 10, 10, 0.78);
     max-width: 70ch;
@@ -178,9 +178,9 @@
   .item-meta {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: clamp(20px, 3vw, 48px);
+    gap: clamp(20px, calc(3 * var(--fluido)), 48px);
     border-top: 1px solid rgba(10, 10, 10, 0.12);
-    padding-top: clamp(18px, 2.5vw, 26px);
+    padding-top: clamp(18px, calc(2.5 * var(--fluido)), 26px);
   }
 
   .meta-label {
@@ -201,13 +201,13 @@
 
   .meta-value {
     font-family: var(--fonte-corpo);
-    font-size: clamp(16px, 1.2vw, 19px);
+    font-size: clamp(16px, calc(1.2 * var(--fluido)), 19px);
     line-height: 1.55;
     color: var(--preto);
   }
 
   footer {
-    padding: clamp(40px, 5vw, 64px) clamp(18px, 6vw, 96px);
+    padding: clamp(40px, calc(5 * var(--fluido)), 64px) clamp(18px, calc(6 * var(--fluido)), 96px);
     border-top: 1px solid rgba(10, 10, 10, 0.14);
   }
 
@@ -229,17 +229,17 @@
   footer a:hover { color: var(--cobalto); }
 </style>
 <style>
-  .migalhas { font-family:var(--fonte-etiqueta); font-size:11px; letter-spacing: var(--ls-etiqueta-16); text-transform:uppercase; color:var(--cinza); margin-bottom:clamp(20px,3vw,30px); }
+  .migalhas { font-family:var(--fonte-etiqueta); font-size:11px; letter-spacing: var(--ls-etiqueta-16); text-transform:uppercase; color:var(--cinza); margin-bottom:clamp(20px,calc(3 * var(--fluido)),30px); }
   .migalhas a { color:var(--cinza); text-decoration:none; }
   .migalhas a:hover { color:var(--cobalto); }
   .chapa { display:inline-flex; align-items:center; justify-content:center; width:52px; height:52px; background:var(--acento-roxo); color:var(--preto); font-family:var(--fonte-etiqueta); font-size:12px; font-weight:500; letter-spacing: var(--ls-etiqueta-14); margin-bottom:20px; }
-  .subtemas { display:flex; flex-wrap:wrap; gap:8px; margin-top:clamp(20px,3vw,28px); }
+  .subtemas { display:flex; flex-wrap:wrap; gap:8px; margin-top:clamp(20px,calc(3 * var(--fluido)),28px); }
   .subtemas span { border:1px solid rgba(10,10,10,.28); padding:9px 14px; font-family:var(--fonte-corpo); font-size:15px; line-height:1.3; }
-  .cartoes { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:clamp(20px,3vw,40px); margin-top:clamp(40px,5vw,64px); padding-top:clamp(28px,4vw,40px); border-top:2px solid var(--cobalto); }
-  .relacionadas { display:flex; flex-wrap:wrap; gap:10px; margin-top:clamp(20px,3vw,28px); }
+  .cartoes { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:clamp(20px,calc(3 * var(--fluido)),40px); margin-top:clamp(40px,calc(5 * var(--fluido)),64px); padding-top:clamp(28px,calc(4 * var(--fluido)),40px); border-top:2px solid var(--cobalto); }
+  .relacionadas { display:flex; flex-wrap:wrap; gap:10px; margin-top:clamp(20px,calc(3 * var(--fluido)),28px); }
   a.rel { border:1px solid rgba(10,10,10,.28); padding:12px 16px; font-family:var(--fonte-etiqueta); font-size:11px; font-weight:500; letter-spacing: var(--ls-etiqueta-16); text-transform:uppercase; color:var(--preto); text-decoration:none; transition:background-color .25s ease,border-color .25s ease; }
   a.rel:hover { background:rgba(10,10,10,.05); border-color:var(--preto); }
-  .cta { display:inline-flex; align-items:center; gap:14px; background:var(--cobalto); color:var(--creme); padding:19px 30px; margin-top:clamp(28px,4vw,40px); font-family:var(--fonte-etiqueta); font-size:12px; font-weight:500; letter-spacing: var(--ls-etiqueta-20); text-transform:uppercase; text-decoration:none; transition:background-color .25s ease,color .25s ease; }
+  .cta { display:inline-flex; align-items:center; gap:14px; background:var(--cobalto); color:var(--creme); padding:19px 30px; margin-top:clamp(28px,calc(4 * var(--fluido)),40px); font-family:var(--fonte-etiqueta); font-size:12px; font-weight:500; letter-spacing: var(--ls-etiqueta-20); text-transform:uppercase; text-decoration:none; transition:background-color .25s ease,color .25s ease; }
   .cta:hover { background:var(--preto); color:var(--creme); }
 </style>
 </head>
@@ -303,7 +303,7 @@
   <a class="cta" href="index.html#contactos">Pedir uma proposta<span aria-hidden="true" style="display:block;width:22px;height:8px;background:currentColor;clip-path:polygon(0 3px,14px 3px,14px 0,22px 4px,14px 8px,14px 5px,0 5px)"></span></a>
   <p class="intro">Indique os objetivos e o perfil dos participantes. A proposta é construída a partir dessa informação.</p>
 
-  <div style="margin-top:clamp(48px,6vw,80px);padding-top:clamp(28px,4vw,40px);border-top:1px solid rgba(10,10,10,.16)">
+  <div style="margin-top:clamp(48px,calc(6 * var(--fluido)),80px);padding-top:clamp(28px,calc(4 * var(--fluido)),40px);border-top:1px solid rgba(10,10,10,.16)">
     <p class="meta-label">Outras áreas de formação</p>
     <div class="relacionadas">
       <a class="rel" href="formacao-comunicacao.html">Comunicação e Relações Interpessoais</a>

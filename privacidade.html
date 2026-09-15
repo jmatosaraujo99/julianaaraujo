@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="tokens.css?v=20260915">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -31,7 +31,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 16px;
-    padding: 20px clamp(18px, 6vw, 96px);
+    padding: 20px clamp(18px, calc(6 * var(--fluido)), 96px);
     border-bottom: 1px solid rgba(10, 10, 10, 0.12);
   }
 
@@ -48,7 +48,7 @@
   header nav {
     display: flex;
     align-items: center;
-    gap: clamp(14px, 2vw, 28px);
+    gap: clamp(14px, calc(2 * var(--fluido)), 28px);
     font-family: var(--fonte-etiqueta);
     font-size: 12px;
     letter-spacing: var(--ls-etiqueta-16);
@@ -65,7 +65,7 @@
   main {
     max-width: 68ch;
     margin: 0 auto;
-    padding: clamp(56px, 8vw, 120px) 24px clamp(80px, 10vw, 140px);
+    padding: clamp(56px, calc(8 * var(--fluido)), 120px) 24px clamp(80px, calc(10 * var(--fluido)), 140px);
   }
 
   main > p.etiqueta {
@@ -80,7 +80,7 @@
 
   h1 {
     font-family: var(--fonte-display);
-    font-size: clamp(32px, 5vw, 54px);
+    font-size: clamp(32px, calc(5 * var(--fluido)), 54px);
     line-height: 1.05;
     letter-spacing: var(--ls-display);
     text-transform: uppercase;
@@ -109,7 +109,7 @@
 
   h2 {
     font-family: var(--fonte-display);
-    font-size: clamp(20px, 2.4vw, 26px);
+    font-size: clamp(20px, calc(2.4 * var(--fluido)), 26px);
     line-height: 1.2;
     letter-spacing: var(--ls-display);
     text-transform: uppercase;
@@ -133,7 +133,7 @@
   }
 
   footer {
-    padding: clamp(40px, 5vw, 64px) clamp(18px, 6vw, 96px);
+    padding: clamp(40px, calc(5 * var(--fluido)), 64px) clamp(18px, calc(6 * var(--fluido)), 96px);
     border-top: 1px solid rgba(10, 10, 10, 0.14);
   }
 

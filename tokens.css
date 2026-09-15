@@ -68,4 +68,20 @@
   --ls-etiqueta-22: 0.22em;
   --ls-etiqueta-24: 0.24em;
   --ls-etiqueta:    var(--ls-etiqueta-16);
+
+  /* --- Escala fluida ----------------------------------------------------- */
+  /* O que cresce com o ecrã escreve-se calc(N * var(--fluido)), nunca Nvw.
+     Num ecrã normal vale exatamente 1vw. O @media abaixo encolhe-a. */
+
+  --fluido: 1vw;
+}
+
+/* Quadros interativos e TVs táteis de sala.
+   O navegador destes ecrãs anuncia poucos píxeis para um ecrã fisicamente
+   enorme e, como os tamanhos crescem com a largura, o site parecia ampliado.
+   Aqui a escala passa a acompanhar também a altura.
+   Só entra quando o toque é o ponteiro principal e o ecrã está deitado:
+   portáteis e computadores com rato ficam exatamente como estavam. */
+@media (pointer: coarse) and (orientation: landscape) and (max-height: 800px) {
+  :root { --fluido: min(1vw, 1.5vh); }
 }
