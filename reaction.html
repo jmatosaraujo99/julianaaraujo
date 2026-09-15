@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<!--
+  Reaction — julianaaraujo.pt
+  Ferramenta de Juliana Araújo. Copyright (c) 2026. Todos os direitos reservados.
+  O jogo em si não é dela: isto substitui os dados e as fichas da versão em papel.
+  Uso livre em sessões de formação e aulas. Não é permitido copiar, republicar
+  ou redistribuir este código sem autorização escrita.
+-->
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reaction — Dados e Fichas para a Sala | Juliana Araújo</title>
+<meta name="description" content="Substitui os dados e as fichas do jogo Reaction: dado das ações, dado das fichas, contagem por jogador e modo projeção. Gratuito e sem registo.">
+<link rel="canonical" href="https://julianaaraujo.pt/reaction.html">
+<meta property="og:title" content="Reaction — Dados e Fichas para a Sala | Juliana Araújo">
+<meta property="og:description" content="Substitui os dados e as fichas do jogo Reaction: dado das ações, dado das fichas, contagem por jogador e modo projeção. Gratuito e sem registo.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://julianaaraujo.pt/reaction.html">
+<meta property="og:site_name" content="Juliana Araújo">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:image" content="https://julianaaraujo.pt/media/og-cartao.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reaction — Dados e Fichas para a Sala | Juliana Araújo">
+<meta name="twitter:description" content="Substitui os dados e as fichas do jogo Reaction: dado das ações, dado das fichas, contagem por jogador e modo projeção. Gratuito e sem registo.">
+<meta name="twitter:image" content="https://julianaaraujo.pt/media/og-cartao.jpg">
+<meta name="twitter:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Reaction","applicationCategory":"EducationalApplication","operatingSystem":"Browser","description":"Dados e fichas do jogo Reaction para a sala de formação: dado das ações, dado das fichas, contagem por jogador, som e modo projeção.","url":"https://julianaaraujo.pt/reaction.html","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"copyrightHolder":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/"},"copyrightYear":2026,"creator":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"inLanguage":"pt-PT"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://julianaaraujo.pt/"},{"@type":"ListItem","position":2,"name":"Reaction","item":"https://julianaaraujo.pt/reaction.html"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"É preciso criar conta ou instalar alguma coisa?","acceptedAnswer":{"@type":"Answer","text":"Não. Abres a página e usas."}},{"@type":"Question","name":"O que são os dados rosa e azul?","acceptedAnswer":{"@type":"Answer","text":"São os dois dados de ações do jogo. Cada um traz as mesmas seis ações por ordem diferente, e escolhes qual está em jogo no separador Ações."}},{"@type":"Question","name":"Quantas fichas devo dar a cada pessoa?","acceptedAnswer":{"@type":"Answer","text":"A folha do jogo não diz. Cinco por pessoa dá um jogo de uns quinze minutos, que é o que costuma caber numa sessão."}},{"@type":"Question","name":"Toda a gente tem de decorar as ações?","acceptedAnswer":{"@type":"Answer","text":"Só se quiseres. Podes ligar a opção que mostra a ação no próprio dado; desligada, joga-se como no papel."}},{"@type":"Question","name":"Os nomes dos jogadores vão para algum lado?","acceptedAnswer":{"@type":"Answer","text":"Não saem do teu computador. A ferramenta não comunica com nenhum servidor — os jogadores e as fichas ficam no teu próprio navegador."}},{"@type":"Question","name":"Funciona no telemóvel?","acceptedAnswer":{"@type":"Answer","text":"Funciona, mas foi pensada para projetar: é no ecrã grande que toda a gente vê o dado ao mesmo tempo."}}]}</script>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* Marca, fontes e espacamento vem do tokens.css. */
+
+/* ==========================================================================
+   Reaction — julianaaraujo.pt
+   Substitui os dados e as fichas do jogo de papel. Irmã da Roleta e dos Dados.
+   ========================================================================== */
+
+:root{
+  --rosa:var(--acento-rosa);
+
+  --ground:var(--creme);
+  --surface:#FBFAF7;
+  --surface-2:#EFEBE4;
+  --ink:var(--preto);
+  --ink-2:var(--cinza-forte);
+  --ink-3:var(--cinza);
+  --line:var(--linha-preta);
+  --line-forte:rgba(10,10,10,.28);
+  --acc:var(--cobalto);
+  --acc-suave:rgba(31,46,214,.10);
+  --sombra:0 18px 40px -24px rgba(10,10,10,.45);
+
+  --vidro:rgba(251,250,247,.62);
+  --vidro-borda:rgba(10,10,10,.10);
+  --vidro-brilho:rgba(255,255,255,.75);
+  --vidro-desfoque:blur(16px) saturate(180%);
+  --lavagem-1:rgba(31,46,214,.10);
+  --lavagem-2:rgba(255,77,141,.08);
+  --lavagem-3:rgba(255,107,53,.07);
+  --grao:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='.045'/%3E%3C/svg%3E");
+
+
+  --s1:6px; --s2:10px; --s3:16px; --s4:24px; --s5:36px; --s6:56px;
+  --r:14px;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:var(--preto); --surface:#151514; --surface-2:#1E1E1C;
+    --ink:var(--creme); --ink-2:#A8A29A; --ink-3:var(--cinza-sobre-preto);
+    --line:rgba(242,239,234,.16); --line-forte:rgba(242,239,234,.32);
+    --acc:#8791FF; --acc-suave:rgba(135,145,255,.14);
+    --sombra:0 18px 44px -22px rgba(0,0,0,.9);
+    --vidro:rgba(21,21,20,.55); --vidro-borda:rgba(242,239,234,.14);
+    --vidro-brilho:rgba(255,255,255,.13);
+    --lavagem-1:rgba(31,46,214,.22); --lavagem-2:rgba(255,77,141,.14);
+    --lavagem-3:rgba(255,107,53,.12);
+    --grao:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='.08'/%3E%3C/svg%3E");
+  }
+}
+:root[data-theme="dark"]{
+  --ground:var(--preto); --surface:#151514; --surface-2:#1E1E1C;
+  --ink:var(--creme); --ink-2:#A8A29A; --ink-3:var(--cinza-sobre-preto);
+  --line:rgba(242,239,234,.16); --line-forte:rgba(242,239,234,.32);
+  --acc:#8791FF; --acc-suave:rgba(135,145,255,.14);
+  --sombra:0 18px 44px -22px rgba(0,0,0,.9);
+  --vidro:rgba(21,21,20,.55); --vidro-borda:rgba(242,239,234,.14);
+  --vidro-brilho:rgba(255,255,255,.13);
+  --lavagem-1:rgba(31,46,214,.22); --lavagem-2:rgba(255,77,141,.14);
+  --lavagem-3:rgba(255,107,53,.12);
+  --grao:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='.08'/%3E%3C/svg%3E");
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0;
+  background:
+    var(--grao),
+    radial-gradient(58% 48% at 12% 6%, var(--lavagem-1), transparent 70%),
+    radial-gradient(52% 46% at 90% 16%, var(--lavagem-2), transparent 70%),
+    radial-gradient(60% 50% at 46% 104%, var(--lavagem-3), transparent 70%),
+    var(--ground);
+  background-repeat:repeat,no-repeat,no-repeat,no-repeat,repeat;
+  background-size:180px 180px,auto,auto,auto,auto;
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--fonte-corpo);
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+
+.app{max-width:1180px;margin:0 auto;padding:var(--s4) var(--s4) var(--s6);display:flex;flex-direction:column;gap:var(--s4)}
+.topo{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s3);flex-wrap:wrap}
+.marca{display:flex;flex-direction:column;gap:2px}
+.sobrancelha{font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--ink-3);margin:0}
+h1{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:clamp(28px,4.4vw,44px);line-height:.98;margin:0}
+.topo-acts{display:flex;gap:var(--s1)}
+
+.palco{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(330px,.85fr);gap:var(--s5);align-items:start}
+@media (max-width:900px){.palco{grid-template-columns:1fr;gap:var(--s4)}.app{padding:var(--s3) var(--s3) var(--s5)}}
+
+/* ---------- mesa ---------- */
+.mesa-col{display:flex;flex-direction:column;gap:var(--s4);align-items:center;width:100%}
+.vez{
+  display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap;justify-content:center;
+  text-align:center;
+}
+.vez .quem{font-family:var(--fonte-display);text-transform:uppercase;letter-spacing:var(--ls-display);
+  font-size:clamp(22px,3.6vw,38px);line-height:1;color:var(--ink)}
+.vez .rotulo{font-family:var(--fonte-etiqueta);font-size:11px;text-transform:uppercase;
+  letter-spacing:var(--ls-etiqueta);color:var(--ink-3)}
+
+.mesa{--d:clamp(120px,15vw,190px);display:flex;gap:clamp(20px,4vw,52px);justify-content:center;
+  align-items:center;perspective:1500px;padding:calc(var(--d)*.24) 0;width:100%}
+.suporte{width:var(--d);height:var(--d);position:relative}
+.suporte.saltar{animation:salto 1.6s cubic-bezier(.3,.7,.3,1)}
+@keyframes salto{
+  0%{transform:translateY(0)} 22%{transform:translateY(calc(var(--d)*-.34))}
+  46%{transform:translateY(0)} 62%{transform:translateY(calc(var(--d)*-.11))}
+  80%{transform:translateY(0)} 90%{transform:translateY(calc(var(--d)*-.03))}
+  100%{transform:translateY(0)}
+}
+.dado{position:absolute;inset:0;transform-style:preserve-3d;
+  transition:transform 1.6s cubic-bezier(.18,.82,.25,1)}
+.face{
+  position:absolute;inset:0;border-radius:calc(var(--d)*.15);
+  border:1px solid rgba(10,10,10,.16);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.35),0 14px 34px -22px rgba(10,10,10,.8);
+  backface-visibility:hidden;padding:calc(var(--d)*.14);
+  display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);
+  gap:calc(var(--d)*.04);
+}
+.pinta{width:100%;height:100%;border-radius:50%;background:var(--creme);align-self:center;justify-self:center}
+.f0{transform:translateZ(calc(var(--d)/2))}
+.f1{transform:rotateY(90deg) translateZ(calc(var(--d)/2))}
+.f2{transform:rotateY(180deg) translateZ(calc(var(--d)/2))}
+.f3{transform:rotateY(-90deg) translateZ(calc(var(--d)/2))}
+.f4{transform:rotateX(90deg) translateZ(calc(var(--d)/2))}
+.f5{transform:rotateX(-90deg) translateZ(calc(var(--d)/2))}
+.etiqueta-dado{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:calc(var(--d)*-.30);
+  font-family:var(--fonte-etiqueta);font-size:10.5px;font-weight:500;text-transform:uppercase;
+  letter-spacing:var(--ls-etiqueta);color:var(--ink-3);white-space:nowrap;
+}
+
+.lancar{
+  background:var(--cobalto);border:1px solid var(--cobalto);color:var(--creme);
+  border-radius:12px;padding:15px 38px;cursor:pointer;
+  font-family:var(--fonte-display);font-size:21px;text-transform:uppercase;letter-spacing:var(--ls-display);
+  transition:transform .16s cubic-bezier(.2,.7,.2,1),background .16s;
+}
+.lancar:hover:not(:disabled){background:#1826b4;transform:translateY(-2px)}
+.lancar:disabled{opacity:.45;cursor:default}
+
+/* ---------- resultado da ronda ---------- */
+.resultado{
+  width:100%;background:var(--vidro);
+  backdrop-filter:var(--vidro-desfoque);-webkit-backdrop-filter:var(--vidro-desfoque);
+  border:1px solid var(--vidro-borda);border-radius:var(--r);
+  box-shadow:0 8px 30px -20px rgba(10,10,10,.45),inset 0 1px 0 var(--vidro-brilho);
+  padding:var(--s4);display:flex;flex-direction:column;gap:var(--s3);align-items:center;text-align:center;
+  animation:entra .35s cubic-bezier(.16,.9,.24,1) both;
+}
+@keyframes entra{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.acao-grande{font-family:var(--fonte-display);text-transform:uppercase;letter-spacing:var(--ls-display);
+  font-size:clamp(30px,6vw,62px);line-height:.98;margin:0;color:var(--rosa)}
+.acao-grande.azul{color:var(--cobalto)}
+.fichas-linha{font-family:var(--fonte-corpo);font-size:clamp(15px,2vw,19px);margin:0;color:var(--ink-2)}
+.fichas-linha b{color:var(--ink);font-weight:600}
+.escolha{display:flex;flex-direction:column;gap:var(--s2);align-items:center;width:100%}
+.escolha p{margin:0;font-family:var(--fonte-etiqueta);font-size:11px;text-transform:uppercase;
+  letter-spacing:var(--ls-etiqueta);color:var(--ink-3)}
+.lentos{display:flex;gap:var(--s1);flex-wrap:wrap;justify-content:center}
+.lento-btn{
+  background:none;border:1px solid var(--line-forte);border-radius:10px;padding:9px 15px;cursor:pointer;
+  font-family:var(--fonte-corpo);font-size:15px;min-height:44px;
+  transition:background .16s,border-color .16s;
+}
+.lento-btn:hover{background:var(--surface-2);border-color:var(--acc)}
+.lento-btn small{display:block;font-family:var(--fonte-etiqueta);font-size:10px;color:var(--ink-3)}
+
+/* ---------- painel ---------- */
+.painel{
+  background:var(--vidro);backdrop-filter:var(--vidro-desfoque);-webkit-backdrop-filter:var(--vidro-desfoque);
+  border:1px solid var(--vidro-borda);border-radius:var(--r);
+  box-shadow:0 8px 30px -20px rgba(10,10,10,.45),inset 0 1px 0 var(--vidro-brilho);
+  display:flex;flex-direction:column;
+}
+.abas{display:flex;border-bottom:1px solid var(--line)}
+.aba{flex:1;background:none;border:0;border-bottom:2px solid transparent;padding:12px 6px;cursor:pointer;
+  font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;text-transform:uppercase;
+  letter-spacing:var(--ls-etiqueta);color:var(--ink-3);transition:color .18s,border-color .18s}
+.aba[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--cobalto)}
+.aba:hover{color:var(--ink)}
+.folha{padding:var(--s3);display:flex;flex-direction:column;gap:var(--s3)}
+.titulo-bloco{font-family:var(--fonte-etiqueta);font-size:10.5px;font-weight:500;text-transform:uppercase;
+  letter-spacing:var(--ls-etiqueta);color:var(--ink-3);margin:0}
+.sep{height:1px;background:var(--line);border:0}
+.aviso{font-size:12px;color:var(--ink-3);margin:0}
+
+/* jogadores */
+.jogadores{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.jog{display:flex;align-items:center;gap:var(--s2);padding:7px 2px;border-bottom:1px solid var(--line)}
+.jog:last-child{border-bottom:0}
+.jog.fora{opacity:.45}
+.jog.vez-dele{background:var(--acc-suave);border-radius:8px;padding-left:8px;padding-right:8px}
+.jog .seta{width:14px;flex:0 0 14px;color:var(--acc);font-size:13px;line-height:1}
+.jog input.nome{flex:1;min-width:0;background:none;border:0;padding:4px 2px;border-radius:5px;font-size:15px}
+.jog input.nome:hover{background:var(--surface-2)}
+.jog .fichas{font-family:var(--fonte-etiqueta);font-size:15px;font-variant-numeric:tabular-nums;
+  min-width:30px;text-align:right;font-weight:500}
+.jog .fora-et{font-family:var(--fonte-etiqueta);font-size:9.5px;text-transform:uppercase;
+  letter-spacing:.14em;color:var(--ink-3)}
+.jog .rem{background:none;border:0;cursor:pointer;color:var(--ink-3);width:26px;height:26px;
+  border-radius:50%;font-size:17px;line-height:1}
+.jog .rem:hover{background:var(--surface-2);color:var(--ink)}
+
+.linha-add{display:flex;gap:var(--s1)}
+.campo{flex:1;min-width:0;background:var(--ground);border:1px solid var(--line);border-radius:9px;padding:9px 11px}
+
+/* ações */
+.acoes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.acoes li{display:flex;align-items:center;gap:var(--s2);padding:7px 2px;border-bottom:1px solid var(--line)}
+.acoes li:last-child{border-bottom:0}
+.mini-dado{
+  width:32px;height:32px;flex:0 0 32px;border-radius:7px;display:grid;
+  grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:2px;padding:5px;
+  border:1px solid rgba(10,10,10,.16);
+}
+.mini-dado .pinta{border-radius:50%}
+.acoes span{flex:1;font-size:15px}
+
+/* botões */
+.btn{background:none;border:1px solid var(--line-forte);border-radius:9px;padding:8px 13px;cursor:pointer;
+  font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--ink);transition:background .16s}
+.btn:hover{background:var(--surface-2)}
+.btn-cheio{background:var(--cobalto);border-color:var(--cobalto);color:var(--creme)}
+.btn-cheio:hover{background:#1826b4}
+.btn-mini{padding:5px 9px;font-size:10px;letter-spacing:.08em;border-radius:7px}
+.btn-icone{padding:7px 10px;font-size:13px;letter-spacing:0;text-transform:none;font-family:var(--fonte-corpo);
+  background:var(--vidro);backdrop-filter:var(--vidro-desfoque);-webkit-backdrop-filter:var(--vidro-desfoque);
+  border-color:var(--vidro-borda);box-shadow:inset 0 1px 0 var(--vidro-brilho)}
+.mini-acts{display:flex;gap:var(--s1);flex-wrap:wrap}
+.def-linha{display:flex;align-items:center;justify-content:space-between;gap:var(--s2)}
+.def-linha p{margin:0;font-size:13px}
+.def-linha small{display:block;color:var(--ink-3);font-size:11.5px;line-height:1.4}
+.num{width:64px;text-align:center;background:var(--ground);border:1px solid var(--line);
+  border-radius:8px;padding:6px 8px;font-variant-numeric:tabular-nums}
+.seg{display:flex;gap:2px;background:var(--surface-2);border-radius:8px;padding:3px}
+.seg button{background:none;border:0;border-radius:6px;padding:5px 9px;cursor:pointer;
+  font-family:var(--fonte-etiqueta);font-size:10.5px;letter-spacing:.06em;color:var(--ink-3)}
+.seg button[aria-pressed="true"]{background:var(--ground);color:var(--ink);box-shadow:0 1px 2px rgba(10,10,10,.12)}
+.sw{position:relative;flex:0 0 42px;width:42px;height:24px;border-radius:12px;border:1px solid var(--line-forte);
+  background:var(--surface-2);cursor:pointer;padding:0;transition:background .18s,border-color .18s}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;
+  background:var(--ink-3);transition:transform .2s cubic-bezier(.2,.7,.2,1),background .2s}
+.sw[aria-pressed="true"]{background:var(--cobalto);border-color:var(--cobalto)}
+.sw[aria-pressed="true"]::after{transform:translateX(18px);background:var(--creme)}
+
+/* relógio dos 5 minutos */
+.relogio{display:flex;align-items:center;gap:var(--s2)}
+.relogio svg{transform:rotate(-90deg)}
+.relogio circle{fill:none;stroke-width:5}
+.relogio .trilho{stroke:var(--line)}
+.relogio .arco{stroke:var(--cobalto);stroke-linecap:round;transition:stroke-dashoffset .3s linear}
+.relogio b{font-family:var(--fonte-etiqueta);font-size:17px;font-variant-numeric:tabular-nums;min-width:56px}
+.relogio.fim .arco{stroke:var(--rosa)}
+
+/* regras */
+.regras{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.regras b{font-weight:600}
+
+body.projecao .painel,body.projecao .topo .sobrancelha,body.projecao .rodape{display:none}
+body.projecao .palco{grid-template-columns:1fr}
+body.projecao .mesa{--d:clamp(170px,22vw,290px)}
+body.projecao .app{max-width:none;padding-top:var(--s3)}
+
+.rodape{display:flex;justify-content:space-between;gap:var(--s3);flex-wrap:wrap;border-top:1px solid var(--line);
+  padding-top:var(--s3);font-family:var(--fonte-etiqueta);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-3)}
+.rodape a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-forte)}
+.rodape a:hover{color:var(--acc);border-bottom-color:var(--acc)}
+
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .painel,.resultado,.btn-icone{background:var(--surface);border-color:var(--line)}
+}
+@media (prefers-reduced-transparency: reduce){
+  .painel,.resultado,.btn-icone{backdrop-filter:none;-webkit-backdrop-filter:none;
+    background:var(--surface);border-color:var(--line)}
+}
+@media (prefers-reduced-motion: reduce){
+  .dado{transition-duration:.01ms}.suporte.saltar{animation:none}
+  *{animation-duration:.01ms!important}
+}
+
+/* --- Cromo do site ------------------------------------------------------- */
+/* Mesma estrutura das outras seis paginas. Estilado com os tokens desta
+   pagina (--ink, --ink-3, --line) e nao com --preto/--cinza, para acompanhar
+   o modo escuro da roleta em vez de ficar preto sobre preto. */
+
+.cabeca-site{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+  padding:20px clamp(18px,6vw,96px);
+  border-bottom:1px solid var(--line);
+}
+.cabeca-site .logo{
+  font-family:var(--fonte-display);font-size:20px;line-height:1;
+  letter-spacing:var(--ls-display);text-transform:uppercase;
+  color:var(--ink);text-decoration:none;
+}
+.cabeca-site nav{display:flex;gap:clamp(14px,2.4vw,28px);flex-wrap:wrap}
+.cabeca-site nav a{
+  color:var(--ink);text-decoration:none;
+  font-family:var(--fonte-etiqueta);font-size:12px;
+  text-transform:uppercase;letter-spacing:var(--ls-etiqueta);
+  padding:6px 0;
+}
+.cabeca-site nav a:hover{color:var(--acc)}
+
+.rodape-site{
+  padding:clamp(40px,5vw,64px) clamp(18px,6vw,96px);
+  border-top:1px solid var(--line);
+}
+.rodape-site .rodape-wrap{
+  max-width:1440px;margin:0 auto;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;
+  font-family:var(--fonte-etiqueta);font-size:11px;
+  letter-spacing:var(--ls-etiqueta);text-transform:uppercase;
+  color:var(--ink-3);
+}
+.rodape-site a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line-forte)}
+.rodape-site a:hover{color:var(--acc);border-bottom-color:var(--acc)}
+/* --- Texto de apoio, por baixo da ferramenta ----------------------------- */
+.sobre{border-top:1px solid var(--line);background:var(--ground);
+  padding:clamp(48px,7vw,88px) clamp(18px,5vw,64px) clamp(56px,8vw,104px)}
+.sobre-wrap{max-width:70ch;margin:0 auto}
+.sobre h2{font-family:var(--fonte-display);font-size:clamp(20px,2.4vw,28px);line-height:1.15;
+  letter-spacing:var(--ls-display);text-transform:uppercase;color:var(--ink);
+  margin:clamp(34px,4vw,52px) 0 14px}
+.sobre h2:first-child{margin-top:0}
+.sobre p,.sobre li{font-family:var(--fonte-corpo);font-size:16.5px;line-height:1.72;color:var(--ink-2)}
+.sobre p{margin:0 0 14px}
+.sobre ol,.sobre ul{margin:0 0 16px;padding-left:1.35em}
+.sobre li{margin-bottom:9px}
+.sobre b{color:var(--ink);font-weight:600}
+.sobre a{color:var(--acc);text-decoration:none;border-bottom:1px solid var(--acc-suave)}
+.sobre a:hover{border-bottom-color:var(--acc)}
+.sobre h3.uso{font-family:var(--fonte-etiqueta);font-size:clamp(15px,1.5vw,18px);font-weight:600;
+  line-height:1.3;color:var(--ink);margin:26px 0 8px}
+.sobre .faq{margin-top:6px}
+.sobre .faq details{border-top:1px solid var(--line)}
+.sobre .faq details:last-of-type{border-bottom:1px solid var(--line)}
+.sobre .faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;
+  justify-content:space-between;gap:18px;min-height:44px;padding:15px 0;
+  font-family:var(--fonte-etiqueta);font-size:15px;font-weight:600;line-height:1.45;color:var(--ink)}
+.sobre .faq summary::-webkit-details-marker{display:none}
+.sobre .faq summary h3{display:inline;font:inherit;color:inherit;margin:0}
+.sobre .faq summary::after{content:"+";font-family:var(--fonte-corpo);font-size:24px;line-height:1;
+  color:var(--acc);flex:none;transition:transform .25s ease}
+.sobre .faq details[open] summary::after{transform:rotate(45deg)}
+.sobre .faq summary:hover{color:var(--acc)}
+.sobre .faq details p{margin:0 0 18px;padding-right:42px}
+.sobre-cta{margin-top:clamp(40px,5vw,64px);padding-top:clamp(26px,3vw,36px);
+  border-top:1px solid var(--line)}
+body.projecao .sobre{display:none}
+.tagline{font-family:var(--fonte-corpo);font-size:clamp(13px,1.1vw,15px);line-height:1.45;
+  color:var(--ink-3);margin:6px 0 0;max-width:46ch}
+.credito-proj{display:none;position:fixed;right:16px;bottom:12px;z-index:5;
+  font-family:var(--fonte-etiqueta);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-3);opacity:.7;pointer-events:none}
+body.projecao .credito-proj{display:block}
+</style>
+</head>
+<body>
+
+<header class="cabeca-site">
+  <a class="logo" href="index.html">Juliana Araújo</a>
+  <nav>
+    <a href="index.html#sobre">Sobre mim</a>
+    <a href="index.html#formacoes">Formações</a>
+    <a href="recursos.html">Recursos</a>
+    <a href="index.html#contactos">Contactos</a>
+  </nav>
+</header>
+
+<div class="app">
+
+  <header class="topo">
+    <div class="marca">
+      <p class="sobrancelha">Juliana Araújo &middot; Recurso pedagógico</p>
+      <h1>Reaction</h1>
+      <p class="tagline">Os dados e as fichas do jogo, para projetar na sala.</p>
+    </div>
+    <div class="topo-acts">
+      <button class="btn btn-icone" id="btnSom" aria-pressed="true" title="Ligar ou desligar o som">🔊 Som</button>
+      <button class="btn btn-icone" id="btnTema" title="Alternar claro e escuro">◐ Tema</button>
+      <button class="btn btn-icone" id="btnProj" title="Ecrã inteiro para projetar">⛶ Projetar</button>
+    </div>
+  </header>
+
+  <main class="palco">
+    <section class="mesa-col">
+      <div class="vez">
+        <span class="rotulo">Lança</span>
+        <span class="quem" id="quemLanca">—</span>
+      </div>
+
+      <div class="mesa" id="mesa"></div>
+
+      <button class="lancar" id="btnLancar">Lançar</button>
+
+      <div class="resultado" id="resultado" hidden>
+        <p class="acao-grande" id="acaoGrande"></p>
+        <p class="fichas-linha" id="fichasLinha"></p>
+        <div class="escolha" id="escolha">
+          <p>Quem foi o mais lento?</p>
+          <div class="lentos" id="lentos"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="painel">
+      <div class="abas" role="tablist">
+        <button class="aba" role="tab" id="aba-jog" aria-controls="folha-jog" aria-selected="true">Jogadores</button>
+        <button class="aba" role="tab" id="aba-acoes" aria-controls="folha-acoes" aria-selected="false">Ações</button>
+        <button class="aba" role="tab" id="aba-regras" aria-controls="folha-regras" aria-selected="false">Regras</button>
+      </div>
+
+      <div class="folha" id="folha-jog" role="tabpanel" aria-labelledby="aba-jog">
+        <ul class="jogadores" id="listaJog"></ul>
+        <form class="linha-add" id="formJog">
+          <input class="campo" id="novoJog" placeholder="Nome e Enter" aria-label="Novo jogador">
+          <button class="btn btn-cheio" type="submit">Juntar</button>
+        </form>
+        <div class="mini-acts">
+          <button class="btn btn-mini" id="btnAnular">Anular ronda</button>
+          <button class="btn btn-mini" id="btnRepor">Repor fichas</button>
+          <button class="btn btn-mini" id="btnLimparJog">Tirar todos</button>
+        </div>
+
+        <hr class="sep">
+        <div class="def-linha">
+          <p>Fichas iniciais<small>A folha do jogo não diz quantas. Cinco por pessoa é um jogo de uns 15 minutos.</small></p>
+          <input class="num" id="numFichas" type="number" min="1" max="99" value="5" aria-label="Fichas iniciais">
+        </div>
+      </div>
+
+      <div class="folha" id="folha-acoes" role="tabpanel" aria-labelledby="aba-acoes" hidden>
+        <div class="def-linha">
+          <p>Dado das ações</p>
+          <div class="seg" id="segDado" role="group" aria-label="Qual dado dá a ação">
+            <button data-v="rosa" aria-pressed="true">Rosa</button>
+            <button data-v="azul" aria-pressed="false">Azul</button>
+          </div>
+        </div>
+        <ul class="acoes" id="listaAcoes"></ul>
+        <div class="mini-acts">
+          <button class="btn btn-mini" id="btnBaralhar">Baralhar as ações</button>
+        </div>
+        <p class="aviso">Baralhar dá uma folha nova: as mesmas seis ações noutra ordem. É o que distingue as três folhas impressas do jogo.</p>
+
+        <hr class="sep">
+        <div class="def-linha">
+          <p>Mostrar a ação no dado<small>Tira a dificuldade de decorar. Desligado, joga-se como no papel.</small></p>
+          <button class="sw" id="swMostrar" aria-pressed="false" aria-label="Mostrar a ação no dado"></button>
+        </div>
+      </div>
+
+      <div class="folha" id="folha-regras" role="tabpanel" aria-labelledby="aba-regras" hidden>
+        <p class="titulo-bloco">Cinco minutos para decorar</p>
+        <div class="relogio" id="relogio">
+          <svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true">
+            <circle class="trilho" cx="23" cy="23" r="19"></circle>
+            <circle class="arco" cx="23" cy="23" r="19" id="arco"></circle>
+          </svg>
+          <b id="relogioNum">5:00</b>
+          <button class="btn btn-mini" id="btnRelogio">Começar</button>
+        </div>
+
+        <hr class="sep">
+        <ol class="regras">
+          <li>Lança <b>os dois dados</b>. Começa quem for mais novo.</li>
+          <li>Todos os <b>outros</b> fazem a ação indicada pelo dado das ações.</li>
+          <li>O <b>mais lento</b> dá a quem lançou as fichas indicadas pelo outro dado.</li>
+          <li>Passa a lançar a pessoa <b>à esquerda</b> de quem lançou.</li>
+          <li>Quem ficar <b>sem fichas</b> fica de fora até lhe voltar a caber lançar.</li>
+        </ol>
+        <p class="aviso">A folha original não diz quando o jogo acaba. Costuma jogar-se por tempo, ou até sobrar uma pessoa com fichas.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <span id="estado">Junta os jogadores para começar</span>
+    <span>Feita por <a href="https://julianaaraujo.pt" target="_blank" rel="noopener">julianaaraujo.pt</a></span>
+  </footer>
+</div>
+
+<section class="sobre" id="sobre-reaction">
+  <div class="sobre-wrap">
+
+    <h2>Como se usa</h2>
+    <ol>
+      <li><b>Junta os jogadores.</b> No separador Jogadores, escreve os nomes. Cada um arranca com o número de fichas que definires.</li>
+      <li><b>Lança.</b> Saem dois dados: o das ações e o das fichas. Começa quem for mais novo.</li>
+      <li><b>Toda a gente menos quem lançou</b> faz a ação que saiu. O mais lento dá a quem lançou as fichas que o outro dado indica.</li>
+      <li><b>Marca quem foi o mais lento</b> e passa a vez a quem está à esquerda.</li>
+    </ol>
+    <p>Quem fica sem fichas sai até lhe voltar a caber lançar. As regras completas estão no separador <b>Regras</b>, e o botão <b>Projetar</b> põe os dados em ecrã inteiro — que é como isto se joga melhor.</p>
+
+    <h2>Para que serve numa sessão</h2>
+    <ul>
+      <li>Acordar um grupo a seguir ao almoço, sem precisar de explicar muito</li>
+      <li>Quebrar o gelo mexendo o corpo, em vez de pedir a cada um que fale de si</li>
+      <li>Trabalhar atenção e tempo de reação</li>
+      <li>Fechar uma manhã longa com cinco minutos de outra coisa</li>
+    </ul>
+    <p>É um jogo de papel que existe há muito. Isto substitui-lhe os dados e as fichas, para não ser preciso levá-los na mala nem descobrir a meio que faltam.</p>
+
+    <h2>Perguntas frequentes</h2>
+    <div class="faq">
+      <details>
+        <summary><h3>É preciso criar conta ou instalar alguma coisa?</h3></summary>
+        <p>Não. Abres a página e usas.</p>
+      </details>
+      <details>
+        <summary><h3>O que são os dados rosa e azul?</h3></summary>
+        <p>São os dois dados de ações do jogo. Cada um traz as mesmas seis ações por ordem diferente, e escolhes qual está em jogo no separador Ações.</p>
+      </details>
+      <details>
+        <summary><h3>Quantas fichas devo dar a cada pessoa?</h3></summary>
+        <p>A folha do jogo não diz. Cinco por pessoa dá um jogo de uns quinze minutos, que é o que costuma caber numa sessão.</p>
+      </details>
+      <details>
+        <summary><h3>Toda a gente tem de decorar as ações?</h3></summary>
+        <p>Só se quiseres. Podes ligar a opção que mostra a ação no próprio dado; desligada, joga-se como no papel.</p>
+      </details>
+      <details>
+        <summary><h3>Os nomes dos jogadores vão para algum lado?</h3></summary>
+        <p>Não saem do teu computador. A ferramenta não comunica com nenhum servidor — os jogadores e as fichas ficam no teu próprio navegador.</p>
+      </details>
+      <details>
+        <summary><h3>Funciona no telemóvel?</h3></summary>
+        <p>Funciona, mas foi pensada para projetar: é no ecrã grande que toda a gente vê o dado ao mesmo tempo.</p>
+      </details>
+    </div>
+
+    <h2>Direitos de autor</h2>
+    <p>Esta ferramenta é uma criação original de Juliana Araújo. &copy; 2026, todos os direitos reservados.</p>
+    <p><b>O jogo não é meu.</b> O que aqui está substitui os dados e as fichas da versão em papel; as regras são as do jogo, escritas por mim. Podes usar a ferramenta à vontade nas tuas sessões e aulas, e partilhar a ligação. Não é permitido copiar o código nem alojar cópias noutro endereço. Para qualquer outro uso, <a href="index.html#contactos">fala comigo</a>.</p>
+
+    <div class="sobre-cta">
+      <p>Se estiveres a preparar formação para a tua equipa ou organização, vê a <a href="index.html#formacoes">oferta formativa</a> ou os <a href="recursos.html">recursos pedagógicos</a> que desenho à medida. Há também uma <a href="roleta.html">roleta para sortear nomes</a> e uns <a href="dados-storytelling.html">dados de storytelling</a>.</p>
+    </div>
+
+  </div>
+</section>
+
+<p class="credito-proj">&copy; 2026 Juliana Araújo &middot; julianaaraujo.pt</p>
+
+<script>
+(function(){
+"use strict";
+
+const ACOES = ["Levantar","Sentar","Mãos na cabeça","Bater palmas","Polegar para cima","Mãos de jazz"];
+const ROSA = "#FF4D8D", AZUL = "#1F2ED6";
+const CHAVE = "reaction-v1";
+
+/* As posições das pintas de cada face, numa grelha de 3x3 (1 a 9).
+   São as mesmas do dado da folha impressa. */
+const PINTAS = {
+  1:[5], 2:[3,7], 3:[3,5,7], 4:[1,3,7,9], 5:[1,3,5,7,9], 6:[1,4,7,3,6,9]
+};
+
+let estado = {
+  jogadores:[],
+  vez:0,
+  mapa:[0,1,2,3,4,5],     // face-1 -> índice em ACOES
+  dadoAcao:"rosa",
+  fichasIniciais:5,
+  mostrarAcao:false,
+  som:true,
+  tema:null
+};
+
+let historico = [];        // para anular a última ronda
+let aRolar = false, ronda = null;
+
+function guardar(){ try{ localStorage.setItem(CHAVE, JSON.stringify(estado)); }catch(e){} }
+function ler(){ try{ const b=localStorage.getItem(CHAVE); return b?JSON.parse(b):null; }catch(e){ return null; } }
+
+const semMovimento = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+let tEstado=null;
+function estadoTexto(t){
+  const el=document.getElementById("estado");
+  el.textContent=t; clearTimeout(tEstado);
+  tEstado=setTimeout(()=>{ el.textContent = estado.jogadores.length ? "Pronta a lançar" : "Junta os jogadores para começar"; },3200);
+}
+
+let idSeq=0;
+const novoId=()=>"j"+(++idSeq)+Date.now().toString(36).slice(-3);
+
+/* ======================================================================
+   Os dois dados
+   ====================================================================== */
+
+const mesa = document.getElementById("mesa");
+const btnLancar = document.getElementById("btnLancar");
+let cubos=[], suportes=[], giro=[{x:0,y:0},{x:0,y:0}];
+
+const POSE=[{x:0,y:0},{x:0,y:-90},{x:0,y:-180},{x:0,y:90},{x:-90,y:0},{x:90,y:0}];
+
+function faceHTML(valor, corPinta){
+  const on = PINTAS[valor];
+  let h="";
+  for(let cel=1; cel<=9; cel++){
+    h += on.indexOf(cel) > -1
+      ? '<span class="pinta" style="background:'+corPinta+'"></span>'
+      : '<span></span>';
+  }
+  return h;
+}
+
+function construirDados(){
+  mesa.innerHTML=""; cubos=[]; suportes=[];
+  [{cor:ROSA, nome:"rosa"},{cor:AZUL, nome:"azul"}].forEach(function(d){
+    const sup=document.createElement("div"); sup.className="suporte";
+    const cubo=document.createElement("div"); cubo.className="dado";
+    for(let i=0;i<6;i++){
+      const f=document.createElement("div");
+      f.className="face f"+i;
+      f.style.background=d.cor;
+      f.innerHTML=faceHTML(i+1,"#F2EFEA");
+      cubo.appendChild(f);
+    }
+    const et=document.createElement("span");
+    et.className="etiqueta-dado";
+    et.dataset.dado=d.nome;
+    sup.appendChild(cubo); sup.appendChild(et);
+    mesa.appendChild(sup);
+    cubos.push(cubo); suportes.push(sup);
+  });
+  etiquetasDados();
+  pousar(0,0,false); pousar(1,3,false);
+}
+
+function etiquetasDados(){
+  const ets=mesa.querySelectorAll(".etiqueta-dado");
+  ets.forEach(function(e){
+    e.textContent = e.dataset.dado === estado.dadoAcao ? "Ação" : "Fichas";
+  });
+}
+
+function pousar(d, face, comTransicao){
+  const p=POSE[face], g=giro[d];
+  if(!comTransicao) cubos[d].style.transition="none";
+  cubos[d].style.transform="rotateX("+(g.x+p.x)+"deg) rotateY("+(g.y+p.y)+"deg)";
+  if(!comTransicao){ void cubos[d].offsetWidth; cubos[d].style.transition=""; }
+}
+
+/* ======================================================================
+   Som
+   ====================================================================== */
+
+let ac=null, ruido=null;
+function audio(){
+  if(!estado.som) return null;
+  try{
+    if(!ac){
+      const AC=window.AudioContext||window.webkitAudioContext;
+      if(!AC) return null;
+      ac=new AC();
+      const len=Math.floor(ac.sampleRate*0.6);
+      ruido=ac.createBuffer(1,len,ac.sampleRate);
+      const d=ruido.getChannelData(0);
+      for(let i=0;i<len;i++) d[i]=Math.random()*2-1;
+    }
+    if(ac.state==="suspended") ac.resume();
+    return ac;
+  }catch(e){ return null; }
+}
+function bater(quando,forca){
+  const a=audio(); if(!a||!ruido) return;
+  const src=a.createBufferSource(); src.buffer=ruido;
+  const f=a.createBiquadFilter(); f.type="bandpass";
+  f.frequency.value=900+Math.random()*900; f.Q.value=1.4;
+  const g=a.createGain(); const t=a.currentTime+quando;
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(0.1*forca,t+0.006);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+0.11);
+  src.connect(f); f.connect(g); g.connect(a.destination);
+  src.start(t); src.stop(t+0.14);
+}
+function chocalhar(){
+  if(!audio()) return;
+  [0,.09,.19,.32,.48,.68,.92,1.16,1.4,1.55].forEach(function(t,i){ bater(t,1-i*0.085); });
+}
+function nota(freq,quando,dur){
+  const a=audio(); if(!a) return;
+  const o=a.createOscillator(), g=a.createGain();
+  const t=a.currentTime+quando;
+  o.type="triangle"; o.frequency.value=freq;
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(0.14,t+0.015);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g); g.connect(a.destination);
+  o.start(t); o.stop(t+dur+0.05);
+}
+function toqueRonda(){ nota(659.25,0,.5); nota(987.77,.08,.6); }
+function toqueFora(){ nota(311.13,0,.5); nota(233.08,.12,.7); }
+
+/* ======================================================================
+   Jogo
+   ====================================================================== */
+
+const activos = () => estado.jogadores.filter(j => !j.fora);
+
+function quemLanca(){
+  if(!estado.jogadores.length) return null;
+  return estado.jogadores[estado.vez % estado.jogadores.length];
+}
+
+function lancar(){
+  if(aRolar) return;
+  if(estado.jogadores.length < 2){ estadoTexto("São precisos pelo menos dois jogadores"); return; }
+
+  // quem lança volta ao jogo, mesmo que estivesse fora
+  const lanca = quemLanca();
+  if(lanca.fora){ lanca.fora = false; desenharJogadores(); }
+
+  aRolar = true;
+  btnLancar.disabled = true;
+  document.getElementById("resultado").hidden = true;
+
+  const vA = 1 + Math.floor(Math.random()*6);
+  const vB = 1 + Math.floor(Math.random()*6);
+
+  chocalhar();
+  [vA,vB].forEach(function(v,d){
+    giro[d].x += 360*(1+Math.floor(Math.random()*2));
+    giro[d].y += 360*(2+Math.floor(Math.random()*2));
+    pousar(d, v-1, true);
+    if(!semMovimento()){
+      suportes[d].classList.remove("saltar");
+      void suportes[d].offsetWidth;
+      suportes[d].classList.add("saltar");
+    }
+  });
+
+  setTimeout(function(){
+    aRolar = false;
+    btnLancar.disabled = false;
+    mostrarRonda(vA, vB);
+  }, semMovimento() ? 120 : 1650);
+}
+
+function mostrarRonda(vRosa, vAzul){
+  const acaoV  = estado.dadoAcao === "rosa" ? vRosa : vAzul;
+  const fichasV = estado.dadoAcao === "rosa" ? vAzul : vRosa;
+  const acao = ACOES[estado.mapa[acaoV-1]];
+
+  ronda = {acao:acao, fichas:fichasV, lanca:quemLanca()};
+
+  const el = document.getElementById("acaoGrande");
+  el.textContent = acao;
+  el.className = "acao-grande" + (estado.dadoAcao === "azul" ? " azul" : "");
+
+  document.getElementById("fichasLinha").innerHTML =
+    "O mais lento dá <b>" + fichasV + (fichasV === 1 ? " ficha</b> a " : " fichas</b> a ") + ronda.lanca.nome + ".";
+
+  desenharLentos();
+  document.getElementById("resultado").hidden = false;
+  toqueRonda();
+}
+
+function desenharLentos(){
+  const cx = document.getElementById("lentos");
+  cx.innerHTML = "";
+  const lanca = ronda.lanca;
+  const candidatos = estado.jogadores.filter(j => j.id !== lanca.id && !j.fora);
+
+  if(!candidatos.length){
+    // Toda a gente está fora. A ronda não tem quem pague — passa a vez,
+    // que é o que devolve ao jogo quem está fora.
+    const p = document.createElement("p");
+    p.className = "aviso";
+    p.textContent = "Está toda a gente fora. Passa a vez para os trazer de volta.";
+    const b = document.createElement("button");
+    b.className = "btn btn-cheio";
+    b.textContent = "Passar a vez";
+    b.addEventListener("click", function(){
+      estado.vez = (estado.vez + 1) % estado.jogadores.length;
+      document.getElementById("resultado").hidden = true;
+      ronda = null;
+      desenharJogadores(); guardar();
+    });
+    cx.appendChild(p); cx.appendChild(b);
+    return;
+  }
+
+  candidatos.forEach(function(j){
+    const b = document.createElement("button");
+    b.className = "lento-btn";
+    b.innerHTML = j.nome + "<small>" + j.fichas + (j.fichas === 1 ? " ficha" : " fichas") + "</small>";
+    b.addEventListener("click", function(){ resolverRonda(j); });
+    cx.appendChild(b);
+  });
+}
+
+function resolverRonda(lento){
+  const lanca = ronda.lanca;
+  const paga = Math.min(lento.fichas, ronda.fichas);
+
+  historico.push({
+    lentoId: lento.id, lancaId: lanca.id, paga: paga,
+    foraAntes: lento.fora, vezAntes: estado.vez
+  });
+  if(historico.length > 50) historico.shift();
+
+  lento.fichas -= paga;
+  lanca.fichas += paga;
+
+  let saiu = false;
+  if(lento.fichas <= 0){ lento.fora = true; saiu = true; }
+
+  estado.vez = (estado.vez + 1) % estado.jogadores.length;
+
+  document.getElementById("resultado").hidden = true;
+  ronda = null;
+  desenharJogadores();
+  guardar();
+
+  if(saiu){ toqueFora(); estadoTexto(lento.nome + " ficou sem fichas — está fora até lhe caber lançar"); }
+}
+
+function anular(){
+  const h = historico.pop();
+  if(!h){ estadoTexto("Não há ronda para anular"); return; }
+  const lento = estado.jogadores.filter(j => j.id === h.lentoId)[0];
+  const lanca = estado.jogadores.filter(j => j.id === h.lancaId)[0];
+  if(lento && lanca){
+    lento.fichas += h.paga;
+    lanca.fichas -= h.paga;
+    lento.fora = h.foraAntes;
+  }
+  estado.vez = h.vezAntes;
+  document.getElementById("resultado").hidden = true;
+  ronda = null;
+  desenharJogadores(); guardar();
+  estadoTexto("Ronda anulada");
+}
+
+/* ======================================================================
+   Painel
+   ====================================================================== */
+
+const listaJog = document.getElementById("listaJog");
+
+function desenharJogadores(){
+  listaJog.innerHTML = "";
+  const lanca = quemLanca();
+
+  if(!estado.jogadores.length){
+    const p = document.createElement("p");
+    p.className = "aviso";
+    p.textContent = "Ainda não há ninguém. Junta os nomes aqui em baixo.";
+    listaJog.appendChild(p);
+  }
+
+  estado.jogadores.forEach(function(j){
+    const li = document.createElement("li");
+    li.className = "jog" + (j.fora ? " fora" : "") + (lanca && j.id === lanca.id ? " vez-dele" : "");
+
+    const seta = document.createElement("span");
+    seta.className = "seta";
+    seta.textContent = (lanca && j.id === lanca.id) ? "▸" : "";
+
+    const nome = document.createElement("input");
+    nome.className = "nome"; nome.value = j.nome;
+    nome.setAttribute("aria-label", "Nome do jogador");
+    nome.addEventListener("input", function(){ j.nome = nome.value; });
+    nome.addEventListener("change", function(){ desenharJogadores(); guardar(); });
+
+    const fichas = document.createElement("span");
+    fichas.className = "fichas";
+    fichas.textContent = j.fichas;
+
+    const et = document.createElement("span");
+    et.className = "fora-et";
+    et.textContent = j.fora ? "Fora" : "";
+
+    const rem = document.createElement("button");
+    rem.className = "rem"; rem.innerHTML = "&times;";
+    rem.setAttribute("aria-label", "Tirar " + j.nome);
+    rem.addEventListener("click", function(){
+      const i = estado.jogadores.indexOf(j);
+      estado.jogadores.splice(i,1);
+      if(estado.vez >= estado.jogadores.length) estado.vez = 0;
+      desenharJogadores(); guardar();
+    });
+
+    li.appendChild(seta); li.appendChild(nome); li.appendChild(et);
+    li.appendChild(fichas); li.appendChild(rem);
+    listaJog.appendChild(li);
+  });
+
+  document.getElementById("quemLanca").textContent = lanca ? lanca.nome : "—";
+  btnLancar.disabled = estado.jogadores.length < 2;
+}
+
+function juntarJogador(nome){
+  const n = (nome || "").trim();
+  if(!n) return false;
+  estado.jogadores.push({id:novoId(), nome:n, fichas:estado.fichasIniciais, fora:false});
+  desenharJogadores(); guardar();
+  return true;
+}
+
+const listaAcoes = document.getElementById("listaAcoes");
+function desenharAcoes(){
+  listaAcoes.innerHTML = "";
+  const cor = estado.dadoAcao === "rosa" ? ROSA : AZUL;
+  for(let v = 1; v <= 6; v++){
+    const li = document.createElement("li");
+    const d = document.createElement("span");
+    d.className = "mini-dado";
+    d.style.background = cor;
+    d.innerHTML = faceHTML(v, "#F2EFEA");
+    const s = document.createElement("span");
+    s.textContent = ACOES[estado.mapa[v-1]];
+    li.appendChild(d); li.appendChild(s);
+    listaAcoes.appendChild(li);
+  }
+  aplicarMostrarAcao();
+}
+
+function aplicarMostrarAcao(){
+  // escreve a ação na própria face do dado das ações, quando pedido
+  const idx = estado.dadoAcao === "rosa" ? 0 : 1;
+  cubos.forEach(function(cubo, d){
+    cubo.querySelectorAll(".face").forEach(function(face, i){
+      const velho = face.querySelector(".rotulo-acao");
+      if(velho) velho.remove();
+      if(estado.mostrarAcao && d === idx){
+        const r = document.createElement("b");
+        r.className = "rotulo-acao";
+        r.style.cssText = "grid-column:1/-1;grid-row:2;align-self:center;text-align:center;"+
+          "font-family:var(--fonte-etiqueta);font-weight:600;color:#F2EFEA;"+
+          "font-size:calc(var(--d)*.085);line-height:1.1;text-transform:uppercase;letter-spacing:.04em";
+        r.textContent = ACOES[estado.mapa[i]];
+        face.appendChild(r);
+      }
+    });
+    cubo.querySelectorAll(".pinta").forEach(function(p){
+      p.style.visibility = (estado.mostrarAcao && d === idx) ? "hidden" : "";
+    });
+  });
+}
+
+function baralharAcoes(){
+  const m = estado.mapa.slice();
+  for(let i = m.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    const t = m[i]; m[i] = m[j]; m[j] = t;
+  }
+  estado.mapa = m;
+  desenharAcoes(); guardar();
+  estadoTexto("Ações baralhadas — folha nova");
+}
+
+/* relógio dos cinco minutos */
+const PERIM = 2*Math.PI*19;
+const arco = document.getElementById("arco");
+arco.style.strokeDasharray = PERIM.toFixed(2);
+const relogio = document.getElementById("relogio");
+const relogioNum = document.getElementById("relogioNum");
+let relInt = null, resta = 300;
+
+function pintaRelogio(){
+  const m = Math.floor(resta/60), s = resta % 60;
+  relogioNum.textContent = m + ":" + String(s).padStart(2,"0");
+  arco.style.strokeDashoffset = (PERIM*(1 - resta/300)).toFixed(2);
+}
+function alternarRelogio(){
+  const b = document.getElementById("btnRelogio");
+  if(relInt){
+    clearInterval(relInt); relInt = null; b.textContent = "Continuar";
+    return;
+  }
+  if(resta <= 0){ resta = 300; relogio.classList.remove("fim"); }
+  b.textContent = "Parar";
+  relInt = setInterval(function(){
+    resta -= 1; pintaRelogio();
+    if(resta <= 5 && resta > 0) nota(440,0,.2);
+    if(resta <= 0){
+      clearInterval(relInt); relInt = null;
+      relogio.classList.add("fim");
+      b.textContent = "Recomeçar";
+      nota(880,0,.5); nota(660,.15,.6);
+      estadoTexto("Acabaram os cinco minutos");
+    }
+  },1000);
+}
+
+/* ======================================================================
+   Ligações
+   ====================================================================== */
+
+function aplicarTema(){
+  if(estado.tema) document.documentElement.setAttribute("data-theme", estado.tema);
+  else document.documentElement.removeAttribute("data-theme");
+}
+
+function ligarAbas(){
+  const abas = [["aba-jog","folha-jog"],["aba-acoes","folha-acoes"],["aba-regras","folha-regras"]];
+  abas.forEach(function(par){
+    document.getElementById(par[0]).addEventListener("click", function(){
+      abas.forEach(function(p){
+        const sel = p[0] === par[0];
+        document.getElementById(p[0]).setAttribute("aria-selected", String(sel));
+        document.getElementById(p[1]).hidden = !sel;
+      });
+    });
+  });
+}
+
+btnLancar.addEventListener("click", lancar);
+
+document.getElementById("formJog").addEventListener("submit", function(ev){
+  ev.preventDefault();
+  const i = document.getElementById("novoJog");
+  if(juntarJogador(i.value)) i.value = "";
+  i.focus();
+});
+
+document.getElementById("btnAnular").addEventListener("click", anular);
+
+document.getElementById("btnRepor").addEventListener("click", function(){
+  estado.jogadores.forEach(function(j){ j.fichas = estado.fichasIniciais; j.fora = false; });
+  estado.vez = 0; historico = [];
+  document.getElementById("resultado").hidden = true;
+  desenharJogadores(); guardar();
+  estadoTexto("Fichas repostas, volta a lançar quem estiver em primeiro");
+});
+
+document.getElementById("btnLimparJog").addEventListener("click", function(){
+  if(estado.jogadores.length && !confirm("Tirar todos os jogadores?")) return;
+  estado.jogadores = []; estado.vez = 0; historico = [];
+  document.getElementById("resultado").hidden = true;
+  desenharJogadores(); guardar();
+});
+
+document.getElementById("numFichas").addEventListener("change", function(){
+  const v = Math.max(1, Math.min(99, parseInt(this.value,10) || 5));
+  this.value = v; estado.fichasIniciais = v; guardar();
+});
+
+document.getElementById("btnBaralhar").addEventListener("click", baralharAcoes);
+
+Array.prototype.forEach.call(document.querySelectorAll("#segDado button"), function(b){
+  b.addEventListener("click", function(){
+    estado.dadoAcao = b.dataset.v;
+    Array.prototype.forEach.call(document.querySelectorAll("#segDado button"), function(o){
+      o.setAttribute("aria-pressed", String(o === b));
+    });
+    etiquetasDados(); desenharAcoes(); guardar();
+  });
+});
+
+document.getElementById("swMostrar").addEventListener("click", function(){
+  estado.mostrarAcao = !estado.mostrarAcao;
+  this.setAttribute("aria-pressed", String(estado.mostrarAcao));
+  aplicarMostrarAcao(); guardar();
+});
+
+document.getElementById("btnRelogio").addEventListener("click", alternarRelogio);
+
+document.getElementById("btnSom").addEventListener("click", function(){
+  estado.som = !estado.som;
+  this.setAttribute("aria-pressed", String(estado.som));
+  this.textContent = estado.som ? "🔊 Som" : "🔇 Som";
+  if(estado.som) bater(0,1);
+  guardar();
+});
+
+document.getElementById("btnTema").addEventListener("click", function(){
+  const escuro = document.documentElement.getAttribute("data-theme") === "dark" ||
+    (!document.documentElement.getAttribute("data-theme") &&
+     window.matchMedia("(prefers-color-scheme: dark)").matches);
+  estado.tema = escuro ? "light" : "dark";
+  aplicarTema(); guardar();
+});
+
+document.getElementById("btnProj").addEventListener("click", function(){
+  document.body.classList.toggle("projecao");
+  const on = document.body.classList.contains("projecao");
+  try{
+    if(on && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    else if(!on && document.exitFullscreen && document.fullscreenElement) document.exitFullscreen();
+  }catch(e){}
+  this.textContent = on ? "⤢ Sair" : "⛶ Projetar";
+});
+
+document.addEventListener("keydown", function(ev){
+  if(/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
+  if(ev.key === "Escape" && document.body.classList.contains("projecao")){
+    document.getElementById("btnProj").click(); return;
+  }
+  if(ev.code === "Space" || ev.key === "Enter"){
+    if(document.activeElement.tagName === "BUTTON") return;
+    ev.preventDefault();
+    lancar();
+  }
+});
+
+/* ---- arranque ---- */
+(function arrancar(){
+  const g = ler();
+  if(g && typeof g === "object"){
+    estado = Object.assign(estado, g);
+    if(!Array.isArray(estado.jogadores)) estado.jogadores = [];
+    if(!Array.isArray(estado.mapa) || estado.mapa.length !== 6) estado.mapa = [0,1,2,3,4,5];
+    estado.jogadores.forEach(function(j){ if(!j.id) j.id = novoId(); });
+  }
+  aplicarTema();
+  construirDados();
+  desenharAcoes();
+  desenharJogadores();
+  ligarAbas();
+  pintaRelogio();
+
+  document.getElementById("numFichas").value = estado.fichasIniciais;
+  document.getElementById("btnSom").setAttribute("aria-pressed", String(estado.som));
+  document.getElementById("btnSom").textContent = estado.som ? "🔊 Som" : "🔇 Som";
+  document.getElementById("swMostrar").setAttribute("aria-pressed", String(estado.mostrarAcao));
+  Array.prototype.forEach.call(document.querySelectorAll("#segDado button"), function(b){
+    b.setAttribute("aria-pressed", String(b.dataset.v === estado.dadoAcao));
+  });
+})();
+})();
+</script>
+
+<footer class="rodape-site">
+  <div class="rodape-wrap">
+    <span>© 2026 Juliana Araújo</span>
+    <a href="index.html">Voltar ao site</a>
+  </div>
+</footer>
+
+</body>
+</html>
