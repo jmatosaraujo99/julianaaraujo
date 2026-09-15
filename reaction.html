@@ -451,7 +451,7 @@ body.projecao .credito-proj{display:block}
         <p class="acao-grande" id="acaoGrande"></p>
         <p class="fichas-linha" id="fichasLinha"></p>
         <div class="escolha" id="escolha">
-          <p>Quem foi o mais lento?</p>
+          <p>Quem perde a ronda?</p>
           <div class="lentos" id="lentos"></div>
         </div>
       </div>
@@ -799,7 +799,7 @@ function mostrarRonda(vRosa, vAzul){
   el.className = "acao-grande" + (estado.dadoAcao === "azul" ? " azul" : "");
 
   document.getElementById("fichasLinha").innerHTML =
-    "O mais lento dá <b>" + fichasV + (fichasV === 1 ? " ficha</b> a " : " fichas</b> a ") + ronda.lanca.nome + ".";
+    "<b>" + fichasV + (fichasV === 1 ? " ficha</b>" : " fichas</b>");
 
   desenharLentos();
   document.getElementById("resultado").hidden = false;
@@ -817,7 +817,7 @@ function desenharLentos(){
     // que é o que devolve ao jogo quem está fora.
     const p = document.createElement("p");
     p.className = "aviso";
-    p.textContent = "Está toda a gente fora. Passa a vez para os trazer de volta.";
+    p.textContent = "Está toda a gente fora.";
     const b = document.createElement("button");
     b.className = "btn btn-cheio";
     b.textContent = "Passar a vez";
@@ -863,7 +863,7 @@ function resolverRonda(lento){
   desenharJogadores();
   guardar();
 
-  if(saiu){ toqueFora(); estadoTexto(lento.nome + " ficou sem fichas — está fora até lhe caber lançar"); }
+  if(saiu){ toqueFora(); estadoTexto(lento.nome + " ficou sem fichas"); }
 }
 
 function anular(){
@@ -1073,7 +1073,7 @@ document.getElementById("btnRepor").addEventListener("click", function(){
   estado.vez = 0; historico = [];
   document.getElementById("resultado").hidden = true;
   desenharJogadores(); guardar();
-  estadoTexto("Fichas repostas, volta a lançar quem estiver em primeiro");
+  estadoTexto("Fichas repostas");
 });
 
 document.getElementById("btnLimparJog").addEventListener("click", function(){
