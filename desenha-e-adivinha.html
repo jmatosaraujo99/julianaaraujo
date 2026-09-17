@@ -1,0 +1,2776 @@
+<!DOCTYPE html>
+<!--
+  Desenha e Adivinha — julianaaraujo.pt
+  Ferramenta de Juliana Araújo. Copyright (c) 2026. Todos os direitos reservados.
+  Uso livre em sessões de formação e aulas. Não é permitido copiar, republicar
+  ou redistribuir este código sem autorização escrita.
+-->
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Desenha e Adivinha — Jogo de Desenho para a Sala | Juliana Araújo</title>
+<meta name="description" content="Jogo de desenhar e adivinhar para a formação: o grupo entra pelo telemóvel, só quem desenha vê a palavra, e os palpites escritos dão pontos às equipas. Gratuito e sem registo.">
+<link rel="canonical" href="https://julianaaraujo.pt/desenha-e-adivinha.html">
+<meta property="og:title" content="Desenha e Adivinha — Jogo de Desenho para a Sala | Juliana Araújo">
+<meta property="og:description" content="Jogo de desenhar e adivinhar para a formação: o grupo entra pelo telemóvel, só quem desenha vê a palavra, e os palpites escritos dão pontos às equipas. Gratuito e sem registo.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://julianaaraujo.pt/desenha-e-adivinha.html">
+<meta property="og:site_name" content="Juliana Araújo">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:image" content="https://julianaaraujo.pt/media/og-cartao.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Desenha e Adivinha — Jogo de Desenho para a Sala | Juliana Araújo">
+<meta name="twitter:description" content="Jogo de desenhar e adivinhar para a formação: o grupo entra pelo telemóvel, só quem desenha vê a palavra, e os palpites escritos dão pontos às equipas. Gratuito e sem registo.">
+<meta name="twitter:image" content="https://julianaaraujo.pt/media/og-cartao.jpg">
+<meta name="twitter:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Desenha e Adivinha","applicationCategory":"EducationalApplication","operatingSystem":"Browser","description":"Jogo de desenhar e adivinhar para a sala de formação: os participantes entram pelo telemóvel, só quem desenha vê a palavra, palpites escritos, equipas, listas de palavras por área e álbum dos desenhos.","url":"https://julianaaraujo.pt/desenha-e-adivinha.html","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"copyrightHolder":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/"},"copyrightYear":2026,"creator":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"inLanguage":"pt-PT"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://julianaaraujo.pt/"},{"@type":"ListItem","position":2,"name":"Desenha e Adivinha","item":"https://julianaaraujo.pt/desenha-e-adivinha.html"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"É preciso criar conta ou instalar alguma coisa?","acceptedAnswer":{"@type":"Answer","text":"Não. Quem dá a sessão abre esta página e carrega em Abrir sala. Quem participa entra pelo navegador do telemóvel, com o QR ou com o código de quatro letras."}},{"@type":"Question","name":"Os outros telemóveis conseguem ver a palavra?","acceptedAnswer":{"@type":"Answer","text":"Não. A palavra só é enviada ao telemóvel de quem está a desenhar. O ecrã projetado também não a mostra: se precisares de a ver, carrega e mantém Ver palavra."}},{"@type":"Question","name":"Os palpites têm de estar escritos sem erros?","acceptedAnswer":{"@type":"Answer","text":"Maiúsculas e acentos não contam. Se faltar ou sobrar uma letra, a pessoa recebe um «Quase!» no telemóvel e pode tentar outra vez. Se preferires que o grupo grite, muda os palpites para Em voz alta e marcas tu a equipa que acertou."}},{"@type":"Question","name":"Como experimento antes da sessão?","acceptedAnswer":{"@type":"Answer","text":"Abre a sala e carrega em Experimentar a desenhar: aparece ao lado o ecrã de quem participa, e podes desenhar tu. Para testar os palpites precisas de uma segunda pessoa na sala, porque quem desenha não adivinha."}},{"@type":"Question","name":"Os nomes e os desenhos vão para algum lado?","acceptedAnswer":{"@type":"Answer","text":"Os telemóveis ligam-se diretamente ao computador de quem dá a sessão. Para se encontrarem usam um serviço público de ligação, mas o jogo não guarda nada em nenhum servidor: as palavras, os nomes e os pontos ficam no teu navegador, e os desenhos só existem enquanto a página estiver aberta."}},{"@type":"Question","name":"Funciona em qualquer rede?","acceptedAnswer":{"@type":"Answer","text":"Na maioria, sim. Algumas redes de empresa bloqueiam este tipo de ligação entre aparelhos. Se vais dar a sessão numa rede que não conheces, experimenta antes com um telemóvel."}},{"@type":"Question","name":"Posso guardar os desenhos?","acceptedAnswer":{"@type":"Answer","text":"Podes. Cada ronda fica no Álbum, e o botão de descarregar junta-os todos numa imagem. Descarrega antes de fechar ou recarregar a página, que aí perdem-se."}}]}</script>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="tokens.css?v=20260915">
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+/* Marca, fontes e espacamento vem do tokens.css. */
+
+/* ==========================================================================
+   Desenha e Adivinha — julianaaraujo.pt
+   Quarta ferramenta de sala. A única com vários aparelhos: a página do
+   formador é o anfitrião e liga-se diretamente aos telemóveis (WebRTC).
+   ========================================================================== */
+
+:root{
+  --rosa:var(--acento-rosa);
+  --coral:var(--acento-coral);
+  --amarelo:var(--acento-amarelo);
+
+  --ground:var(--creme);
+  --surface:#FBFAF7;
+  --surface-2:#EFEBE4;
+  --ink:var(--preto);
+  --ink-2:var(--cinza-forte);
+  --ink-3:var(--cinza);
+  --line:var(--linha-preta);
+  --line-forte:rgba(10,10,10,.28);
+  --acc:var(--cobalto);
+  --acc-suave:rgba(31,46,214,.10);
+  --sombra:0 18px 40px -24px rgba(10,10,10,.45);
+
+  --vidro:rgba(251,250,247,.62);
+  --vidro-borda:rgba(10,10,10,.10);
+  --vidro-brilho:rgba(255,255,255,.75);
+  --vidro-desfoque:blur(16px) saturate(180%);
+  --lavagem-1:rgba(31,46,214,.10);
+  --lavagem-2:rgba(0,191,166,.08);
+  --lavagem-3:rgba(255,77,141,.07);
+  --grao:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='.045'/%3E%3C/svg%3E");
+
+
+  --s1:6px; --s2:10px; --s3:16px; --s4:24px; --s5:36px; --s6:56px;
+  --r:14px;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:var(--preto); --surface:#151514; --surface-2:#1E1E1C;
+    --ink:var(--creme); --ink-2:#A8A29A; --ink-3:var(--cinza-sobre-preto);
+    --line:rgba(242,239,234,.16); --line-forte:rgba(242,239,234,.32);
+    --acc:#8791FF; --acc-suave:rgba(135,145,255,.14);
+    --sombra:0 18px 44px -22px rgba(0,0,0,.9);
+    --vidro:rgba(21,21,20,.55); --vidro-borda:rgba(242,239,234,.14);
+    --vidro-brilho:rgba(255,255,255,.13);
+    --lavagem-1:rgba(31,46,214,.22); --lavagem-2:rgba(0,191,166,.13);
+    --lavagem-3:rgba(255,77,141,.12);
+    --grao:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='.08'/%3E%3C/svg%3E");
+  }
+}
+:root[data-theme="dark"]{
+  --ground:var(--preto); --surface:#151514; --surface-2:#1E1E1C;
+  --ink:var(--creme); --ink-2:#A8A29A; --ink-3:var(--cinza-sobre-preto);
+  --line:rgba(242,239,234,.16); --line-forte:rgba(242,239,234,.32);
+  --acc:#8791FF; --acc-suave:rgba(135,145,255,.14);
+  --sombra:0 18px 44px -22px rgba(0,0,0,.9);
+  --vidro:rgba(21,21,20,.55); --vidro-borda:rgba(242,239,234,.14);
+  --vidro-brilho:rgba(255,255,255,.13);
+  --lavagem-1:rgba(31,46,214,.22); --lavagem-2:rgba(0,191,166,.13);
+  --lavagem-3:rgba(255,77,141,.12);
+  --grao:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='.08'/%3E%3C/svg%3E");
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{color-scheme:light dark}
+body{
+  margin:0;
+  background:
+    var(--grao),
+    radial-gradient(58% 48% at 12% 6%, var(--lavagem-1), transparent 70%),
+    radial-gradient(52% 46% at 90% 16%, var(--lavagem-2), transparent 70%),
+    radial-gradient(60% 50% at 46% 104%, var(--lavagem-3), transparent 70%),
+    var(--ground);
+  background-repeat:repeat,no-repeat,no-repeat,no-repeat,repeat;
+  background-size:180px 180px,auto,auto,auto,auto;
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--fonte-corpo);
+  font-size:15px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+body.sem-scroll{overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+
+.app{max-width:1240px;margin:0 auto;padding:var(--s4) var(--s4) var(--s6);display:flex;flex-direction:column;gap:var(--s4)}
+.topo{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s3);flex-wrap:wrap}
+.marca{display:flex;flex-direction:column;gap:2px}
+.sobrancelha{font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--ink-3);margin:0}
+h1{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:clamp(28px,calc(4.4 * var(--fluido)),44px);line-height:.98;margin:0}
+h2{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:clamp(22px,calc(3 * var(--fluido)),30px);line-height:1;margin:0}
+h3{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:20px;line-height:1;margin:0}
+.topo-acts{display:flex;gap:var(--s1);flex-wrap:wrap}
+
+.vidro{
+  background:var(--vidro);backdrop-filter:var(--vidro-desfoque);-webkit-backdrop-filter:var(--vidro-desfoque);
+  border:1px solid var(--vidro-borda);border-radius:var(--r);
+  box-shadow:0 8px 30px -20px rgba(10,10,10,.45),inset 0 1px 0 var(--vidro-brilho);
+}
+
+/* ---------- botões e controlos ---------- */
+.btn{background:none;border:1px solid var(--line-forte);border-radius:9px;padding:8px 13px;cursor:pointer;
+  font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--ink);transition:background .16s,border-color .16s;min-height:36px;text-decoration:none;
+  display:inline-flex;align-items:center;justify-content:center}
+.btn:hover{background:var(--surface-2)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn-cheio{background:var(--cobalto);border-color:var(--cobalto);color:var(--creme)}
+.btn-cheio:hover{background:#1826b4}
+.btn-cheio:disabled:hover{background:var(--cobalto)}
+.btn-grande{padding:14px 26px;font-family:var(--fonte-display);font-size:19px;letter-spacing:var(--ls-display);border-radius:12px;min-height:52px}
+.btn-mini{padding:5px 9px;font-size:10px;letter-spacing:.08em;border-radius:7px;min-height:30px}
+.btn-icone{padding:7px 10px;font-size:13px;letter-spacing:0;text-transform:none;font-family:var(--fonte-corpo);
+  background:var(--vidro);backdrop-filter:var(--vidro-desfoque);-webkit-backdrop-filter:var(--vidro-desfoque);
+  border-color:var(--vidro-borda);box-shadow:inset 0 1px 0 var(--vidro-brilho)}
+.acts{display:flex;gap:var(--s1);flex-wrap:wrap;align-items:center}
+
+.campo{width:100%;background:var(--ground);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+.campo::placeholder{color:var(--ink-3)}
+textarea.campo{min-height:200px;resize:vertical;line-height:1.5;font-size:14px}
+.aviso{font-size:12.5px;color:var(--ink-3);margin:0}
+.erro{font-size:14px;color:var(--coral);margin:0;font-weight:500}
+.titulo-bloco{font-family:var(--fonte-etiqueta);font-size:10.5px;font-weight:500;text-transform:uppercase;
+  letter-spacing:var(--ls-etiqueta);color:var(--ink-3);margin:0}
+.sep{height:1px;background:var(--line);border:0;margin:0}
+
+.seg{display:flex;gap:2px;background:var(--surface-2);border-radius:8px;padding:3px;flex-wrap:wrap}
+.seg button{background:none;border:0;border-radius:6px;padding:6px 10px;cursor:pointer;
+  font-family:var(--fonte-etiqueta);font-size:11px;letter-spacing:var(--ls-display);color:var(--ink-3)}
+.seg button[aria-pressed="true"]{background:var(--ground);color:var(--ink);box-shadow:0 1px 2px rgba(10,10,10,.12)}
+.def-linha{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);flex-wrap:wrap}
+.def-linha p{margin:0;font-size:13.5px}
+.def-linha small{display:block;color:var(--ink-3);font-size:11.5px;line-height:1.4}
+.sw{position:relative;flex:0 0 42px;width:42px;height:24px;border-radius:12px;border:1px solid var(--line-forte);
+  background:var(--surface-2);cursor:pointer;padding:0;transition:background .18s,border-color .18s}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;
+  background:var(--ink-3);transition:transform .2s cubic-bezier(.2,.7,.2,1),background .2s}
+.sw[aria-pressed="true"]{background:var(--cobalto);border-color:var(--cobalto)}
+.sw[aria-pressed="true"]::after{transform:translateX(18px);background:var(--creme)}
+
+/* ---------- entrada ---------- */
+.entrada{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s4);margin-top:var(--s4)}
+@media (max-width:760px){.entrada{grid-template-columns:1fr}}
+.cartao-entrada{padding:var(--s5) var(--s4);display:flex;flex-direction:column;gap:var(--s3)}
+.cartao-entrada p{margin:0;color:var(--ink-2)}
+.codigo-campo{font-family:var(--fonte-display);font-size:34px;letter-spacing:var(--ls-etiqueta-18);text-transform:uppercase;text-align:center;padding:10px}
+
+/* ---------- formador ---------- */
+.palco{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(320px,.7fr);gap:var(--s4);align-items:start}
+@media (max-width:980px){.palco{grid-template-columns:1fr}}
+.jogo-col{display:flex;flex-direction:column;gap:var(--s3)}
+
+.sala{padding:var(--s3) var(--s4);display:flex;gap:var(--s4);align-items:center;flex-wrap:wrap}
+.sala .qr{background:#fff;padding:8px;border-radius:10px;line-height:0}
+.sala .qr img,.sala .qr canvas{width:124px!important;height:124px!important}
+.sala-txt{display:flex;flex-direction:column;gap:4px;flex:1;min-width:220px}
+.sala-codigo{font-family:var(--fonte-display);font-size:clamp(40px,calc(6 * var(--fluido)),64px);letter-spacing:var(--ls-etiqueta-14);line-height:1;color:var(--ink)}
+.sala-url{font-family:var(--fonte-etiqueta);font-size:12.5px;color:var(--ink-2);word-break:break-all}
+.estado-ligacao{display:inline-flex;align-items:center;gap:6px;font-family:var(--fonte-etiqueta);font-size:11px;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3)}
+.ponto{width:8px;height:8px;border-radius:50%;background:var(--ink-3);flex:0 0 8px}
+.ponto.on{background:var(--acento-verde);box-shadow:0 0 0 3px rgba(29,185,84,.18)}
+.ponto.mal{background:var(--coral)}
+
+/* sala de espera, no ecrã grande */
+.lobby{padding:var(--s4);display:flex;flex-direction:column;gap:var(--s3)}
+.lobby-topo{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s2);flex-wrap:wrap}
+.lobby-conta{font-family:var(--fonte-display);font-size:clamp(26px,calc(3.6 * var(--fluido)),40px);line-height:1;letter-spacing:var(--ls-display)}
+.lobby-conta small{font-family:var(--fonte-etiqueta);font-size:12px;letter-spacing:.12em;color:var(--ink-3);text-transform:uppercase;margin-left:8px}
+.lobby-equipas{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:var(--s3)}
+.lobby-equipa{display:flex;flex-direction:column;gap:8px}
+.lobby-equipa h4{margin:0;display:flex;align-items:center;gap:8px;font-family:var(--fonte-etiqueta);
+  font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:var(--ls-etiqueta-14)}
+.lobby-equipa h4 i{width:12px;height:12px;border-radius:3px;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip-p{border:1.5px dashed var(--line-forte);border-radius:999px;padding:5px 12px;font-size:15px;color:var(--ink-3)}
+.chip-p.on{border-style:solid;border-color:transparent;background:var(--surface);color:var(--ink);
+  box-shadow:0 2px 10px -6px rgba(10,10,10,.5)}
+.chip-p.novo{animation:entra-chip .5s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes entra-chip{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+
+.faixa{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);flex-wrap:wrap}
+.quem-desenha{display:flex;flex-direction:column;gap:2px}
+.quem-desenha .nome{font-family:var(--fonte-display);text-transform:uppercase;letter-spacing:var(--ls-display);
+  font-size:clamp(24px,calc(3.4 * var(--fluido)),40px);line-height:1}
+.chip-equipa{display:inline-flex;align-items:center;gap:6px;font-family:var(--fonte-etiqueta);font-size:11px;
+  font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-2)}
+.chip-equipa i{width:10px;height:10px;border-radius:3px;display:block}
+.tempo-col{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.relogio{font-family:var(--fonte-display);font-size:clamp(44px,calc(7 * var(--fluido)),84px);line-height:.9;
+  font-variant-numeric:tabular-nums;letter-spacing:.02em;color:var(--ink);min-width:2.2ch;text-align:right}
+.relogio.fim{color:var(--coral)}
+
+/* pistas de letras */
+.pista{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;align-items:flex-end;min-height:1em}
+.pista .l{display:inline-flex;align-items:flex-end;justify-content:center;
+  width:1.05em;height:1.3em;border-bottom:3px solid var(--ink);
+  font-family:var(--fonte-display);text-transform:uppercase;line-height:1;color:var(--ink)}
+.pista .l.nova{animation:entra-chip .45s cubic-bezier(.2,1.4,.4,1) both;color:var(--cobalto)}
+.pista .esp{width:.7em}
+.pista .sinal{font-family:var(--fonte-display);line-height:1.2}
+.pista-grande{font-size:clamp(26px,calc(3.6 * var(--fluido)),44px)}
+.pista-media{font-size:clamp(20px,calc(6 * var(--fluido)),30px)}
+
+/* o quadro */
+.quadro-moldura{position:relative;width:100%;border-radius:12px;overflow:hidden;
+  border:1px solid var(--line-forte);box-shadow:0 14px 40px -26px rgba(10,10,10,.6);background:#fff}
+.quadro{display:block;width:100%;aspect-ratio:4/3;touch-action:none;background:#fff;cursor:default}
+.quadro.editavel{cursor:crosshair}
+.quadro-aviso{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  padding:var(--s4);text-align:center;pointer-events:none;color:var(--cinza);
+  font-family:var(--fonte-etiqueta);font-size:14px;text-transform:uppercase;letter-spacing:var(--ls-etiqueta-14)}
+.revelada{
+  position:absolute;left:50%;bottom:6%;transform:translateX(-50%);
+  background:var(--cobalto);color:var(--creme);border-radius:12px;padding:10px 22px;
+  font-family:var(--fonte-display);font-size:clamp(22px,calc(4 * var(--fluido)),40px);text-transform:uppercase;
+  letter-spacing:var(--ls-display);line-height:1;white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis;
+  box-shadow:0 14px 36px -18px rgba(10,10,10,.7);animation:sobe .4s cubic-bezier(.16,.9,.24,1) both;
+}
+@keyframes sobe{from{opacity:0;transform:translate(-50%,12px)}to{opacity:1;transform:translate(-50%,0)}}
+
+.controlo{padding:var(--s3);display:flex;flex-direction:column;gap:var(--s3)}
+.pontos{display:flex;gap:var(--s2);flex-wrap:wrap}
+.equipa-pontos{flex:1;min-width:120px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;
+  display:flex;flex-direction:column;gap:6px;background:var(--surface)}
+.equipa-pontos .topo-eq{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.equipa-pontos .n{font-family:var(--fonte-display);font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+.equipa-pontos button{width:100%}
+.equipa-pontos.vez{border-color:var(--ink);border-width:2px;padding:9px 11px}
+.segurar{user-select:none;-webkit-user-select:none;touch-action:none}
+.palavra-oculta{font-family:var(--fonte-display);font-size:22px;letter-spacing:var(--ls-display);text-transform:uppercase;min-height:28px}
+
+/* painel lateral */
+.painel{display:flex;flex-direction:column}
+.abas{display:flex;border-bottom:1px solid var(--line)}
+.aba{flex:1;background:none;border:0;border-bottom:2px solid transparent;padding:12px 6px;cursor:pointer;
+  font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;text-transform:uppercase;
+  letter-spacing:var(--ls-etiqueta);color:var(--ink-3)}
+.aba[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--cobalto)}
+.folha{padding:var(--s3);display:flex;flex-direction:column;gap:var(--s3)}
+
+.pacotes{display:flex;flex-direction:column;gap:6px}
+.pacote{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;width:100%;
+  border:1px solid var(--line);border-radius:10px;padding:8px 11px;background:none;cursor:pointer}
+.pacote:hover{background:var(--surface-2)}
+.pacote[aria-pressed="true"]{border-color:var(--cobalto);background:var(--acc-suave)}
+.pacote b{display:block;font-family:var(--fonte-etiqueta);font-size:12px;font-weight:500;letter-spacing:var(--ls-display)}
+.pacote small{display:block;font-size:11.5px;color:var(--ink-3);line-height:1.35}
+.pacote em{font-style:normal;font-family:var(--fonte-etiqueta);font-size:11px;color:var(--ink-3);white-space:nowrap}
+
+.lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.lista li{display:flex;align-items:center;gap:var(--s2);padding:6px 2px;border-bottom:1px solid var(--line)}
+.lista li:last-child{border-bottom:0}
+.lista input.nome{flex:1;min-width:0;background:none;border:0;padding:5px 3px;border-radius:5px;font-size:15px}
+.lista input.nome:hover{background:var(--surface-2)}
+.lista select{background:var(--ground);border:1px solid var(--line);border-radius:7px;padding:4px 6px;font-size:13px;max-width:120px}
+.rem{background:none;border:0;cursor:pointer;color:var(--ink-3);width:28px;height:28px;border-radius:50%;font-size:18px;line-height:1}
+.rem:hover{background:var(--surface-2);color:var(--ink)}
+.cor-eq{width:14px;height:14px;border-radius:4px;flex:0 0 14px;display:inline-block}
+
+/* ---------- sobreposições: fim de jogo, álbum, desenho ---------- */
+.sobre{position:fixed;inset:0;z-index:60;overflow-y:auto;padding:var(--s4);
+  background:var(--ground);
+  background:color-mix(in srgb,var(--ground) 86%,transparent);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.sobre-caixa{max-width:1120px;margin:0 auto;padding:var(--s4);display:flex;flex-direction:column;gap:var(--s4)}
+.sobre-topo{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s3);flex-wrap:wrap}
+
+.podio{display:flex;align-items:flex-end;justify-content:center;gap:clamp(10px,calc(2 * var(--fluido)),24px);min-height:300px;padding-top:var(--s3)}
+.degrau{display:flex;flex-direction:column;align-items:center;gap:8px;width:clamp(120px,calc(20 * var(--fluido)),220px)}
+.degrau .quem{font-family:var(--fonte-display);font-size:clamp(20px,calc(2.6 * var(--fluido)),30px);text-transform:uppercase;
+  letter-spacing:var(--ls-display);text-align:center;line-height:1}
+.degrau .pts{font-family:var(--fonte-etiqueta);font-size:13px;color:var(--ink-2);letter-spacing:.06em}
+.degrau .bloco{width:100%;border-radius:12px 12px 0 0;display:flex;align-items:flex-start;justify-content:center;
+  padding-top:14px;color:#fff;font-family:var(--fonte-display);font-size:clamp(34px,calc(5 * var(--fluido)),58px);line-height:1;
+  animation:cresce .7s cubic-bezier(.16,.9,.24,1) both;transform-origin:bottom}
+@keyframes cresce{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.resto{display:flex;flex-wrap:wrap;gap:var(--s2);justify-content:center}
+.resumo-uma{text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center;padding:var(--s4) 0}
+.resumo-uma .grande{font-family:var(--fonte-display);font-size:clamp(46px,calc(8 * var(--fluido)),92px);line-height:.9}
+
+.album{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:var(--s3)}
+.album-vazio{grid-column:1/-1}
+.album-cartao{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  cursor:pointer;padding:0;text-align:left;display:flex;flex-direction:column;transition:transform .16s}
+.album-cartao:hover{transform:translateY(-2px)}
+.album-cartao img{display:block;width:100%;aspect-ratio:4/3;background:#fff;border-bottom:1px solid var(--line)}
+.album-cartao .leg{padding:10px 12px;display:flex;flex-direction:column;gap:3px}
+.album-cartao .pal{font-family:var(--fonte-display);font-size:19px;text-transform:uppercase;letter-spacing:var(--ls-display);line-height:1.05}
+.album-cartao .quem{font-size:12.5px;color:var(--ink-2)}
+.album-cartao .res{font-family:var(--fonte-etiqueta);font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3)}
+
+.imagem-grande{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:var(--s3)}
+.imagem-grande img{width:100%;border-radius:12px;background:#fff;border:1px solid var(--line-forte)}
+
+/* ---------- participante ---------- */
+.part{max-width:720px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:var(--s3)}
+.part-cartao{padding:var(--s4);display:flex;flex-direction:column;gap:var(--s3)}
+.nomes{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--s1)}
+.nome-btn{border:1px solid var(--line-forte);border-radius:10px;padding:12px;background:var(--surface);
+  cursor:pointer;text-align:left;display:flex;align-items:center;gap:8px;min-height:48px;font-size:15px}
+.nome-btn:hover{border-color:var(--acc)}
+.nome-btn:disabled{opacity:.4;cursor:default}
+.nome-btn i{width:10px;height:10px;border-radius:3px;flex:0 0 10px}
+.part-faixa{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);flex-wrap:wrap}
+.part-palavra{background:var(--cobalto);color:var(--creme);border-radius:12px;padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s2)}
+.part-palavra .rot{font-family:var(--fonte-etiqueta);font-size:10.5px;text-transform:uppercase;letter-spacing:var(--ls-etiqueta-16);opacity:.8}
+.part-palavra .pal{font-family:var(--fonte-display);font-size:clamp(24px,calc(7 * var(--fluido)),40px);text-transform:uppercase;letter-spacing:var(--ls-display);line-height:1}
+.part-palavra .tempo{font-family:var(--fonte-display);font-size:clamp(30px,calc(8 * var(--fluido)),44px);font-variant-numeric:tabular-nums;line-height:1}
+.part-palavra .tempo.fim{color:#FFD2CC}
+
+.escolhas{padding:var(--s4);display:flex;flex-direction:column;gap:var(--s3);text-align:center}
+.escolhas-btns{display:flex;flex-direction:column;gap:var(--s2)}
+.escolha-btn{background:var(--surface);border:2px solid var(--line-forte);border-radius:14px;padding:16px;cursor:pointer;
+  font-family:var(--fonte-display);font-size:clamp(22px,calc(6 * var(--fluido)),32px);text-transform:uppercase;letter-spacing:var(--ls-display);line-height:1.05}
+.escolha-btn:hover{border-color:var(--cobalto);background:var(--acc-suave)}
+.escolha-btn:disabled{opacity:.4;cursor:default}
+
+/* palpites escritos */
+.palpite{display:flex;gap:var(--s1)}
+.palpite .campo{font-size:17px;min-height:50px;flex:1;min-width:0}
+.palpite .btn{min-height:50px;padding:0 18px;flex:0 0 auto}
+.palpite-eco{display:flex;flex-wrap:wrap;gap:6px}
+.palpite-eco:empty{display:none}
+.palpite-eco span{font-size:13px;color:var(--ink-3);text-decoration:line-through;border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.palpite-eco span.quase{color:var(--coral);text-decoration:none;border-color:var(--coral);font-weight:500}
+.palpite-eco span.certo{color:var(--creme);background:var(--cobalto);border-color:var(--cobalto);text-decoration:none;font-weight:500}
+.feed-palpites{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:var(--s2)}
+.feed-palpites:empty{display:none}
+.feed-palpites span{font-size:15px;border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--surface);animation:entra-chip .3s ease both}
+.feed-palpites span b{font-weight:600;margin-right:5px}
+.feed-palpites span.quase{border-color:var(--coral);color:var(--coral)}
+.feed-palpites span.certo{background:var(--cobalto);color:var(--creme);border-color:var(--cobalto)}
+
+.ferramentas{display:flex;flex-direction:column;gap:var(--s2)}
+.cores{display:flex;gap:6px;flex-wrap:wrap}
+.cor{width:38px;height:38px;border-radius:50%;border:2px solid var(--line-forte);cursor:pointer;padding:0;flex:0 0 38px}
+.cor[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 3px var(--ground),0 0 0 5px var(--ink)}
+.larguras{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.larg{width:44px;height:44px;border-radius:10px;border:1px solid var(--line-forte);background:var(--surface);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.larg[aria-pressed="true"]{border-color:var(--ink);border-width:2px;background:var(--surface-2)}
+.larg span{display:block;border-radius:50%;background:var(--ink)}
+
+.espera{padding:var(--s5) var(--s4);text-align:center;display:flex;flex-direction:column;gap:var(--s2);align-items:center}
+.espera .grande{font-family:var(--fonte-display);font-size:clamp(26px,calc(6 * var(--fluido)),40px);text-transform:uppercase;letter-spacing:var(--ls-display);line-height:1}
+
+.p-fim{padding:var(--s4);display:flex;flex-direction:column;gap:var(--s3);align-items:center;text-align:center}
+.p-fim .lugar{font-family:var(--fonte-display);font-size:clamp(46px,calc(14 * var(--fluido)),86px);line-height:.9;text-transform:uppercase}
+.p-class{list-style:none;margin:0;padding:0;width:100%;display:flex;flex-direction:column;gap:6px}
+.p-class li{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.p-class li.minha{border-color:var(--ink);border-width:2px}
+.p-class li b{font-family:var(--fonte-display);font-size:20px;width:2.2ch}
+.p-class li span{flex:1;text-align:left}
+.p-class li em{font-style:normal;font-family:var(--fonte-display);font-size:22px}
+
+/* ---------- projeção ---------- */
+body.projecao .painel-lateral,body.projecao .topo .sobrancelha,body.projecao .rodape,body.projecao .so-formador{display:none}
+body.projecao .palco{grid-template-columns:1fr}
+body.projecao .app{max-width:none;padding-top:var(--s3)}
+
+.rodape{display:flex;justify-content:space-between;gap:var(--s3);flex-wrap:wrap;border-top:1px solid var(--line);
+  padding-top:var(--s3);font-family:var(--fonte-etiqueta);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-3)}
+.rodape a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-forte)}
+
+/* ---------- ensaio: o painel de participante dentro do ecrã do formador ---------- */
+.ensaio{position:fixed;top:0;right:0;bottom:0;width:min(430px,100vw);z-index:55;display:flex;flex-direction:column;
+  background:var(--surface);border-left:1px solid var(--line-forte);box-shadow:-24px 0 60px -34px rgba(10,10,10,.65)}
+.ensaio-topo{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.ensaio-topo b{font-family:var(--fonte-etiqueta);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:var(--ls-etiqueta-14)}
+.ensaio-topo small{display:block;font-size:11.5px;color:var(--ink-3)}
+.ensaio iframe{flex:1;width:100%;border:0;background:var(--ground)}
+body.projecao .ensaio{display:none}   /* nunca projetar a palavra da formadora */
+body.embutido .topo,body.embutido .rodape{display:none}
+body.embutido .app{padding:12px 12px 24px}
+
+.aviso-forte{font-size:13.5px;font-weight:500;color:var(--coral)}
+.lobby.chamar{animation:chamar .9s ease 2}
+@keyframes chamar{0%,100%{box-shadow:0 8px 30px -20px rgba(10,10,10,.45)}50%{box-shadow:0 0 0 3px var(--coral)}}
+
+/* --- Cromo do site ------------------------------------------------------- */
+/* Igual ao das outras ferramentas, com os tokens desta pagina (--ink, --line)
+   para acompanhar o modo escuro. */
+.cabeca-site{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+  padding:20px clamp(18px,calc(6 * var(--fluido)),96px);
+  border-bottom:1px solid var(--line);
+}
+.cabeca-site .logo{
+  font-family:var(--fonte-display);font-size:20px;line-height:1;
+  letter-spacing:var(--ls-display);text-transform:uppercase;
+  color:var(--ink);text-decoration:none;
+}
+.cabeca-site nav{display:flex;gap:clamp(14px,calc(2.4 * var(--fluido)),28px);flex-wrap:wrap}
+.cabeca-site nav a{
+  color:var(--ink);text-decoration:none;
+  font-family:var(--fonte-etiqueta);font-size:12px;
+  text-transform:uppercase;letter-spacing:var(--ls-etiqueta);
+  padding:6px 0;
+}
+.cabeca-site nav a:hover{color:var(--acc)}
+.rodape-site{
+  padding:clamp(40px,calc(5 * var(--fluido)),64px) clamp(18px,calc(6 * var(--fluido)),96px);
+  border-top:1px solid var(--line);
+}
+.rodape-site .rodape-wrap{
+  max-width:1440px;margin:0 auto;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;
+  font-family:var(--fonte-etiqueta);font-size:11px;
+  letter-spacing:var(--ls-etiqueta);text-transform:uppercase;
+  color:var(--ink-3);
+}
+.rodape-site a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line-forte)}
+.rodape-site a:hover{color:var(--acc);border-bottom-color:var(--acc)}
+
+/* --- Texto de apoio, por baixo da ferramenta ----------------------------- */
+.apoio{border-top:1px solid var(--line);background:var(--ground);
+  padding:clamp(48px,calc(7 * var(--fluido)),88px) clamp(18px,calc(5 * var(--fluido)),64px) clamp(56px,calc(8 * var(--fluido)),104px)}
+.apoio-wrap{max-width:70ch;margin:0 auto}
+.apoio h2{font-family:var(--fonte-display);font-size:clamp(20px,calc(2.4 * var(--fluido)),28px);line-height:1.15;
+  letter-spacing:var(--ls-display);text-transform:uppercase;color:var(--ink);
+  margin:clamp(34px,calc(4 * var(--fluido)),52px) 0 14px}
+.apoio h2:first-child{margin-top:0}
+.apoio p,.apoio li{font-family:var(--fonte-corpo);font-size:16.5px;line-height:1.72;color:var(--ink-2)}
+.apoio p{margin:0 0 14px}
+.apoio ol,.apoio ul{margin:0 0 16px;padding-left:1.35em}
+.apoio li{margin-bottom:9px}
+.apoio b{color:var(--ink);font-weight:600}
+.apoio a{color:var(--acc);text-decoration:none;border-bottom:1px solid var(--acc-suave)}
+.apoio a:hover{border-bottom-color:var(--acc)}
+.apoio .faq{margin-top:6px}
+.apoio .faq details{border-top:1px solid var(--line)}
+.apoio .faq details:last-of-type{border-bottom:1px solid var(--line)}
+.apoio .faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;
+  justify-content:space-between;gap:18px;min-height:44px;padding:15px 0;
+  font-family:var(--fonte-etiqueta);font-size:15px;font-weight:600;line-height:1.45;color:var(--ink)}
+.apoio .faq summary::-webkit-details-marker{display:none}
+.apoio .faq summary h3{display:inline;font:inherit;color:inherit;margin:0;text-transform:none;letter-spacing:0}
+.apoio .faq summary::after{content:"+";font-family:var(--fonte-corpo);font-size:24px;line-height:1;
+  color:var(--acc);flex:none;transition:transform .25s ease}
+.apoio .faq details[open] summary::after{transform:rotate(45deg)}
+.apoio .faq summary:hover{color:var(--acc)}
+.apoio .faq details p{margin:0 0 18px;padding-right:42px}
+.apoio-cta{margin-top:clamp(40px,calc(5 * var(--fluido)),64px);padding-top:clamp(26px,calc(3 * var(--fluido)),36px);
+  border-top:1px solid var(--line)}
+.tagline{font-family:var(--fonte-corpo);font-size:clamp(13px,calc(1.1 * var(--fluido)),15px);line-height:1.45;
+  color:var(--ink-3);margin:6px 0 0;max-width:46ch}
+.credito-proj{display:none;position:fixed;right:16px;bottom:12px;z-index:5;
+  font-family:var(--fonte-etiqueta);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-3);opacity:.7;pointer-events:none}
+body.projecao .credito-proj{display:block}
+
+/* Em projeção fica só o jogo. No telemóvel de quem participa, e no ensaio
+   dentro do ecrã do formador, o texto do site só atrapalha. */
+body.projecao .cabeca-site,body.projecao .apoio,body.projecao .rodape-site{display:none}
+body.participante .cabeca-site,body.participante .apoio,body.participante .tagline{display:none}
+body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{display:none}
+
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .vidro,.btn-icone{background:var(--surface);border-color:var(--line)}
+  .sobre{background:var(--ground)}
+}
+@media (prefers-reduced-transparency: reduce){
+  .vidro,.btn-icone{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--surface);border-color:var(--line)}
+  .sobre{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--ground)}
+}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<header class="cabeca-site">
+  <a class="logo" href="index.html">Juliana Araújo</a>
+  <nav>
+    <a href="index.html#sobre">Sobre mim</a>
+    <a href="index.html#formacoes">Formações</a>
+    <a href="recursos.html">Recursos</a>
+    <a href="index.html#contactos">Contactos</a>
+  </nav>
+</header>
+
+<div class="app">
+
+  <header class="topo">
+    <div class="marca">
+      <p class="sobrancelha">Juliana Araújo &middot; Recurso pedagógico</p>
+      <h1>Desenha e Adivinha</h1>
+      <p class="tagline">Um desenha, a sala adivinha. Cada pessoa entra pelo telemóvel.</p>
+    </div>
+    <div class="topo-acts">
+      <button class="btn btn-icone" id="btnSom" aria-pressed="true">🔊 Som</button>
+      <button class="btn btn-icone" id="btnTema">◐ Tema</button>
+      <button class="btn btn-icone" id="btnProj" hidden>⛶ Projetar</button>
+    </div>
+  </header>
+
+  <!-- ================================================================== -->
+  <!-- ENTRADA                                                            -->
+  <!-- ================================================================== -->
+  <section id="ecraInicio">
+    <p class="erro vidro" id="avisoCopia" hidden style="padding:var(--s3) var(--s4);margin-top:var(--s4)"></p>
+    <div class="entrada">
+      <div class="cartao-entrada vidro">
+        <p class="sobrancelha">Para quem dá a sessão</p>
+        <h2>Abrir uma sala</h2>
+        <p>Preparas as palavras, as equipas e os nomes. Projetas este ecrã e as pessoas entram pelo telemóvel.</p>
+        <div class="acts"><button class="btn btn-cheio btn-grande" id="btnAbrirSala">Abrir sala</button></div>
+      </div>
+      <div class="cartao-entrada vidro">
+        <p class="sobrancelha">Para quem participa</p>
+        <h2>Entrar numa sala</h2>
+        <p>Escreve o código que aparece no ecrã da sessão.</p>
+        <input class="campo codigo-campo" id="campoCodigoInicio" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="CÓDIGO" aria-label="Código da sala">
+        <div class="acts"><button class="btn btn-cheio btn-grande" id="btnEntrarInicio">Entrar</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- FORMADOR                                                           -->
+  <!-- ================================================================== -->
+  <section id="ecraFormador" hidden>
+    <div class="palco">
+      <div class="jogo-col">
+
+        <div class="sala vidro" id="salaCartao">
+          <div class="qr" id="qr" aria-label="Código QR para entrar na sala"></div>
+          <div class="sala-txt">
+            <span class="sobrancelha">Código da sala</span>
+            <span class="sala-codigo" id="salaCodigo">····</span>
+            <span class="sala-url" id="salaUrl"></span>
+            <span class="estado-ligacao"><span class="ponto" id="pontoSala"></span><span id="txtSala">A abrir a sala…</span></span>
+            <button class="btn btn-mini btn-cheio" id="btnReabrir" hidden style="align-self:flex-start">Tentar outra vez</button>
+          </div>
+          <div class="acts so-formador" style="flex-direction:column;align-items:stretch">
+            <a class="btn btn-cheio" id="btnExperimentar" target="_blank" rel="noopener" hidden
+               title="Entra na tua própria sala como participante, para experimentares desenhar">✎ Experimentar a desenhar</a>
+            <button class="btn btn-mini" id="btnEsconderSala">Esconder</button>
+          </div>
+        </div>
+
+        <!-- sala de espera: aparece antes da primeira ronda -->
+        <div class="lobby vidro" id="lobby">
+          <div class="lobby-topo">
+            <span class="sobrancelha">Quem já entrou</span>
+            <span class="lobby-conta" id="lobbyConta">0</span>
+          </div>
+          <div class="lobby-equipas" id="lobbyEquipas"></div>
+        </div>
+
+        <div id="palcoRonda" hidden>
+          <div class="faixa">
+            <div class="quem-desenha">
+              <span class="sobrancelha" id="rotuloDesenha">—</span>
+              <span class="nome" id="nomeDesenha">—</span>
+              <span class="chip-equipa" id="chipEquipa" hidden><i id="chipCor"></i><span id="chipNome"></span></span>
+            </div>
+            <div class="tempo-col">
+              <span class="sobrancelha" id="contaRonda"></span>
+              <div class="relogio" id="relogio">—</div>
+            </div>
+          </div>
+
+          <div class="pista pista-grande" id="pistaFormador" hidden style="margin:var(--s3) 0"></div>
+
+          <div class="quadro-moldura" style="margin-top:var(--s2)">
+            <canvas class="quadro" id="quadroFormador"></canvas>
+            <div class="quadro-aviso" id="avisoFormador"></div>
+            <div class="revelada" id="reveladaFormador" hidden></div>
+          </div>
+          <div class="feed-palpites" id="feedPalpites" aria-live="polite"></div>
+        </div>
+
+        <div class="controlo vidro">
+          <div class="faixa">
+            <div class="acts">
+              <button class="btn btn-cheio btn-grande" id="btnRonda">Começar jogo</button>
+              <button class="btn" id="btnPassar" disabled>Passar</button>
+            </div>
+            <div class="acts so-formador">
+              <button class="btn segurar" id="btnVerPalavra" disabled title="Carrega e mantém">Ver palavra</button>
+              <span class="palavra-oculta" id="palavraOculta"></span>
+            </div>
+          </div>
+          <div class="pontos" id="pontos"></div>
+          <div class="faixa">
+            <p class="aviso" id="avisoRonda"></p>
+            <div class="acts">
+              <button class="btn btn-mini" id="btnAlbum">Álbum · 0</button>
+              <button class="btn btn-mini so-formador" id="btnTerminar" disabled>Terminar jogo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="painel painel-lateral vidro">
+        <div class="abas" role="tablist">
+          <button class="aba" role="tab" id="aba-pal" aria-selected="true">Palavras</button>
+          <button class="aba" role="tab" id="aba-eq" aria-selected="false">Equipas</button>
+          <button class="aba" role="tab" id="aba-jog" aria-selected="false">Pessoas</button>
+        </div>
+
+        <div class="folha" id="folha-pal">
+          <div class="def-linha">
+            <p>Tempo para desenhar</p>
+            <div class="seg" id="segTempo" role="group" aria-label="Tempo para desenhar">
+              <button data-v="30">30s</button><button data-v="45">45s</button>
+              <button data-v="60">60s</button><button data-v="90">90s</button>
+              <button data-v="120">2 min</button>
+            </div>
+          </div>
+          <div class="def-linha">
+            <p>A palavra</p>
+            <div class="seg" id="segModo" role="group" aria-label="Como sai a palavra">
+              <button data-v="3">Escolhe entre 3</button><button data-v="acaso">Ao acaso</button>
+            </div>
+          </div>
+          <div class="def-linha">
+            <p>Pistas de letras<small>Vão aparecendo letras na segunda metade do tempo. Nunca a palavra toda.</small></p>
+            <button class="sw" id="swPistas" aria-pressed="true" aria-label="Pistas de letras"></button>
+          </div>
+          <div class="def-linha">
+            <p>Palpites<small>Escritos: cada pessoa escreve no telemóvel e o jogo dá o ponto sozinho. Em voz alta: carregas tu na equipa que acertou.</small></p>
+            <div class="seg" id="segPalpites" role="group" aria-label="Como se adivinha">
+              <button data-v="escrito">Escritos</button><button data-v="voz">Em voz alta</button>
+            </div>
+          </div>
+
+          <hr class="sep">
+          <p class="titulo-bloco">Listas</p>
+          <div class="pacotes" id="pacotes"></div>
+          <p class="aviso">As listas por área são conceitos: mais difíceis de desenhar, e por isso boas para rever o que se aprendeu.</p>
+
+          <hr class="sep">
+          <p class="titulo-bloco" id="contaPalavras">Palavras</p>
+          <textarea class="campo" id="campoPalavras" spellcheck="false" aria-label="Palavras, uma por linha"></textarea>
+          <p class="aviso">Uma palavra por linha. Não se repetem até se gastarem todas.</p>
+          <div class="acts"><button class="btn btn-mini" id="btnReporUsadas">Voltar a usar todas</button></div>
+        </div>
+
+        <div class="folha" id="folha-eq" hidden>
+          <div class="def-linha">
+            <p>Número de equipas</p>
+            <div class="seg" id="segEquipas" role="group" aria-label="Número de equipas">
+              <button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button>
+              <button data-v="4">4</button><button data-v="5">5</button>
+            </div>
+          </div>
+          <div class="def-linha">
+            <p>Rondas por equipa<small id="totalRondasTxt"></small></p>
+            <div class="seg" id="segRondas" role="group" aria-label="Rondas por equipa">
+              <button data-v="2">2</button><button data-v="3">3</button><button data-v="5">5</button>
+              <button data-v="0">Sem limite</button>
+            </div>
+          </div>
+          <ul class="lista" id="listaEquipas"></ul>
+          <p class="aviso">Com uma equipa só, joga-se sem pontos por equipa: cada ronda sai uma pessoa ao acaso.</p>
+        </div>
+
+        <div class="folha" id="folha-jog" hidden>
+          <p class="titulo-bloco" id="contaPessoas">Pessoas</p>
+          <form class="acts" id="formPessoa" style="flex-wrap:nowrap">
+            <input class="campo" id="campoPessoa" placeholder="Nome e Enter" aria-label="Nome da pessoa">
+            <button class="btn btn-cheio" type="submit">Juntar</button>
+          </form>
+          <ul class="lista" id="listaPessoas"></ul>
+          <div class="acts">
+            <button class="btn btn-mini" id="btnDistribuir">Distribuir pelas equipas</button>
+            <button class="btn btn-mini" id="btnTirarTodas">Tirar todas</button>
+          </div>
+          <p class="aviso">O ponto verde quer dizer que a pessoa já entrou pelo telemóvel. Só sai para desenhar quem está ligado.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- PARTICIPANTE                                                       -->
+  <!-- ================================================================== -->
+  <section id="ecraParticipante" hidden>
+    <div class="part">
+
+      <div class="part-cartao vidro" id="pLigar">
+        <p class="sobrancelha">Entrar numa sala</p>
+        <h2>Qual é o código?</h2>
+        <input class="campo codigo-campo" id="campoCodigo" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="CÓDIGO" aria-label="Código da sala">
+        <p class="erro" id="erroLigar" hidden></p>
+        <div class="acts"><button class="btn btn-cheio btn-grande" id="btnLigar">Entrar</button></div>
+      </div>
+
+      <div class="part-cartao vidro" id="pNome" hidden>
+        <p class="sobrancelha">Sala <span id="pSalaCodigo"></span></p>
+        <h2>Quem és tu?</h2>
+        <div class="nomes" id="pNomes"></div>
+        <hr class="sep">
+        <p class="aviso">Não estás na lista?</p>
+        <form class="acts" id="pFormNovo" style="flex-wrap:nowrap">
+          <input class="campo" id="pCampoNovo" placeholder="O teu nome" aria-label="O teu nome">
+          <button class="btn btn-cheio" type="submit">Entrar</button>
+        </form>
+      </div>
+
+      <div id="pJogo" hidden>
+        <div class="part">
+          <div class="part-faixa">
+            <span class="chip-equipa" id="pChip"><i id="pChipCor"></i><span id="pChipTxt"></span></span>
+            <span class="estado-ligacao"><span class="ponto on" id="pPonto"></span><span id="pTxtLig">Ligado</span></span>
+          </div>
+
+          <div class="espera vidro" id="pEspera">
+            <span class="sobrancelha" id="pEsperaRot">Estás dentro</span>
+            <span class="grande" id="pEsperaTxt">À espera da ronda</span>
+          </div>
+
+          <div class="escolhas vidro" id="pEscolha" hidden>
+            <p class="sobrancelha">É a tua vez</p>
+            <h2>Escolhe o que vais desenhar</h2>
+            <div class="escolhas-btns" id="pEscolhaBtns"></div>
+            <p class="aviso">Se não escolheres, sai a primeira daqui a 20 segundos.</p>
+          </div>
+
+          <div class="p-fim vidro" id="pFim" hidden>
+            <span class="sobrancelha">Fim do jogo</span>
+            <span class="lugar" id="pFimLugar"></span>
+            <ol class="p-class" id="pFimClass"></ol>
+          </div>
+
+          <div class="part-palavra" id="pPalavraBox" hidden>
+            <div>
+              <div class="rot">Desenha</div>
+              <div class="pal" id="pPalavra"></div>
+            </div>
+            <div class="tempo" id="pTempo"></div>
+          </div>
+
+          <div class="part-faixa" id="pQuemBox" hidden>
+            <span class="sobrancelha" id="pQuem"></span>
+          </div>
+
+          <div class="pista pista-media" id="pPista" hidden></div>
+
+          <div class="quadro-moldura" id="pMoldura" hidden>
+            <canvas class="quadro" id="quadroPart"></canvas>
+            <div class="revelada" id="reveladaPart" hidden></div>
+          </div>
+
+          <form class="palpite" id="pPalpite" hidden autocomplete="off">
+            <input class="campo" id="pPalpiteCampo" maxlength="40" placeholder="Escreve o teu palpite"
+              enterkeyhint="send" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="O teu palpite">
+            <button class="btn btn-cheio" type="submit">Enviar</button>
+          </form>
+          <div class="palpite-eco" id="pEco" aria-live="polite"></div>
+
+          <div class="ferramentas vidro" id="pFerramentas" hidden style="padding:var(--s3)">
+            <div class="cores" id="pCores"></div>
+            <div class="larguras" id="pLarguras">
+              <button class="btn btn-mini" id="pDesfazer">Desfazer</button>
+              <button class="btn btn-mini" id="pLimpar">Limpar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="rodape">
+    <span id="estado">Escolhe como entras</span>
+    <span>Feita por <a href="https://julianaaraujo.pt" target="_blank" rel="noopener">julianaaraujo.pt</a></span>
+  </footer>
+</div>
+
+
+<section class="apoio" id="apoio-desenha">
+  <div class="apoio-wrap">
+
+    <h2>Como se usa</h2>
+    <ol>
+      <li><b>Abre a sala e projeta.</b> Aparece um código de quatro letras e um QR.</li>
+      <li><b>As pessoas entram pelo telemóvel.</b> Leem o QR ou escrevem o código, e escolhem o nome da lista.</li>
+      <li><b>Começa o jogo.</b> Sai alguém ao acaso para desenhar, e só essa pessoa vê a palavra. As outras escrevem o palpite no telemóvel, e quem acertar primeiro ganha o ponto para a equipa.</li>
+    </ol>
+    <p>No painel escolhes as palavras, o tempo de cada ronda, as equipas (até cinco) e se os palpites são escritos ou em voz alta. Antes da sessão, carrega em <b>Experimentar a desenhar</b>: o ecrã de quem participa abre ao lado do teu, e podes fazer uma ronda sozinha.</p>
+
+    <h2>Para que serve numa sessão</h2>
+    <ul>
+      <li>Rever conceitos no fim de um módulo. Desenhar «feedback» ou «empatia» obriga a pensar no que a palavra quer dizer.</li>
+      <li>Acordar o grupo depois de uma parte mais teórica</li>
+      <li>Pôr a trabalhar em equipa pessoas que ainda não se conhecem</li>
+    </ul>
+    <p>Além de uma lista geral de objetos fáceis de desenhar, há uma lista de conceitos para cada área que dou: comunicação, desenvolvimento pessoal, liderança e inteligência artificial. Podes editá-las ou escrever a tua.</p>
+
+    <h2>Perguntas frequentes</h2>
+    <div class="faq">
+      <details>
+        <summary><h3>É preciso criar conta ou instalar alguma coisa?</h3></summary>
+        <p>Não. Quem dá a sessão abre esta página e carrega em Abrir sala. Quem participa entra pelo navegador do telemóvel, com o QR ou com o código de quatro letras.</p>
+      </details>
+      <details>
+        <summary><h3>Os outros telemóveis conseguem ver a palavra?</h3></summary>
+        <p>Não. A palavra só é enviada ao telemóvel de quem está a desenhar. O ecrã projetado também não a mostra: se precisares de a ver, carrega e mantém Ver palavra.</p>
+      </details>
+      <details>
+        <summary><h3>Os palpites têm de estar escritos sem erros?</h3></summary>
+        <p>Maiúsculas e acentos não contam. Se faltar ou sobrar uma letra, a pessoa recebe um «Quase!» no telemóvel e pode tentar outra vez. Se preferires que o grupo grite, muda os palpites para Em voz alta e marcas tu a equipa que acertou.</p>
+      </details>
+      <details>
+        <summary><h3>Como experimento antes da sessão?</h3></summary>
+        <p>Abre a sala e carrega em Experimentar a desenhar: aparece ao lado o ecrã de quem participa, e podes desenhar tu. Para testar os palpites precisas de uma segunda pessoa na sala, porque quem desenha não adivinha.</p>
+      </details>
+      <details>
+        <summary><h3>Os nomes e os desenhos vão para algum lado?</h3></summary>
+        <p>Os telemóveis ligam-se diretamente ao computador de quem dá a sessão. Para se encontrarem usam um serviço público de ligação, mas o jogo não guarda nada em nenhum servidor: as palavras, os nomes e os pontos ficam no teu navegador, e os desenhos só existem enquanto a página estiver aberta.</p>
+      </details>
+      <details>
+        <summary><h3>Funciona em qualquer rede?</h3></summary>
+        <p>Na maioria, sim. Algumas redes de empresa bloqueiam este tipo de ligação entre aparelhos. Se vais dar a sessão numa rede que não conheces, experimenta antes com um telemóvel.</p>
+      </details>
+      <details>
+        <summary><h3>Posso guardar os desenhos?</h3></summary>
+        <p>Podes. Cada ronda fica no Álbum, e o botão de descarregar junta-os todos numa imagem. Descarrega antes de fechar ou recarregar a página, que aí perdem-se.</p>
+      </details>
+    </div>
+
+    <h2>Direitos de autor</h2>
+    <p>Esta ferramenta é uma criação original de Juliana Araújo. &copy; 2026, todos os direitos reservados.</p>
+    <p><b>O jogo não é meu:</b> desenhar e adivinhar é uma brincadeira antiga. Podes usar a ferramenta à vontade nas tuas sessões e aulas, e partilhar a ligação. Não é permitido copiar o código nem alojar cópias noutro endereço. Para qualquer outro uso, <a href="index.html#contactos">fala comigo</a>.</p>
+
+    <div class="apoio-cta">
+      <p>Se estiveres a preparar formação para a tua equipa ou organização, vê a <a href="index.html#formacoes">oferta formativa</a> ou os <a href="recursos.html">recursos pedagógicos</a> que desenho à medida. Há também uma <a href="roleta.html">roleta para sortear nomes</a>, uns <a href="dados-storytelling.html">dados de storytelling</a> e o <a href="reaction.html">Reaction</a>.</p>
+    </div>
+
+  </div>
+</section>
+
+<p class="credito-proj">&copy; 2026 Juliana Araújo &middot; julianaaraujo.pt</p>
+
+<!-- ==================================================================== -->
+<!-- SOBREPOSIÇÕES DO FORMADOR                                            -->
+<!-- ==================================================================== -->
+<aside class="ensaio" id="ensaio" hidden aria-label="Ensaio como participante">
+  <div class="ensaio-topo">
+    <div><b>Ensaio · tu como participante</b><small>É aqui que desenhas. Não aparece em modo projeção.</small></div>
+    <div class="acts">
+      <a class="btn btn-mini" id="ensaioSeparador" target="_blank" rel="noopener">Separador</a>
+      <button class="btn btn-mini" id="btnFecharEnsaio">Fechar</button>
+    </div>
+  </div>
+  <iframe id="ensaioFrame" title="Painel de participante" allow="fullscreen"></iframe>
+</aside>
+
+<div class="sobre" id="sobreFim" hidden role="dialog" aria-modal="true" aria-label="Resultados">
+  <div class="sobre-caixa">
+    <div class="sobre-topo">
+      <div><p class="sobrancelha" id="fimSub">Fim do jogo</p><h1>Resultados</h1></div>
+      <div class="acts">
+        <button class="btn btn-cheio" id="btnNovoJogo">Novo jogo</button>
+        <button class="btn" id="btnDescarregarFim">Descarregar álbum</button>
+        <button class="btn" id="btnFecharFim">Fechar</button>
+      </div>
+    </div>
+    <div id="podio"></div>
+    <hr class="sep">
+    <h3>Álbum</h3>
+    <div class="album" id="albumFim"></div>
+  </div>
+</div>
+
+<div class="sobre" id="sobreAlbum" hidden role="dialog" aria-modal="true" aria-label="Álbum">
+  <div class="sobre-caixa">
+    <div class="sobre-topo">
+      <div><p class="sobrancelha" id="albumSub">Desenhos desta sessão</p><h1>Álbum</h1></div>
+      <div class="acts">
+        <button class="btn btn-cheio" id="btnDescarregarAlbum">Descarregar álbum</button>
+        <button class="btn" id="btnFecharAlbum">Fechar</button>
+      </div>
+    </div>
+    <div class="album" id="albumGrelha"></div>
+  </div>
+</div>
+
+<div class="sobre" id="sobreImagem" hidden role="dialog" aria-modal="true" aria-label="Desenho">
+  <div class="imagem-grande">
+    <div class="sobre-topo">
+      <div><p class="sobrancelha" id="imgSub"></p><h1 id="imgTitulo"></h1></div>
+      <div class="acts">
+        <a class="btn btn-cheio" id="imgGuardar" download>Guardar este desenho</a>
+        <button class="btn" id="btnFecharImagem">Fechar</button>
+      </div>
+    </div>
+    <img id="imgGrande" alt="">
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ======================================================================
+   Constantes
+   ====================================================================== */
+
+// Os IDs no serviço de ligação são públicos e partilhados por toda a gente
+// que usa a PeerJS. O prefixo evita colidir com a sala de outro site.
+const PREFIXO = "julianaaraujo-desenha-";
+const ALFABETO = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";   // sem 0/O e 1/I
+const CHAVE_CONF = "desenha-conf-v1";
+const SEGUNDOS_ESCOLHA = 20;
+
+const EQUIPAS_BASE = [
+  {nome:"Azul",     cor:"#1F2ED6"},
+  {nome:"Rosa",     cor:"#FF4D8D"},
+  {nome:"Turquesa", cor:"#00BFA6"},
+  {nome:"Laranja",  cor:"#FF6B35"},
+  {nome:"Roxa",     cor:"#7B2FF7"}
+];
+
+const PALETA = ["#0A0A0A","#6B665D","#1F2ED6","#00B4D8","#00BFA6","#1DB954",
+                "#FFC400","#FF6B35","#FF5747","#FF4D8D","#7B2FF7","#8B5A2B"];
+const BORRACHA = "#FFFFFF";
+const LARGURAS = [0.007, 0.016, 0.034];   // em fração da largura do quadro
+
+/* As quatro listas por área correspondem às áreas de formação do site.
+   São conceitos, não objetos: desenhar "delegar" obriga a pensar no que é. */
+const PACOTES = {
+  geral:{nome:"Geral", sub:"Objetos, fáceis de desenhar", palavras:[
+    "Guarda-chuva","Bicicleta","Farol","Ponte","Microfone","Relógio","Montanha",
+    "Chávena de café","Chave","Avião","Castelo","Girafa","Semáforo","Escada",
+    "Bolo de anos","Óculos","Tartaruga","Foguetão","Lâmpada","Âncora",
+    "Balão","Mochila","Piano","Cacto","Arco-íris","Tenda","Peixe","Coroa"]},
+  comunicacao:{nome:"Comunicação", sub:"O que se diz, o que se ouve, o que se perde", palavras:[
+    "Escuta ativa","Feedback","Linguagem corporal","Mal-entendido","Interromper",
+    "Pergunta aberta","Silêncio","Tom de voz","Contacto visual","Empatia",
+    "Rumor","Apresentação em público","Reunião","Email","Conflito",
+    "Negociação","Assertividade","Ruído","Mensagem","Aperto de mão"]},
+  pessoal:{nome:"Desenvolvimento pessoal", sub:"Onde se está e para onde se vai", palavras:[
+    "Zona de conforto","Objetivo","Hábito","Motivação","Resiliência",
+    "Procrastinação","Autoconfiança","Equilíbrio","Stress","Mentalidade de crescimento",
+    "Gestão do tempo","Pausa","Erro","Aprendizagem","Valores",
+    "Mudança","Paciência","Gratidão","Descanso","Foco"]},
+  lideranca:{nome:"Liderança e equipas", sub:"Quem leva, quem segue, quem segura", palavras:[
+    "Delegar","Reunião de equipa","Visão","Confiança","Decisão",
+    "Reconhecimento","Brainstorming","Prazo","Hierarquia","Colaboração",
+    "Mentor","Crise","Prioridade","Espírito de equipa","Responsabilidade",
+    "Motivar","Conflito de equipa","Estratégia","Dar o exemplo","Autonomia"]},
+  ia:{nome:"Inteligência artificial", sub:"A máquina, e o que lhe entregamos", palavras:[
+    "Algoritmo","Robô","Chatbot","Dados","Viés",
+    "Privacidade","Prompt","Automação","Alucinação","Aprendizagem automática",
+    "Rede neuronal","Nuvem","Assistente virtual","Reconhecimento facial","Deepfake",
+    "Ética","Tradução automática","Código","Servidor","Palavra-passe"]}
+};
+const ORDEM_PACOTES = ["geral","comunicacao","pessoal","lideranca","ia"];
+
+/* ======================================================================
+   Utilitários
+   ====================================================================== */
+
+const $ = id => document.getElementById(id);
+function lerLS(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function gravarLS(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+function lerSS(k){ try{ return sessionStorage.getItem(k); }catch(e){ return null; } }
+function gravarSS(k, v){ try{ sessionStorage.setItem(k, v); }catch(e){} }
+
+let tEstado = null;
+function estadoTexto(t, fixo){
+  const el = $("estado"); el.textContent = t;
+  clearTimeout(tEstado);
+  if(!fixo) tEstado = setTimeout(()=>{ el.textContent = ""; }, 4000);
+}
+
+function novoId(p){ return (p||"") + Math.random().toString(36).slice(2,8) + Date.now().toString(36).slice(-3); }
+function novoCodigo(){ let c=""; for(let i=0;i<4;i++) c += ALFABETO[Math.floor(Math.random()*ALFABETO.length)]; return c; }
+function limparCodigo(v){ return (v||"").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,4); }
+function baralhar(a){ a = a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+
+function mostrarEcra(nome){
+  ["ecraInicio","ecraFormador","ecraParticipante"].forEach(id => $(id).hidden = (id !== nome));
+  $("btnProj").hidden = (nome !== "ecraFormador");
+  document.body.classList.toggle("participante", nome === "ecraParticipante");
+}
+
+function esc(t){ const d = document.createElement("span"); d.textContent = t; return d.innerHTML; }
+const clamp = v => isFinite(v) ? Math.max(0, Math.min(1, v)) : 0;
+const eLetra = ch => /[\p{L}\p{N}]/u.test(ch);
+
+/* A máscara das pistas viaja como texto: "_" é uma letra por descobrir,
+   uma letra é uma letra já revelada, espaço é espaço, o resto é sinal. */
+function pintarMascara(el, mascara, antes){
+  const chars = Array.from(mascara);
+  el.innerHTML = chars.map((ch, i) => {
+    if(ch === " ") return '<span class="esp"></span>';
+    if(ch === "_") return '<span class="l"></span>';
+    if(eLetra(ch)){
+      const nova = antes && antes[i] === "_";
+      return '<span class="l' + (nova ? " nova" : "") + '">' + esc(ch) + '</span>';
+    }
+    return '<span class="sinal">' + esc(ch) + '</span>';
+  }).join("");
+}
+
+/* ======================================================================
+   Som
+   ====================================================================== */
+
+let somLigado = true, ac = null;
+function audio(){
+  if(!somLigado) return null;
+  try{
+    if(!ac){ const AC = window.AudioContext || window.webkitAudioContext; if(!AC) return null; ac = new AC(); }
+    if(ac.state === "suspended") ac.resume();
+    return ac;
+  }catch(e){ return null; }
+}
+function nota(freq, quando, dur, vol){
+  const a = audio(); if(!a) return;
+  const o = a.createOscillator(), g = a.createGain(), t = a.currentTime + quando;
+  o.type = "triangle"; o.frequency.value = freq;
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(vol || 0.14, t + 0.015);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + dur + 0.05);
+}
+const somInicio   = () => { nota(523.25,0,.35); nota(783.99,.1,.5); };
+const somTique    = () => nota(880,0,.12,.08);
+const somPista    = () => nota(1174.66,0,.25,.07);
+const somFim      = () => { nota(392,0,.4); nota(261.63,.18,.7); };
+const somPonto    = () => { nota(659.25,0,.4); nota(880,.08,.4); nota(1318.5,.18,.7); };
+const somFanfarra = () => { [523.25,659.25,783.99,1046.5,783.99,1046.5].forEach((f,i)=>nota(f,i*.13,.55,.13)); };
+
+/* ======================================================================
+   Desenhar traços — usado pelo quadro ao vivo e pelo álbum
+   ----------------------------------------------------------------------
+   Os pontos viajam normalizados entre 0 e 1. Um traço feito num
+   telemóvel estreito cai no mesmo sítio relativo num projetor largo.
+   ====================================================================== */
+
+function pintarTraco(ctx, t, w, h, de){
+  const p = t.pts; if(!p.length || !w) return;
+  const larg = Math.max(1.2, t.larg * w);
+  if(p.length === 1){
+    ctx.fillStyle = t.cor; ctx.beginPath();
+    ctx.arc(p[0][0]*w, p[0][1]*h, larg/2, 0, Math.PI*2); ctx.fill();
+    return;
+  }
+  ctx.strokeStyle = t.cor; ctx.lineWidth = larg; ctx.lineCap = "round"; ctx.lineJoin = "round";
+  const i0 = Math.max(0, (de||0) - 1);
+  ctx.beginPath();
+  ctx.moveTo(p[i0][0]*w, p[i0][1]*h);
+  for(let i = i0 + 1; i < p.length; i++) ctx.lineTo(p[i][0]*w, p[i][1]*h);
+  ctx.stroke();
+}
+
+function Quadro(canvas){
+  const ctx = canvas.getContext("2d");
+  let tracos = [], w = 0, h = 0;
+
+  function medir(){
+    const r = canvas.getBoundingClientRect();
+    if(!r.width) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = r.width; h = r.height;
+    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    redesenhar();
+  }
+  function redesenhar(){
+    ctx.fillStyle = "#FFFFFF"; ctx.fillRect(0, 0, w, h);
+    tracos.forEach(t => pintarTraco(ctx, t, w, h, 0));
+  }
+
+  if(window.ResizeObserver) new ResizeObserver(medir).observe(canvas);
+  else window.addEventListener("resize", medir);
+
+  // O quadro nasce escondido e só aparece quando começa a ronda. Esperar pelo
+  // ResizeObserver ou pelo requestAnimationFrame para o medir falha num
+  // separador em segundo plano — e num telemóvel que acabou de acordar. Se
+  // ainda não tem tamanho, mede-se aqui, no momento em que é preciso.
+  const garantirTamanho = () => { if(!w) medir(); };
+
+  return {
+    medir,
+    definir(lista){
+      tracos = (lista || []).map(t => ({id:t.id, cor:t.cor, larg:t.larg, pts:t.pts.slice()}));
+      garantirTamanho();
+      redesenhar();
+    },
+    segmento(s){
+      garantirTamanho();
+      let t = null;
+      for(let i = tracos.length - 1; i >= 0; i--){ if(tracos[i].id === s.id){ t = tracos[i]; break; } }
+      if(!t){ t = {id:s.id, cor:s.cor, larg:s.larg, pts:[]}; tracos.push(t); }
+      const de = t.pts.length;
+      for(const q of s.pts) t.pts.push(q);
+      pintarTraco(ctx, t, w, h, de);
+    },
+    lista(){ return tracos; }
+  };
+}
+
+function tracosParaImagem(tracos, w, h){
+  const c = document.createElement("canvas");
+  c.width = w; c.height = h;
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = "#FFFFFF"; ctx.fillRect(0, 0, w, h);
+  tracos.forEach(t => pintarTraco(ctx, t, w, h, 0));
+  return c.toDataURL("image/png");
+}
+
+/* ======================================================================
+   FORMADOR — o anfitrião
+   ====================================================================== */
+
+const F = {
+  conf:null,
+  peer:null, codigo:null,
+  ligacoes:new Map(),    // peerId -> {conn, jogadorId}
+  fase:"espera",         // espera | escolha | ronda | fim
+  desenhadorId:null, equipaIdx:-1, palavra:null, restante:0,
+  tracos:[], relogio:null, vezEquipa:0, quadro:null,
+  opcoes:[], relogioEscolha:null,
+  mascara:"", momentosPista:[],
+  album:[], jogoAcabado:false, ligadosAntes:new Set(), ultimoFim:null
+};
+
+function confBase(){
+  return {
+    palavras: PACOTES.geral.palavras.slice(),
+    usadas: [],
+    nEquipas: 2,
+    equipas: EQUIPAS_BASE.map(e => ({nome:e.nome, cor:e.cor, pontos:0})),
+    pessoas: [],
+    duracao: 60,
+    modoPalavra: "3",
+    pistas: true,
+    palpites: "escrito",
+    rondasPorEquipa: 3,
+    rondaN: 0
+  };
+}
+
+function carregarConf(){
+  const g = lerLS(CHAVE_CONF);
+  const c = confBase();
+  if(g && typeof g === "object"){
+    if(Array.isArray(g.palavras)) c.palavras = g.palavras;
+    if(Array.isArray(g.usadas)) c.usadas = g.usadas;
+    if(g.nEquipas >= 1 && g.nEquipas <= 5) c.nEquipas = g.nEquipas;
+    if(Array.isArray(g.equipas)) g.equipas.forEach((e,i) => { if(c.equipas[i]){ c.equipas[i].nome = e.nome || c.equipas[i].nome; c.equipas[i].pontos = e.pontos || 0; } });
+    if(Array.isArray(g.pessoas)) c.pessoas = g.pessoas.filter(p => p && p.id && p.nome);
+    if([30,45,60,90,120].indexOf(g.duracao) > -1) c.duracao = g.duracao;
+    if(g.modoPalavra === "3" || g.modoPalavra === "acaso") c.modoPalavra = g.modoPalavra;
+    if(typeof g.pistas === "boolean") c.pistas = g.pistas;
+    if(g.palpites === "escrito" || g.palpites === "voz") c.palpites = g.palpites;
+    if([0,2,3,5].indexOf(g.rondasPorEquipa) > -1) c.rondasPorEquipa = g.rondasPorEquipa;
+    if(g.rondaN >= 0) c.rondaN = g.rondaN;
+  }
+  c.pessoas.forEach(p => { if(p.equipa >= c.nEquipas) p.equipa = 0; });
+  return c;
+}
+const guardarConf = () => gravarLS(CHAVE_CONF, F.conf);
+const totalRondas = () => F.conf.rondasPorEquipa ? F.conf.rondasPorEquipa * F.conf.nEquipas : 0;
+const listaPalavras = () => F.conf.palavras.map(s => s.trim()).filter(Boolean);
+
+/* ---- abrir a sala ---- */
+
+function abrirSala(){
+  F.conf = carregarConf();
+  F.jogoAcabado = !!(totalRondas() && F.conf.rondaN >= totalRondas());
+  mostrarEcra("ecraFormador");
+  F.quadro = Quadro($("quadroFormador"));
+
+  desenharPainel();
+  mostrarRondaFormador();
+
+  if(typeof Peer === "undefined"){
+    salaEstado("mal", "Não consegui carregar a biblioteca de ligação. Verifica a internet e recarrega.");
+    return;
+  }
+  // tenta reaver o código anterior, para quem já tinha entrado voltar sozinho
+  const anterior = lerSS("desenha-sala");
+  ligarAnfitriao(anterior || novoCodigo(), anterior ? 5 : 0);
+}
+
+function salaEstado(tipo, txt){
+  $("pontoSala").className = "ponto" + (tipo === "on" ? " on" : tipo === "mal" ? " mal" : "");
+  $("txtSala").textContent = txt;
+}
+
+/* Abrir a sala pede ao serviço público um nome fixo. Às vezes o serviço não
+   responde, ou corta a ligação antes de a sala abrir — visto a 16/09/2026.
+   Sem um vigia, a página ficava em "A abrir a sala…" para sempre: sem código,
+   sem QR, e com os botões mudos. */
+const MAX_TENTATIVAS_SALA = 5;
+let tentativasSala = 0, vigiaSala = null;
+
+function ligarAnfitriao(codigo, reaverVezes){
+  if(F.peer){ try{ F.peer.destroy(); }catch(e){} }
+  clearTimeout(vigiaSala);
+  tentativasSala += 1;
+  $("btnReabrir").hidden = true;
+  salaEstado("", tentativasSala > 1 ? "A abrir a sala… (tentativa " + tentativasSala + " de " + MAX_TENTATIVAS_SALA + ")" : "A abrir a sala…");
+
+  const peer = new Peer(PREFIXO + codigo, {debug:0});
+  F.peer = peer;
+  let abriu = false;
+
+  const tentarDeNovo = (proximo, espera) => {
+    setTimeout(() => { if(F.peer === peer) ligarAnfitriao(proximo, Math.max(0, reaverVezes - 1)); }, espera);
+  };
+
+  // a sala não abriu: tenta outra vez, e ao fim de algumas tentativas diz-o
+  const falhou = () => {
+    if(F.peer !== peer || abriu) return;
+    clearTimeout(vigiaSala);
+    try{ peer.destroy(); }catch(e){}
+    if(tentativasSala >= MAX_TENTATIVAS_SALA){
+      salaEstado("mal", "Não consegui abrir a sala: o serviço de ligação não está a responder.");
+      $("btnReabrir").hidden = false;
+      return;
+    }
+    // as primeiras tentativas mantêm o código, para quem já o leu poder entrar
+    tentarDeNovo(tentativasSala <= 2 ? codigo : novoCodigo(), 1500);
+  };
+
+  vigiaSala = setTimeout(falhou, 8000);
+
+  peer.on("open", function(){
+    if(F.peer !== peer) return;
+    abriu = true;
+    clearTimeout(vigiaSala);
+    tentativasSala = 0;
+    F.codigo = codigo;
+    gravarSS("desenha-sala", codigo);
+    $("salaCodigo").textContent = codigo;
+    const url = location.href.split(/[?#]/)[0] + "?sala=" + codigo;
+    $("salaUrl").textContent = url.replace(/^https?:\/\//, "");
+    // para o formador poder entrar na própria sala e experimentar desenhar
+    $("btnExperimentar").href = url;
+    $("btnExperimentar").hidden = false;
+    const qr = $("qr"); qr.innerHTML = "";
+    try{
+      if(typeof QRCode !== "undefined") new QRCode(qr, {text:url, width:248, height:248, correctLevel:QRCode.CorrectLevel.M});
+      else qr.hidden = true;
+    }catch(e){ qr.hidden = true; }
+    const ligados = F.conf.pessoas.filter(p => estaLigado(p.id)).length;
+    salaEstado("on", ligados ? (ligados + (ligados === 1 ? " pessoa ligada" : " pessoas ligadas")) : "Sala aberta — à espera de pessoas");
+    desenharPessoas();
+  });
+
+  peer.on("connection", conn => { if(F.peer === peer) aoLigarParticipante(conn); });
+
+  peer.on("error", function(err){
+    if(F.peer !== peer) return;
+    const tipo = err && err.type;
+    if(tipo === "unavailable-id"){
+      // o código está preso pela sessão anterior, ou tem dono: não é falha do serviço
+      clearTimeout(vigiaSala);
+      tentativasSala = Math.max(0, tentativasSala - 1);
+      try{ peer.destroy(); }catch(e){}
+      if(reaverVezes > 0) tentarDeNovo(codigo, 2000);
+      else tentarDeNovo(novoCodigo(), 200);
+      return;
+    }
+    if(!abriu){ falhou(); return; }
+    if(tipo === "network" || tipo === "server-error" || tipo === "socket-error" || tipo === "socket-closed"){
+      salaEstado("mal", "Perdi a ligação ao serviço. A tentar de novo…");
+      setTimeout(() => { if(F.peer === peer && peer.disconnected && !peer.destroyed){ try{ peer.reconnect(); }catch(e){} } }, 2500);
+      return;
+    }
+    salaEstado("mal", "Erro na sala: " + (tipo || "desconhecido"));
+  });
+
+  peer.on("disconnected", function(){
+    if(F.peer !== peer) return;
+    // antes de abrir não há nada para religar: é uma tentativa falhada
+    if(!abriu){ falhou(); return; }
+    salaEstado("mal", "Desligada do serviço. A tentar de novo…");
+    setTimeout(() => { if(F.peer === peer && !peer.destroyed){ try{ peer.reconnect(); }catch(e){} } }, 2000);
+  });
+}
+
+/* ---- ligações ---- */
+
+function aoLigarParticipante(conn){
+  conn.on("open", function(){
+    F.ligacoes.set(conn.peer, {conn, jogadorId:null});
+    enviar(conn, {t:"boas-vindas", codigo:F.codigo, pessoas:listaPublicaPessoas(), equipas:equipasPublicas()});
+  });
+  conn.on("data", msg => tratarNoFormador(conn, msg));
+  const fechar = () => {
+    const l = F.ligacoes.get(conn.peer);
+    F.ligacoes.delete(conn.peer);
+    if(l && l.jogadorId){ desenharPessoas(); actualizarVistasPessoas(); }
+  };
+  conn.on("close", fechar);
+  conn.on("error", fechar);
+}
+
+function enviar(conn, msg){ try{ if(conn && conn.open) conn.send(msg); }catch(e){} }
+function paraTodos(msg, excepto){
+  F.ligacoes.forEach(l => { if(l.jogadorId && l.conn !== excepto) enviar(l.conn, msg); });
+}
+function paraQuemAdivinha(msg){
+  F.ligacoes.forEach(l => { if(l.jogadorId && l.jogadorId !== F.desenhadorId) enviar(l.conn, msg); });
+}
+function ligacaoDe(jogadorId){
+  let achou = null;
+  F.ligacoes.forEach(l => { if(l.jogadorId === jogadorId && l.conn.open) achou = l; });
+  return achou;
+}
+const estaLigado = id => !!ligacaoDe(id);
+const pessoaDe = id => F.conf.pessoas.filter(x => x.id === id)[0] || null;
+
+function listaPublicaPessoas(){
+  return F.conf.pessoas.map(p => ({id:p.id, nome:p.nome, equipa:p.equipa, ocupado:estaLigado(p.id)}));
+}
+function equipasPublicas(){
+  return F.conf.equipas.slice(0, F.conf.nEquipas).map(e => ({nome:e.nome, cor:e.cor, pontos:e.pontos}));
+}
+
+function tratarNoFormador(conn, msg){
+  if(!msg || typeof msg !== "object") return;
+  const l = F.ligacoes.get(conn.peer);
+  if(!l) return;
+
+  if(msg.t === "sou"){
+    const p = pessoaDe(msg.jogadorId);
+    if(!p){ enviar(conn, {t:"desconhecido"}); enviar(conn, {t:"pessoas", pessoas:listaPublicaPessoas(), equipas:equipasPublicas()}); return; }
+    // se a mesma pessoa entrar de outro aparelho, fica o mais recente
+    F.ligacoes.forEach(o => { if(o !== l && o.jogadorId === p.id){ o.jogadorId = null; enviar(o.conn, {t:"substituido"}); } });
+    l.jogadorId = p.id;
+    confirmar(conn, p);
+    return;
+  }
+
+  if(msg.t === "novo"){
+    const nome = String(msg.nome || "").trim().slice(0, 40);
+    if(!nome) return;
+    let p = F.conf.pessoas.filter(x => x.nome.toLowerCase() === nome.toLowerCase())[0];
+    if(!p){
+      p = {id:novoId("p"), nome:nome, equipa:equipaMaisPequena()};
+      F.conf.pessoas.push(p); guardarConf();
+      desenharEquipas();
+    }
+    l.jogadorId = p.id;
+    confirmar(conn, p);
+    return;
+  }
+
+  if(msg.t === "palpite"){ tratarPalpite(l, msg); return; }
+
+  // daqui para baixo só vale para quem está a desenhar agora
+  if(!l.jogadorId || l.jogadorId !== F.desenhadorId) return;
+
+  if(msg.t === "escolhi" && F.fase === "escolha"){
+    const i = msg.i | 0;
+    if(i >= 0 && i < F.opcoes.length) comecarDesenho(F.opcoes[i]);
+    return;
+  }
+
+  if(F.fase !== "ronda") return;
+
+  if(msg.t === "traco" && Array.isArray(msg.pts)){
+    const s = {id:String(msg.id), cor:String(msg.cor), larg:+msg.larg || LARGURAS[1],
+               pts:msg.pts.filter(q => Array.isArray(q) && q.length === 2).map(q => [clamp(+q[0]), clamp(+q[1])])};
+    if(!s.pts.length) return;
+    let t = null;
+    for(let i = F.tracos.length - 1; i >= 0; i--){ if(F.tracos[i].id === s.id){ t = F.tracos[i]; break; } }
+    if(!t){ t = {id:s.id, cor:s.cor, larg:s.larg, pts:[]}; F.tracos.push(t); }
+    for(const q of s.pts) t.pts.push(q);
+    F.quadro.segmento(s);
+    $("avisoFormador").hidden = true;
+    paraTodos({t:"traco", id:s.id, cor:s.cor, larg:s.larg, pts:s.pts}, conn);
+    return;
+  }
+  if(msg.t === "desfazer"){
+    F.tracos.pop();
+    F.quadro.definir(F.tracos);
+    paraTodos({t:"tracos", lista:F.tracos});
+    return;
+  }
+  if(msg.t === "limpar"){
+    F.tracos = [];
+    F.quadro.definir(F.tracos);
+    paraTodos({t:"tracos", lista:[]});
+  }
+}
+
+/* ---- palpites escritos ---- */
+
+/* "Coração", "coracao " e "CORAÇÃO" são a mesma resposta. */
+function normalizar(t){
+  return String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+}
+function distancia(a, b){
+  a = Array.from(a); b = Array.from(b);
+  let ant = b.map((_, j) => j + 1); ant.unshift(0);
+  for(let i = 1; i <= a.length; i++){
+    const cur = [i];
+    for(let j = 1; j <= b.length; j++){
+      cur[j] = Math.min(ant[j] + 1, cur[j-1] + 1, ant[j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+    }
+    ant = cur;
+  }
+  return ant[b.length];
+}
+function tratarPalpite(l, msg){
+  if(F.conf.palpites !== "escrito" || F.fase !== "ronda" || !F.palavra) return;
+  const p = pessoaDe(l.jogadorId);
+  if(!p || p.id === F.desenhadorId || p.equipa >= F.conf.nEquipas) return;
+  const agora = Date.now();
+  if(l.ultimoPalpite && agora - l.ultimoPalpite < 400) return;   // travão a quem carrega sem parar
+  l.ultimoPalpite = agora;
+  const texto = String(msg.texto || "").trim().slice(0, 40);
+  const n = normalizar(texto);
+  if(!n) return;
+  const alvo = normalizar(F.palavra);
+  if(n === alvo || n.replace(/ /g, "") === alvo.replace(/ /g, "")){
+    enviar(l.conn, {t:"palpite-certo", texto:texto});
+    terminarRonda(p.equipa, p.nome);
+    return;
+  }
+  // "quase": uma letra trocada (duas em palavras compridas). Só quem escreveu vê o texto
+  const quase = alvo.length >= 4 && distancia(n, alvo) <= (alvo.length >= 9 ? 2 : 1);
+  enviar(l.conn, {t:"palpite-errado", texto:texto, quase:quase});
+  mostrarPalpite(p.nome, quase ? null : texto, quase ? "quase" : "");
+}
+function mostrarPalpite(nome, texto, classe){
+  const cx = $("feedPalpites");
+  const s = document.createElement("span");
+  if(classe) s.className = classe;
+  s.innerHTML = "<b>" + esc(nome) + "</b>" + (classe === "quase" ? "está quase!" : classe === "certo" ? "acertou!" : esc(texto));
+  cx.insertBefore(s, cx.firstChild);
+  while(cx.children.length > 8) cx.removeChild(cx.lastChild);
+}
+
+function confirmar(conn, p){
+  const eq = F.conf.equipas[p.equipa] || F.conf.equipas[0];
+  enviar(conn, {t:"confirmado", jogadorId:p.id, nome:p.nome, equipa:{nome:eq.nome, cor:eq.cor}, codigo:F.codigo});
+  enviar(conn, estadoPublico());
+  enviar(conn, {t:"tracos", lista:F.tracos});
+  const souEu = p.id === F.desenhadorId;
+  if(F.fase === "escolha" && souEu) enviar(conn, {t:"escolher", opcoes:F.opcoes});
+  if(F.fase === "ronda" && souEu){
+    enviar(conn, {t:"palavra", palavra:F.palavra});
+    enviar(conn, {t:"tempo", restante:F.restante});
+  }
+  if(F.fase === "ronda" && !souEu && F.conf.pistas && F.mascara) enviar(conn, {t:"pista", mascara:F.mascara});
+  if(F.fase === "fim" && F.palavra) enviar(conn, {t:"revelar", palavra:F.palavra});
+  if(F.ultimoFim && !$("sobreFim").hidden) enviar(conn, F.ultimoFim);
+  desenharPessoas(); actualizarVistasPessoas();
+  if(F.fase === "espera") limparAvisoFormador();
+  estadoTexto(p.nome + " entrou");
+}
+
+function actualizarVistasPessoas(){
+  // quem está no ecrã de escolher o nome vê logo quem já está ocupado
+  const pub = {t:"pessoas", pessoas:listaPublicaPessoas(), equipas:equipasPublicas()};
+  F.ligacoes.forEach(l => { if(!l.jogadorId) enviar(l.conn, pub); });
+  const ligados = F.conf.pessoas.filter(p => estaLigado(p.id)).length;
+  if(F.codigo) salaEstado("on", ligados ? (ligados + (ligados === 1 ? " pessoa ligada" : " pessoas ligadas")) : "Sala aberta — à espera de pessoas");
+}
+
+function equipaMaisPequena(){
+  const n = F.conf.nEquipas, contas = new Array(n).fill(0);
+  F.conf.pessoas.forEach(p => { if(p.equipa < n) contas[p.equipa]++; });
+  let menor = 0;
+  for(let i = 1; i < n; i++) if(contas[i] < contas[menor]) menor = i;
+  return menor;
+}
+
+function estadoPublico(){
+  const p = pessoaDe(F.desenhadorId);
+  const eq = F.equipaIdx > -1 ? F.conf.equipas[F.equipaIdx] : null;
+  return {
+    t:"estado", fase:F.fase, desenhadorId:F.desenhadorId,
+    desenhadorNome: p ? p.nome : null,
+    equipa: eq ? {nome:eq.nome, cor:eq.cor} : null,
+    equipas: equipasPublicas(),
+    ronda: F.conf.rondaN, total: totalRondas(),
+    palpites: F.conf.palpites,
+    quemAcertou: F.fase === "fim" ? F.quemAcertou : null
+  };
+}
+
+/* ---- palavras ---- */
+
+function sortearPalavras(k){
+  const todas = listaPalavras();
+  let livres = todas.filter(w => F.conf.usadas.indexOf(w) === -1);
+  if(!livres.length){ F.conf.usadas = []; livres = todas; estadoTexto("Gastaram-se as palavras — voltam todas"); }
+  return baralhar(livres).slice(0, Math.min(k, livres.length));
+}
+
+/* As letras só começam a aparecer a meio do tempo, e nunca todas.
+   Palavra de 8 letras: 3 pistas, a 50%, 67% e 85% do tempo passado. */
+function calcularMomentosPista(palavra, duracao){
+  const n = Array.from(palavra).filter(eLetra).length;
+  const quantas = n <= 1 ? 0 : n <= 3 ? 1 : Math.floor(n * 0.4);
+  const m = [];
+  for(let k = 0; k < quantas; k++){
+    const frac = quantas === 1 ? 0.5 : 0.5 + 0.35 * k / (quantas - 1);
+    m.push(Math.max(1, Math.round(duracao * (1 - frac))));
+  }
+  return m;
+}
+function mascaraInicial(palavra){ return Array.from(palavra).map(ch => eLetra(ch) ? "_" : ch).join(""); }
+function revelarLetra(){
+  const pal = Array.from(F.palavra), mas = Array.from(F.mascara);
+  const escondidas = [];
+  mas.forEach((ch, i) => { if(ch === "_") escondidas.push(i); });
+  if(escondidas.length <= 1) return;          // a última fica sempre por descobrir
+  const i = escondidas[Math.floor(Math.random()*escondidas.length)];
+  mas[i] = pal[i];
+  const antes = Array.from(F.mascara);
+  F.mascara = mas.join("");
+  pintarMascara($("pistaFormador"), F.mascara, antes);
+  paraQuemAdivinha({t:"pista", mascara:F.mascara});
+  somPista();
+}
+
+/* ---- rondas ---- */
+
+/* Um botão que não faz nada é o pior erro possível num ecrã projetado.
+   O aviso fica junto aos botões, e não some sozinho do rodapé. */
+const avisoRonda = () => F.conf.palpites === "escrito"
+  ? "Quem acertar a escrever ganha o ponto sozinho. Se alguém acertar em voz alta, carrega na equipa."
+  : "Quando alguém acertar, carrega na equipa que acertou.";
+function avisarFormador(txt){
+  const a = $("avisoRonda"); a.textContent = txt; a.classList.add("aviso-forte");
+  const l = $("lobby"); l.classList.remove("chamar"); void l.offsetWidth; l.classList.add("chamar");
+}
+function limparAvisoFormador(){
+  const a = $("avisoRonda"); a.textContent = avisoRonda(); a.classList.remove("aviso-forte");
+}
+
+/* ---- ensaio: a formadora entra na própria sala, dentro do seu ecrã ---- */
+const urlSala = extra => location.href.split(/[?#]/)[0] + "?sala=" + F.codigo + (extra || "");
+function abrirEnsaio(){
+  if(!F.codigo) return;
+  const f = $("ensaioFrame"), alvo = urlSala("&ensaio=1");
+  if(f.getAttribute("src") !== alvo) f.setAttribute("src", alvo);
+  $("ensaioSeparador").href = urlSala();
+  $("ensaio").hidden = false;
+}
+function fecharEnsaio(){
+  $("ensaio").hidden = true;
+  // sai mesmo da sala: senão a formadora continuava a poder ser sorteada
+  $("ensaioFrame").setAttribute("src", "about:blank");
+}
+
+function pararRelogios(){
+  if(F.relogio){ clearInterval(F.relogio); F.relogio = null; }
+  if(F.relogioEscolha){ clearTimeout(F.relogioEscolha); F.relogioEscolha = null; }
+}
+
+function novaRonda(){
+  if(F.jogoAcabado){ mostrarFim(); return; }
+  if(F.fase === "escolha" || F.fase === "ronda") return;
+
+  const n = F.conf.nEquipas;
+  const ligadas = F.conf.pessoas.filter(p => estaLigado(p.id) && p.equipa < n);
+  if(!ligadas.length){
+    avisarFormador("Ainda não há ninguém ligado. Para experimentares sozinha, carrega em «Experimentar a desenhar», na caixa do código.");
+    return;
+  }
+  if(!listaPalavras().length){ avisarFormador("Não há palavras — escreve algumas no separador Palavras."); return; }
+  limparAvisoFormador();
+
+  // a vez roda pelas equipas; salta as que não têm ninguém ligado
+  let eqIdx = -1;
+  for(let k = 0; k < n; k++){
+    const cand = (F.vezEquipa + k) % n;
+    if(ligadas.some(p => p.equipa === cand)){ eqIdx = cand; break; }
+  }
+  F.vezEquipa = (eqIdx + 1) % n;
+
+  const daEquipa = ligadas.filter(p => p.equipa === eqIdx);
+  let escolhidos = daEquipa.filter(p => p.id !== F.desenhadorId);
+  if(!escolhidos.length) escolhidos = daEquipa;
+  const quem = escolhidos[Math.floor(Math.random()*escolhidos.length)];
+
+  pararRelogios();
+  F.conf.rondaN += 1; guardarConf();
+  F.desenhadorId = quem.id; F.equipaIdx = eqIdx;
+  F.tracos = []; F.palavra = null; F.mascara = ""; F.momentosPista = [];
+  F.quemAcertou = null; $("feedPalpites").innerHTML = "";
+  F.quadro.definir([]);
+  $("reveladaFormador").hidden = true;
+
+  if(F.conf.modoPalavra === "3"){
+    F.opcoes = sortearPalavras(3);
+    F.fase = "escolha";
+    paraTodos(estadoPublico());
+    paraTodos({t:"tracos", lista:[]});
+    const lq = ligacaoDe(quem.id);
+    enviar(lq && lq.conn, {t:"escolher", opcoes:F.opcoes});
+    // se ninguém escolher, a ronda não fica presa
+    F.relogioEscolha = setTimeout(() => { if(F.fase === "escolha") comecarDesenho(F.opcoes[0]); }, SEGUNDOS_ESCOLHA * 1000);
+    mostrarRondaFormador();
+    nota(659.25,0,.3,.1);
+  }else{
+    comecarDesenho(sortearPalavras(1)[0]);
+  }
+}
+
+function comecarDesenho(palavra){
+  if(!palavra) return;
+  if(F.relogioEscolha){ clearTimeout(F.relogioEscolha); F.relogioEscolha = null; }
+  F.conf.usadas.push(palavra); guardarConf();
+  F.palavra = palavra; F.opcoes = [];
+  F.fase = "ronda"; F.restante = F.conf.duracao; F.tracos = [];
+  F.mascara = mascaraInicial(palavra);
+  F.momentosPista = F.conf.pistas ? calcularMomentosPista(palavra, F.conf.duracao) : [];
+
+  F.quadro.definir([]);
+  paraTodos(estadoPublico());
+  const lq = ligacaoDe(F.desenhadorId);
+  enviar(lq && lq.conn, {t:"palavra", palavra:palavra});
+  enviar(lq && lq.conn, {t:"tempo", restante:F.restante});
+  if(F.conf.pistas){
+    pintarMascara($("pistaFormador"), F.mascara);
+    paraQuemAdivinha({t:"pista", mascara:F.mascara});
+  }
+
+  mostrarRondaFormador();
+  somInicio();
+
+  F.relogio = setInterval(function(){
+    F.restante -= 1;
+    pintarRelogio();
+    const l = ligacaoDe(F.desenhadorId);
+    enviar(l && l.conn, {t:"tempo", restante:F.restante});
+    if(F.momentosPista.indexOf(F.restante) > -1) revelarLetra();
+    if(F.restante <= 5 && F.restante > 0) somTique();
+    if(F.restante <= 0) terminarRonda(null);
+  }, 1000);
+}
+
+function terminarRonda(equipaQueAcertou, quemAcertou){
+  if(F.fase !== "ronda" && F.fase !== "escolha") return;
+  const semDesenho = F.fase === "escolha";
+  pararRelogios();
+  F.fase = "fim";
+
+  if(semDesenho){
+    // passou-se antes de haver palavra: não há nada para revelar nem guardar
+    F.palavra = null; F.opcoes = [];
+    somFim();
+  }else{
+    if(equipaQueAcertou !== null && F.conf.equipas[equipaQueAcertou]){
+      F.conf.equipas[equipaQueAcertou].pontos += 1;
+      F.quemAcertou = quemAcertou || null;
+      if(quemAcertou) mostrarPalpite(quemAcertou, null, "certo");
+      somPonto();
+    }else{
+      somFim();
+    }
+    const p = pessoaDe(F.desenhadorId);
+    const eq = F.conf.equipas[F.equipaIdx];
+    const acertou = equipaQueAcertou !== null ? F.conf.equipas[equipaQueAcertou] : null;
+    F.album.push({
+      n:F.conf.rondaN, palavra:F.palavra,
+      desenhador: p ? p.nome : "—",
+      equipa: eq ? eq.nome : "", cor: eq ? eq.cor : "#0A0A0A",
+      acertou: acertou ? acertou.nome : null,
+      quem: quemAcertou || null,
+      umaEquipa: F.conf.nEquipas === 1,
+      imagem: tracosParaImagem(F.tracos, 800, 600)
+    });
+    paraTodos({t:"revelar", palavra:F.palavra});
+    const rev = $("reveladaFormador");
+    rev.textContent = F.palavra; rev.hidden = false;
+  }
+
+  guardarConf();
+  paraTodos(estadoPublico());
+  if(totalRondas() && F.conf.rondaN >= totalRondas()) F.jogoAcabado = true;
+  mostrarRondaFormador();
+}
+
+function mostrarRondaFormador(){
+  const fase = F.fase;
+  const p = pessoaDe(F.desenhadorId);
+  const eq = F.equipaIdx > -1 ? F.conf.equipas[F.equipaIdx] : null;
+
+  $("lobby").hidden = fase !== "espera";
+  $("palcoRonda").hidden = fase === "espera";
+  if(fase !== "espera") requestAnimationFrame(() => F.quadro.medir());
+
+  $("rotuloDesenha").textContent =
+    fase === "escolha" ? "Está a escolher a palavra" :
+    fase === "ronda"   ? "Está a desenhar" :
+    fase === "fim"     ? (F.palavra ? "Desenhou" : "Passou") : "";
+  $("nomeDesenha").textContent = p ? p.nome : "—";
+  if(eq && F.conf.nEquipas > 1){
+    $("chipEquipa").hidden = false;
+    $("chipCor").style.background = eq.cor;
+    $("chipNome").textContent = "Equipa " + eq.nome;
+  }else{
+    $("chipEquipa").hidden = true;
+  }
+
+  const total = totalRondas();
+  $("contaRonda").textContent = F.conf.rondaN ? ("Ronda " + F.conf.rondaN + (total ? " de " + total : "")) : "";
+
+  const aviso = $("avisoFormador");
+  if(fase === "escolha"){ aviso.hidden = false; aviso.textContent = (p ? p.nome : "Alguém") + " está a escolher a palavra"; }
+  else if(fase === "ronda" && !F.tracos.length){ aviso.hidden = false; aviso.textContent = (p ? p.nome : "Alguém") + " está a desenhar"; }
+  else aviso.hidden = true;
+
+  $("pistaFormador").hidden = !(fase === "ronda" && F.conf.pistas);
+
+  const btn = $("btnRonda");
+  btn.disabled = fase === "escolha" || fase === "ronda";
+  btn.textContent = F.jogoAcabado ? "Ver resultados" : F.conf.rondaN === 0 ? "Começar jogo" : "Nova ronda";
+  $("btnPassar").disabled = !(fase === "escolha" || fase === "ronda");
+  $("btnVerPalavra").disabled = fase !== "ronda";
+  $("btnTerminar").disabled = F.conf.rondaN === 0;
+  $("btnAlbum").textContent = "Álbum · " + F.album.length;
+
+  pintarRelogio();
+  desenharPontos();
+}
+
+function pintarRelogio(){
+  const r = $("relogio");
+  if(F.fase !== "ronda" && F.fase !== "fim"){ r.textContent = "—"; r.classList.remove("fim"); return; }
+  const v = Math.max(0, F.restante);
+  r.textContent = v >= 60 ? Math.floor(v/60) + ":" + String(v%60).padStart(2,"0") : String(v);
+  r.classList.toggle("fim", F.fase === "fim" || v <= 10);
+}
+
+function desenharPontos(){
+  const cx = $("pontos"); cx.innerHTML = "";
+  const n = F.conf.nEquipas;
+  for(let i = 0; i < n; i++){
+    const e = F.conf.equipas[i];
+    const d = document.createElement("div");
+    d.className = "equipa-pontos" + ((F.fase === "ronda" || F.fase === "escolha") && i === F.equipaIdx ? " vez" : "");
+    d.innerHTML =
+      '<div class="topo-eq"><span class="chip-equipa"><i style="background:' + e.cor + '"></i>' + esc(e.nome) + '</span>' +
+      '<span class="n">' + e.pontos + '</span></div>';
+    const b = document.createElement("button");
+    b.className = "btn btn-mini";
+    b.textContent = n > 1 ? "Acertou" : "Acertaram";
+    b.disabled = F.fase !== "ronda";
+    b.addEventListener("click", () => terminarRonda(i));
+    d.appendChild(b);
+    cx.appendChild(d);
+  }
+}
+
+/* ---- sala de espera ---- */
+
+function desenharLobby(){
+  const n = F.conf.nEquipas;
+  const agora = new Set(F.conf.pessoas.filter(p => estaLigado(p.id)).map(p => p.id));
+  const total = F.conf.pessoas.length;
+  $("lobbyConta").innerHTML = agora.size + (total ? '<small>de ' + total + '</small>' : "");
+
+  const cx = $("lobbyEquipas"); cx.innerHTML = "";
+  if(!total){
+    const p = document.createElement("p"); p.className = "aviso";
+    p.textContent = "Ainda ninguém. Junta os nomes no separador Pessoas, ou deixa cada um escrever o seu ao entrar.";
+    cx.appendChild(p);
+  }else{
+    for(let i = 0; i < n; i++){
+      const eq = F.conf.equipas[i];
+      const col = document.createElement("div"); col.className = "lobby-equipa";
+      if(n > 1) col.innerHTML = '<h4><i style="background:' + eq.cor + '"></i>' + esc(eq.nome) + '</h4>';
+      const chips = document.createElement("div"); chips.className = "chips";
+      // quem já entrou aparece primeiro
+      const daEquipa = F.conf.pessoas.filter(p => p.equipa === i)
+        .sort((a, b) => (agora.has(b.id) ? 1 : 0) - (agora.has(a.id) ? 1 : 0));
+      daEquipa.forEach(p => {
+        const s = document.createElement("span");
+        const on = agora.has(p.id);
+        s.className = "chip-p" + (on ? " on" : "") + (on && !F.ligadosAntes.has(p.id) ? " novo" : "");
+        if(on && n > 1) s.style.boxShadow = "inset 3px 0 0 " + eq.cor + ", 0 2px 10px -6px rgba(10,10,10,.5)";
+        s.textContent = p.nome;
+        chips.appendChild(s);
+      });
+      col.appendChild(chips);
+      cx.appendChild(col);
+    }
+  }
+  F.ligadosAntes = agora;
+}
+
+/* ---- fim do jogo ---- */
+
+function classificacao(){
+  const eqs = F.conf.equipas.slice(0, F.conf.nEquipas).map(e => ({nome:e.nome, cor:e.cor, pontos:e.pontos}));
+  eqs.sort((a, b) => b.pontos - a.pontos);
+  let lugar = 0, ant = null;
+  eqs.forEach((e, k) => { if(e.pontos !== ant){ lugar = k + 1; ant = e.pontos; } e.lugar = lugar; });
+  return eqs;
+}
+
+function mostrarFim(){
+  if(F.fase === "ronda" || F.fase === "escolha") terminarRonda(null);
+  F.jogoAcabado = true;
+  const cls = classificacao();
+  const umaEquipa = F.conf.nEquipas === 1;
+  const acertadas = F.album.filter(a => a.acertou).length;
+
+  const pod = $("podio"); pod.innerHTML = "";
+  if(umaEquipa){
+    pod.innerHTML = '<div class="resumo-uma"><span class="grande">' + acertadas + '</span>' +
+      '<span class="sobrancelha">' + (acertadas === 1 ? "desenho adivinhado" : "desenhos adivinhados") +
+      ' em ' + F.conf.rondaN + (F.conf.rondaN === 1 ? " ronda" : " rondas") + '</span></div>';
+  }else{
+    const alturas = {1:260, 2:190, 3:140};
+    const tres = cls.slice(0, 3);
+    // o primeiro ao centro, o segundo à esquerda, o terceiro à direita
+    const ordem = tres.length === 1 ? [tres[0]] : tres.length === 2 ? [tres[1], tres[0]] : [tres[1], tres[0], tres[2]];
+    const linha = document.createElement("div"); linha.className = "podio";
+    ordem.forEach((e, k) => {
+      const d = document.createElement("div"); d.className = "degrau";
+      d.innerHTML = '<span class="quem">' + esc(e.nome) + '</span>' +
+        '<span class="pts">' + e.pontos + (e.pontos === 1 ? " ponto" : " pontos") + '</span>' +
+        '<div class="bloco" style="background:' + e.cor + ';height:' + (alturas[e.lugar] || 110) + 'px;animation-delay:' + (k*.12) + 's">' + e.lugar + '.º</div>';
+      linha.appendChild(d);
+    });
+    pod.appendChild(linha);
+    if(cls.length > 3){
+      const resto = document.createElement("div"); resto.className = "resto";
+      cls.slice(3).forEach(e => {
+        const s = document.createElement("span"); s.className = "chip-equipa";
+        s.innerHTML = '<i style="background:' + e.cor + '"></i>' + e.lugar + '.º · ' + esc(e.nome) + ' · ' + e.pontos;
+        resto.appendChild(s);
+      });
+      pod.appendChild(resto);
+    }
+  }
+  $("fimSub").textContent = F.conf.rondaN + (F.conf.rondaN === 1 ? " ronda" : " rondas") + " · " + acertadas + (acertadas === 1 ? " acertada" : " acertadas");
+  desenharAlbum($("albumFim"));
+  abrirSobre("sobreFim");
+
+  F.ultimoFim = {t:"fim-jogo", umaEquipa:umaEquipa, acertadas:acertadas, rondas:F.conf.rondaN,
+                 classificacao:cls.map(e => ({nome:e.nome, cor:e.cor, pontos:e.pontos, lugar:e.lugar}))};
+  paraTodos(F.ultimoFim);
+  somFanfarra();
+  mostrarRondaFormador();
+}
+
+function novoJogo(){
+  pararRelogios();
+  F.conf.equipas.forEach(e => e.pontos = 0);
+  F.conf.rondaN = 0;
+  F.album = []; F.jogoAcabado = false; F.ultimoFim = null;
+  F.vezEquipa = 0; F.fase = "espera";
+  F.desenhadorId = null; F.equipaIdx = -1; F.palavra = null; F.tracos = []; F.mascara = "";
+  F.quemAcertou = null; $("feedPalpites").innerHTML = "";
+  guardarConf();
+  F.quadro.definir([]);
+  $("reveladaFormador").hidden = true;
+  fecharSobre("sobreFim");
+  paraTodos({t:"novo-jogo"});
+  paraTodos(estadoPublico());
+  mostrarRondaFormador();
+  desenharLobby();
+  estadoTexto("Novo jogo — pontos a zero");
+}
+
+/* ---- álbum ---- */
+
+function legendaAlbum(a){
+  if(a.umaEquipa) return a.acertou ? (a.quem ? "Adivinhou " + a.quem : "Adivinhado") : "Ninguém acertou";
+  return a.acertou ? (a.quem ? "Acertou " + a.quem + " · equipa " + a.acertou : "Acertou a equipa " + a.acertou) : "Ninguém acertou";
+}
+
+function desenharAlbum(cx){
+  cx.innerHTML = "";
+  if(!F.album.length){
+    const p = document.createElement("p"); p.className = "aviso album-vazio";
+    p.textContent = "Ainda não há desenhos. Cada ronda terminada fica aqui guardada.";
+    cx.appendChild(p);
+    return;
+  }
+  F.album.forEach(a => {
+    const b = document.createElement("button");
+    b.className = "album-cartao";
+    b.innerHTML =
+      '<img src="' + a.imagem + '" alt="Desenho de ' + esc(a.desenhador) + ': ' + esc(a.palavra) + '">' +
+      '<span class="leg">' +
+        '<span class="pal">' + esc(a.palavra) + '</span>' +
+        '<span class="quem">' + esc(a.desenhador) + (a.umaEquipa ? "" : ' · Equipa ' + esc(a.equipa)) + '</span>' +
+        '<span class="res">Ronda ' + a.n + ' · ' + esc(legendaAlbum(a)) + '</span>' +
+      '</span>';
+    b.addEventListener("click", () => abrirImagem(a));
+    cx.appendChild(b);
+  });
+}
+
+function abrirImagem(a){
+  $("imgTitulo").textContent = a.palavra;
+  $("imgSub").textContent = "Ronda " + a.n + " · " + a.desenhador + (a.umaEquipa ? "" : " · Equipa " + a.equipa);
+  $("imgGrande").src = a.imagem;
+  $("imgGrande").alt = "Desenho de " + a.desenhador + ": " + a.palavra;
+  $("imgGuardar").href = a.imagem;
+  $("imgGuardar").download = "desenho-" + a.n + "-" + nomeFicheiro(a.palavra) + ".png";
+  abrirSobre("sobreImagem");
+}
+
+function nomeFicheiro(t){
+  return t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+function carregarImagem(src){
+  return new Promise((ok, falha) => { const i = new Image(); i.onload = () => ok(i); i.onerror = falha; i.src = src; });
+}
+
+/* O álbum descarrega-se como uma única imagem: é o que se partilha num
+   email ou no Teams sem ninguém ter de abrir doze ficheiros. */
+async function gerarAlbum(){
+  try{ await document.fonts.ready; }catch(e){}
+  const cols = Math.min(3, F.album.length);
+  const celW = 480, imgH = 360, legH = 78, gap = 28, pad = 48, cabH = 132, rodH = 44;
+  const linhas = Math.ceil(F.album.length / cols);
+  const W = pad*2 + cols*celW + (cols-1)*gap;
+  const H = pad*2 + cabH + linhas*(imgH + legH) + (linhas-1)*gap + rodH;
+
+  const c = document.createElement("canvas"); c.width = W; c.height = H;
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = "#F2EFEA"; ctx.fillRect(0, 0, W, H);
+
+  ctx.textBaseline = "top";
+  ctx.fillStyle = "#0A0A0A";
+  ctx.font = "56px Anton, Impact, sans-serif";
+  ctx.fillText("DESENHA E ADIVINHA", pad, pad);
+  const data = new Date().toLocaleDateString("pt-PT", {day:"numeric", month:"long", year:"numeric"});
+  let sub = data + "  ·  " + F.album.length + (F.album.length === 1 ? " desenho" : " desenhos");
+  if(F.conf.nEquipas > 1) sub += "  ·  " + classificacao().map(e => e.nome + " " + e.pontos).join("   ");
+  ctx.font = "500 20px 'Space Grotesk', Helvetica, sans-serif";
+  ctx.fillStyle = "#57524B";
+  ctx.fillText(sub, pad, pad + 74);
+
+  for(let k = 0; k < F.album.length; k++){
+    const a = F.album[k];
+    const x = pad + (k % cols) * (celW + gap);
+    const y = pad + cabH + Math.floor(k / cols) * (imgH + legH + gap);
+    ctx.fillStyle = "#FFFFFF"; ctx.fillRect(x, y, celW, imgH);
+    try{ ctx.drawImage(await carregarImagem(a.imagem), x, y, celW, imgH); }catch(e){}
+    ctx.strokeStyle = "rgba(10,10,10,.22)"; ctx.lineWidth = 1;
+    ctx.strokeRect(x + .5, y + .5, celW - 1, imgH - 1);
+    const recuo = a.umaEquipa ? 0 : 16;
+    if(!a.umaEquipa){ ctx.fillStyle = a.cor; ctx.fillRect(x, y + imgH + 10, 6, legH - 22); }
+    ctx.fillStyle = "#0A0A0A";
+    ctx.font = "28px Anton, Impact, sans-serif";
+    ctx.fillText(a.palavra.toUpperCase(), x + recuo, y + imgH + 10);
+    ctx.font = "15px 'Space Grotesk', Helvetica, sans-serif";
+    ctx.fillStyle = "#57524B";
+    ctx.fillText(a.desenhador + (a.umaEquipa ? "" : " · " + a.equipa) + "  ·  " + legendaAlbum(a), x + recuo, y + imgH + 46);
+  }
+  ctx.font = "500 14px 'Space Grotesk', Helvetica, sans-serif";
+  ctx.fillStyle = "#6B665D";
+  ctx.fillText("julianaaraujo.pt", pad, H - pad - 4);
+  return c;
+}
+
+async function descarregarAlbum(){
+  if(!F.album.length){ estadoTexto("O álbum ainda está vazio"); return; }
+  const c = await gerarAlbum();
+  c.toBlob(blob => {
+    if(!blob){ estadoTexto("Não consegui gerar a imagem do álbum"); return; }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "desenha-e-adivinha-" + new Date().toISOString().slice(0,10) + ".png";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    estadoTexto("Álbum descarregado");
+  }, "image/png");
+}
+
+function abrirSobre(id){ $(id).hidden = false; document.body.classList.add("sem-scroll"); }
+function fecharSobre(id){
+  $(id).hidden = true;
+  if(["sobreFim","sobreAlbum","sobreImagem"].every(x => $(x).hidden)) document.body.classList.remove("sem-scroll");
+}
+
+/* ---- painel ---- */
+
+function pacoteActivo(){
+  const atual = listaPalavras();
+  for(const k of ORDEM_PACOTES){
+    const p = PACOTES[k].palavras;
+    if(p.length === atual.length && p.every((w, i) => w === atual[i])) return k;
+  }
+  return null;
+}
+
+function desenharPacotes(){
+  const cx = $("pacotes"); cx.innerHTML = "";
+  const ativo = pacoteActivo();
+  ORDEM_PACOTES.forEach(k => {
+    const p = PACOTES[k];
+    const b = document.createElement("button");
+    b.className = "pacote"; b.dataset.pacote = k;
+    b.setAttribute("aria-pressed", String(k === ativo));
+    b.innerHTML = '<span><b>' + esc(p.nome) + '</b><small>' + esc(p.sub) + '</small></span><em>' + p.palavras.length + '</em>';
+    b.addEventListener("click", () => {
+      if(k === pacoteActivo()) return;
+      // não se perde uma lista feita à mão sem perguntar
+      if(!pacoteActivo() && listaPalavras().length && !confirm("Trocar a tua lista pela de " + p.nome + "?")) return;
+      F.conf.palavras = p.palavras.slice(); F.conf.usadas = [];
+      guardarConf();
+      $("campoPalavras").value = F.conf.palavras.join("\n");
+      contarPalavras(); desenharPacotes();
+      estadoTexto("Lista: " + p.nome);
+    });
+    cx.appendChild(b);
+  });
+}
+
+function marcarSeg(id, valor){
+  document.querySelectorAll("#" + id + " button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === String(valor))));
+}
+
+function desenharPainel(){
+  $("campoPalavras").value = F.conf.palavras.join("\n");
+  contarPalavras();
+  desenharPacotes();
+  marcarSeg("segTempo", F.conf.duracao);
+  marcarSeg("segModo", F.conf.modoPalavra);
+  marcarSeg("segPalpites", F.conf.palpites);
+  limparAvisoFormador();
+  marcarSeg("segEquipas", F.conf.nEquipas);
+  marcarSeg("segRondas", F.conf.rondasPorEquipa);
+  $("swPistas").setAttribute("aria-pressed", String(F.conf.pistas));
+  pintarTotalRondas();
+  desenharEquipas();
+  desenharPessoas();
+}
+
+function pintarTotalRondas(){
+  const t = totalRondas();
+  $("totalRondasTxt").textContent = t ? "São " + t + (t === 1 ? " ronda" : " rondas") + " no total." : "Joga-se até carregares em Terminar jogo.";
+}
+
+function contarPalavras(){
+  const ws = listaPalavras();
+  const usadas = F.conf.usadas.filter(u => ws.indexOf(u) > -1).length;
+  $("contaPalavras").textContent = ws.length + (ws.length === 1 ? " palavra" : " palavras") + (usadas ? " · " + usadas + " já saíram" : "");
+}
+
+function desenharEquipas(){
+  const ul = $("listaEquipas"); ul.innerHTML = "";
+  for(let i = 0; i < F.conf.nEquipas; i++){
+    const e = F.conf.equipas[i];
+    const li = document.createElement("li");
+    const cor = document.createElement("span"); cor.className = "cor-eq"; cor.style.background = e.cor;
+    const inp = document.createElement("input"); inp.className = "nome"; inp.value = e.nome;
+    inp.setAttribute("aria-label", "Nome da equipa " + (i+1));
+    inp.addEventListener("change", () => { e.nome = inp.value.trim() || EQUIPAS_BASE[i].nome; inp.value = e.nome; guardarConf(); desenharPontos(); desenharPessoas(); });
+    const n = F.conf.pessoas.filter(p => p.equipa === i).length;
+    const conta = document.createElement("span"); conta.className = "aviso"; conta.textContent = n + (n === 1 ? " pessoa" : " pessoas");
+    li.appendChild(cor); li.appendChild(inp); li.appendChild(conta);
+    ul.appendChild(li);
+  }
+}
+
+function desenharPessoas(){
+  const ul = $("listaPessoas"); ul.innerHTML = "";
+  const ps = F.conf.pessoas;
+  const ligados = ps.filter(p => estaLigado(p.id)).length;
+  $("contaPessoas").textContent = ps.length + (ps.length === 1 ? " pessoa" : " pessoas") + (F.codigo ? " · " + ligados + " ligadas" : "");
+  if(!ps.length){
+    const p = document.createElement("p"); p.className = "aviso";
+    p.textContent = "Junta os nomes antes da sessão. Quem entrar pelo telemóvel escolhe o seu da lista.";
+    ul.appendChild(p);
+  }
+  ps.forEach(function(p){
+    const li = document.createElement("li");
+    const pt = document.createElement("span"); pt.className = "ponto" + (estaLigado(p.id) ? " on" : "");
+    pt.title = estaLigado(p.id) ? "Ligada" : "Ainda não entrou";
+    const inp = document.createElement("input"); inp.className = "nome"; inp.value = p.nome;
+    inp.setAttribute("aria-label", "Nome");
+    inp.addEventListener("change", () => { p.nome = inp.value.trim() || p.nome; inp.value = p.nome; guardarConf(); actualizarVistasPessoas(); desenharLobby(); });
+    li.appendChild(pt); li.appendChild(inp);
+    if(F.conf.nEquipas > 1){
+      const sel = document.createElement("select");
+      sel.setAttribute("aria-label", "Equipa de " + p.nome);
+      for(let i = 0; i < F.conf.nEquipas; i++){
+        const o = document.createElement("option"); o.value = i; o.textContent = F.conf.equipas[i].nome;
+        if(p.equipa === i) o.selected = true;
+        sel.appendChild(o);
+      }
+      sel.addEventListener("change", () => {
+        p.equipa = +sel.value; guardarConf(); desenharEquipas(); desenharLobby();
+        const l = ligacaoDe(p.id);
+        if(l){ const eq = F.conf.equipas[p.equipa]; enviar(l.conn, {t:"equipa", equipa:{nome:eq.nome, cor:eq.cor}}); }
+      });
+      li.appendChild(sel);
+    }
+    const rem = document.createElement("button"); rem.className = "rem"; rem.innerHTML = "&times;";
+    rem.setAttribute("aria-label", "Tirar " + p.nome);
+    rem.addEventListener("click", () => {
+      F.conf.pessoas = F.conf.pessoas.filter(x => x !== p);
+      guardarConf(); desenharPessoas(); desenharEquipas(); actualizarVistasPessoas();
+    });
+    li.appendChild(rem);
+    ul.appendChild(li);
+  });
+  desenharLobby();
+}
+
+function ligarPainel(){
+  const abas = [["aba-pal","folha-pal"],["aba-eq","folha-eq"],["aba-jog","folha-jog"]];
+  abas.forEach(par => $(par[0]).addEventListener("click", () => abas.forEach(p => {
+    $(p[0]).setAttribute("aria-selected", String(p[0] === par[0])); $(p[1]).hidden = p[0] !== par[0];
+  })));
+
+  $("campoPalavras").addEventListener("input", () => {
+    F.conf.palavras = $("campoPalavras").value.split(/\r?\n/);
+    contarPalavras();
+  });
+  $("campoPalavras").addEventListener("change", () => {
+    F.conf.palavras = $("campoPalavras").value.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+    guardarConf(); contarPalavras(); desenharPacotes();
+  });
+  $("btnReporUsadas").addEventListener("click", () => { F.conf.usadas = []; guardarConf(); contarPalavras(); estadoTexto("Todas as palavras voltam a poder sair"); });
+
+  const ligarSeg = (id, aplicar) => document.querySelectorAll("#" + id + " button").forEach(b => b.addEventListener("click", () => {
+    aplicar(b.dataset.v); guardarConf(); marcarSeg(id, b.dataset.v);
+  }));
+  ligarSeg("segTempo", v => { F.conf.duracao = +v; });
+  ligarSeg("segModo", v => { F.conf.modoPalavra = v; });
+  ligarSeg("segPalpites", v => {
+    F.conf.palpites = v;
+    if(!$("avisoRonda").classList.contains("aviso-forte")) limparAvisoFormador();
+    paraTodos(estadoPublico());
+  });
+  ligarSeg("segRondas", v => {
+    F.conf.rondasPorEquipa = +v; pintarTotalRondas();
+    F.jogoAcabado = !!(totalRondas() && F.conf.rondaN >= totalRondas() && F.fase !== "ronda" && F.fase !== "escolha");
+    mostrarRondaFormador();
+  });
+  ligarSeg("segEquipas", v => {
+    F.conf.nEquipas = +v;
+    F.conf.pessoas.forEach(p => { if(p.equipa >= F.conf.nEquipas) p.equipa = equipaMaisPequena(); });
+    if(F.vezEquipa >= F.conf.nEquipas) F.vezEquipa = 0;
+    pintarTotalRondas(); desenharEquipas(); desenharPessoas(); mostrarRondaFormador();
+  });
+  $("swPistas").addEventListener("click", () => {
+    F.conf.pistas = !F.conf.pistas; guardarConf();
+    $("swPistas").setAttribute("aria-pressed", String(F.conf.pistas));
+  });
+
+  $("formPessoa").addEventListener("submit", ev => {
+    ev.preventDefault();
+    const inp = $("campoPessoa"), nome = inp.value.trim();
+    if(!nome) return;
+    if(F.conf.pessoas.some(p => p.nome.toLowerCase() === nome.toLowerCase())){ estadoTexto(nome + " já está na lista"); return; }
+    F.conf.pessoas.push({id:novoId("p"), nome:nome, equipa:equipaMaisPequena()});
+    inp.value = ""; inp.focus();
+    guardarConf(); desenharPessoas(); desenharEquipas(); actualizarVistasPessoas();
+  });
+  $("btnDistribuir").addEventListener("click", () => {
+    const ps = baralhar(F.conf.pessoas);
+    ps.forEach((p, i) => p.equipa = i % F.conf.nEquipas);
+    guardarConf(); desenharPessoas(); desenharEquipas();
+    F.conf.pessoas.forEach(p => { const l = ligacaoDe(p.id); if(l){ const eq = F.conf.equipas[p.equipa]; enviar(l.conn, {t:"equipa", equipa:{nome:eq.nome, cor:eq.cor}}); } });
+    estadoTexto("Pessoas distribuídas ao acaso");
+  });
+  $("btnTirarTodas").addEventListener("click", () => {
+    if(F.conf.pessoas.length && !confirm("Tirar todas as pessoas da lista?")) return;
+    F.conf.pessoas = []; guardarConf(); desenharPessoas(); desenharEquipas();
+  });
+
+  $("btnRonda").addEventListener("click", novaRonda);
+  $("btnPassar").addEventListener("click", () => terminarRonda(null));
+  $("btnTerminar").addEventListener("click", () => {
+    if(!F.jogoAcabado && !confirm("Terminar o jogo e mostrar os resultados?")) return;
+    mostrarFim();
+  });
+  $("btnNovoJogo").addEventListener("click", () => {
+    if(F.album.length && !confirm("Começar um jogo novo? Os pontos voltam a zero e o álbum deste jogo desaparece — descarrega-o antes se o quiseres guardar.")) return;
+    novoJogo();
+  });
+  $("btnFecharFim").addEventListener("click", () => fecharSobre("sobreFim"));
+  $("btnAlbum").addEventListener("click", () => {
+    desenharAlbum($("albumGrelha"));
+    $("albumSub").textContent = F.album.length ? F.album.length + (F.album.length === 1 ? " desenho" : " desenhos") + " desta sessão" : "Desenhos desta sessão";
+    abrirSobre("sobreAlbum");
+  });
+  $("btnFecharAlbum").addEventListener("click", () => fecharSobre("sobreAlbum"));
+  $("btnFecharImagem").addEventListener("click", () => fecharSobre("sobreImagem"));
+  $("btnDescarregarAlbum").addEventListener("click", descarregarAlbum);
+  $("btnDescarregarFim").addEventListener("click", descarregarAlbum);
+  document.addEventListener("keydown", ev => {
+    if(ev.key !== "Escape") return;
+    for(const id of ["sobreImagem","sobreAlbum","sobreFim"]) if(!$(id).hidden){ fecharSobre(id); return; }
+  });
+
+  $("btnExperimentar").addEventListener("click", ev => {
+    // com endereço web abre dentro do ecrã; sem ele fica o link normal
+    if(!/^https?:$/.test(location.protocol) || !F.codigo) return;
+    ev.preventDefault();
+    abrirEnsaio();
+  });
+  $("btnFecharEnsaio").addEventListener("click", fecharEnsaio);
+  $("btnReabrir").addEventListener("click", () => {
+    tentativasSala = 0;
+    ligarAnfitriao(F.codigo || lerSS("desenha-sala") || novoCodigo(), 0);
+  });
+
+  $("btnEsconderSala").addEventListener("click", () => {
+    const c = $("salaCartao"), escondido = c.dataset.min === "1";
+    c.dataset.min = escondido ? "0" : "1";
+    $("qr").hidden = !escondido;
+    $("salaUrl").hidden = !escondido;
+    $("btnEsconderSala").textContent = escondido ? "Esconder" : "Mostrar QR";
+  });
+
+  // a palavra só aparece enquanto se carrega — o ecrã está a ser projetado
+  const ver = $("btnVerPalavra");
+  const mostrar = ev => { if(ev) ev.preventDefault(); if(F.fase === "ronda") $("palavraOculta").textContent = F.palavra; };
+  const esconder = () => { $("palavraOculta").textContent = ""; };
+  ver.addEventListener("pointerdown", mostrar);
+  ["pointerup","pointerleave","pointercancel","blur"].forEach(e => ver.addEventListener(e, esconder));
+  ver.addEventListener("keydown", ev => { if(ev.key === " " || ev.key === "Enter") mostrar(ev); });
+  ver.addEventListener("keyup", esconder);
+}
+
+/* ======================================================================
+   PARTICIPANTE
+   ====================================================================== */
+
+const P = {
+  peer:null, conn:null, codigo:null, jogadorId:null, nome:null, equipa:null,
+  fase:"espera", souDesenhador:false, quadro:null, mascara:"",
+  cor:PALETA[0], larg:LARGURAS[1], borracha:false, tentativas:0, aSair:false
+};
+
+function abrirParticipante(codigo){
+  mostrarEcra("ecraParticipante");
+  $("pLigar").hidden = false; $("pNome").hidden = true; $("pJogo").hidden = true;
+  if(codigo){ $("campoCodigo").value = codigo; ligarParticipante(codigo); }
+  else setTimeout(() => $("campoCodigo").focus(), 50);
+}
+
+function erroLigar(t){ const e = $("erroLigar"); e.textContent = t; e.hidden = !t; }
+
+function ligarParticipante(codigo){
+  codigo = limparCodigo(codigo);
+  if(codigo.length !== 4){ erroLigar("O código tem quatro letras ou números."); return; }
+  if(typeof Peer === "undefined"){ erroLigar("Não consegui carregar a ligação. Verifica a internet e recarrega."); return; }
+  erroLigar("");
+  P.codigo = codigo;
+  $("btnLigar").disabled = true; $("btnLigar").textContent = "A entrar…";
+  // guardado por sala: se a ligação cair, volta a entrar com o mesmo nome
+  P.jogadorId = lerSS("desenha-eu-" + codigo);
+
+  if(P.peer && !P.peer.destroyed && P.peer.open){ abrirLigacao(); return; }
+  if(P.peer){ try{ P.peer.destroy(); }catch(e){} }
+  const peer = new Peer({debug:0});
+  P.peer = peer;
+  peer.on("open", abrirLigacao);
+  peer.on("error", function(err){
+    const tipo = err && err.type;
+    if(tipo === "peer-unavailable"){
+      if(P.jogadorId && P.tentativas > 0) return agendarReligar();
+      falhaLigar("Não encontrei a sala " + codigo + ". Confirma o código no ecrã da sessão.");
+    }else if(tipo === "network" || tipo === "server-error" || tipo === "socket-error" || tipo === "socket-closed"){
+      if(P.jogadorId) return agendarReligar();
+      falhaLigar("Não consegui chegar ao serviço de ligação. Verifica a internet.");
+    }else{
+      falhaLigar("Não consegui entrar (" + (tipo || "erro") + ").");
+    }
+  });
+}
+
+function falhaLigar(t){
+  erroLigar(t);
+  $("btnLigar").disabled = false; $("btnLigar").textContent = "Entrar";
+  $("pLigar").hidden = false; $("pNome").hidden = true; $("pJogo").hidden = true;
+}
+
+function abrirLigacao(){
+  const conn = P.peer.connect(PREFIXO + P.codigo, {reliable:true});
+  P.conn = conn;
+  const limite = setTimeout(() => { if(!conn.open){ try{ conn.close(); }catch(e){} if(!P.jogadorId) falhaLigar("A sala " + P.codigo + " não respondeu. Confirma o código."); else agendarReligar(); } }, 9000);
+  conn.on("open", () => {
+    clearTimeout(limite);
+    P.tentativas = 0;
+    ligadoUI(true);
+    if(P.jogadorId) enviarP({t:"sou", jogadorId:P.jogadorId});
+  });
+  conn.on("data", tratarNoParticipante);
+  conn.on("close", () => { clearTimeout(limite); if(P.conn === conn && !P.aSair) agendarReligar(); });
+  conn.on("error", () => { clearTimeout(limite); if(P.conn === conn && !P.aSair) agendarReligar(); });
+}
+
+function agendarReligar(){
+  ligadoUI(false);
+  if(P.tentativas > 20){ falhaLigar("Perdi a ligação à sala. Tenta entrar outra vez."); return; }
+  P.tentativas++;
+  setTimeout(() => {
+    if(P.peer && !P.peer.destroyed && P.peer.disconnected){ try{ P.peer.reconnect(); }catch(e){} }
+    if(P.peer && P.peer.open) abrirLigacao();
+    else if(P.peer && !P.peer.destroyed) P.peer.once("open", abrirLigacao);
+  }, Math.min(1000 + P.tentativas*500, 5000));
+}
+
+function ligadoUI(on){
+  $("pPonto").className = "ponto" + (on ? " on" : " mal");
+  $("pTxtLig").textContent = on ? "Ligado" : "A religar…";
+}
+
+const enviarP = msg => { try{ if(P.conn && P.conn.open) P.conn.send(msg); }catch(e){} };
+
+function tratarNoParticipante(msg){
+  if(!msg || typeof msg !== "object") return;
+  switch(msg.t){
+    case "boas-vindas":
+    case "pessoas":
+      $("btnLigar").disabled = false; $("btnLigar").textContent = "Entrar";
+      if(P.jogadorId && msg.t === "boas-vindas") return;   // a religar: já pediu o seu nome
+      if(!P.jogadorId) mostrarNomes(msg.pessoas || [], msg.equipas || []);
+      break;
+    case "desconhecido":
+      // o formador tirou esta pessoa da lista entretanto
+      P.jogadorId = null;
+      try{ sessionStorage.removeItem("desenha-eu-" + P.codigo); }catch(e){}
+      break;
+    case "substituido":
+      P.aSair = true;
+      $("pJogo").hidden = true; $("pNome").hidden = true;
+      falhaLigar("Entraste com este nome noutro aparelho. Este saiu da sala.");
+      break;
+    case "confirmado":
+      P.jogadorId = msg.jogadorId; P.nome = msg.nome;
+      gravarSS("desenha-eu-" + P.codigo, msg.jogadorId);
+      $("pLigar").hidden = true; $("pNome").hidden = true; $("pJogo").hidden = false;
+      pintarEquipa(msg.equipa);
+      if(!P.quadro){ P.quadro = Quadro($("quadroPart")); ligarDesenho(); }
+      estadoTexto("", true);
+      break;
+    case "equipa":
+      pintarEquipa(msg.equipa);
+      break;
+    case "estado":
+      aplicarEstado(msg);
+      break;
+    case "escolher":
+      mostrarEscolha(msg.opcoes || []);
+      break;
+    case "palavra":
+      $("pPalavra").textContent = msg.palavra;
+      break;
+    case "tempo":
+      pintarTempoP(msg.restante);
+      break;
+    case "pista": {
+      if(P.souDesenhador) break;
+      const el = $("pPista");
+      pintarMascara(el, msg.mascara, P.mascara ? Array.from(P.mascara) : null);
+      P.mascara = msg.mascara;
+      el.hidden = P.fase !== "ronda";
+      break;
+    }
+    case "traco":
+      if(P.quadro && !P.souDesenhador) P.quadro.segmento(msg);
+      break;
+    case "tracos":
+      if(P.quadro) P.quadro.definir(msg.lista);
+      break;
+    case "revelar": {
+      const r = $("reveladaPart"); r.textContent = msg.palavra; r.hidden = false;
+      break;
+    }
+    case "palpite-errado": {
+      const s = document.createElement("span");
+      s.textContent = msg.quase ? "Quase! " + msg.texto : msg.texto;
+      if(msg.quase){ s.className = "quase"; if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){} }
+      const cx = $("pEco");
+      cx.insertBefore(s, cx.firstChild);
+      while(cx.children.length > 6) cx.removeChild(cx.lastChild);
+      break;
+    }
+    case "palpite-certo": {
+      const cx = $("pEco"); cx.innerHTML = "";
+      const s = document.createElement("span"); s.className = "certo"; s.textContent = "Acertaste! " + msg.texto;
+      cx.appendChild(s);
+      $("pPalpite").hidden = true;
+      if(document.activeElement === $("pPalpiteCampo")) $("pPalpiteCampo").blur();
+      if(navigator.vibrate) try{ navigator.vibrate([60,40,120]); }catch(e){}
+      somPonto();
+      break;
+    }
+    case "fim-jogo":
+      mostrarFimP(msg);
+      break;
+    case "novo-jogo":
+      $("pFim").hidden = true;
+      break;
+  }
+}
+
+function pintarEquipa(eq){
+  if(!eq) return;
+  P.equipa = eq;
+  $("pChipCor").style.background = eq.cor;
+  $("pChipTxt").textContent = (P.nome || "") + " · Equipa " + eq.nome;
+}
+
+function mostrarNomes(pessoas, equipas){
+  $("pLigar").hidden = true; $("pJogo").hidden = true; $("pNome").hidden = false;
+  $("pSalaCodigo").textContent = P.codigo;
+  // no ensaio a formadora entra com um nome seu, sem ocupar o de um participante
+  if(document.body.classList.contains("embutido") && !$("pCampoNovo").value) $("pCampoNovo").value = "Formadora";
+  const cx = $("pNomes"); cx.innerHTML = "";
+  if(!pessoas.length){
+    const p = document.createElement("p"); p.className = "aviso";
+    p.textContent = "A lista ainda está vazia. Escreve o teu nome aqui em baixo.";
+    cx.appendChild(p);
+  }
+  pessoas.forEach(function(p){
+    const b = document.createElement("button");
+    b.className = "nome-btn";
+    const eq = equipas[p.equipa];
+    b.innerHTML = (eq && equipas.length > 1 ? '<i style="background:' + eq.cor + '"></i>' : "") + esc(p.nome);
+    b.disabled = !!p.ocupado;
+    if(p.ocupado) b.title = "Já entrou";
+    b.addEventListener("click", () => { enviarP({t:"sou", jogadorId:p.id}); });
+    cx.appendChild(b);
+  });
+}
+
+function mostrarEscolha(opcoes){
+  const cx = $("pEscolhaBtns"); cx.innerHTML = "";
+  opcoes.forEach((w, i) => {
+    const b = document.createElement("button");
+    b.className = "escolha-btn"; b.textContent = w;
+    b.addEventListener("click", () => {
+      cx.querySelectorAll("button").forEach(x => x.disabled = true);
+      enviarP({t:"escolhi", i:i});
+    });
+    cx.appendChild(b);
+  });
+  $("pEscolha").hidden = false;
+  $("pEspera").hidden = true;
+  if(navigator.vibrate) try{ navigator.vibrate([80,60,80]); }catch(e){}
+  nota(659.25,0,.3,.1);
+}
+
+function aplicarEstado(msg){
+  P.fase = msg.fase;
+  const euDesenho = msg.desenhadorId === P.jogadorId;
+  P.souDesenhador = msg.fase === "ronda" && euDesenho;
+
+  const escolha = msg.fase === "escolha", emRonda = msg.fase === "ronda", fim = msg.fase === "fim";
+
+  $("pEscolha").hidden = !(escolha && euDesenho);
+  $("pEspera").hidden = (escolha && euDesenho) || emRonda || fim;
+  $("pMoldura").hidden = !(emRonda || fim);
+  $("pPalavraBox").hidden = !P.souDesenhador;
+  $("pFerramentas").hidden = !P.souDesenhador;
+  $("pQuemBox").hidden = !(emRonda || fim) || P.souDesenhador;
+  $("pPista").hidden = !emRonda || P.souDesenhador || !P.mascara;
+  $("quadroPart").classList.toggle("editavel", P.souDesenhador);
+  const adivinha = emRonda && !P.souDesenhador && msg.palpites === "escrito";
+  const eraVisivel = !$("pPalpite").hidden;
+  $("pPalpite").hidden = !adivinha;
+  if(!adivinha && document.activeElement === $("pPalpiteCampo")) $("pPalpiteCampo").blur();
+  if(escolha || msg.fase === "espera"){ $("pEco").innerHTML = ""; $("pPalpiteCampo").value = ""; }
+  if(adivinha && !eraVisivel) $("pEco").innerHTML = "";
+
+  if(msg.fase === "espera"){
+    $("pEsperaRot").textContent = "Estás dentro";
+    $("pEsperaTxt").textContent = "À espera da ronda";
+  }
+  if(escolha){
+    P.mascara = "";
+    $("reveladaPart").hidden = true;
+    if(!euDesenho){
+      $("pEsperaRot").textContent = "Já vai começar";
+      $("pEsperaTxt").textContent = (msg.desenhadorNome || "Alguém") + " está a escolher";
+    }
+  }
+  if(emRonda){
+    $("reveladaPart").hidden = true;
+    if(!P.souDesenhador){
+      $("pQuem").textContent = (msg.desenhadorNome || "Alguém") + " está a desenhar";
+      $("pPalavra").textContent = "";
+    }else{
+      if(navigator.vibrate) try{ navigator.vibrate([80,60,80]); }catch(e){}
+      somInicio();
+    }
+  }
+  if(fim){
+    $("pQuem").textContent = (msg.desenhadorNome || "Alguém") + " desenhou" + (msg.quemAcertou ? " · acertou " + msg.quemAcertou : "");
+    $("pQuemBox").hidden = false;
+    $("pPalavraBox").hidden = true; $("pFerramentas").hidden = true; $("pPista").hidden = true;
+    $("quadroPart").classList.remove("editavel");
+    P.souDesenhador = false; P.mascara = "";
+  }
+  if(P.quadro) requestAnimationFrame(() => P.quadro.medir());
+}
+
+function mostrarFimP(msg){
+  const minha = P.equipa ? msg.classificacao.filter(e => e.nome === P.equipa.nome)[0] : null;
+  if(msg.umaEquipa){
+    $("pFimLugar").textContent = msg.acertadas + (msg.acertadas === 1 ? " acertado" : " acertados");
+  }else{
+    $("pFimLugar").textContent = minha ? minha.lugar + ".º lugar" : "Fim";
+  }
+  const ol = $("pFimClass"); ol.innerHTML = "";
+  if(!msg.umaEquipa){
+    msg.classificacao.forEach(e => {
+      const li = document.createElement("li");
+      if(minha && e.nome === minha.nome) li.className = "minha";
+      li.innerHTML = '<b>' + e.lugar + '.º</b><i class="cor-eq" style="background:' + e.cor + '"></i><span>' + esc(e.nome) + '</span><em>' + e.pontos + '</em>';
+      ol.appendChild(li);
+    });
+  }
+  $("pFim").hidden = false;
+  $("pEspera").hidden = true; $("pEscolha").hidden = true;
+  somFanfarra();
+}
+
+function pintarTempoP(v){
+  const t = $("pTempo");
+  v = Math.max(0, v|0);
+  t.textContent = v >= 60 ? Math.floor(v/60) + ":" + String(v%60).padStart(2,"0") : String(v);
+  t.classList.toggle("fim", v <= 10);
+}
+
+/* ---- desenhar ---- */
+
+function ligarDesenho(){
+  const canvas = $("quadroPart");
+  const cores = $("pCores");
+  PALETA.forEach(function(c, i){
+    const b = document.createElement("button");
+    b.className = "cor"; b.style.background = c; b.dataset.cor = c;
+    b.setAttribute("aria-label", "Cor " + (i+1));
+    b.addEventListener("click", () => { P.cor = c; P.borracha = false; pintarFerramentas(); });
+    cores.appendChild(b);
+  });
+  const borr = document.createElement("button");
+  borr.className = "cor"; borr.id = "pBorracha";
+  borr.style.background = "repeating-conic-gradient(#ddd 0 25%, #fff 0 50%) 50%/12px 12px";
+  borr.setAttribute("aria-label", "Borracha");
+  borr.title = "Borracha";
+  borr.addEventListener("click", () => { P.borracha = true; pintarFerramentas(); });
+  cores.appendChild(borr);
+
+  const lx = $("pLarguras");
+  LARGURAS.slice().reverse().forEach(function(l){
+    const b = document.createElement("button");
+    b.className = "larg"; b.dataset.l = l;
+    b.setAttribute("aria-label", l === LARGURAS[0] ? "Traço fino" : l === LARGURAS[1] ? "Traço médio" : "Traço grosso");
+    const d = Math.round(6 + l*520);
+    b.innerHTML = '<span style="width:' + d + 'px;height:' + d + 'px"></span>';
+    b.addEventListener("click", () => { P.larg = l; pintarFerramentas(); });
+    lx.insertBefore(b, lx.firstChild);
+  });
+  $("pPalpite").addEventListener("submit", ev => {
+    ev.preventDefault();
+    const c = $("pPalpiteCampo"), t = c.value.trim();
+    if(!t) return;
+    enviarP({t:"palpite", texto:t});
+    c.value = "";
+    c.focus();   // o teclado do telemóvel fica aberto para o palpite seguinte
+  });
+  $("pDesfazer").addEventListener("click", () => {
+    if(!P.souDesenhador) return;
+    const l = P.quadro.lista(); l.pop(); P.quadro.definir(l);
+    enviarP({t:"desfazer"});
+  });
+  $("pLimpar").addEventListener("click", () => {
+    if(!P.souDesenhador) return;
+    P.quadro.definir([]); enviarP({t:"limpar"});
+  });
+  pintarFerramentas();
+
+  let atual = null, pendentes = [], ultimo = 0, seq = 0;
+  const pos = ev => {
+    const r = canvas.getBoundingClientRect();
+    return [clamp((ev.clientX - r.left)/r.width), clamp((ev.clientY - r.top)/r.height)];
+  };
+  const despachar = () => {
+    if(!atual || !pendentes.length) return;
+    enviarP({t:"traco", id:atual.id, cor:atual.cor, larg:atual.larg, pts:pendentes});
+    pendentes = []; ultimo = performance.now();
+  };
+
+  canvas.addEventListener("pointerdown", ev => {
+    if(!P.souDesenhador) return;
+    ev.preventDefault();
+    try{ canvas.setPointerCapture(ev.pointerId); }catch(e){}
+    atual = {id:(P.jogadorId || "x") + "-" + Date.now().toString(36) + "-" + (++seq),
+             cor:P.borracha ? BORRACHA : P.cor,
+             larg:P.borracha ? Math.max(P.larg, LARGURAS[2]) : P.larg};
+    const p = pos(ev);
+    P.quadro.segmento({id:atual.id, cor:atual.cor, larg:atual.larg, pts:[p]});
+    pendentes = [p]; despachar();
+  });
+  canvas.addEventListener("pointermove", ev => {
+    if(!atual) return;
+    ev.preventDefault();
+    const evs = ev.getCoalescedEvents ? ev.getCoalescedEvents() : [ev];
+    const novos = (evs.length ? evs : [ev]).map(pos);
+    P.quadro.segmento({id:atual.id, cor:atual.cor, larg:atual.larg, pts:novos});
+    for(const q of novos) pendentes.push(q);
+    if(performance.now() - ultimo > 40) despachar();
+  });
+  const acabar = () => { despachar(); atual = null; };
+  canvas.addEventListener("pointerup", acabar);
+  canvas.addEventListener("pointercancel", acabar);
+}
+
+function pintarFerramentas(){
+  document.querySelectorAll("#pCores .cor").forEach(b => {
+    const ativo = b.id === "pBorracha" ? P.borracha : (!P.borracha && b.dataset.cor === P.cor);
+    b.setAttribute("aria-pressed", String(ativo));
+  });
+  document.querySelectorAll("#pLarguras .larg").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.l === P.larg)));
+}
+
+/* ======================================================================
+   Arranque
+   ====================================================================== */
+
+function aplicarTema(t){
+  if(t) document.documentElement.setAttribute("data-theme", t);
+  else document.documentElement.removeAttribute("data-theme");
+}
+
+(function arrancar(){
+  const pref = lerLS("desenha-pref") || {};
+  somLigado = pref.som !== false;
+  aplicarTema(pref.tema || null);
+  $("btnSom").textContent = somLigado ? "🔊 Som" : "🔇 Som";
+  $("btnSom").setAttribute("aria-pressed", String(somLigado));
+
+  $("btnSom").addEventListener("click", () => {
+    somLigado = !somLigado;
+    $("btnSom").textContent = somLigado ? "🔊 Som" : "🔇 Som";
+    $("btnSom").setAttribute("aria-pressed", String(somLigado));
+    pref.som = somLigado; gravarLS("desenha-pref", pref);
+    if(somLigado) somTique();
+  });
+  $("btnTema").addEventListener("click", () => {
+    const escuro = document.documentElement.getAttribute("data-theme") === "dark" ||
+      (!document.documentElement.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    pref.tema = escuro ? "light" : "dark"; aplicarTema(pref.tema); gravarLS("desenha-pref", pref);
+  });
+  $("btnProj").addEventListener("click", () => {
+    document.body.classList.toggle("projecao");
+    const on = document.body.classList.contains("projecao");
+    try{
+      if(on && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+      else if(!on && document.exitFullscreen && document.fullscreenElement) document.exitFullscreen();
+    }catch(e){}
+    $("btnProj").textContent = on ? "⤢ Sair" : "⛶ Projetar";
+    if(F.quadro) requestAnimationFrame(() => F.quadro.medir());
+  });
+
+  ligarPainel();
+
+  $("btnAbrirSala").addEventListener("click", () => { audio(); abrirSala(); });
+  const entrarInicio = () => {
+    audio();
+    const c = limparCodigo($("campoCodigoInicio").value);
+    // numa cópia sem endereço web o browser proíbe mexer no endereço — e isso
+    // não pode impedir a pessoa de entrar
+    try{ history.replaceState(null, "", "?sala=" + c); }catch(e){}
+    abrirParticipante(c);
+  };
+  $("btnEntrarInicio").addEventListener("click", entrarInicio);
+  $("campoCodigoInicio").addEventListener("keydown", ev => { if(ev.key === "Enter") entrarInicio(); });
+  $("campoCodigoInicio").addEventListener("input", ev => { ev.target.value = limparCodigo(ev.target.value); });
+
+  $("btnLigar").addEventListener("click", () => { audio(); ligarParticipante($("campoCodigo").value); });
+  $("campoCodigo").addEventListener("keydown", ev => { if(ev.key === "Enter") ligarParticipante($("campoCodigo").value); });
+  $("campoCodigo").addEventListener("input", ev => { ev.target.value = limparCodigo(ev.target.value); });
+
+  $("pFormNovo").addEventListener("submit", ev => {
+    ev.preventDefault();
+    const n = $("pCampoNovo").value.trim();
+    if(n) enviarP({t:"novo", nome:n});
+  });
+
+  window.addEventListener("beforeunload", ev => {
+    if(F.codigo && F.ligacoes.size){ ev.preventDefault(); ev.returnValue = ""; }
+  });
+
+
+  const params = new URLSearchParams(location.search);
+  if(params.get("ensaio")) document.body.classList.add("embutido");
+
+  // Aberta como cópia estática (um endereço "data:"), a página não tem origem
+  // e não consegue ligar aparelhos. Melhor dizê-lo do que deixar os botões mudos.
+  if(location.protocol === "data:"){
+    const a = $("avisoCopia");
+    a.textContent = "Esta é uma cópia do ficheiro sem endereço web, e assim a sala não consegue ligar aparelhos. Abre a página a partir de um endereço que comece por http:// ou https:// — por exemplo, a página no site.";
+    a.hidden = false;
+    $("btnAbrirSala").disabled = true;
+    $("btnEntrarInicio").disabled = true;
+  }
+
+  const sala = limparCodigo(params.get("sala"));
+  if(sala.length === 4) abrirParticipante(sala);
+  else mostrarEcra("ecraInicio");
+})();
+
+})();
+</script>
+
+<footer class="rodape-site">
+  <div class="rodape-wrap">
+    <span>© 2026 Juliana Araújo</span>
+    <a href="index.html">Voltar ao site</a>
+  </div>
+</footer>
+
+</body>
+</html>

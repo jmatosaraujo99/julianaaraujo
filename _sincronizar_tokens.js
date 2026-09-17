@@ -34,7 +34,7 @@ function relatorioDeriva() {
   const PAGINAS = ['privacidade.html', 'recursos.html', 'formacao-comunicacao.html',
     'formacao-desenvolvimento-pessoal.html', 'formacao-lideranca-equipas.html',
     'formacao-inteligencia-artificial.html', 'roleta.html',
-    'dados-storytelling.html', 'reaction.html'];
+    'dados-storytelling.html', 'reaction.html', 'desenha-e-adivinha.html'];
   const RE = /(#(?:1F2ED6|F2EFEA|0A0A0A|D9D2C5|6B665D|57524B|8C877F|1DB954|7B2FF7|FF6B35|00B4D8|FFC400|00BFA6|FF4D8D|FF5747)\b)|(letter-spacing:\s*-?\.?[0-9][^;}"']*)|(font-family:\s*(?:Anton|Archivo)[^;}"']*)/gi;
   // Um Nvw dentro de clamp() cresce só com a largura e volta a ampliar o site
   // nos quadros interativos. Deve ser calc(N * var(--fluido)).
@@ -68,8 +68,8 @@ function relatorioDeriva() {
     console.log('  — se for novo, troca por var(--token); se for exceção, deixa e regista aqui');
   }
   console.log('exceções conhecidas: privacidade.html 0.12em (valor único);');
-  console.log('  roleta.html, dados-storytelling.html e reaction.html — letter-spacing');
-  console.log('  .06/.08/.1/.12em e 0 são da micro-tipografia das próprias ferramentas;');
+  console.log('  roleta.html, dados-storytelling.html, reaction.html e desenha-e-adivinha.html — letter-spacing');
+  console.log('  .02/.06/.08/.1/.12em e 0 são da micro-tipografia das próprias ferramentas;');
   console.log('  os dois hex no <svg> do ponteiro da roleta são atributos de apresentação,');
   console.log('  onde var() não é de confiança em todos os motores;');
   console.log('  index.html — @font-face, o <style> de recurso pré-JS e o código do Component');
