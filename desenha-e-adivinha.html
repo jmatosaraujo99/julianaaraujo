@@ -10,10 +10,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Desenha e Adivinha — Jogo de Desenho para a Sala | Juliana Araújo</title>
-<meta name="description" content="Jogo de desenhar e adivinhar para a formação: o grupo entra pelo telemóvel, só quem desenha vê a palavra, e os palpites escritos dão pontos às equipas. Gratuito e sem registo.">
+<meta name="description" content="Jogo de desenhar e adivinhar para a formação: o grupo entra pelo telemóvel, joga por equipas e só quem desenha vê a palavra. Gratuito e sem registo.">
 <link rel="canonical" href="https://julianaaraujo.pt/desenha-e-adivinha.html">
 <meta property="og:title" content="Desenha e Adivinha — Jogo de Desenho para a Sala | Juliana Araújo">
-<meta property="og:description" content="Jogo de desenhar e adivinhar para a formação: o grupo entra pelo telemóvel, só quem desenha vê a palavra, e os palpites escritos dão pontos às equipas. Gratuito e sem registo.">
+<meta property="og:description" content="Jogo de desenhar e adivinhar para a formação: o grupo entra pelo telemóvel, joga por equipas e só quem desenha vê a palavra. Gratuito e sem registo.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://julianaaraujo.pt/desenha-e-adivinha.html">
 <meta property="og:site_name" content="Juliana Araújo">
@@ -25,7 +25,7 @@
 <meta property="og:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Desenha e Adivinha — Jogo de Desenho para a Sala | Juliana Araújo">
-<meta name="twitter:description" content="Jogo de desenhar e adivinhar para a formação: o grupo entra pelo telemóvel, só quem desenha vê a palavra, e os palpites escritos dão pontos às equipas. Gratuito e sem registo.">
+<meta name="twitter:description" content="Jogo de desenhar e adivinhar para a formação: o grupo entra pelo telemóvel, joga por equipas e só quem desenha vê a palavra. Gratuito e sem registo.">
 <meta name="twitter:image" content="https://julianaaraujo.pt/media/og-cartao.jpg">
 <meta name="twitter:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Desenha e Adivinha","applicationCategory":"EducationalApplication","operatingSystem":"Browser","description":"Jogo de desenhar e adivinhar para a sala de formação: os participantes entram pelo telemóvel, só quem desenha vê a palavra, palpites escritos, equipas, listas de palavras por área e álbum dos desenhos.","url":"https://julianaaraujo.pt/desenha-e-adivinha.html","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"copyrightHolder":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/"},"copyrightYear":2026,"creator":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"inLanguage":"pt-PT"}</script>
@@ -39,8 +39,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap">
 <link rel="stylesheet" href="tokens.css?v=20260915">
-<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
 /* Marca, fontes e espacamento vem do tokens.css. */
@@ -137,7 +135,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 .topo{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s3);flex-wrap:wrap}
 .marca{display:flex;flex-direction:column;gap:2px}
 .sobrancelha{font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--ink-3);margin:0}
-h1{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:clamp(28px,calc(4.4 * var(--fluido)),44px);line-height:.98;margin:0}
+/* As janelas (Resultados, Álbum, Desenho) usam h2 com o aspeto do título
+   principal: a página só deve ter um h1. */
+h1,.titulo-janela{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:clamp(28px,calc(4.4 * var(--fluido)),44px);line-height:.98;margin:0}
 h2{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:clamp(22px,calc(3 * var(--fluido)),30px);line-height:1;margin:0}
 h3{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:20px;line-height:1;margin:0}
 .topo-acts{display:flex;gap:var(--s1);flex-wrap:wrap}
@@ -904,7 +904,7 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
 <div class="sobre" id="sobreFim" hidden role="dialog" aria-modal="true" aria-label="Resultados">
   <div class="sobre-caixa">
     <div class="sobre-topo">
-      <div><p class="sobrancelha" id="fimSub">Fim do jogo</p><h1>Resultados</h1></div>
+      <div><p class="sobrancelha" id="fimSub">Fim do jogo</p><h2 class="titulo-janela">Resultados</h2></div>
       <div class="acts">
         <button class="btn btn-cheio" id="btnNovoJogo">Novo jogo</button>
         <button class="btn" id="btnDescarregarFim">Descarregar álbum</button>
@@ -921,7 +921,7 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
 <div class="sobre" id="sobreAlbum" hidden role="dialog" aria-modal="true" aria-label="Álbum">
   <div class="sobre-caixa">
     <div class="sobre-topo">
-      <div><p class="sobrancelha" id="albumSub">Desenhos desta sessão</p><h1>Álbum</h1></div>
+      <div><p class="sobrancelha" id="albumSub">Desenhos desta sessão</p><h2 class="titulo-janela">Álbum</h2></div>
       <div class="acts">
         <button class="btn btn-cheio" id="btnDescarregarAlbum">Descarregar álbum</button>
         <button class="btn" id="btnFecharAlbum">Fechar</button>
@@ -934,7 +934,7 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
 <div class="sobre" id="sobreImagem" hidden role="dialog" aria-modal="true" aria-label="Desenho">
   <div class="imagem-grande">
     <div class="sobre-topo">
-      <div><p class="sobrancelha" id="imgSub"></p><h1 id="imgTitulo"></h1></div>
+      <div><p class="sobrancelha" id="imgSub"></p><h2 class="titulo-janela" id="imgTitulo"></h2></div>
       <div class="acts">
         <a class="btn btn-cheio" id="imgGuardar" download>Guardar este desenho</a>
         <button class="btn" id="btnFecharImagem">Fechar</button>
@@ -944,6 +944,10 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
   </div>
 </div>
 
+<!-- As bibliotecas carregam aqui e não no head, para a página aparecer sem
+     esperar por elas. Ficam antes do código do jogo, que as usa. -->
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 (function(){
 "use strict";
