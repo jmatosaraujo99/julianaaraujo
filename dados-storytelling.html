@@ -390,6 +390,17 @@ body.projecao .painel,body.projecao .topo .sobrancelha,body.projecao .rodape{dis
 body.projecao .cabeca-site{display:none}
 body.projecao .palco{grid-template-columns:1fr}
 body.projecao .app{max-width:none;padding-top:var(--s3)}
+/* Em projeção os dados ficam no centro do ecrã, e não encostados ao título:
+   o título passa a flutuar em cima, e a mesa ocupa a altura toda, centrada.
+   O rodapé do site também sai — num ecrã projetado só distrai. */
+body.projecao .app{position:relative;min-height:100vh;min-height:100svh;padding-top:0;padding-bottom:0}
+body.projecao .topo{position:absolute;top:var(--s3);left:var(--s4);right:var(--s4);z-index:2}
+body.projecao .palco{flex:1;align-content:center}
+body.projecao .rodape-site{display:none}
+/* o que se centra são os dados; o botão fica pendurado por baixo e não conta */
+body.projecao .dados-col{position:relative}
+body.projecao .dados-col > .lancar{position:absolute;top:calc(100% + var(--s4));left:0;right:0;margin:0 auto;width:max-content}
+body.projecao .dados-col > .legenda{display:none}
 
 .rodape{display:flex;justify-content:space-between;gap:var(--s3);flex-wrap:wrap;
   border-top:1px solid var(--line);padding-top:var(--s3);
@@ -573,15 +584,12 @@ body.projecao .credito-proj{display:block}
       </div>
 
       <div class="folha" id="folha-faces" role="tabpanel" aria-labelledby="aba-faces" hidden>
-        <p class="aviso">Desliga as faces que não servirem ao grupo. O dado passa a ignorá-las.</p>
+        <p class="aviso">Desliga os objetos que não servirem ao grupo. Os dados passam a ignorá-los.</p>
         <div class="contagem">
           <span id="contA">Dado da esquerda</span>
-          <button class="btn btn-mini" id="btnTodas">Ligar todas</button>
+          <button class="btn btn-mini" id="btnTodas">Ligar todos</button>
         </div>
         <div class="grupo-faces" id="grupoA"></div>
-        <hr class="sep">
-        <p class="titulo-bloco" id="contB">Dado da direita</p>
-        <div class="grupo-faces" id="grupoB"></div>
       </div>
 
       <div class="folha" id="folha-hist" role="tabpanel" aria-labelledby="aba-hist" hidden>
@@ -699,7 +707,7 @@ body.projecao .credito-proj{display:block}
 "use strict";
 
 /* ======================================================================
-   Os doze objetos, desenhados à mão
+   Os objetos, desenhados à mão
    ----------------------------------------------------------------------
    Traço de 2.6 num quadrado de 64, pontas redondas, um preenchimento de
    cor por objeto. Nada de emoji: num projetor o emoji sai com o desenho
@@ -785,6 +793,362 @@ const DESENHOS = {
     '<rect x="24" y="15" width="16" height="30" rx="2" fill="var(--surface)" stroke="currentColor" stroke-width="2.2"></rect>' +
     '<path d="M29 11.5 L35 11.5" ' + T + '></path>' +
     '<circle cx="32" cy="50" r="2.4" fill="currentColor" stroke="none"></circle>',
+
+/* --- Geral: objetos acrescentados a 18/09/2026 --- */
+  aviao: c =>
+    '<path d="M32 6 C35 6 36 10 36 14 L36 26 L56 36 L56 41 L36 35 L36 48 L42 53 L42 57 L32 54 L22 57 L22 53 L28 48 L28 35 L8 41 L8 36 L28 26 L28 14 C28 10 29 6 32 6 Z" fill="' + c + '" ' + F + '></path>',
+
+  comboio: c =>
+    '<rect x="16" y="8" width="32" height="40" rx="8" fill="' + c + '" ' + F + '></rect>' +
+    '<rect x="21" y="14" width="22" height="14" rx="2" fill="var(--surface)" stroke="currentColor" stroke-width="2.2"></rect>' +
+    '<circle cx="24" cy="39" r="3" fill="currentColor" stroke="none"></circle><circle cx="40" cy="39" r="3" fill="currentColor" stroke="none"></circle>' +
+    '<path d="M22 48 L16 56 M42 48 L48 56 M12 56 L52 56" ' + T + '></path>',
+
+  carro: c =>
+    '<path d="M8 41 L8 34 C8 32 9 31 11 31 L17 30 L23 21 C24 20 25 19 27 19 L41 19 C43 19 44 20 45 21 L51 30 L54 31 C56 31.5 57 33 57 35 L57 41 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M24 30 L28 23 L36 23 L36 30 M41 30 L41 23 L44 23 L48 30" ' + T + '></path>' +
+    '<circle cx="20" cy="42" r="6" fill="var(--surface)" ' + F + '></circle><circle cx="45" cy="42" r="6" fill="var(--surface)" ' + F + '></circle>',
+
+  barco: c =>
+    '<path d="M31 8 L31 40" ' + T + '></path>' +
+    '<path d="M34 10 L50 36 L34 36 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M28 16 L16 36 L28 36 Z" fill="var(--surface)" ' + F + '></path>' +
+    '<path d="M8 41 L56 41 L50 51 L14 51 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M6 57 C12 54 16 60 22 57 C28 54 32 60 38 57 C44 54 48 60 58 57" ' + T + ' opacity=".6"></path>',
+
+  foguetao: c =>
+    '<path d="M22 32 L13 43 L13 50 L22 44 Z M42 32 L51 43 L51 50 L42 44 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M32 6 C42 14 45 26 42 44 L22 44 C19 26 22 14 32 6 Z" fill="' + c + '" ' + F + '></path>' +
+    '<circle cx="32" cy="25" r="5.5" fill="var(--surface)" ' + F + '></circle>' +
+    '<path d="M27 48 L29 57 L32 52 L35 57 L37 48" ' + T + '></path>',
+
+  casa: c =>
+    '<rect x="40" y="13" width="7" height="12" fill="' + c + '" ' + F + '></rect>' +
+    '<rect x="14" y="30" width="36" height="24" fill="var(--surface)" ' + F + '></rect>' +
+    '<path d="M8 31 L32 11 L56 31 Z" fill="' + c + '" ' + F + '></path>' +
+    '<rect x="27" y="39" width="10" height="15" fill="' + c + '" ' + F + '></rect>' +
+    '<rect x="17" y="35" width="7" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="2.2"></rect>',
+
+  tenda: c =>
+    '<path d="M6 52 L32 12 L58 52 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M24 52 L32 33 L40 52 Z" fill="var(--surface)" ' + F + '></path>' +
+    '<path d="M32 12 L32 33 M3 52 L61 52 M32 12 L28 6 M32 12 L36 6" ' + T + '></path>',
+
+  arvore: c =>
+    '<rect x="28" y="38" width="8" height="18" rx="1" fill="var(--surface)" ' + F + '></rect>' +
+    '<path d="M20 42 C12 42 9 34 13 29 C10 22 16 15 23 16 C25 9 39 9 41 16 C48 15 54 22 51 29 C55 34 52 42 44 42 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M24 30 C26 27 29 25 32 25" ' + T + ' opacity=".5"></path>',
+
+  flor: c =>
+    '<path d="M32 34 L32 58" ' + T + '></path>' +
+    '<path d="M32 50 C27 44 20 45 17 50 C23 54 28 53 32 50 Z" fill="var(--surface)" ' + F + '></path>' +
+    '<circle cx="32" cy="12" r="7" fill="' + c + '" ' + F + '></circle><circle cx="42" cy="20" r="7" fill="' + c + '" ' + F + '></circle>' +
+    '<circle cx="38" cy="31" r="7" fill="' + c + '" ' + F + '></circle><circle cx="26" cy="31" r="7" fill="' + c + '" ' + F + '></circle>' +
+    '<circle cx="22" cy="20" r="7" fill="' + c + '" ' + F + '></circle>' +
+    '<circle cx="32" cy="22" r="5.5" fill="var(--surface)" ' + F + '></circle>',
+
+  cacto: c =>
+    '<rect x="11" y="17" width="8" height="20" rx="4" fill="' + c + '" ' + F + '></rect><rect x="15" y="30" width="12" height="7" rx="3.5" fill="' + c + '" ' + F + '></rect>' +
+    '<rect x="45" y="22" width="8" height="17" rx="4" fill="' + c + '" ' + F + '></rect><rect x="37" y="32" width="12" height="7" rx="3.5" fill="' + c + '" ' + F + '></rect>' +
+    '<rect x="25" y="9" width="14" height="42" rx="7" fill="' + c + '" ' + F + '></rect>' +
+    '<path d="M32 16 L32 44" ' + T + ' opacity=".45"></path>' +
+    '<path d="M17 50 L47 50 L43 58 L21 58 Z" fill="var(--surface)" ' + F + '></path>',
+
+  sol: c =>
+    '<circle cx="32" cy="32" r="11" fill="' + c + '" ' + F + '></circle>' +
+    '<path d="M32 7 L32 14 M32 50 L32 57 M7 32 L14 32 M50 32 L57 32 M14.5 14.5 L19.5 19.5 M44.5 44.5 L49.5 49.5 M49.5 14.5 L44.5 19.5 M19.5 44.5 L14.5 49.5" ' + T + '></path>',
+
+  lua: c =>
+    '<path d="M38 9 A23 23 0 1 0 55 43 A18 18 0 1 1 38 9 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M15 12 L15 20 M11 16 L19 16 M50 16 L50 21 M47.5 18.5 L52.5 18.5" ' + T + ' opacity=".6"></path>',
+
+  estrela: c =>
+    '<path d="M32 7 L38.5 23.5 L56 24.5 L42.5 35.5 L47 53 L32 43.5 L17 53 L21.5 35.5 L8 24.5 L25.5 23.5 Z" fill="' + c + '" ' + F + '></path>',
+
+  coracao: c =>
+    '<path d="M32 54 C22 46 9 38 9 24 C9 16 15 11 21.5 11 C26 11 30 13.5 32 18 C34 13.5 38 11 42.5 11 C49 11 55 16 55 24 C55 38 42 46 32 54 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M16 23 C16 19 18 17 21 17" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>',
+
+  livro: c =>
+    '<path d="M32 16 C26 12 16 11 8 13 L8 50 C16 48 26 49 32 53 C38 49 48 48 56 50 L56 13 C48 11 38 12 32 16 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M32 16 L32 53" ' + T + '></path>' +
+    '<path d="M14 22 L25 21 M14 29 L25 28 M39 21 L50 22 M39 28 L50 29" stroke="var(--surface)" stroke-width="2.4" stroke-linecap="round"></path>',
+
+  oculos: c =>
+    '<path d="M9 31 L4 23 M55 31 L60 23 M29 32 C31 29.5 33 29.5 35 32" ' + T + '></path>' +
+    '<circle cx="19" cy="35" r="10" fill="' + c + '" ' + F + '></circle><circle cx="45" cy="35" r="10" fill="' + c + '" ' + F + '></circle>' +
+    '<path d="M14 31 L17.5 28 M40 31 L43.5 28" stroke="var(--surface)" stroke-width="2.4" stroke-linecap="round"></path>',
+
+  sapatilha: c =>
+    '<path d="M8 45 L8 25 C8 23 10 22 12 23 L20 27 C24 29 28 29 32 29 L40 35 C48 36 56 39 56 46 L56 47 L8 47 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M6 47 L58 47 L58 51 C58 53 57 54 55 54 L9 54 C7 54 6 53 6 51 Z" fill="var(--surface)" ' + F + '></path>' +
+    '<path d="M24 30 L28 34 M30 30 L34 34" ' + T + '></path>',
+
+  chapeu: c =>
+    '<path d="M18 45 L20 14 C20 12 22 11 24 11 L40 11 C42 11 44 12 44 14 L46 45 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M19 35 L45 35 L45.6 42 L18.4 42 Z" fill="var(--surface)" ' + F + '></path>' +
+    '<path d="M6 46 C6 43 17 41 32 41 C47 41 58 43 58 46 C58 49 47 51 32 51 C17 51 6 49 6 46 Z" fill="' + c + '" ' + F + '></path>',
+
+  presente: c =>
+    '<rect x="11" y="27" width="42" height="28" rx="2" fill="' + c + '" ' + F + '></rect>' +
+    '<rect x="8" y="19" width="48" height="10" rx="2" fill="' + c + '" ' + F + '></rect>' +
+    '<path d="M32 19 L32 55" ' + T + '></path>' +
+    '<path d="M32 19 C26 9 16 11 18 17 C19 20 26 20 32 19 Z M32 19 C38 9 48 11 46 17 C45 20 38 20 32 19 Z" fill="var(--surface)" ' + F + '></path>',
+
+  balaoar: c =>
+    '<path d="M32 6 C43 6 50 14 50 25 C50 37 40 45 32 45 C24 45 14 37 14 25 C14 14 21 6 32 6 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M29 45 L35 45 L32 49 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M32 49 C28 53 36 55 32 59" ' + T + '></path>' +
+    '<path d="M21 20 C22 15 26 12 30 12" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>',
+
+  guitarra: c =>
+    '<rect x="29" y="5" width="6" height="26" fill="var(--surface)" ' + F + '></rect>' +
+    '<path d="M32 27 C25 27 22 31 23 35 C19 37 16 41 16 46 C16 54 23 59 32 59 C41 59 48 54 48 46 C48 41 45 37 41 35 C42 31 39 27 32 27 Z" fill="' + c + '" ' + F + '></path>' +
+    '<circle cx="32" cy="44" r="4.5" fill="var(--surface)" ' + F + '></circle>' +
+    '<path d="M27 53 L37 53 M29.5 9 L27 9 M29.5 14 L27 14 M34.5 9 L37 9 M34.5 14 L37 14" ' + T + '></path>',
+
+  camara: c =>
+    '<path d="M8 22 C8 20 10 18 12 18 L22 18 L26 12 L38 12 L42 18 L52 18 C54 18 56 20 56 22 L56 48 C56 50 54 52 52 52 L12 52 C10 52 8 50 8 48 Z" fill="' + c + '" ' + F + '></path>' +
+    '<circle cx="32" cy="35" r="11" fill="var(--surface)" ' + F + '></circle>' +
+    '<circle cx="32" cy="35" r="5" fill="none" stroke="currentColor" stroke-width="2.6"></circle>' +
+    '<circle cx="48" cy="25" r="2.2" fill="currentColor" stroke="none"></circle>',
+
+  pizza: c =>
+    '<path d="M32 58 L10 16 C24 9 40 9 54 16 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M10 16 C24 9 40 9 54 16 L51 22 C38 16 26 16 13 22 Z" fill="var(--surface)" ' + F + '></path>' +
+    '<circle cx="32" cy="28" r="4.5" fill="var(--surface)" ' + F + '></circle><circle cx="25" cy="37" r="3.6" fill="var(--surface)" ' + F + '></circle>' +
+    '<circle cx="38" cy="39" r="3.6" fill="var(--surface)" ' + F + '></circle><circle cx="32" cy="48" r="2.8" fill="var(--surface)" ' + F + '></circle>',
+
+  banana: c =>
+    '<path d="M12 18 C10 34 20 50 38 52 C46 53 52 50 55 46 C50 46 44 46 38 44 C26 40 18 30 16 18 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M12 18 L11 11 L16 11 L16 18" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M20 26 C22 34 28 41 36 45" ' + T + ' opacity=".5"></path>',
+
+  ovo: c =>
+    '<path d="M14 26 C10 18 20 10 28 14 C34 8 46 10 48 18 C56 20 58 32 52 38 C54 48 42 54 34 50 C26 56 14 50 16 42 C8 38 8 30 14 26 Z" fill="var(--surface)" ' + F + '></path>' +
+    '<circle cx="31" cy="32" r="9" fill="' + c + '" ' + F + '></circle>' +
+    '<path d="M27 29 C28 27.5 29.5 26.5 31.5 26.5" stroke="var(--surface)" stroke-width="2.4" stroke-linecap="round" fill="none"></path>',
+
+  cao: c =>
+    '<path d="M17 17 C10 17 5 26 7 37 C8 41 13 41 15 37 L20 23 Z M47 17 C54 17 59 26 57 37 C56 41 51 41 49 37 L44 23 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M32 13 C43 13 49 21 49 32 C49 44 41 53 32 53 C23 53 15 44 15 32 C15 21 21 13 32 13 Z" fill="' + c + '" ' + F + '></path>' +
+    '<ellipse cx="32" cy="41" rx="10" ry="8" fill="var(--surface)" ' + F + '></ellipse>' +
+    '<ellipse cx="32" cy="36.5" rx="4" ry="2.8" fill="currentColor" stroke="none"></ellipse>' +
+    '<path d="M25 28.5 L25 29.5 M39 28.5 L39 29.5" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"></path>' +
+    '<path d="M32 39 L32 42.5 M28 43.5 C30 45.5 34 45.5 36 43.5" ' + T + '></path>',
+
+  gato: c =>
+    '<path d="M14 23 L16 8 L26 16 C30 15 34 15 38 16 L48 8 L50 23 C53 28 54 33 52 39 C49 47 41 52 32 52 C23 52 15 47 12 39 C10 33 11 28 14 23 Z" fill="' + c + '" ' + F + '></path>' +
+    '<ellipse cx="25" cy="32" rx="2.4" ry="3.6" fill="currentColor" stroke="none"></ellipse><ellipse cx="39" cy="32" rx="2.4" ry="3.6" fill="currentColor" stroke="none"></ellipse>' +
+    '<path d="M30 39 L34 39 L32 41.5 Z" fill="currentColor" stroke="none"></path>' +
+    '<path d="M32 41.5 C31 44 28 44 27 43 M32 41.5 C33 44 36 44 37 43 M20 40 L8 38 M20 43.5 L9 45.5 M44 40 L56 38 M44 43.5 L55 45.5" ' + T + '></path>',
+
+  peixe: c =>
+    '<path d="M49 32 L60 21 L60 43 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M6 32 C14 20 28 16 38 19 C45 21 49 26 51 32 C49 38 45 43 38 45 C28 48 14 44 6 32 Z" fill="' + c + '" ' + F + '></path>' +
+    '<circle cx="18" cy="30" r="2.6" fill="currentColor" stroke="none"></circle>' +
+    '<path d="M27 23 C30.5 28 30.5 36 27 41" ' + T + '></path>' +
+    '<path d="M36 27 C38 29 38 35 36 37" ' + T + ' opacity=".5"></path>',
+
+  bola: c =>
+    '<circle cx="32" cy="32" r="23" fill="var(--surface)" ' + F + '></circle>' +
+    '<path d="M32 23 L40.6 29.2 L37.3 39.3 L26.7 39.3 L23.4 29.2 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M32 23 L32 9.5 M40.6 29.2 L53 25 M37.3 39.3 L45 51 M26.7 39.3 L19 51 M23.4 29.2 L11 25" ' + T + '></path>',
+
+  taca: c =>
+    '<path d="M20 14 L13 14 C13 24 16 28 21 29 M44 14 L51 14 C51 24 48 28 43 29" ' + T + '></path>' +
+    '<path d="M20 10 L44 10 L44 24 C44 32 38 38 32 38 C26 38 20 32 20 24 Z" fill="' + c + '" ' + F + '></path>' +
+    '<path d="M32 38 L32 46" ' + T + '></path>' +
+    '<rect x="22" y="46" width="20" height="8" rx="2" fill="' + c + '" ' + F + '></rect>' +
+    '<path d="M27 18 L27 26" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round"></path>',
+
+/* --- Conjuntos por área: objetos acrescentados a 19/09/2026 --- */
+  sino: c =>
+    '<path d="M32 9 C22 9 18 17 18 27 L18 38 L12 46 L52 46 L46 38 L46 27 C46 17 42 9 32 9 Z" fill="' + c + '" ' + F + '></path><circle cx="32" cy="51" r="4.5" fill="var(--surface)" ' + F + '></circle><path d="M32 9 L32 5" ' + T + '></path><path d="M7 22 C5 26 5 30 7 34 M57 22 C59 26 59 30 57 34" ' + T + ' opacity=".6"></path>',
+
+  telefone: c =>
+    '<path d="M14 51 L18 35 C19 32 21 31 24 31 L40 31 C43 31 45 32 46 35 L50 51 Z" fill="' + c + '" ' + F + '></path><path d="M10 23 C10 17 20 13 32 13 C44 13 54 17 54 23 L54 27 C54 29 52 30 50 30 L44 30 C42 30 41 29 41 27 L41 23 C38 22 26 22 23 23 L23 27 C23 29 22 30 20 30 L14 30 C12 30 10 29 10 27 Z" fill="' + c + '" ' + F + '></path><circle cx="32" cy="42" r="5" fill="var(--surface)" ' + F + '></circle>',
+
+  radio: c =>
+    '<rect x="8" y="22" width="48" height="32" rx="4" fill="' + c + '" ' + F + '></rect><circle cx="22" cy="38" r="8" fill="var(--surface)" ' + F + '></circle><path d="M17 35 L27 35 M16 38.5 L28 38.5 M17 42 L27 42" ' + T + ' opacity=".55"></path><rect x="36" y="30" width="14" height="6" rx="1" fill="var(--surface)" ' + F + '></rect><circle cx="40" cy="45" r="2.5" fill="currentColor" stroke="none"></circle><circle cx="47" cy="45" r="2.5" fill="currentColor" stroke="none"></circle><path d="M40 22 L52 8" ' + T + '></path>',
+
+  antena: c =>
+    '<path d="M14 16 C9 33 24 47 41 42 Z" fill="' + c + '" ' + F + '></path><path d="M27 30 L40 17" ' + T + '></path><circle cx="42" cy="15" r="3" fill="' + c + '" ' + F + '></circle><path d="M26 40 L21 56 M34 42 L40 56 M16 56 L46 56" ' + T + '></path><path d="M47 8 C51 10 53 13 53 17 M49 3 C55 6 58 11 58 17" ' + T + ' opacity=".6"></path>',
+
+  pomba: c =>
+    '<path d="M10 40 L2 35 L4 45 Z" fill="' + c + '" ' + F + '></path><path d="M10 40 C14 34 22 32 30 34 L40 26 C43 23 47 23 49 26 L56 26 L50 30 C50 40 42 46 32 46 C22 46 14 44 10 40 Z" fill="' + c + '" ' + F + '></path><path d="M24 36 C22 24 28 14 41 10 C41 21 37 30 30 36 Z" fill="var(--surface)" ' + F + '></path><circle cx="46" cy="27" r="1.7" fill="currentColor" stroke="none"></circle>',
+
+  garrafa: c =>
+    '<rect x="8" y="24" width="34" height="20" rx="8" fill="' + c + '" ' + F + '></rect><path d="M42 28 L50 28 L50 26 L56 26 L56 42 L50 42 L50 40 L42 40 Z" fill="' + c + '" ' + F + '></path><rect x="56" y="27" width="5" height="14" rx="1" fill="var(--surface)" ' + F + '></rect><rect x="14" y="30" width="20" height="8" rx="4" fill="var(--surface)" ' + F + '></rect><path d="M4 55 C10 51 14 59 20 55 C26 51 30 59 36 55 C42 51 46 59 52 55 C56 52 58 54 60 55" ' + T + ' opacity=".6"></path>',
+
+  lapis: c =>
+    '<path d="M14 50 L18 38 L44 12 L52 20 L26 46 Z" fill="' + c + '" ' + F + '></path><path d="M14 50 L18 38 L26 46 Z" fill="var(--surface)" ' + F + '></path><path d="M14 50 L15.8 44.6 L19.4 48.2 Z" fill="currentColor" stroke="none"></path><path d="M44 12 L48 8 C49 7 51 7 52 8 L56 12 C57 13 57 15 56 16 L52 20 Z" fill="var(--surface)" ' + F + '></path>',
+
+  postit: c =>
+    '<path d="M12 12 L52 12 L52 40 L40 52 L12 52 Z" fill="' + c + '" ' + F + '></path><path d="M40 52 L40 40 L52 40 Z" fill="var(--surface)" ' + F + '></path><path d="M19 23 L45 23 M19 31 L41 31 M19 39 L32 39" ' + T + ' opacity=".55"></path>',
+
+  apito: c =>
+    '<path d="M8 31 C8 23 14 19 22 19 L52 19 L52 31 L38 31 C38 39 32 45 24 45 C15 45 8 39 8 31 Z" fill="' + c + '" ' + F + '></path><circle cx="23" cy="32" r="5" fill="var(--surface)" ' + F + '></circle><rect x="52" y="19" width="6" height="8" rx="1" fill="' + c + '" ' + F + '></rect><path d="M43 11 L46 6 M50 13 L55 10" ' + T + ' opacity=".6"></path>',
+
+  lupa: c =>
+    '<path d="M36 40 L40 36 L56 52 C57 53 57 55 56 56 C55 57 53 57 52 56 Z" fill="' + c + '" ' + F + '></path><circle cx="26" cy="26" r="15" fill="var(--surface)" ' + F + '></circle><path d="M18 22 C19 18 22 16 26 15" ' + T + ' opacity=".55"></path>',
+
+  tambor: c =>
+    '<path d="M20 16 L44 4 M44 16 L20 4" ' + T + '></path><path d="M12 22 L12 44 C12 50 21 54 32 54 C43 54 52 50 52 44 L52 22 Z" fill="' + c + '" ' + F + '></path><ellipse cx="32" cy="22" rx="20" ry="7" fill="var(--surface)" ' + F + '></ellipse><path d="M14 30 L22 48 L30 30 L38 48 L46 30" ' + T + ' opacity=".55"></path>',
+
+  cartaz: c =>
+    '<path d="M32 40 L32 56 M24 56 L40 56" ' + T + '></path><rect x="8" y="10" width="48" height="30" rx="3" fill="' + c + '" ' + F + '></rect><path d="M16 20 L48 20 M16 28 L40 28" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>',
+
+  altifalante: c =>
+    '<rect x="14" y="8" width="36" height="48" rx="5" fill="' + c + '" ' + F + '></rect><circle cx="32" cy="21" r="6" fill="var(--surface)" ' + F + '></circle><circle cx="32" cy="41" r="10" fill="var(--surface)" ' + F + '></circle><circle cx="32" cy="41" r="3.5" fill="currentColor" stroke="none"></circle>',
+
+  jornal: c =>
+    '<path d="M48 24 L55 24 L55 51 C55 53.5 53.5 55 51 55" ' + T + '></path><path d="M10 14 L48 14 L48 51 C48 53 49.5 55 51 55 L14 55 C12 55 10 53 10 51 Z" fill="var(--surface)" ' + F + '></path><rect x="16" y="20" width="26" height="7" rx="1" fill="' + c + '" ' + F + '></rect><path d="M16 34 L28 34 M16 40 L28 40 M16 46 L28 46 M33 34 L42 34 M33 40 L42 40 M33 46 L42 46" ' + T + ' opacity=".55"></path>',
+
+  mao: c =>
+    '<path d="M20 56 C14 50 12 42 12 36 L12 26 C12 23.5 14 22 16 22 C18 22 20 23.5 20 26 L20 32 L20 14 C20 11.5 22 10 24 10 C26 10 28 11.5 28 14 L28 30 L28 10 C28 7.5 30 6 32 6 C34 6 36 7.5 36 10 L36 30 L36 13 C36 10.5 38 9 40 9 C42 9 44 10.5 44 13 L44 34 L48 28 C49.5 26 52 25.5 54 27 C55.5 28.5 55.5 31 54 33 L44 48 C41 53 37 56 32 56 Z" fill="' + c + '" ' + F + '></path><path d="M6 13 C4 17 4 21 6 25" ' + T + ' opacity=".6"></path>',
+
+  labios: c =>
+    '<path d="M8 32 C14 24 22 20 27 24 C29 25.5 30.5 26 32 26 C33.5 26 35 25.5 37 24 C42 20 50 24 56 32 C50 42 42 46 32 46 C22 46 14 42 8 32 Z" fill="' + c + '" ' + F + '></path><path d="M8 32 C18 34 26 34 32 33 C38 34 46 34 56 32" ' + T + '></path><path d="M20 39 C24 41 28 42 31 42" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>',
+
+  latas: c =>
+    '<path d="M20 34 C28 20 36 20 44 34" ' + T + '></path><rect x="6" y="28" width="14" height="20" rx="2" fill="' + c + '" ' + F + '></rect><rect x="44" y="28" width="14" height="20" rx="2" fill="' + c + '" ' + F + '></rect><path d="M6 33 L20 33 M44 33 L58 33" ' + T + ' opacity=".5"></path>',
+
+  pensamento: c =>
+    '<path d="M18 38 C10 38 7 30 12 25 C10 18 17 12 24 15 C27 8 40 8 42 15 C49 12 56 18 53 26 C58 30 55 38 48 38 Z" fill="' + c + '" ' + F + '></path><circle cx="20" cy="46" r="4" fill="' + c + '" ' + F + '></circle><circle cx="12" cy="54" r="2.6" fill="' + c + '" ' + F + '></circle><path d="M24 26.5 L24.1 26.5 M32 26.5 L32.1 26.5 M40 26.5 L40.1 26.5" stroke="var(--surface)" stroke-width="4.5" stroke-linecap="round"></path>',
+
+  globo: c =>
+    '<circle cx="32" cy="32" r="22" fill="' + c + '" ' + F + '></circle><path d="M10 32 L54 32 M32 10 C24 18 24 46 32 54 M32 10 C40 18 40 46 32 54 M14.5 21 L49.5 21 M14.5 43 L49.5 43" stroke="var(--surface)" stroke-width="2.2" fill="none"></path><circle cx="32" cy="32" r="22" fill="none" ' + F + '></circle>',
+
+  muro: c =>
+    '<rect x="8" y="18" width="48" height="32" rx="0" fill="' + c + '" ' + F + '></rect><path d="M8 26.5 L56 26.5 M8 34.5 L56 34.5 M8 42.5 L56 42.5 M24 18 L24 26.5 M40 18 L40 26.5 M16 26.5 L16 34.5 M32 26.5 L32 34.5 M48 26.5 L48 34.5 M24 34.5 L24 42.5 M40 34.5 L40 42.5 M16 42.5 L16 50 M32 42.5 L32 50 M48 42.5 L48 50 M4 50 L60 50" ' + T + '></path>',
+
+  sorriso: c =>
+    '<circle cx="32" cy="32" r="22" fill="' + c + '" ' + F + '></circle><path d="M24 27 L24 29 M40 27 L40 29" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"></path><path d="M22 38 C26 45 38 45 42 38" ' + T + '></path>',
+
+  caracol: c =>
+    '<path d="M8 50 L54 50 C56 50 57 47 55 46 L44 44 L20 44 L16 34 C15 31 11 31 10 34 L8 42 Z" fill="var(--surface)" ' + F + '></path><path d="M13 32 L10 24 M16 33 L18 25" ' + T + '></path><circle cx="10" cy="23" r="1.9" fill="currentColor" stroke="none"></circle><circle cx="18.5" cy="24" r="1.9" fill="currentColor" stroke="none"></circle><circle cx="36" cy="32" r="13" fill="' + c + '" ' + F + '></circle><path d="M36 32 C36 29.5 39.5 29.5 39.5 32.5 C39.5 36.5 32.5 36.5 32.5 32 C32 25.5 43 25.5 43.5 32" ' + T + '></path>',
+
+  mapa: c =>
+    '<path d="M8 16 L24 10 L40 16 L56 10 L56 48 L40 54 L24 48 L8 54 Z" fill="' + c + '" ' + F + '></path><path d="M24 10 L24 48 M40 16 L40 54" ' + T + '></path><path d="M14 42 C20 34 28 38 32 30 C36 24 42 26 45 21" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="3 4" fill="none"></path><path d="M45 16 L50 21 M50 16 L45 21" ' + T + '></path>',
+
+  pegadas: c =>
+    '<ellipse cx="22" cy="42" rx="7" ry="10" fill="' + c + '" ' + F + '></ellipse><circle cx="17" cy="29" r="2.2" fill="' + c + '" ' + F + '></circle><circle cx="21" cy="27.5" r="2.2" fill="' + c + '" ' + F + '></circle><circle cx="25.5" cy="28" r="2.2" fill="' + c + '" ' + F + '></circle><circle cx="28.5" cy="30.5" r="1.8" fill="' + c + '" ' + F + '></circle><ellipse cx="42" cy="26" rx="7" ry="10" fill="' + c + '" ' + F + '></ellipse><circle cx="37" cy="13" r="2.2" fill="' + c + '" ' + F + '></circle><circle cx="41" cy="11.5" r="2.2" fill="' + c + '" ' + F + '></circle><circle cx="45.5" cy="12" r="2.2" fill="' + c + '" ' + F + '></circle><circle cx="48.5" cy="14.5" r="1.8" fill="' + c + '" ' + F + '></circle>',
+
+  bateria: c =>
+    '<rect x="8" y="20" width="42" height="24" rx="4" fill="var(--surface)" ' + F + '></rect><rect x="50" y="27" width="5" height="10" rx="1" fill="' + c + '" ' + F + '></rect><rect x="13" y="25" width="9" height="14" rx="1" fill="' + c + '"></rect><rect x="24.5" y="25" width="9" height="14" rx="1" fill="' + c + '"></rect><rect x="36" y="25" width="9" height="14" rx="1" fill="' + c + '"></rect>',
+
+  iman: c =>
+    '<path d="M14 12 L26 12 L26 34 C26 38 28 40 32 40 C36 40 38 38 38 34 L38 12 L50 12 L50 34 C50 44 42 52 32 52 C22 52 14 44 14 34 Z" fill="' + c + '" ' + F + '></path><path d="M14 12 L26 12 L26 20 L14 20 Z M38 12 L50 12 L50 20 L38 20 Z" fill="var(--surface)" ' + F + '></path><path d="M20 7 L20 3 M44 7 L44 3 M12 8 L9 5 M52 8 L55 5" ' + T + ' opacity=".6"></path>',
+
+  coroa: c =>
+    '<path d="M10 46 L8 18 L20 30 L32 12 L44 30 L56 18 L54 46 Z" fill="' + c + '" ' + F + '></path><rect x="10" y="46" width="44" height="8" rx="2" fill="' + c + '" ' + F + '></rect><circle cx="32" cy="37" r="3" fill="var(--surface)" ' + F + '></circle><circle cx="20" cy="39" r="2.4" fill="var(--surface)" ' + F + '></circle><circle cx="44" cy="39" r="2.4" fill="var(--surface)" ' + F + '></circle>',
+
+  medalha: c =>
+    '<path d="M20 6 L28 6 L34 24 L26 24 Z M44 6 L36 6 L30 24 L38 24 Z" fill="var(--surface)" ' + F + '></path><circle cx="32" cy="40" r="15" fill="' + c + '" ' + F + '></circle><path d="M32 31 L34.6 37 L41 37.4 L36 41.4 L37.6 47.6 L32 44 L26.4 47.6 L28 41.4 L23 37.4 L29.4 37 Z" fill="var(--surface)" ' + F + '></path>',
+
+  haltere: c =>
+    '<rect x="18" y="29" width="28" height="6" rx="1" fill="var(--surface)" ' + F + '></rect><rect x="8" y="18" width="10" height="28" rx="3" fill="' + c + '" ' + F + '></rect><rect x="46" y="18" width="10" height="28" rx="3" fill="' + c + '" ' + F + '></rect><rect x="4" y="24" width="4" height="16" rx="1" fill="' + c + '" ' + F + '></rect><rect x="56" y="24" width="4" height="16" rx="1" fill="' + c + '" ' + F + '></rect>',
+
+  ancora: c =>
+    '<path d="M10 38 C12 48 20 54 32 54 C44 54 52 48 54 38 M10 38 L6 44 M10 38 L16 42 M54 38 L58 44 M54 38 L48 42" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path><rect x="29" y="17" width="6" height="36" rx="1" fill="' + c + '" ' + F + '></rect><rect x="20" y="24" width="24" height="6" rx="2" fill="' + c + '" ' + F + '></rect><circle cx="32" cy="12" r="5" fill="var(--surface)" ' + F + '></circle>',
+
+  pena: c =>
+    '<path d="M50 8 C30 10 16 26 14 46 L20 44 C34 40 46 28 50 8 Z" fill="' + c + '" ' + F + '></path><path d="M50 8 C38 22 26 36 10 56" ' + T + '></path><path d="M40 20 L34 20 M36 26 L28 27 M31 32 L23 34" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>',
+
+  regador: c =>
+    '<path d="M20 26 C18 14 42 14 40 26" ' + T + '></path><path d="M16 26 L44 26 L42 52 L18 52 Z" fill="' + c + '" ' + F + '></path><path d="M43 36 L56 22 L59 25 L44 42 Z" fill="' + c + '" ' + F + '></path><path d="M58 31 L57 35 M54 35 L53 39 M60 37 L59 41" ' + T + ' opacity=".6"></path>',
+
+  ninho: c =>
+    '<ellipse cx="24" cy="30" rx="6" ry="8" fill="var(--surface)" ' + F + '></ellipse><ellipse cx="34" cy="27" rx="6" ry="8" fill="' + c + '" ' + F + '></ellipse><ellipse cx="43" cy="31" rx="6" ry="8" fill="var(--surface)" ' + F + '></ellipse><path d="M8 34 C10 48 20 54 32 54 C44 54 54 48 56 34 Z" fill="' + c + '" ' + F + '></path><path d="M12 40 L52 44 M14 46 L50 38" ' + T + ' opacity=".5"></path>',
+
+  papagaiopapel: c =>
+    '<path d="M32 6 L50 26 L32 46 L14 26 Z" fill="' + c + '" ' + F + '></path><path d="M32 6 L32 46 M14 26 L50 26" ' + T + '></path><path d="M32 46 C28 50 36 52 32 56 C28 60 34 62 32 63 M28 51 L36 49 M28 57 L36 55" ' + T + '></path>',
+
+  arcoiris: c =>
+    '<path d="M6 48 A26 26 0 0 1 58 48 L48 48 A16 16 0 0 0 16 48 Z" fill="' + c + '" ' + F + '></path><path d="M11 48 A21 21 0 0 1 53 48" ' + T + ' opacity=".5"></path><circle cx="13" cy="48" r="6" fill="var(--surface)" ' + F + '></circle><circle cx="51" cy="48" r="6" fill="var(--surface)" ' + F + '></circle>',
+
+  xadrez: c =>
+    '<rect x="16" y="48" width="32" height="8" rx="2" fill="' + c + '" ' + F + '></rect><path d="M20 48 L24 30 L40 30 L44 48 Z" fill="' + c + '" ' + F + '></path><rect x="21" y="26" width="22" height="5" rx="2" fill="' + c + '" ' + F + '></rect><path d="M24 26 C24 20 27 16 32 16 C37 16 40 20 40 26 Z" fill="' + c + '" ' + F + '></path><path d="M32 16 L32 6 M27 10 L37 10" ' + T + '></path>',
+
+  remos: c =>
+    '<path d="M14 20 L30 46 M50 20 L34 46" ' + T + '></path><path d="M10 14 C12 12 16 12 17 15 L18 24 L14 25 Z" fill="var(--surface)" ' + F + '></path><path d="M54 14 C52 12 48 12 47 15 L46 24 L50 25 Z" fill="var(--surface)" ' + F + '></path><path d="M6 40 L58 40 C54 48 46 52 32 52 C18 52 10 48 6 40 Z" fill="' + c + '" ' + F + '></path><path d="M4 58 C10 55 14 61 20 58 C26 55 30 61 36 58 C42 55 46 61 52 58 C55 56 58 57 60 58" ' + T + ' opacity=".6"></path>',
+
+  batuta: c =>
+    '<path d="M10 54 L14 50 L18 54 L14 58 Z" fill="' + c + '" ' + F + '></path><path d="M16 52 L46 16" ' + T + '></path><circle cx="42" cy="48" r="4.5" fill="' + c + '" ' + F + '></circle><circle cx="54" cy="44" r="4.5" fill="' + c + '" ' + F + '></circle><path d="M46.5 48 L46.5 32 M58.5 44 L58.5 28 M46.5 32 L58.5 28" ' + T + '></path>',
+
+  colmeia: c =>
+    '<path d="M22 8 L30.7 13 L30.7 23 L22 28 L13.3 23 L13.3 13 Z" fill="' + c + '" ' + F + '></path><path d="M42 8 L50.7 13 L50.7 23 L42 28 L33.3 23 L33.3 13 Z" fill="var(--surface)" ' + F + '></path><path d="M12 25 L20.7 30 L20.7 40 L12 45 L3.3 40 L3.3 30 Z" fill="var(--surface)" ' + F + '></path><path d="M32 25 L40.7 30 L40.7 40 L32 45 L23.3 40 L23.3 30 Z" fill="' + c + '" ' + F + '></path><path d="M52 25 L60.7 30 L60.7 40 L52 45 L43.3 40 L43.3 30 Z" fill="var(--surface)" ' + F + '></path><path d="M22 42 L30.7 47 L30.7 57 L22 62 L13.3 57 L13.3 47 Z" fill="var(--surface)" ' + F + '></path><path d="M42 42 L50.7 47 L50.7 57 L42 62 L33.3 57 L33.3 47 Z" fill="' + c + '" ' + F + '></path>',
+
+  formiga: c =>
+    '<circle cx="14" cy="30" r="6" fill="' + c + '" ' + F + '></circle><ellipse cx="27" cy="32" rx="6" ry="5" fill="' + c + '" ' + F + '></ellipse><ellipse cx="44" cy="33" rx="10" ry="8" fill="' + c + '" ' + F + '></ellipse><path d="M24 36 L18 46 M28 36 L28 48 M32 35 L38 46 M24 28 L20 20 M28 28 L28 18 M32 29 L38 20 M12 25 L8 16 M16 25 L18 15" ' + T + '></path>',
+
+  bastao: c =>
+    '<path d="M10 44 L40 14 L50 24 L20 54 Z" fill="' + c + '" ' + F + '></path><path d="M22 32 L32 42 M30 24 L40 34" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path><path d="M44 40 L56 40 M48 46 L58 46 M40 52 L52 52" ' + T + ' opacity=".6"></path>',
+
+  mesaredonda: c =>
+    '<circle cx="12" cy="24" r="5" fill="var(--surface)" ' + F + '></circle><circle cx="32" cy="17" r="5" fill="var(--surface)" ' + F + '></circle><circle cx="52" cy="24" r="5" fill="var(--surface)" ' + F + '></circle><ellipse cx="32" cy="37" rx="22" ry="10" fill="' + c + '" ' + F + '></ellipse><circle cx="14" cy="52" r="5" fill="var(--surface)" ' + F + '></circle><circle cx="50" cy="52" r="5" fill="var(--surface)" ' + F + '></circle>',
+
+  equipa: c =>
+    '<circle cx="18" cy="22" r="6" fill="var(--surface)" ' + F + '></circle><path d="M8 44 C8 34 12 30 18 30 C24 30 28 34 28 44 Z" fill="var(--surface)" ' + F + '></path><circle cx="46" cy="22" r="6" fill="var(--surface)" ' + F + '></circle><path d="M36 44 C36 34 40 30 46 30 C52 30 56 34 56 44 Z" fill="var(--surface)" ' + F + '></path><circle cx="32" cy="27" r="7" fill="' + c + '" ' + F + '></circle><path d="M20 53 C20 41 25 36 32 36 C39 36 44 41 44 53 Z" fill="' + c + '" ' + F + '></path>',
+
+  fogueira: c =>
+    '<path d="M12 50 L48 40 L50 45 L14 55 Z" fill="var(--surface)" ' + F + '></path><path d="M52 50 L16 40 L14 45 L50 55 Z" fill="var(--surface)" ' + F + '></path><path d="M32 8 C40 18 46 24 44 34 C43 40 38 44 32 44 C26 44 21 40 20 34 C19 26 26 22 26 16 C29 20 30 22 32 22 C32 16 31 12 32 8 Z" fill="' + c + '" ' + F + '></path><path d="M32 26 C36 30 38 34 36 38 C35 40 33 41 32 41 C29 41 27 39 27 36 C27 32 30 30 32 26 Z" fill="var(--surface)" ' + F + '></path>',
+
+  catavento: c =>
+    '<path d="M32 32 L32 60" ' + T + '></path><path d="M32 32 L32 8 C40 8 44 16 32 32 Z" fill="' + c + '" ' + F + '></path><path d="M32 32 L56 32 C56 40 48 44 32 32 Z" fill="var(--surface)" ' + F + '></path><path d="M32 32 L32 56 C24 56 20 48 32 32 Z" fill="' + c + '" ' + F + '></path><path d="M32 32 L8 32 C8 24 16 20 32 32 Z" fill="var(--surface)" ' + F + '></path><circle cx="32" cy="32" r="2.6" fill="currentColor" stroke="none"></circle>',
+
+  lanterna: c =>
+    '<path d="M28 8 C28 4 36 4 36 8" ' + T + '></path><path d="M22 14 L42 14 L38 8 L26 8 Z" fill="' + c + '" ' + F + '></path><rect x="20" y="14" width="24" height="32" rx="3" fill="var(--surface)" ' + F + '></rect><path d="M26 14 L26 46 M38 14 L38 46" ' + T + ' opacity=".45"></path><path d="M32 22 C35 26 36 29 34 33 C33 35 31 35 30 33 C28 29 29 26 32 22 Z" fill="' + c + '" ' + F + '></path><rect x="18" y="46" width="28" height="8" rx="2" fill="' + c + '" ' + F + '></rect>',
+
+  setas: c =>
+    '<path d="M8 10 L38 10 L38 6 L52 13 L38 20 L38 16 L8 16 Z" fill="' + c + '" ' + F + '></path><path d="M8 29 L38 29 L38 25 L52 32 L38 39 L38 35 L8 35 Z" fill="var(--surface)" ' + F + '></path><path d="M8 48 L38 48 L38 44 L52 51 L38 58 L38 54 L8 54 Z" fill="' + c + '" ' + F + '></path>',
+
+  rato: c =>
+    '<path d="M32 10 C32 5 38 3 44 4" ' + T + '></path><path d="M20 22 C20 14 26 10 32 10 C38 10 44 14 44 22 L44 42 C44 50 38 54 32 54 C26 54 20 50 20 42 Z" fill="' + c + '" ' + F + '></path><path d="M20 26 L44 26 M32 10 L32 26" ' + T + '></path><rect x="30" y="15" width="4" height="7" rx="2" fill="var(--surface)" ' + F + '></rect>',
+
+  satelite: c =>
+    '<rect x="6" y="27" width="16" height="10" rx="1" fill="var(--surface)" ' + F + '></rect><rect x="42" y="27" width="16" height="10" rx="1" fill="var(--surface)" ' + F + '></rect><path d="M11.3 27 L11.3 37 M16.6 27 L16.6 37 M47.3 27 L47.3 37 M52.6 27 L52.6 37 M22 32 L26 32 M38 32 L42 32 M32 38 L32 44 M26 49 C28 45 36 45 38 49" ' + T + '></path><rect x="26" y="26" width="12" height="12" rx="2" fill="' + c + '" ' + F + '></rect><path d="M26 14 C28 10 36 10 38 14 M22 10 C26 4 38 4 42 10" ' + T + ' opacity=".6"></path>',
+
+  codigo: c =>
+    '<rect x="6" y="12" width="52" height="40" rx="4" fill="' + c + '" ' + F + '></rect><path d="M6 20 L58 20" ' + T + '></path><path d="M24 29 L18 35.5 L24 42 M40 29 L46 35.5 L40 42 M35 27 L29 44" stroke="var(--surface)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>',
+
+  binario: c =>
+    '<rect x="8" y="8" width="48" height="48" rx="6" fill="' + c + '" ' + F + '></rect><path d="M18 18 L18 30 M15.4 20.6 L18 18 M46 18 L46 30 M43.4 20.6 L46 18 M32 36 L32 48 M29.4 38.6 L32 36" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path><ellipse cx="32" cy="24" rx="3.8" ry="5.6" fill="none" stroke="var(--surface)" stroke-width="2.6"></ellipse><ellipse cx="18" cy="42" rx="3.8" ry="5.6" fill="none" stroke="var(--surface)" stroke-width="2.6"></ellipse><ellipse cx="46" cy="42" rx="3.8" ry="5.6" fill="none" stroke="var(--surface)" stroke-width="2.6"></ellipse>',
+
+  impressora: c =>
+    '<rect x="18" y="10" width="28" height="14" rx="1" fill="var(--surface)" ' + F + '></rect><rect x="10" y="24" width="44" height="20" rx="4" fill="' + c + '" ' + F + '></rect><rect x="18" y="40" width="28" height="16" rx="1" fill="var(--surface)" ' + F + '></rect><path d="M22 46 L42 46 M22 51 L36 51" ' + T + ' opacity=".5"></path><circle cx="47" cy="31" r="2.2" fill="var(--surface)" ' + F + '></circle>',
+
+  drone: c =>
+    '<path d="M24 30 L12 22 M40 30 L52 22 M24 36 L12 44 M40 36 L52 44" ' + T + '></path><ellipse cx="12" cy="20" rx="8" ry="2.6" fill="var(--surface)" ' + F + '></ellipse><ellipse cx="52" cy="20" rx="8" ry="2.6" fill="var(--surface)" ' + F + '></ellipse><ellipse cx="12" cy="46" rx="8" ry="2.6" fill="var(--surface)" ' + F + '></ellipse><ellipse cx="52" cy="46" rx="8" ry="2.6" fill="var(--surface)" ' + F + '></ellipse><rect x="24" y="27" width="16" height="12" rx="4" fill="' + c + '" ' + F + '></rect><circle cx="32" cy="43" r="3" fill="currentColor" stroke="none"></circle>',
+
+  ficha: c =>
+    '<rect x="25" y="14" width="4" height="12" rx="1" fill="var(--surface)" ' + F + '></rect><rect x="35" y="14" width="4" height="12" rx="1" fill="var(--surface)" ' + F + '></rect><path d="M20 26 L44 26 L44 38 C44 44 39 48 32 48 C25 48 20 44 20 38 Z" fill="' + c + '" ' + F + '></path><path d="M32 48 C32 56 44 54 50 60" ' + T + '></path>',
+
+  wifi: c =>
+    '<path d="M9 28 C22 15 42 15 55 28 M17 36 C26 27 38 27 47 36 M25 44 C29 40 35 40 39 44" fill="none" stroke="' + c + '" stroke-width="6" stroke-linecap="round"></path><path d="M9 28 C22 15 42 15 55 28 M17 36 C26 27 38 27 47 36 M25 44 C29 40 35 40 39 44" ' + T + ' opacity=".35"></path><circle cx="32" cy="51" r="4.5" fill="' + c + '" ' + F + '></circle>',
+
+  cursor: c =>
+    '<path d="M18 8 L18 48 L28 38 L36 56 L43 53 L35 35 L48 35 Z" fill="' + c + '" ' + F + '></path>',
+
+  braco: c =>
+    '<rect x="10" y="50" width="24" height="6" rx="2" fill="' + c + '" ' + F + '></rect><path d="M18 50 L24 50 L30 30 L24 28 Z" fill="' + c + '" ' + F + '></path><path d="M25 26 L46 14 L49 19 L28 32 Z" fill="' + c + '" ' + F + '></path><circle cx="27" cy="29" r="4" fill="var(--surface)" ' + F + '></circle><circle cx="47.5" cy="16.5" r="3.5" fill="var(--surface)" ' + F + '></circle><path d="M50 12 L56 9 M52 21 L58 24" ' + T + '></path>',
+
+  oculosvr: c =>
+    '<path d="M8 30 L3 30 M56 30 L61 30" ' + T + '></path><path d="M8 24 C8 20 11 18 14 18 L50 18 C53 18 56 20 56 24 L56 40 C56 44 53 46 50 46 L40 46 L36 40 L28 40 L24 46 L14 46 C11 46 8 44 8 40 Z" fill="' + c + '" ' + F + '></path><rect x="14" y="24" width="36" height="11" rx="4" fill="var(--surface)" ' + F + '></rect>',
+
+  pasta: c =>
+    '<rect x="16" y="18" width="20" height="10" rx="1" fill="var(--surface)" ' + F + '></rect><path d="M8 18 C8 16 10 14 12 14 L24 14 L28 20 L52 20 C54 20 56 22 56 24 L56 48 C56 50 54 52 52 52 L12 52 C10 52 8 50 8 48 Z" fill="' + c + '" ' + F + '></path><path d="M8 28 L56 28" ' + T + '></path>',
+
+  fluxograma: c =>
+    '<path d="M32 18 L32 26 M22 34 L15 34 L15 48 M42 34 L49 34 L49 48" ' + T + '></path><rect x="22" y="6" width="20" height="12" rx="3" fill="' + c + '" ' + F + '></rect><path d="M32 26 L42 34 L32 42 L22 34 Z" fill="var(--surface)" ' + F + '></path><rect x="6" y="48" width="18" height="10" rx="3" fill="' + c + '" ' + F + '></rect><rect x="40" y="48" width="18" height="10" rx="3" fill="' + c + '" ' + F + '></rect>',
+
+  varinha: c =>
+    '<path d="M10 54 L40 24 L44 28 L14 58 Z" fill="' + c + '" ' + F + '></path><path d="M46 8 L48.4 14 L54.8 14.4 L49.8 18.4 L51.4 24.6 L46 21 L40.6 24.6 L42.2 18.4 L37.2 14.4 L43.6 14 Z" fill="' + c + '" ' + F + '></path><path d="M57 29 L57 34 M54.5 31.5 L59.5 31.5 M29 11 L29 16 M26.5 13.5 L31.5 13.5" ' + T + ' opacity=".7"></path>',
+
+  boladecristal: c =>
+    '<circle cx="32" cy="28" r="18" fill="' + c + '" ' + F + '></circle><path d="M22 22 C24 16 28 14 32 13 M37 30 L37 36 M34 33 L40 33" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path><path d="M18 50 L22 42 L42 42 L46 50 Z" fill="var(--surface)" ' + F + '></path><rect x="14" y="50" width="36" height="6" rx="2" fill="' + c + '" ' + F + '></rect>',
+
 /* --- Comunicação --- */
   megafone: c =>
     '<path d="M12 26 L38 13 L38 51 L12 38 Z" fill="' + c + '" ' + F + '></path>' +
@@ -1023,9 +1387,10 @@ const DESENHOS = {
     '<path d="M24 18 L40 18" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>'
 };
 
-/* Cada conjunto são doze objetos: seis nos dados ímpares, seis nos pares.
-   Um objeto pode viver em mais do que um conjunto — um megafone serve a
-   comunicação e serve a liderança. */
+/* Cada conjunto é uma lista de objetos, dividida em duas metades só por
+   arrumação. Os dados vão buscar as faces à lista toda, por isso um conjunto
+   pode ter doze objetos ou cinquenta. Um objeto pode viver em mais do que um
+   conjunto — um megafone serve a comunicação e serve a liderança. */
 const CONJUNTOS = {
   geral: {
     nome:"Geral", sub:"O baralho de sempre",
@@ -1035,91 +1400,281 @@ const CONJUNTOS = {
       {id:"microfone",   nome:"Microfone",       cor:"#00B4D8"},
       {id:"cuecas",      nome:"Cuecas",          cor:"#FFC400"},
       {id:"chavena",     nome:"Chávena",         cor:"#FF6B35"},
-      {id:"chave",       nome:"Chave",           cor:"#1DB954"}
+      {id:"chave",       nome:"Chave",           cor:"#1DB954"},
+      {id:"aviao",       nome:"Avião",           cor:"#00B4D8"},
+      {id:"comboio",     nome:"Comboio",         cor:"#FF5747"},
+      {id:"carro",       nome:"Carro",           cor:"#FFC400"},
+      {id:"barco",       nome:"Barco",           cor:"#1F2ED6"},
+      {id:"foguetao",    nome:"Foguetão",        cor:"#FF4D8D"},
+      {id:"casa",        nome:"Casa",            cor:"#FF6B35"},
+      {id:"tenda",       nome:"Tenda",           cor:"#1DB954"},
+      {id:"arvore",      nome:"Árvore",          cor:"#1DB954"},
+      {id:"flor",        nome:"Flor",            cor:"#FF4D8D"},
+      {id:"cacto",       nome:"Cato",            cor:"#00BFA6"},
+      {id:"sol",         nome:"Sol",             cor:"#FFC400"},
+      {id:"lua",         nome:"Lua",             cor:"#7B2FF7"},
+      {id:"estrela",     nome:"Estrela",         cor:"#FFC400"},
+      {id:"coracao",     nome:"Coração",         cor:"#FF5747"},
+      {id:"relogio",     nome:"Relógio",         cor:"#00BFA6"},
+      {id:"vela",        nome:"Vela",            cor:"#FF6B35"},
+      {id:"planta",      nome:"Planta",          cor:"#1DB954"},
+      {id:"mochila",     nome:"Mochila",         cor:"#1F2ED6"},
+      {id:"espelho",     nome:"Espelho",         cor:"#00B4D8"}
     ],
     b:[
       {id:"macaco",      nome:"Macaco",          cor:"#FF6B35"},
-      {id:"guardachuva", nome:"Chapéu de chuva", cor:"#1F2ED6"},
+      {id:"guardachuva", nome:"Guarda-chuva", cor:"#1F2ED6"},
       {id:"mala",        nome:"Mala",            cor:"#00BFA6"},
       {id:"bicicleta",   nome:"Bicicleta",       cor:"#FF4D8D"},
       {id:"bolo",        nome:"Bolo",            cor:"#FFC400"},
-      {id:"telemovel",   nome:"Telemóvel",       cor:"#7B2FF7"}
+      {id:"telemovel",   nome:"Telemóvel",       cor:"#7B2FF7"},
+      {id:"livro",       nome:"Livro",           cor:"#FF5747"},
+      {id:"oculos",      nome:"Óculos",          cor:"#00B4D8"},
+      {id:"sapatilha",   nome:"Sapatilha",       cor:"#1DB954"},
+      {id:"chapeu",      nome:"Chapéu",          cor:"#7B2FF7"},
+      {id:"presente",    nome:"Presente",        cor:"#FF4D8D"},
+      {id:"balaoar",     nome:"Balão",           cor:"#FF5747"},
+      {id:"guitarra",    nome:"Guitarra",        cor:"#FF6B35"},
+      {id:"camara",      nome:"Máquina fotográfica", cor:"#00BFA6"},
+      {id:"pizza",       nome:"Pizza",           cor:"#FFC400"},
+      {id:"banana",      nome:"Banana",          cor:"#FFC400"},
+      {id:"ovo",         nome:"Ovo estrelado",   cor:"#FFC400"},
+      {id:"cao",         nome:"Cão",             cor:"#FF6B35"},
+      {id:"gato",        nome:"Gato",            cor:"#7B2FF7"},
+      {id:"peixe",       nome:"Peixe",           cor:"#00B4D8"},
+      {id:"bola",        nome:"Bola",            cor:"#1F2ED6"},
+      {id:"taca",        nome:"Taça",            cor:"#FFC400"},
+      {id:"envelope",    nome:"Carta",           cor:"#FF4D8D"},
+      {id:"lampada",     nome:"Lâmpada",         cor:"#FFC400"},
+      {id:"cadeira",     nome:"Cadeira",         cor:"#00BFA6"}
     ]
   },
   comunicacao: {
     nome:"Comunicação", sub:"O que se diz, o que se ouve, o que se perde",
     a:[
-      {id:"megafone",      nome:"Megafone",     cor:"#FF6B35"},
-      {id:"envelope",      nome:"Carta",        cor:"#1F2ED6"},
-      {id:"balao",         nome:"Balão de fala",cor:"#00BFA6"},
-      {id:"auscultadores", nome:"Auscultadores",cor:"#7B2FF7"},
-      {id:"porta",         nome:"Porta",        cor:"#FFC400"},
-      {id:"ouvido",        nome:"Ouvido",       cor:"#FF4D8D"}
+      {id:"megafone", nome:"Megafone", cor:"#00B4D8"},
+      {id:"envelope", nome:"Carta", cor:"#00BFA6"},
+      {id:"balao", nome:"Balão de fala", cor:"#FFC400"},
+      {id:"auscultadores", nome:"Auscultadores", cor:"#FF5747"},
+      {id:"porta", nome:"Porta", cor:"#FF6B35"},
+      {id:"ouvido", nome:"Ouvido", cor:"#FF4D8D"},
+      {id:"ponte", nome:"Ponte", cor:"#1DB954"},
+      {id:"no", nome:"Nó", cor:"#7B2FF7"},
+      {id:"semaforo", nome:"Semáforo", cor:"#1F2ED6"},
+      {id:"espelho", nome:"Espelho", cor:"#00B4D8"},
+      {id:"novelo", nome:"Novelo", cor:"#00BFA6"},
+      {id:"mascara", nome:"Máscara", cor:"#FFC400"},
+      {id:"telemovel", nome:"Telemóvel", cor:"#FF5747"},
+      {id:"microfone", nome:"Microfone", cor:"#FF6B35"},
+      {id:"livro", nome:"Livro", cor:"#FF4D8D"},
+      {id:"lampada", nome:"Lâmpada", cor:"#1DB954"},
+      {id:"olho", nome:"Olho", cor:"#7B2FF7"},
+      {id:"rede", nome:"Rede", cor:"#1F2ED6"},
+      {id:"monitor", nome:"Ecrã", cor:"#00B4D8"},
+      {id:"camara", nome:"Máquina fotográfica", cor:"#00BFA6"},
+      {id:"chave", nome:"Chave", cor:"#FFC400"},
+      {id:"coracao", nome:"Coração", cor:"#FF5747"},
+      {id:"cadeado", nome:"Cadeado", cor:"#FF6B35"},
+      {id:"relogio", nome:"Relógio", cor:"#FF4D8D"},
+      {id:"farol", nome:"Farol", cor:"#1DB954"}
     ],
     b:[
-      {id:"ponte",     nome:"Ponte",     cor:"#00B4D8"},
-      {id:"no",        nome:"Nó",        cor:"#FF4D8D"},
-      {id:"semaforo",  nome:"Semáforo",  cor:"#1DB954"},
-      {id:"espelho",   nome:"Espelho",   cor:"#7B2FF7"},
-      {id:"novelo",    nome:"Novelo",    cor:"#FF6B35"},
-      {id:"mascara",   nome:"Máscara",   cor:"#1F2ED6"}
+      {id:"bandeira", nome:"Bandeira", cor:"#7B2FF7"},
+      {id:"puzzle", nome:"Peça", cor:"#1F2ED6"},
+      {id:"oculos", nome:"Óculos", cor:"#00B4D8"},
+      {id:"chavena", nome:"Chávena", cor:"#00BFA6"},
+      {id:"sino", nome:"Sino", cor:"#FFC400"},
+      {id:"telefone", nome:"Telefone", cor:"#FF5747"},
+      {id:"radio", nome:"Rádio", cor:"#FF6B35"},
+      {id:"antena", nome:"Antena", cor:"#FF4D8D"},
+      {id:"pomba", nome:"Pomba", cor:"#1DB954"},
+      {id:"garrafa", nome:"Mensagem na garrafa", cor:"#7B2FF7"},
+      {id:"lapis", nome:"Lápis", cor:"#1F2ED6"},
+      {id:"postit", nome:"Post-it", cor:"#00B4D8"},
+      {id:"apito", nome:"Apito", cor:"#00BFA6"},
+      {id:"lupa", nome:"Lupa", cor:"#FFC400"},
+      {id:"tambor", nome:"Tambor", cor:"#FF5747"},
+      {id:"cartaz", nome:"Cartaz", cor:"#FF6B35"},
+      {id:"altifalante", nome:"Coluna de som", cor:"#FF4D8D"},
+      {id:"jornal", nome:"Jornal", cor:"#1DB954"},
+      {id:"mao", nome:"Mão", cor:"#7B2FF7"},
+      {id:"labios", nome:"Lábios", cor:"#1F2ED6"},
+      {id:"latas", nome:"Telefone de latas", cor:"#00B4D8"},
+      {id:"pensamento", nome:"Balão de pensamento", cor:"#00BFA6"},
+      {id:"globo", nome:"Globo", cor:"#FFC400"},
+      {id:"muro", nome:"Muro", cor:"#FF5747"},
+      {id:"sorriso", nome:"Sorriso", cor:"#FF6B35"}
     ]
   },
   pessoal: {
     nome:"Desenvolvimento pessoal", sub:"Onde se está e para onde se vai",
     a:[
-      {id:"planta",   nome:"Planta",   cor:"#1DB954"},
-      {id:"bussola",  nome:"Bússola",  cor:"#1F2ED6"},
-      {id:"mochila",  nome:"Mochila",  cor:"#FF6B35"},
-      {id:"relogio",  nome:"Relógio",  cor:"#00B4D8"},
-      {id:"montanha", nome:"Montanha", cor:"#7B2FF7"},
-      {id:"vela",     nome:"Vela",     cor:"#FFC400"}
+      {id:"planta", nome:"Planta", cor:"#00BFA6"},
+      {id:"bussola", nome:"Bússola", cor:"#FFC400"},
+      {id:"mochila", nome:"Mochila", cor:"#FF5747"},
+      {id:"relogio", nome:"Relógio", cor:"#FF6B35"},
+      {id:"montanha", nome:"Montanha", cor:"#FF4D8D"},
+      {id:"vela", nome:"Vela", cor:"#1DB954"},
+      {id:"espelho", nome:"Espelho", cor:"#7B2FF7"},
+      {id:"escada", nome:"Escada", cor:"#1F2ED6"},
+      {id:"chave", nome:"Chave", cor:"#00B4D8"},
+      {id:"caderno", nome:"Caderno", cor:"#00BFA6"},
+      {id:"balanca", nome:"Balança", cor:"#FFC400"},
+      {id:"borboleta", nome:"Borboleta", cor:"#FF5747"},
+      {id:"arvore", nome:"Árvore", cor:"#FF6B35"},
+      {id:"flor", nome:"Flor", cor:"#FF4D8D"},
+      {id:"cacto", nome:"Cato", cor:"#1DB954"},
+      {id:"sol", nome:"Sol", cor:"#FFC400"},
+      {id:"lua", nome:"Lua", cor:"#1F2ED6"},
+      {id:"estrela", nome:"Estrela", cor:"#FFC400"},
+      {id:"coracao", nome:"Coração", cor:"#FF5747"},
+      {id:"livro", nome:"Livro", cor:"#FFC400"},
+      {id:"sapatilha", nome:"Sapatilha", cor:"#FF5747"},
+      {id:"tenda", nome:"Tenda", cor:"#FF6B35"},
+      {id:"casa", nome:"Casa", cor:"#FF4D8D"},
+      {id:"foguetao", nome:"Foguetão", cor:"#1DB954"},
+      {id:"taca", nome:"Taça", cor:"#7B2FF7"}
     ],
     b:[
-      {id:"espelho",   nome:"Espelho",   cor:"#FF4D8D"},
-      {id:"escada",    nome:"Escada",    cor:"#00BFA6"},
-      {id:"chave",     nome:"Chave",     cor:"#1DB954"},
-      {id:"caderno",   nome:"Caderno",   cor:"#1F2ED6"},
-      {id:"balanca",   nome:"Balança",   cor:"#FF6B35"},
-      {id:"borboleta", nome:"Borboleta", cor:"#7B2FF7"}
+      {id:"lampada", nome:"Lâmpada", cor:"#1F2ED6"},
+      {id:"ampulheta", nome:"Ampulheta", cor:"#00B4D8"},
+      {id:"farol", nome:"Farol", cor:"#00BFA6"},
+      {id:"bandeira", nome:"Bandeira", cor:"#FFC400"},
+      {id:"alvo", nome:"Alvo", cor:"#FF5747"},
+      {id:"balaoar", nome:"Balão", cor:"#FF6B35"},
+      {id:"barco", nome:"Barco", cor:"#FF4D8D"},
+      {id:"ovo", nome:"Ovo estrelado", cor:"#FFC400"},
+      {id:"guardachuva", nome:"Guarda-chuva", cor:"#7B2FF7"},
+      {id:"mala", nome:"Mala", cor:"#1F2ED6"},
+      {id:"porta", nome:"Porta", cor:"#00B4D8"},
+      {id:"caracol", nome:"Caracol", cor:"#00BFA6"},
+      {id:"mapa", nome:"Mapa", cor:"#FFC400"},
+      {id:"pegadas", nome:"Pegadas", cor:"#FF5747"},
+      {id:"bateria", nome:"Bateria", cor:"#FF6B35"},
+      {id:"iman", nome:"Íman", cor:"#FF4D8D"},
+      {id:"coroa", nome:"Coroa", cor:"#1DB954"},
+      {id:"medalha", nome:"Medalha", cor:"#7B2FF7"},
+      {id:"haltere", nome:"Haltere", cor:"#1F2ED6"},
+      {id:"ancora", nome:"Âncora", cor:"#00B4D8"},
+      {id:"pena", nome:"Pena", cor:"#00BFA6"},
+      {id:"regador", nome:"Regador", cor:"#FFC400"},
+      {id:"ninho", nome:"Ninho", cor:"#FF5747"},
+      {id:"papagaiopapel", nome:"Papagaio de papel", cor:"#FF6B35"},
+      {id:"arcoiris", nome:"Arco-íris", cor:"#FF4D8D"}
     ]
   },
   lideranca: {
     nome:"Liderança e equipas", sub:"Quem leva, quem segue, quem segura",
     a:[
-      {id:"leme",     nome:"Leme",       cor:"#1F2ED6"},
-      {id:"bussola",  nome:"Bússola",    cor:"#00BFA6"},
-      {id:"puzzle",   nome:"Peça",       cor:"#FF4D8D"},
-      {id:"alvo",     nome:"Alvo",       cor:"#FF6B35"},
-      {id:"megafone", nome:"Megafone",   cor:"#FFC400"},
-      {id:"escudo",   nome:"Escudo",     cor:"#7B2FF7"}
+      {id:"leme", nome:"Leme", cor:"#FF4D8D"},
+      {id:"bussola", nome:"Bússola", cor:"#1DB954"},
+      {id:"puzzle", nome:"Peça", cor:"#7B2FF7"},
+      {id:"alvo", nome:"Alvo", cor:"#1F2ED6"},
+      {id:"megafone", nome:"Megafone", cor:"#00B4D8"},
+      {id:"escudo", nome:"Escudo", cor:"#00BFA6"},
+      {id:"ponte", nome:"Ponte", cor:"#FFC400"},
+      {id:"corda", nome:"Corda", cor:"#FF5747"},
+      {id:"engrenagem", nome:"Engrenagem", cor:"#FF6B35"},
+      {id:"farol", nome:"Farol", cor:"#FF4D8D"},
+      {id:"cadeira", nome:"Cadeira", cor:"#1DB954"},
+      {id:"bandeira", nome:"Bandeira", cor:"#7B2FF7"},
+      {id:"mapa", nome:"Mapa", cor:"#1F2ED6"},
+      {id:"coroa", nome:"Coroa", cor:"#00B4D8"},
+      {id:"medalha", nome:"Medalha", cor:"#00BFA6"},
+      {id:"taca", nome:"Taça", cor:"#FFC400"},
+      {id:"barco", nome:"Barco", cor:"#FF5747"},
+      {id:"aviao", nome:"Avião", cor:"#FF6B35"},
+      {id:"foguetao", nome:"Foguetão", cor:"#FF4D8D"},
+      {id:"estrela", nome:"Estrela", cor:"#FFC400"},
+      {id:"apito", nome:"Apito", cor:"#7B2FF7"},
+      {id:"microfone", nome:"Microfone", cor:"#1F2ED6"},
+      {id:"relogio", nome:"Relógio", cor:"#00B4D8"},
+      {id:"ampulheta", nome:"Ampulheta", cor:"#00BFA6"},
+      {id:"chave", nome:"Chave", cor:"#FFC400"}
     ],
     b:[
-      {id:"ponte",       nome:"Ponte",       cor:"#00B4D8"},
-      {id:"corda",       nome:"Corda",       cor:"#FF6B35"},
-      {id:"engrenagem",  nome:"Engrenagem",  cor:"#7B2FF7"},
-      {id:"farol",       nome:"Farol",       cor:"#1DB954"},
-      {id:"cadeira",     nome:"Cadeira",     cor:"#FF4D8D"},
-      {id:"bandeira",    nome:"Bandeira",    cor:"#1F2ED6"}
+      {id:"lampada", nome:"Lâmpada", cor:"#FF5747"},
+      {id:"escada", nome:"Escada", cor:"#FF6B35"},
+      {id:"montanha", nome:"Montanha", cor:"#FF4D8D"},
+      {id:"tenda", nome:"Tenda", cor:"#1DB954"},
+      {id:"balanca", nome:"Balança", cor:"#7B2FF7"},
+      {id:"ancora", nome:"Âncora", cor:"#1F2ED6"},
+      {id:"iman", nome:"Íman", cor:"#00B4D8"},
+      {id:"bateria", nome:"Bateria", cor:"#00BFA6"},
+      {id:"sino", nome:"Sino", cor:"#FFC400"},
+      {id:"lupa", nome:"Lupa", cor:"#FF5747"},
+      {id:"semaforo", nome:"Semáforo", cor:"#FF6B35"},
+      {id:"espelho", nome:"Espelho", cor:"#FF4D8D"},
+      {id:"muro", nome:"Muro", cor:"#1DB954"},
+      {id:"xadrez", nome:"Rei do xadrez", cor:"#7B2FF7"},
+      {id:"remos", nome:"Canoa", cor:"#1F2ED6"},
+      {id:"batuta", nome:"Batuta", cor:"#00B4D8"},
+      {id:"colmeia", nome:"Colmeia", cor:"#00BFA6"},
+      {id:"formiga", nome:"Formiga", cor:"#FFC400"},
+      {id:"bastao", nome:"Testemunho", cor:"#FF5747"},
+      {id:"mesaredonda", nome:"Mesa redonda", cor:"#FF6B35"},
+      {id:"equipa", nome:"Equipa", cor:"#FF4D8D"},
+      {id:"fogueira", nome:"Fogueira", cor:"#1DB954"},
+      {id:"catavento", nome:"Cata-vento", cor:"#7B2FF7"},
+      {id:"lanterna", nome:"Lanterna", cor:"#1F2ED6"},
+      {id:"setas", nome:"Setas", cor:"#00B4D8"}
     ]
   },
   ia: {
     nome:"Inteligência artificial", sub:"A máquina, e o que lhe entregamos",
     a:[
-      {id:"robo",    nome:"Robô",     cor:"#1F2ED6"},
-      {id:"chip",    nome:"Chip",     cor:"#00BFA6"},
-      {id:"cerebro", nome:"Cérebro",  cor:"#FF4D8D"},
-      {id:"monitor", nome:"Ecrã",     cor:"#7B2FF7"},
-      {id:"nuvem",   nome:"Nuvem",    cor:"#00B4D8"},
-      {id:"lampada", nome:"Lâmpada",  cor:"#FFC400"}
+      {id:"robo", nome:"Robô", cor:"#00B4D8"},
+      {id:"chip", nome:"Chip", cor:"#00BFA6"},
+      {id:"cerebro", nome:"Cérebro", cor:"#FFC400"},
+      {id:"monitor", nome:"Ecrã", cor:"#FF5747"},
+      {id:"nuvem", nome:"Nuvem", cor:"#FF6B35"},
+      {id:"lampada", nome:"Lâmpada", cor:"#FF4D8D"},
+      {id:"telemovel", nome:"Telemóvel", cor:"#1DB954"},
+      {id:"olho", nome:"Olho", cor:"#7B2FF7"},
+      {id:"teclado", nome:"Teclado", cor:"#1F2ED6"},
+      {id:"rede", nome:"Rede", cor:"#00B4D8"},
+      {id:"cadeado", nome:"Cadeado", cor:"#00BFA6"},
+      {id:"ampulheta", nome:"Ampulheta", cor:"#FFC400"},
+      {id:"lupa", nome:"Lupa", cor:"#FF5747"},
+      {id:"livro", nome:"Livro", cor:"#FF6B35"},
+      {id:"lapis", nome:"Lápis", cor:"#FF4D8D"},
+      {id:"globo", nome:"Globo", cor:"#1DB954"},
+      {id:"microfone", nome:"Microfone", cor:"#7B2FF7"},
+      {id:"altifalante", nome:"Coluna de som", cor:"#1F2ED6"},
+      {id:"camara", nome:"Máquina fotográfica", cor:"#00B4D8"},
+      {id:"bateria", nome:"Bateria", cor:"#00BFA6"},
+      {id:"engrenagem", nome:"Engrenagem", cor:"#FFC400"},
+      {id:"puzzle", nome:"Peça", cor:"#FF5747"},
+      {id:"chave", nome:"Chave", cor:"#FF6B35"},
+      {id:"espelho", nome:"Espelho", cor:"#FF4D8D"},
+      {id:"mascara", nome:"Máscara", cor:"#1DB954"}
     ],
     b:[
-      {id:"telemovel", nome:"Telemóvel", cor:"#FF6B35"},
-      {id:"olho",      nome:"Olho",      cor:"#1F2ED6"},
-      {id:"teclado",   nome:"Teclado",   cor:"#1DB954"},
-      {id:"rede",      nome:"Rede",      cor:"#7B2FF7"},
-      {id:"cadeado",   nome:"Cadeado",   cor:"#FF4D8D"},
-      {id:"ampulheta", nome:"Ampulheta", cor:"#00B4D8"}
+      {id:"balao", nome:"Balão de fala", cor:"#7B2FF7"},
+      {id:"pensamento", nome:"Balão de pensamento", cor:"#1F2ED6"},
+      {id:"foguetao", nome:"Foguetão", cor:"#00B4D8"},
+      {id:"relogio", nome:"Relógio", cor:"#00BFA6"},
+      {id:"envelope", nome:"Carta", cor:"#FFC400"},
+      {id:"semaforo", nome:"Semáforo", cor:"#FF5747"},
+      {id:"balanca", nome:"Balança", cor:"#FF6B35"},
+      {id:"bussola", nome:"Bússola", cor:"#FF4D8D"},
+      {id:"radio", nome:"Rádio", cor:"#1DB954"},
+      {id:"iman", nome:"Íman", cor:"#7B2FF7"},
+      {id:"rato", nome:"Rato", cor:"#1F2ED6"},
+      {id:"satelite", nome:"Satélite", cor:"#00B4D8"},
+      {id:"codigo", nome:"Código", cor:"#00BFA6"},
+      {id:"binario", nome:"Zeros e uns", cor:"#FFC400"},
+      {id:"impressora", nome:"Impressora", cor:"#FF5747"},
+      {id:"drone", nome:"Drone", cor:"#FF6B35"},
+      {id:"ficha", nome:"Ficha", cor:"#FF4D8D"},
+      {id:"wifi", nome:"Wi-Fi", cor:"#1DB954"},
+      {id:"cursor", nome:"Cursor", cor:"#7B2FF7"},
+      {id:"braco", nome:"Braço robótico", cor:"#1F2ED6"},
+      {id:"oculosvr", nome:"Óculos de realidade virtual", cor:"#00B4D8"},
+      {id:"pasta", nome:"Pasta", cor:"#00BFA6"},
+      {id:"fluxograma", nome:"Fluxograma", cor:"#FFC400"},
+      {id:"varinha", nome:"Varinha mágica", cor:"#FF5747"},
+      {id:"boladecristal", nome:"Bola de cristal", cor:"#FF6B35"}
     ]
   }
 };
@@ -1173,10 +1728,17 @@ const btnLancar = document.getElementById("btnLancar");
 const MAX_DADOS = 5;
 let cubos = [], suportes = [], giro = [], aRolar = false;
 
-/* Os dados alternam entre os dois conjuntos de faces. Dados iguais num
-   conjunto sao o normal — o que nao pode acontecer e sair o mesmo objeto
-   duas vezes no mesmo lancamento, e disso trata o sortear(). */
-function conjuntoDoDado(d){ return d % 2 === 0 ? setA() : setB(); }
+/* Um dado tem seis faces, mas o conjunto pode ter muitos mais objetos: a cada
+   lançamento as faces vão buscar-se à lista toda. O que não pode acontecer é
+   sair o mesmo objeto duas vezes no mesmo lançamento — disso trata o sortear(). */
+function conjuntoDoDado(){ return setA().concat(setB()); }
+function misturar(lista){
+  const a = lista.slice();
+  for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); const t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function pintarFace(el, f){ el.innerHTML = desenho(f) + "<b>" + f.nome + "</b>"; }
+const frente = [];
 
 /* Quanto maior o punhado, mais pequeno cada dado, senao nao cabem. */
 const TAMANHOS = {
@@ -1209,18 +1771,19 @@ function construirDados(){
     sup.className = "suporte";
     const cubo = document.createElement("div");
     cubo.className = "dado";
-    conjuntoDoDado(d).forEach(function(f, i){
+    const seis = misturar(facesLivres(conjuntoDoDado(d)));
+    for(let i = 0; i < 6; i++){
       const face = document.createElement("div");
       face.className = "face f" + i;
-      face.innerHTML = desenho(f) + "<b>" + f.nome + "</b>";
+      pintarFace(face, seis[i % seis.length]);
       cubo.appendChild(face);
-    });
+    }
     sup.appendChild(cubo);
     mesa.appendChild(sup);
     cubos.push(cubo); suportes.push(sup); giro.push({x:0, y:0});
   }
   mostrarDados();
-  for(let d = 0; d < MAX_DADOS; d++) pousar(d, inicio[d], false);
+  for(let d = 0; d < MAX_DADOS; d++){ frente[d] = inicio[d]; pousar(d, inicio[d], false); }
 }
 
 /* E nunca maiores do que o ecrã deixa. Num quadro interativo a janela é larga
@@ -1301,7 +1864,21 @@ function lancar(){
     }
   }
 
-  const indices = par.map(function(f, d){ return conjuntoDoDado(d).indexOf(f); });
+  /* A face que vai ficar à frente recebe o objeto sorteado, e as outras são
+     repintadas com mais objetos da lista, para o dado a rolar mostrar sempre
+     coisas novas. A que está à vista só muda depois de sair do ecrã. */
+  const indices = par.map(function(f, d){
+    let i;
+    do { i = Math.floor(Math.random()*6); } while(i === frente[d]);
+    const outros = misturar(facesLivres(conjuntoDoDado(d)).filter(x => x.id !== f.id));
+    const faces = cubos[d].children;
+    for(let k = 0, o = 0; k < 6; k++){
+      if(k === frente[d]) continue;
+      pintarFace(faces[k], k === i ? f : (outros[o++ % Math.max(1, outros.length)] || f));
+    }
+    frente[d] = i;
+    return i;
+  });
 
   chocalhar();
 
@@ -1552,7 +2129,7 @@ function pararRelogio(){
 const VISTO = '<svg viewBox="0 0 12 12"><path d="M2 6.4 L4.6 9 L10 3" fill="none" stroke="#F2EFEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>';
 
 function desenharFaces(){
-  [["grupoA", setA()], ["grupoB", setB()]].forEach(function(par){
+  [["grupoA", conjuntoDoDado()]].forEach(function(par){
     const cx = document.getElementById(par[0]);
     cx.innerHTML = "";
     par[1].forEach(function(f){
@@ -1577,10 +2154,9 @@ function desenharFaces(){
       cx.appendChild(linha);
     });
   });
-  const ligadasA = setA().filter(f => !estado.desligadas[f.id]).length;
-  const ligadasB = setB().filter(f => !estado.desligadas[f.id]).length;
-  document.getElementById("contA").textContent = "Dados 1, 3 e 5 · " + ligadasA + " de 6";
-  document.getElementById("contB").textContent = "Dados 2 e 4 · " + ligadasB + " de 6";
+  const todos = conjuntoDoDado();
+  const ligados = todos.filter(f => !estado.desligadas[f.id]).length;
+  document.getElementById("contA").textContent = ligados + " de " + todos.length + " objetos ligados";
 }
 
 const listaHist = document.getElementById("listaHist");
