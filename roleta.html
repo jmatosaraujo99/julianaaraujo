@@ -191,7 +191,7 @@ h1{
 
 .palco{
   display:grid;
-  grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr);
+  grid-template-columns:1fr;
   gap:var(--s5);
   align-items:start;
 }
@@ -507,14 +507,39 @@ textarea.campo{min-height:96px;resize:vertical;font-size:14px;line-height:1.5}
 .relogio.fim .arco{stroke:var(--acento-fim,var(--acento-coral))}
 
 /* ---------- modo projeção ---------- */
-body.projecao .painel,
+/* A página abre sempre assim: só a roda, no meio do ecrã. O painel é uma
+   gaveta que se abre com Personalizar. */
 body.projecao .topo .sobrancelha,
-body.projecao .rodape{display:none}
+body.projecao .rodape,
+body.projecao .roda-legenda{display:none}
+body.projecao .app{position:relative;min-height:100vh;min-height:100svh;padding-top:0;padding-bottom:0}
+body.projecao .topo{position:absolute;top:var(--s3);left:var(--s4);right:var(--s4);z-index:2}
+body.projecao .palco{flex:1;align-content:center}
+body.projecao .rodape-site{display:none}
+html:has(body.projecao){scrollbar-width:none}
+html:has(body.projecao)::-webkit-scrollbar{display:none}
+.btn-personalizar{background:var(--cobalto);border-color:var(--cobalto);color:var(--creme)}
+.btn-personalizar:hover{background:#1826b4}
+.painel{position:fixed;top:0;right:0;bottom:0;z-index:60;width:min(430px,100vw);border-radius:0;
+  border-width:0 0 0 1px;background:var(--surface);overflow-y:auto;
+  transform:translateX(104%);visibility:hidden;
+  transition:transform .32s cubic-bezier(.2,.8,.2,1),visibility 0s linear .32s}
+body.personalizar .painel{transform:none;visibility:visible;transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.painel-topo{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;
+  border-bottom:1px solid var(--line);font-family:var(--fonte-etiqueta);font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--ink)}
+.painel-topo .acts-topo{display:flex;gap:6px}
+.estado-painel{margin:0;padding:8px 16px 0;font-size:12.5px;color:var(--ink-3)}
+.veu-painel{position:fixed;inset:0;z-index:59;background:rgba(10,10,10,.35)}
+.dobra summary{cursor:pointer;font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;text-transform:uppercase;
+  letter-spacing:var(--ls-etiqueta);color:var(--ink-3);padding:4px 0}
+.dobra[open] summary{margin-bottom:var(--s2)}
+.dobra .mini-acts{margin-top:var(--s2)}
 body.projecao .palco{grid-template-columns:1fr}
 /* Em projeção a barra do site sai, e a roda mede-se pelo que sobra da altura
    depois do título e da legenda — com 78vh ainda passava do fundo. */
 body.projecao .cabeca-site{display:none}
-body.projecao .roda-wrap{max-width:min(760px, max(240px, calc(100vh - 190px)))}
+body.projecao .roda-wrap{max-width:min(760px, max(240px, calc(100vh - 230px)))}
 body.projecao .app{max-width:none;padding-top:var(--s3)}
 
 .rodape{
@@ -609,7 +634,7 @@ body.projecao .app{max-width:none;padding-top:var(--s3)}
   color:var(--ink);margin:24px 0 6px}
 .sobre-cta{margin-top:clamp(40px,calc(5 * var(--fluido)),64px);padding-top:clamp(26px,calc(3 * var(--fluido)),36px);
   border-top:1px solid var(--line)}
-body.projecao .sobre{display:none}
+
 
 .ponteiro path{fill:var(--cobalto)}
 .ponteiro circle{fill:var(--creme)}
@@ -667,7 +692,7 @@ body.projecao .credito-proj{display:block}
 .copia-acts{display:flex;gap:var(--s1);flex-wrap:wrap}
 </style>
 </head>
-<body>
+<body class="projecao">
 
 <header class="cabeca-site">
   <a class="logo" href="index.html">Juliana Araújo</a>
@@ -685,12 +710,11 @@ body.projecao .credito-proj{display:block}
     <div class="marca">
       <p class="sobrancelha">Juliana Araújo &middot; Recurso pedagógico</p>
       <h1>Roleta</h1>
-      <p class="tagline">Sorteio de nomes, perguntas e tarefas &mdash; para a sala de aula e a formação.</p>
+      <p class="tagline">Sorteio de nomes, perguntas e tarefas, para a sala de aula e a formação.</p>
     </div>
     <div class="topo-acts">
+      <button class="btn btn-icone btn-personalizar" id="btnPersonalizar" aria-expanded="false" aria-controls="painel" title="A lista, as cores, o tempo e o histórico">✎ Personalizar</button>
       <button class="btn btn-icone" id="btnSom" aria-pressed="true" title="Ligar ou desligar o som">🔊 Som</button>
-      <button class="btn btn-icone" id="btnTema" title="Alternar claro e escuro">◐ Tema</button>
-      <button class="btn btn-icone" id="btnProj" title="Ecrã inteiro para projetar">⛶ Projetar</button>
     </div>
   </header>
 
@@ -708,7 +732,15 @@ body.projecao .credito-proj{display:block}
       <p class="roda-legenda"><kbd>Espaço</kbd> roda &nbsp;·&nbsp; <kbd>Esc</kbd> fecha</p>
     </section>
 
-    <section class="painel">
+    <section class="painel" id="painel" aria-label="Personalizar">
+      <div class="painel-topo">
+        <span>Personalizar</span>
+        <span class="acts-topo">
+          <button class="btn btn-mini" id="btnAnular" hidden>Anular</button>
+          <button class="btn btn-mini" id="btnFecharPainel">Fechar</button>
+        </span>
+      </div>
+      <p class="estado-painel" id="estado" role="status" aria-live="polite">Pronta a rodar</p>
       <div class="abas" role="tablist">
         <button class="aba" role="tab" id="aba-lista" aria-controls="folha-lista" aria-selected="true">Lista</button>
         <button class="aba" role="tab" id="aba-aspeto" aria-controls="folha-aspeto" aria-selected="false">Definições</button>
@@ -717,11 +749,6 @@ body.projecao .credito-proj{display:block}
 
       <!-- LISTA -->
       <div class="folha" id="folha-lista" role="tabpanel" aria-labelledby="aba-lista">
-        <div class="modo" role="group" aria-label="Tipo de conteúdo">
-          <button id="modoNomes" aria-pressed="true">Nomes</button>
-          <button id="modoPerguntas" aria-pressed="false">Perguntas</button>
-        </div>
-
         <form class="linha-add" id="formAdd">
           <input class="campo" id="novoItem" placeholder="Escrever e carregar em Enter" aria-label="Novo item">
           <button class="btn btn-cheio" type="submit">Juntar</button>
@@ -731,7 +758,6 @@ body.projecao .credito-proj{display:block}
           <span id="contador">0 itens</span>
           <div class="mini-acts">
             <button class="btn btn-mini" id="btnBaralhar">Baralhar</button>
-            <button class="btn btn-mini" id="btnCores">Trocar cores</button>
             <button class="btn btn-mini" id="btnImagens">Juntar imagens</button>
             <button class="btn btn-mini" id="btnLimpar">Limpar</button>
             <input type="file" id="ficheiroImagens" accept="image/*" multiple hidden>
@@ -742,13 +768,15 @@ body.projecao .credito-proj{display:block}
 
         <hr class="sep">
 
-        <p class="titulo-bloco">Colar uma lista inteira</p>
-        <textarea class="campo" id="colar" placeholder="Um nome ou uma pergunta por linha.&#10;Também aceita separados por vírgula."></textarea>
-        <div class="mini-acts">
-          <button class="btn btn-mini" id="btnSubstituir">Substituir lista</button>
-          <button class="btn btn-mini" id="btnAcrescentar">Acrescentar</button>
-          <button class="btn btn-mini" id="btnCopiarLista">Copiar lista</button>
-        </div>
+        <details class="dobra">
+          <summary>Colar uma lista inteira</summary>
+          <textarea class="campo" id="colar" placeholder="Um nome ou uma pergunta por linha.&#10;Também aceita separados por vírgula."></textarea>
+          <div class="mini-acts">
+            <button class="btn btn-mini" id="btnSubstituir">Substituir lista</button>
+            <button class="btn btn-mini" id="btnAcrescentar">Acrescentar</button>
+            <button class="btn btn-mini" id="btnCopiarLista">Copiar lista</button>
+          </div>
+        </details>
 
         <hr class="sep">
 
@@ -764,6 +792,7 @@ body.projecao .credito-proj{display:block}
       <div class="folha" id="folha-aspeto" role="tabpanel" aria-labelledby="aba-aspeto" hidden>
         <p class="titulo-bloco">Paleta da roda</p>
         <div class="paletas" id="paletas"></div>
+        <div class="mini-acts"><button class="btn btn-mini" id="btnCores">Trocar cores</button></div>
         <p class="aviso">Cada item também tem a sua bola de cor na lista — clica para escolher à mão.</p>
 
         <hr class="sep">
@@ -794,6 +823,18 @@ body.projecao .credito-proj{display:block}
               <button data-v="120" aria-pressed="false">2 min</button>
             </div>
           </div>
+          <div class="def-linha">
+            <p>Tema<small>Escuro para salas com pouca luz; claro quando o projetor é fraco.</small></p>
+            <div class="seg" id="segTema" role="group" aria-label="Tema">
+              <button data-v="" aria-pressed="true">Auto</button>
+              <button data-v="light" aria-pressed="false">Claro</button>
+              <button data-v="dark" aria-pressed="false">Escuro</button>
+            </div>
+          </div>
+          <div class="def-linha">
+            <p>Ecrã inteiro<small>Esconde as barras do navegador. A tecla F11 faz o mesmo.</small></p>
+            <button class="btn btn-mini" id="btnEcraInteiro">Ativar</button>
+          </div>
           <div class="def-linha def-copia">
             <p>Cópia de segurança<small>As listas e as imagens ficam só neste navegador. Guarda um ficheiro para as levares para outro computador.</small></p>
             <div class="copia-acts">
@@ -819,14 +860,8 @@ body.projecao .credito-proj{display:block}
       </div>
     </section>
   </main>
+  <div class="veu-painel" id="veuPainel" hidden></div>
 
-  <footer class="rodape">
-    <span class="estado-wrap">
-      <span id="estado" role="status" aria-live="polite">Pronta a rodar</span>
-      <button class="btn btn-mini" id="btnAnular" hidden>Anular</button>
-    </span>
-    <span>&copy; 2026 <a href="https://julianaaraujo.pt" target="_blank" rel="noopener">Juliana Araújo</a></span>
-  </footer>
 </div>
 
 <section class="sobre" id="sobre-roleta">
@@ -927,7 +962,6 @@ body.projecao .credito-proj{display:block}
     <div class="acts-modal">
       <button class="btn btn-cheio" id="btnOutra">Rodar novamente</button>
       <button class="btn" id="btnTirar">Remover</button>
-      <button class="btn" id="btnCopiarRes">Copiar</button>
       <button class="btn" id="btnFechar">Fechar</button>
     </div>
   </div>
@@ -1092,13 +1126,22 @@ function desenhar(){
   const estiloLinha = getComputedStyle(document.body).getPropertyValue("--line-forte").trim();
   const estiloInk = getComputedStyle(document.body).getPropertyValue("--ink-3").trim();
 
+  /* Vazia, a roda convida a escrever: um círculo tracejado e o pedido a
+     cinzento. Um clique em qualquer sítio dela abre o campo de escrever. */
+  btnRodar.textContent = n ? "Rodar" : "Escrever";
   if(n === 0){
     ctx.beginPath(); ctx.arc(cx,cy,R-2,0,Math.PI*2);
-    ctx.strokeStyle = estiloLinha; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.setLineDash([6, 8]);
+    ctx.strokeStyle = estiloLinha; ctx.lineWidth = 2; ctx.stroke();
+    ctx.setLineDash([]);
     ctx.fillStyle = estiloInk;
-    ctx.font = "500 14px 'Space Grotesk', sans-serif";
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.fillText("Lista vazia — junta nomes ou perguntas", cx, cy + R*0.42);
+    const grande = Math.max(15, Math.round(R * 0.085));
+    ctx.font = "500 " + grande + "px 'Space Grotesk', sans-serif";
+    ctx.fillText("Escreve aqui os nomes", cx, cy - R*0.46);
+    ctx.fillText("ou as perguntas", cx, cy - R*0.46 + grande*1.35);
+    ctx.font = "400 " + Math.max(12, Math.round(grande*0.62)) + "px 'Space Grotesk', sans-serif";
+    ctx.fillText("Toca na roda para começar", cx, cy + R*0.48);
     return;
   }
 
@@ -1293,7 +1336,7 @@ const DURACOES = {curta:3200, normal:5000, longa:7400};
 function rodar(){
   if(aGirar) return;
   const vivos = estado.itens.length;
-  if(vivos === 0){ estadoTexto("A lista está vazia"); return; }
+  if(vivos === 0){ escreverNaRoda(); return; }
   if(vivos === 1){ mostrar(estado.itens[0]); return; }
 
   aGirar = true;
@@ -1361,7 +1404,7 @@ let saiu = null, fxRaf = null, relRaf = null;
 function tirarDaRoleta(item){
   estado.itens = estado.itens.filter(x => x.id !== item.id);
   pintar(); desenharLista(); desenhar();
-  if(estado.itens.length === 0) estadoTexto("Lista esgotada — Limpar repõe os exemplos");
+  if(estado.itens.length === 0) estadoTexto("Já saíram todos — escreve mais nomes em Personalizar");
   guardar();
 }
 
@@ -1369,15 +1412,17 @@ function mostrar(item){
   if(!item) return;
   saiu = item;
 
-  resEtiqueta.textContent = estado.modo === "nomes" ? "Saiu" : "A pergunta é";
+  // sem escolher Nomes ou Perguntas: um texto que acaba em "?" ou é comprido lê-se como pergunta
+  const pergunta = /\?\s*$/.test(item.texto) || item.texto.length > 40;
+  resEtiqueta.textContent = pergunta ? "A pergunta é" : "Saiu";
   const resImg = document.getElementById("resImg");
   resImg.hidden = !item.img;
   resImg.src = item.img || "";
   resImg.alt = item.img ? item.texto : "";
   document.getElementById("anuncio").textContent =
-    (estado.modo === "nomes" ? "Saiu: " : "Pergunta: ") + item.texto;
+    (pergunta ? "Pergunta: " : "Saiu: ") + item.texto;
   resTexto.textContent = item.texto;
-  resTexto.className = estado.modo === "nomes" ? "res-nome" : "res-pergunta";
+  resTexto.className = pergunta ? "res-pergunta" : "res-nome";
   resMarcador.style.background = item.cor;
 
   modal.hidden = false;
@@ -1527,7 +1572,7 @@ function desenharLista(){
   listaItens.innerHTML = "";
   const n = estado.itens.length;
   contador.textContent = n === 0 ? "Lista vazia"
-    : n + " " + (estado.modo === "nomes" ? (n === 1 ? "nome" : "nomes") : (n === 1 ? "pergunta" : "perguntas"));
+    : n + (n === 1 ? " item" : " itens");
 
   if(n === 0){
     const p = document.createElement("p");
@@ -1707,7 +1752,7 @@ function desenharGuardadas(){
     b.innerHTML = "";
     b.appendChild(document.createTextNode(nome + " "));
     const em = document.createElement("em");
-    em.textContent = "· " + reg.itens.length + " · " + (reg.modo === "nomes" ? "nomes" : "perguntas");
+    em.textContent = "· " + reg.itens.length + (reg.itens.length === 1 ? " item" : " itens");
     b.appendChild(em);
     b.addEventListener("click", function(){
       trocarModo(reg.modo);
@@ -1732,11 +1777,7 @@ function desenharGuardadas(){
 
 function trocarModo(m){
   estado.modo = m;
-  document.getElementById("modoNomes").setAttribute("aria-pressed", String(m === "nomes"));
-  document.getElementById("modoPerguntas").setAttribute("aria-pressed", String(m === "perguntas"));
-  document.getElementById("novoItem").placeholder = m === "nomes"
-    ? "Escrever um nome e carregar em Enter"
-    : "Escrever uma pergunta e carregar em Enter";
+  document.getElementById("novoItem").placeholder = "Escreve aqui um nome ou uma pergunta";
   desenharLista();
   guardar();
 }
@@ -1806,13 +1847,19 @@ function arrancar(){
     if(!estado.listas || typeof estado.listas !== "object") estado.listas = {};
     estado.itens.forEach(function(it){ if(!it.id) it.id = novoId(); });
   }
-  if(!estado.itens.length){
-    estado.itens = SEMENTES.nomes.map(t => ({id:novoId(), texto:t, cor:"#1F2ED6"}));
-    estado.listas = Object.assign({
-      "Turma exemplo":{modo:"nomes", itens:SEMENTES.nomes.slice()},
-      "Aquecimento":{modo:"perguntas", itens:SEMENTES.perguntas.slice()}
-    }, estado.listas);
+  // a roda já não vem com nomes de exemplo: começa vazia, a pedir que se escreva
+  if(estado.itens.length === SEMENTES.nomes.length &&
+     estado.itens.every((it, i) => !it.img && it.texto === SEMENTES.nomes[i])){
+    estado.itens = [];
   }
+  // as perguntas de aquecimento continuam à mão, nas listas guardadas
+  if(!estado.listas["Aquecimento"] && !estado.iniciada){
+    estado.listas["Aquecimento"] = {modo:"perguntas", itens:SEMENTES.perguntas.slice()};
+  }
+  if(estado.listas["Turma exemplo"] && estado.listas["Turma exemplo"].itens.join("|") === SEMENTES.nomes.join("|")){
+    delete estado.listas["Turma exemplo"];
+  }
+  estado.iniciada = true;
   pintar();
 
   aplicarTema();
@@ -1850,9 +1897,6 @@ document.getElementById("btnTirar").addEventListener("click", function(){
 
 document.getElementById("btnFechar").addEventListener("click", function(){ fecharModal(false); });
 document.getElementById("veu").addEventListener("click", function(){ fecharModal(false); });
-document.getElementById("btnCopiarRes").addEventListener("click", function(){
-  if(saiu) copiar(saiu.texto, "Resultado copiado");
-});
 
 document.getElementById("formAdd").addEventListener("submit", function(ev){
   ev.preventDefault();
@@ -1861,8 +1905,6 @@ document.getElementById("formAdd").addEventListener("submit", function(ev){
   inp.focus();
 });
 
-document.getElementById("modoNomes").addEventListener("click", function(){ trocarModo("nomes"); });
-document.getElementById("modoPerguntas").addEventListener("click", function(){ trocarModo("perguntas"); });
 
 document.getElementById("btnBaralhar").addEventListener("click", function(){
   for(let i = estado.itens.length - 1; i > 0; i--){
@@ -1886,13 +1928,8 @@ document.getElementById("btnCores").addEventListener("click", function(){
 document.getElementById("btnLimpar").addEventListener("click", function(){
   if(estado.itens.length && !confirm("Limpar a roda toda?")) return;
   if(estado.itens.length) marcarParaAnular("a limpeza da roda");
-  if(estado.itens.length){
-    estado.itens = [];
-  }else{
-    estado.itens = (estado.modo === "nomes" ? SEMENTES.nomes : SEMENTES.perguntas)
-      .map(t => ({id:novoId(), texto:t, cor:"#1F2ED6"}));
-    estadoTexto("Exemplos repostos");
-  }
+  if(!estado.itens.length){ estadoTexto("A roda já está vazia"); return; }
+  estado.itens = [];
   pintar(); desenharLista(); desenhar(); guardar();
 });
 
@@ -1949,30 +1986,73 @@ document.getElementById("btnSom").addEventListener("click", function(){
   guardar();
 });
 
-document.getElementById("btnTema").addEventListener("click", function(){
-  const escuroAgora = document.documentElement.getAttribute("data-theme") === "dark" ||
-    (!document.documentElement.getAttribute("data-theme") &&
-     window.matchMedia("(prefers-color-scheme: dark)").matches);
-  estado.tema = escuroAgora ? "light" : "dark";
-  aplicarTema(); guardar();
+/* Tema no painel: automático (segue o sistema), claro ou escuro. */
+function marcarTema(){
+  document.querySelectorAll("#segTema button").forEach(function(b){
+    b.setAttribute("aria-pressed", String((estado.tema || "") === b.dataset.v));
+  });
+}
+document.querySelectorAll("#segTema button").forEach(function(b){
+  b.addEventListener("click", function(){
+    estado.tema = b.dataset.v || null;
+    aplicarTema(); marcarTema(); guardar();
+  });
 });
+marcarTema();
 
-document.getElementById("btnProj").addEventListener("click", function(){
-  document.body.classList.toggle("projecao");
-  const ligado = document.body.classList.contains("projecao");
+/* A página já abre em modo de projeção. O ecrã inteiro do navegador só pode
+   ser pedido com um clique de quem está a usar, por isso vive no painel. */
+const btnEcraInteiro = document.getElementById("btnEcraInteiro");
+btnEcraInteiro.addEventListener("click", function(){
+  const calar = function(p){ if(p && p.catch) p.catch(function(){}); };
   try{
-    if(ligado && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
-    else if(!ligado && document.exitFullscreen && document.fullscreenElement) document.exitFullscreen();
+    if(document.fullscreenElement) calar(document.exitFullscreen());
+    else if(document.documentElement.requestFullscreen) calar(document.documentElement.requestFullscreen());
   }catch(e){}
-  this.textContent = ligado ? "⤢ Sair" : "⛶ Projetar";
+});
+document.addEventListener("fullscreenchange", function(){
+  btnEcraInteiro.textContent = document.fullscreenElement ? "Sair" : "Ativar";
   setTimeout(medir, 120);
 });
+
+/* Personalizar: o painel abre por cima da roda e fecha com Fechar, com Esc
+   ou a clicar fora dele. */
+const painel = document.getElementById("painel");
+const veuPainel = document.getElementById("veuPainel");
+const btnPersonalizar = document.getElementById("btnPersonalizar");
+function abrirPainel(){
+  document.body.classList.add("personalizar");
+  veuPainel.hidden = false;
+  btnPersonalizar.setAttribute("aria-expanded", "true");
+  setTimeout(function(){ const a = painel.querySelector('[aria-selected="true"]'); if(a) a.focus(); }, 60);
+}
+function fecharPainel(){
+  document.body.classList.remove("personalizar");
+  veuPainel.hidden = true;
+  btnPersonalizar.setAttribute("aria-expanded", "false");
+}
+btnPersonalizar.addEventListener("click", function(){
+  if(document.body.classList.contains("personalizar")) fecharPainel(); else abrirPainel();
+});
+document.getElementById("btnFecharPainel").addEventListener("click", fecharPainel);
+
+/* Roda vazia: um clique nela (ou no botão do meio) abre a lista, com o
+   cursor já no campo de escrever. */
+function escreverNaRoda(){
+  abrirPainel();
+  document.getElementById("aba-lista").click();
+  setTimeout(function(){ document.getElementById("novoItem").focus(); }, 120);
+}
+document.getElementById("rodaWrap").addEventListener("click", function(ev){
+  if(!estado.itens.length && ev.target !== btnRodar) escreverNaRoda();
+});
+veuPainel.addEventListener("click", fecharPainel);
 
 document.addEventListener("keydown", function(ev){
   const emCampo = /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
   if(ev.key === "Escape"){
     if(!modal.hidden){ fecharModal(false); }
-    else if(document.body.classList.contains("projecao")){ document.getElementById("btnProj").click(); }
+    else if(document.body.classList.contains("personalizar")){ fecharPainel(); }
     return;
   }
   if(emCampo) return;
