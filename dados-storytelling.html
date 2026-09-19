@@ -140,6 +140,12 @@ h1{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;let
 .topo-acts{display:flex;gap:var(--s1)}
 
 .palco{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:var(--s5);align-items:start}
+/* Por omissão a página é só o palco, como em projeção: os dados no meio do
+   primeiro ecrã. O painel abre-se por cima, do lado direito, com Personalizar. */
+.app{min-height:calc(100vh - var(--alt-cabeca, 80px));min-height:calc(100svh - var(--alt-cabeca, 80px))}
+.palco{grid-template-columns:1fr;flex:1;align-content:center}
+.btn-personalizar{background:var(--cobalto);border-color:var(--cobalto);color:var(--creme)}
+.btn-personalizar:hover{background:#1826b4}
 @media (max-width:900px){
   .palco{grid-template-columns:1fr;gap:var(--s4)}
   .app{padding:var(--s3) var(--s3) var(--s5)}
@@ -151,12 +157,14 @@ h1{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;let
 .dados-col{display:flex;flex-direction:column;gap:var(--s4);align-items:center;container-type:inline-size}
 .mesa{
   --d:clamp(132px,calc(17 * var(--fluido)),220px);
-  --gap:clamp(16px,calc(3 * var(--fluido)),48px);
+  --gap:clamp(28px,calc(4.5 * var(--fluido)),72px);   /* dados com ar entre si: leem-se como peças soltas */
   display:flex;gap:var(--gap);justify-content:center;align-items:center;
   flex-wrap:wrap;
   padding:calc(var(--d)*.22) 0;
   width:100%;
 }
+/* no telemóvel o espaço volta a ser curto, senão cinco dados saltam para duas filas */
+@media (max-width:600px){.mesa{--gap:14px}}
 .suporte{width:var(--d);height:var(--d);position:relative;perspective:calc(var(--d)*3.2)}
 .suporte.saltar{animation:salto 1.7s cubic-bezier(.3,.7,.3,1)}
 
@@ -256,6 +264,15 @@ kbd{font-family:var(--fonte-etiqueta);font-size:10px;letter-spacing:.08em;border
   box-shadow:0 8px 30px -20px rgba(10,10,10,.45),inset 0 1px 0 var(--vidro-brilho);
   display:flex;flex-direction:column;
 }
+.painel{position:fixed;top:0;right:0;bottom:0;z-index:60;width:min(420px,100vw);border-radius:0;
+  border-width:0 0 0 1px;background:var(--surface);overflow-y:auto;
+  transform:translateX(104%);visibility:hidden;
+  transition:transform .32s cubic-bezier(.2,.8,.2,1),visibility 0s linear .32s}
+body.personalizar .painel{transform:none;visibility:visible;transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.painel-topo{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;
+  border-bottom:1px solid var(--line);font-family:var(--fonte-etiqueta);font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--ink)}
+.veu-painel{position:fixed;inset:0;z-index:59;background:rgba(10,10,10,.35)}
 .abas{display:flex;border-bottom:1px solid var(--line)}
 .aba{flex:1;background:none;border:0;border-bottom:2px solid transparent;padding:12px 8px;cursor:pointer;
   font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;text-transform:uppercase;
@@ -386,7 +403,7 @@ kbd{font-family:var(--fonte-etiqueta);font-size:10px;letter-spacing:.08em;border
 .relogio.fim .arco{stroke:var(--acento-coral)}
 
 /* ---------- projeção ---------- */
-body.projecao .painel,body.projecao .topo .sobrancelha,body.projecao .rodape{display:none}
+body.projecao .topo .sobrancelha,body.projecao .rodape{display:none}
 body.projecao .cabeca-site{display:none}
 body.projecao .palco{grid-template-columns:1fr}
 body.projecao .app{max-width:none;padding-top:var(--s3)}
@@ -497,7 +514,11 @@ body.projecao .dados-col > .legenda{display:none}
 .sobre .faq details p{margin:0 0 18px;padding-right:42px}
 .sobre-cta{margin-top:clamp(40px,calc(5 * var(--fluido)),64px);padding-top:clamp(26px,calc(3 * var(--fluido)),36px);
   border-top:1px solid var(--line)}
-body.projecao .sobre{display:none}
+/* A página abre sempre em projeção: o primeiro ecrã é só dados. O texto de
+   apoio fica mais abaixo, para quem quiser ler e para os motores de busca,
+   e a barra de deslocamento não aparece no projetor. */
+html:has(body.projecao){scrollbar-width:none}
+html:has(body.projecao)::-webkit-scrollbar{display:none}
 .tagline{font-family:var(--fonte-corpo);font-size:clamp(13px,calc(1.1 * var(--fluido)),15px);line-height:1.45;
   color:var(--ink-3);margin:6px 0 0;max-width:46ch}
 .credito-proj{display:none;position:fixed;right:16px;bottom:12px;z-index:5;
@@ -506,7 +527,7 @@ body.projecao .sobre{display:none}
 body.projecao .credito-proj{display:block}
 </style>
 </head>
-<body>
+<body class="projecao">
 
 <header class="cabeca-site">
   <a class="logo" href="index.html">Juliana Araújo</a>
@@ -524,12 +545,11 @@ body.projecao .credito-proj{display:block}
     <div class="marca">
       <p class="sobrancelha">Juliana Araújo &middot; Recurso pedagógico</p>
       <h1>Dados de Storytelling</h1>
-      <p class="tagline">Objetos ilustrados para destravar histórias &mdash; na formação e na sala de aula.</p>
+      <p class="tagline">Objetos ilustrados para destravar histórias, na formação e na sala de aula.</p>
     </div>
     <div class="topo-acts">
+      <button class="btn btn-icone btn-personalizar" id="btnPersonalizar" aria-expanded="false" aria-controls="painel" title="Escolher o conjunto, quantos dados e que objetos">✎ Personalizar</button>
       <button class="btn btn-icone" id="btnSom" aria-pressed="true" title="Ligar ou desligar o som">🔊 Som</button>
-      <button class="btn btn-icone" id="btnTema" title="Alternar claro e escuro">◐ Tema</button>
-      <button class="btn btn-icone" id="btnProj" title="Ecrã inteiro para projetar">⛶ Projetar</button>
     </div>
   </header>
 
@@ -540,7 +560,8 @@ body.projecao .credito-proj{display:block}
       <p class="legenda"><kbd>Espaço</kbd> lança &nbsp;·&nbsp; <kbd>Esc</kbd> fecha</p>
     </section>
 
-    <section class="painel">
+    <section class="painel" id="painel" aria-label="Personalizar">
+      <div class="painel-topo"><span>Personalizar</span><button class="btn btn-mini" id="btnFecharPainel">Fechar</button></div>
       <div class="abas" role="tablist">
         <button class="aba" role="tab" id="aba-jogo" aria-controls="folha-jogo" aria-selected="true">Jogo</button>
         <button class="aba" role="tab" id="aba-faces" aria-controls="folha-faces" aria-selected="false">Faces</button>
@@ -579,6 +600,18 @@ body.projecao .credito-proj{display:block}
             <p>Fluxo de luz<small>A animação suave que acompanha o resultado.</small></p>
             <button class="sw" id="swLuz" aria-pressed="true" aria-label="Fluxo de luz"></button>
           </div>
+          <div class="def-linha">
+            <p>Tema<small>Escuro para salas com pouca luz; claro quando o projetor é fraco.</small></p>
+            <div class="seg" id="segTema" role="group" aria-label="Tema">
+              <button data-v="" aria-pressed="true">Auto</button>
+              <button data-v="light" aria-pressed="false">Claro</button>
+              <button data-v="dark" aria-pressed="false">Escuro</button>
+            </div>
+          </div>
+          <div class="def-linha">
+            <p>Ecrã inteiro<small>Esconde as barras do navegador. A tecla F11 faz o mesmo.</small></p>
+            <button class="btn btn-mini" id="btnEcraInteiro">Ativar</button>
+          </div>
         </div>
 
       </div>
@@ -601,6 +634,7 @@ body.projecao .credito-proj{display:block}
       </div>
     </section>
   </main>
+  <div class="veu-painel" id="veuPainel" hidden></div>
 
   <footer class="rodape">
     <span id="estado">Prontos a lançar</span>
@@ -1742,12 +1776,8 @@ const frente = [];
 
 /* Quanto maior o punhado, mais pequeno cada dado, senao nao cabem. */
 const TAMANHOS = {
-  1:"clamp(150px,calc(19 * var(--fluido)),240px)", 2:"clamp(132px,calc(17 * var(--fluido)),220px)", 3:"clamp(112px,calc(13.5 * var(--fluido)),175px)",
-  4:"clamp(96px,calc(11 * var(--fluido)),148px)",  5:"clamp(86px,calc(9.5 * var(--fluido)),128px)"
-};
-const TAMANHOS_PROJ = {
-  1:"clamp(200px,calc(32 * var(--fluido)),420px)", 2:"clamp(180px,calc(27 * var(--fluido)),340px)", 3:"clamp(150px,calc(21 * var(--fluido)),270px)",
-  4:"clamp(132px,calc(17 * var(--fluido)),220px)", 5:"clamp(116px,calc(15 * var(--fluido)),190px)"
+  1:"clamp(140px,calc(22 * var(--fluido)),290px)", 2:"clamp(125px,calc(18.5 * var(--fluido)),235px)", 3:"clamp(105px,calc(14.5 * var(--fluido)),186px)",
+  4:"clamp(92px,calc(11.7 * var(--fluido)),151px)", 5:"clamp(80px,calc(10.3 * var(--fluido)),130px)"
 };
 let ultimoPar = null, saiu = null;
 
@@ -1793,14 +1823,14 @@ function construirDados(){
    Usa vh e não svh: dentro de uma variável, uma unidade que o navegador não
    conheça não cai para trás — anula a largura dos dados. Pelo mesmo motivo
    o limite da coluna (cqi) só entra se o navegador o souber ler. */
-const CABE_ALTURA = "calc((100vh - 150px) / 1.44)";
+const CABE_ALTURA = "calc((100vh - 340px) / 1.44)";
 const CABE_ALTURA_PROJ = "calc((100vh - 290px) / 1.44)";
 const TEM_CQI = !!(window.CSS && CSS.supports && CSS.supports("width", "calc(100cqi - 1px)"));
 
 function mostrarDados(){
   const n = Math.min(MAX_DADOS, Math.max(1, estado.dados || 2));
   const proj = document.body.classList.contains("projecao");
-  const limites = [(proj ? TAMANHOS_PROJ : TAMANHOS)[n], proj ? CABE_ALTURA_PROJ : CABE_ALTURA];
+  const limites = [TAMANHOS[n], proj ? CABE_ALTURA_PROJ : CABE_ALTURA];
   if(TEM_CQI) limites.push("calc((100cqi - " + (n - 1) + " * var(--gap)) / " + n + ")");
   mesa.style.setProperty("--d", "max(56px, min(" + limites.join(", ") + "))");
   suportes.forEach(function(s, i){ s.hidden = i >= n; });
@@ -1976,6 +2006,25 @@ function bip(agudo){
   o.start(); o.stop(a.currentTime + 0.3);
 }
 
+/* Fim do tempo: três notas de sino a subir, duas vezes. Ouve-se por cima da
+   conversa da sala sem assustar ninguém. */
+function alarmeFim(){
+  const a = audio(); if(!a) return;
+  const t0 = a.currentTime;
+  [0, 0.95].forEach(function(repete){
+    [[880, 0], [1108.73, 0.16], [1318.5, 0.32]].forEach(function(par){
+      const t = t0 + repete + par[1];
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = "triangle"; o.frequency.value = par[0];
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.22, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
+      o.connect(g); g.connect(a.destination);
+      o.start(t); o.stop(t + 0.95);
+    });
+  });
+}
+
 /* ======================================================================
    Resultado
    ====================================================================== */
@@ -2107,7 +2156,7 @@ function iniciarRelogio(){
     if(resta <= 0){
       clearInterval(relInt); relInt = null;
       relogio.classList.add("fim");
-      bip(true);
+      alarmeFim();
     }
   }, 1000);
   function pinta(v){
@@ -2317,30 +2366,69 @@ document.getElementById("btnSom").addEventListener("click", function(){
   guardar();
 });
 
-document.getElementById("btnTema").addEventListener("click", function(){
-  const escuroAgora = document.documentElement.getAttribute("data-theme") === "dark" ||
-    (!document.documentElement.getAttribute("data-theme") &&
-     window.matchMedia("(prefers-color-scheme: dark)").matches);
-  estado.tema = escuroAgora ? "light" : "dark";
-  aplicarTema(); guardar();
+/* Tema no painel: automático (segue o sistema), claro ou escuro. */
+function marcarTema(){
+  document.querySelectorAll("#segTema button").forEach(function(b){
+    b.setAttribute("aria-pressed", String((estado.tema || "") === b.dataset.v));
+  });
+}
+document.querySelectorAll("#segTema button").forEach(function(b){
+  b.addEventListener("click", function(){
+    estado.tema = b.dataset.v || null;
+    aplicarTema(); marcarTema(); guardar();
+  });
 });
+marcarTema();
 
-document.getElementById("btnProj").addEventListener("click", function(){
-  document.body.classList.toggle("projecao");
-  const ligado = document.body.classList.contains("projecao");
+/* A página já abre em modo de projeção. O ecrã inteiro do navegador só
+   pode ser pedido com um clique de quem está a usar, por isso vive no painel. */
+const btnEcraInteiro = document.getElementById("btnEcraInteiro");
+function marcarEcraInteiro(){ btnEcraInteiro.textContent = document.fullscreenElement ? "Sair" : "Ativar"; }
+btnEcraInteiro.addEventListener("click", function(){
+  // o navegador pode recusar (por exemplo dentro de uma moldura): a recusa chega como promessa
+  const calar = function(p){ if(p && p.catch) p.catch(function(){}); };
   try{
-    if(ligado && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
-    else if(!ligado && document.exitFullscreen && document.fullscreenElement) document.exitFullscreen();
+    if(document.fullscreenElement) calar(document.exitFullscreen());
+    else if(document.documentElement.requestFullscreen) calar(document.documentElement.requestFullscreen());
   }catch(e){}
-  this.textContent = ligado ? "⤢ Sair" : "⛶ Projetar";
-  mostrarDados();
 });
+document.addEventListener("fullscreenchange", function(){ marcarEcraInteiro(); mostrarDados(); });
+
+/* Personalizar: o painel abre por cima dos dados e fecha com Fechar, com Esc
+   ou a clicar fora dele. */
+const painel = document.getElementById("painel");
+const veuPainel = document.getElementById("veuPainel");
+const btnPersonalizar = document.getElementById("btnPersonalizar");
+function abrirPainel(){
+  document.body.classList.add("personalizar");
+  veuPainel.hidden = false;
+  btnPersonalizar.setAttribute("aria-expanded", "true");
+  setTimeout(function(){ const a = painel.querySelector('[aria-selected="true"]'); if(a) a.focus(); }, 60);
+}
+function fecharPainel(){
+  document.body.classList.remove("personalizar");
+  veuPainel.hidden = true;
+  btnPersonalizar.setAttribute("aria-expanded", "false");
+}
+btnPersonalizar.addEventListener("click", function(){
+  if(document.body.classList.contains("personalizar")) fecharPainel(); else abrirPainel();
+});
+document.getElementById("btnFecharPainel").addEventListener("click", fecharPainel);
+veuPainel.addEventListener("click", fecharPainel);
+
+/* O palco ocupa o primeiro ecrã inteiro, descontado o cabeçalho do site. */
+function medirCabeca(){
+  const c = document.querySelector(".cabeca-site");
+  document.documentElement.style.setProperty("--alt-cabeca", (c ? c.offsetHeight : 0) + "px");
+}
+window.addEventListener("resize", medirCabeca);
+medirCabeca();
 
 document.addEventListener("keydown", function(ev){
   const emCampo = /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
   if(ev.key === "Escape"){
     if(!modal.hidden){ fecharModal(false); }
-    else if(document.body.classList.contains("projecao")){ document.getElementById("btnProj").click(); }
+    else if(document.body.classList.contains("personalizar")){ fecharPainel(); }
     return;
   }
   if(emCampo) return;
