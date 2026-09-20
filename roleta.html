@@ -187,7 +187,12 @@ h1{
   margin:0;
   text-wrap:balance;
 }
-.topo-acts{display:flex;gap:var(--s1)}
+.topo-acts{display:flex;gap:var(--s1);align-items:center}
+/* Em projecao o cromo do site esta escondido, por isso o regresso ao site
+   vive aqui, ao lado do Personalizar. */
+.topo-acts a.btn{display:inline-flex;align-items:center;text-decoration:none}
+.btn-voltar .voltar-curto{display:none}
+@media (max-width:560px){.btn-voltar .voltar-longo{display:none}.btn-voltar .voltar-curto{display:inline}}
 
 .palco{
   display:grid;
@@ -713,6 +718,7 @@ body.projecao .credito-proj{display:block}
       <p class="tagline">Sorteio de nomes, perguntas e tarefas, para a sala de aula e a formação.</p>
     </div>
     <div class="topo-acts">
+      <a class="btn btn-icone btn-voltar" href="index.html" title="Voltar ao site de Juliana Araújo"><span class="voltar-longo">←&nbsp;Voltar ao site</span><span class="voltar-curto">←&nbsp;Site</span></a>
       <button class="btn btn-icone btn-personalizar" id="btnPersonalizar" aria-expanded="false" aria-controls="painel" title="A lista, as cores, o tempo e o histórico">✎ Personalizar</button>
       <button class="btn btn-icone" id="btnSom" aria-pressed="true" title="Ligar ou desligar o som">🔊 Som</button>
     </div>

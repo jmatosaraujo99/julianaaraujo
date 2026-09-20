@@ -137,7 +137,12 @@ button,input,textarea,select{font:inherit;color:inherit}
 .marca{display:flex;flex-direction:column;gap:2px}
 .sobrancelha{font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--ink-3);margin:0}
 h1{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:clamp(28px,calc(4.4 * var(--fluido)),44px);line-height:.98;margin:0;text-wrap:balance}
-.topo-acts{display:flex;gap:var(--s1)}
+.topo-acts{display:flex;gap:var(--s1);align-items:center}
+/* Em projecao o cromo do site esta escondido, por isso o regresso ao site
+   vive aqui, ao lado do Personalizar. */
+.topo-acts a.btn{display:inline-flex;align-items:center;text-decoration:none}
+.btn-voltar .voltar-curto{display:none}
+@media (max-width:560px){.btn-voltar .voltar-longo{display:none}.btn-voltar .voltar-curto{display:inline}}
 
 .palco{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:var(--s5);align-items:start}
 /* Por omissão a página é só o palco, como em projeção: os dados no meio do
@@ -548,6 +553,7 @@ body.projecao .credito-proj{display:block}
       <p class="tagline">Objetos ilustrados para destravar histórias, na formação e na sala de aula.</p>
     </div>
     <div class="topo-acts">
+      <a class="btn btn-icone btn-voltar" href="index.html" title="Voltar ao site de Juliana Araújo"><span class="voltar-longo">←&nbsp;Voltar ao site</span><span class="voltar-curto">←&nbsp;Site</span></a>
       <button class="btn btn-icone btn-personalizar" id="btnPersonalizar" aria-expanded="false" aria-controls="painel" title="Escolher o conjunto, quantos dados e que objetos">✎ Personalizar</button>
       <button class="btn btn-icone" id="btnSom" aria-pressed="true" title="Ligar ou desligar o som">🔊 Som</button>
     </div>
