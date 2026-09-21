@@ -223,6 +223,32 @@ textarea.campo{resize:vertical;line-height:1.5}
 .coluna-vazia{border:1.5px dashed var(--line-forte);border-radius:12px;padding:16px;text-align:center;font-size:13px;color:var(--ink-3)}
 
 /* separadores de coluna no telemóvel */
+/* ---------- a mesa: o quadro livre de quem dinamiza ----------
+   As colunas continuam a existir (é o que quem participa vê no telemóvel),
+   mas aqui são faixas onde os cartões se arrumam à mão. Largar um cartão
+   noutra faixa muda-lhe a coluna. */
+.mesa-wrap{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:16px;
+  background:var(--surface);height:min(72vh,760px);touch-action:none;cursor:grab;
+  background-image:radial-gradient(circle, var(--line-forte) 1px, transparent 1px);
+  background-size:26px 26px}
+.mesa-wrap.a-puxar{cursor:grabbing}
+.mesa-tela{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform}
+.mesa-faixa{position:absolute;top:0;border-radius:14px;border:1px dashed var(--line-forte);
+  background:color-mix(in srgb, var(--cor-col) 7%, transparent)}
+.mesa-faixa.alvo{border-style:solid;border-color:var(--cor-col);
+  background:color-mix(in srgb, var(--cor-col) 16%, transparent)}
+.mesa-faixa h4{position:absolute;top:10px;left:14px;margin:0;display:flex;align-items:center;gap:8px;
+  font-family:var(--fonte-etiqueta);font-size:12px;font-weight:600;text-transform:uppercase;
+  letter-spacing:.14em;color:var(--ink-2)}
+.mesa-faixa h4 i{width:10px;height:10px;border-radius:3px;background:var(--cor-col);display:block}
+.mesa-cartao{position:absolute;width:230px;cursor:grab;touch-action:none}
+.mesa-cartao.a-mexer{cursor:grabbing;z-index:5;transform:rotate(-1.5deg);box-shadow:0 18px 40px -18px rgba(10,10,10,.6)}
+.mesa-controlos{position:absolute;right:12px;bottom:12px;display:flex;gap:6px;z-index:6}
+.mesa-controlos .btn{background:var(--ground);opacity:.95}
+.mesa-dica{position:absolute;left:12px;bottom:12px;z-index:6;margin:0;font-size:12.5px;color:var(--ink-3);
+  background:var(--ground);border-radius:8px;padding:6px 10px;opacity:.95}
+@media (max-width:700px){.mesa-wrap{height:60vh}.mesa-dica{display:none}}
+
 .abas-col{display:none;gap:6px;overflow-x:auto;padding-bottom:4px}
 .abas-col button{flex:none;border:1px solid var(--line-forte);border-radius:99px;background:var(--surface);padding:8px 14px;
   font-family:var(--fonte-etiqueta);font-size:12px;font-weight:500;cursor:pointer;display:flex;gap:6px;align-items:center;min-height:40px}
@@ -638,6 +664,8 @@ const S = {
   cancelar:[],                // subscrições do ecrã atual
   quadro:null, cartoes:[], vistos:new Set(), primeiraCarga:true,
   modo:null,                  // "gestao" | "participante"
+  vista:"colunas",            // "colunas" | "mesa" — a mesa é só de quem dinamiza
+  cam:{x:40, y:40, z:1}, aArrastar:false,
   uid:null, colunaActiva:null, ordem:"recentes"
 };
 function limparEcra(){
@@ -801,7 +829,9 @@ function montarQuadro(id, acabadoDeCriar){
   const abas = el("div", {class:"abas-col", role:"tablist"});
   const avisoFechado = el("div", {class:"fechado-aviso", hidden:true});
   const colunas = el("div", {class:"colunas"});
-  $("ecra").append(cab, ferr, avisoFechado, abas, colunas);
+  const mesa = el("div", {class:"mesa-wrap", hidden:true});
+  $("ecra").append(cab, ferr, avisoFechado, abas, colunas, mesa);
+  S.vista = gestao ? (lerLS("mural-vista-" + id) || "colunas") : "colunas";
 
   let fab = null;
   if(!gestao){
@@ -826,7 +856,7 @@ function montarQuadro(id, acabadoDeCriar){
     avisoFechado.hidden = ab;
     avisoFechado.textContent = gestao ? "A participação está fechada. Só tu podes acrescentar ou mudar cartões." : "A participação neste quadro está fechada. Podes ver, mas já não dá para escrever.";
     if(fab) fab.hidden = !ab;
-    desenharColunas(colunas, abas);
+    desenharVista(colunas, abas, mesa);
     if(primeiroQuadro){
       primeiroQuadro = false;
       if(!gestao && q.modoNome === "nome" && !nomeGuardado()) pedirNome();
@@ -836,7 +866,7 @@ function montarQuadro(id, acabadoDeCriar){
 
   S.cancelar.push(A.ouvirCartoes(id, cs => {
     S.cartoes = cs;
-    if(S.quadro){ desenharColunas(colunas, abas); desenharEstatisticas(); }
+    if(S.quadro && !S.aArrastar){ desenharVista(colunas, abas, mesa); desenharEstatisticas(); }
     // só os cartões que chegam depois da primeira carga entram com animação
     cs.forEach(c => S.vistos.add(c.id));
     S.primeiraCarga = false;
@@ -888,6 +918,9 @@ function desenharCabeca(cab, ferr){
     ferr.append(
       el("div", {class:"acts"}, ordem),
       el("div", {class:"acts so-gestao"},
+        el("div", {class:"seg", role:"group", "aria-label":"Como ver o quadro"},
+          el("button", {"aria-pressed":String(S.vista !== "mesa"), onclick:() => mudarVista("colunas"), text:"Colunas"}),
+          el("button", {"aria-pressed":String(S.vista === "mesa"), onclick:() => mudarVista("mesa"), text:"Mesa"})),
         el("button", {class:"btn", onclick:() => abrirEscrever(null), text:"+ Escrever"}),
         el("button", {class:"btn btn-cheio", onclick:abrirPartilha, text:"Partilhar código"}),
         el("button", {class:"btn", onclick:alternarAberto, text: ab ? "Fechar participação" : "Abrir participação"}),
@@ -911,7 +944,8 @@ function redesenhar(){
   const cab = document.querySelector(".cabeca-quadro"), ferr = document.querySelector(".ferramentas");
   if(cab && ferr) desenharCabeca(cab, ferr);
   const cols = document.querySelector(".colunas"), abas = document.querySelector(".abas-col");
-  if(cols && abas) desenharColunas(cols, abas);
+  const mesa = document.querySelector(".mesa-wrap");
+  if(cols && abas) desenharVista(cols, abas, mesa);
 }
 function desenharEstatisticas(){
   const e = $("estatisticas"); if(!e) return;
@@ -971,6 +1005,174 @@ function desenharColunas(cx, abas){
     cx.append(coluna);
   });
   cx.scrollLeft = scroll;
+}
+
+/* ---------- a mesa ---------- */
+const MESA = {faixa:330, cartao:230, margem:28, topo:56, linha:168};
+
+function mudarVista(v){
+  S.vista = v;
+  if(S.quadro) gravarLS("mural-vista-" + S.quadro.id, v);
+  redesenhar();
+}
+
+function desenharVista(cx, abas, mesa){
+  const naMesa = S.modo === "gestao" && S.vista === "mesa";
+  if(mesa) mesa.hidden = !naMesa;
+  cx.hidden = naMesa;
+  if(abas) abas.hidden = naMesa || (S.quadro.colunas || []).length < 2;
+  if(naMesa && mesa) desenharMesa(mesa);
+  else desenharColunas(cx, abas);
+}
+
+/* Onde fica cada cartão: o que já foi arrumado à mão tem x e y; o resto
+   arruma-se sozinho dentro da faixa da sua coluna, pela ordem de chegada. */
+function posicoesDaMesa(cols){
+  const idsCol = new Set(cols.map(c => c.id));
+  const contas = new Map(cols.map(c => [c.id, 0]));
+  const fora = new Map();
+  ordenar(S.cartoes).slice().reverse().forEach(c => {
+    const colId = idsCol.has(c.coluna) ? c.coluna : (cols[0] || {}).id;
+    const i = Math.max(0, cols.findIndex(x => x.id === colId));
+    if(typeof c.x === "number" && typeof c.y === "number"){ fora.set(c.id, {x:c.x, y:c.y, col:colId}); return; }
+    const k = contas.get(colId) || 0;
+    contas.set(colId, k + 1);
+    fora.set(c.id, {x: i * MESA.faixa + MESA.margem + (k % 2 ? 18 : 0), y: MESA.topo + k * MESA.linha, col:colId});
+  });
+  return fora;
+}
+
+function desenharMesa(wrap){
+  const q = S.quadro; if(!q) return;
+  const cols = q.colunas || [];
+  const dona = souDona(), ab = aberto(q);
+  const pos = posicoesDaMesa(cols);
+
+  wrap.innerHTML = "";
+  const tela = el("div", {class:"mesa-tela"});
+  wrap.append(tela);
+
+  // as faixas das colunas
+  const alturaFaixa = Math.max(900, ...[...pos.values()].map(p => p.y + 260));
+  const faixas = [];
+  if(cols.length > 1) cols.forEach((col, i) => {
+    const f = el("div", {class:"mesa-faixa", style:"--cor-col:" + corPi(col.cor) +
+      ";left:" + (i * MESA.faixa) + "px;width:" + (MESA.faixa - 16) + "px;height:" + alturaFaixa + "px"},
+      el("h4", {}, el("i"), col.nome));
+    f.dataset.col = col.id;
+    faixas.push(f); tela.append(f);
+  });
+
+  // os cartões
+  S.cartoes.forEach(c => {
+    const p = pos.get(c.id); if(!p) return;
+    const card = desenharCartao(c, cols, dona, ab);
+    card.classList.add("mesa-cartao");
+    card.draggable = false;
+    card.style.left = p.x + "px";
+    card.style.top = p.y + "px";
+    if(dona) arrastavel(card, c, faixas, wrap);
+    tela.append(card);
+  });
+
+  const aplicar = () => { tela.style.transform = "translate(" + S.cam.x + "px," + S.cam.y + "px) scale(" + S.cam.z + ")"; };
+  aplicar();
+  wrap._aplicar = aplicar;
+
+  // puxar a mesa e aproximar
+  let puxa = null;
+  wrap.addEventListener("pointerdown", ev => {
+    if(ev.target.closest(".mesa-cartao")) return;
+    puxa = {x:ev.clientX, y:ev.clientY, cx:S.cam.x, cy:S.cam.y};
+    wrap.classList.add("a-puxar");
+    try{ wrap.setPointerCapture(ev.pointerId); }catch(e){}
+  });
+  wrap.addEventListener("pointermove", ev => {
+    if(!puxa) return;
+    S.cam.x = puxa.cx + (ev.clientX - puxa.x);
+    S.cam.y = puxa.cy + (ev.clientY - puxa.y);
+    aplicar();
+  });
+  const larga = () => { puxa = null; wrap.classList.remove("a-puxar"); };
+  wrap.addEventListener("pointerup", larga);
+  wrap.addEventListener("pointercancel", larga);
+  wrap.addEventListener("wheel", ev => {
+    ev.preventDefault();
+    const r = wrap.getBoundingClientRect();
+    const mx = ev.clientX - r.left, my = ev.clientY - r.top;
+    const antes = S.cam.z;
+    const z = Math.min(1.8, Math.max(0.3, antes * (ev.deltaY < 0 ? 1.12 : 0.89)));
+    S.cam.x = mx - (mx - S.cam.x) * (z / antes);
+    S.cam.y = my - (my - S.cam.y) * (z / antes);
+    S.cam.z = z;
+    aplicar();
+  }, {passive:false});
+
+  const zoom = passo => {
+    const r = wrap.getBoundingClientRect(), mx = r.width / 2, my = r.height / 2, antes = S.cam.z;
+    const z = Math.min(1.8, Math.max(0.3, antes * passo));
+    S.cam.x = mx - (mx - S.cam.x) * (z / antes);
+    S.cam.y = my - (my - S.cam.y) * (z / antes);
+    S.cam.z = z; aplicar();
+  };
+  wrap.append(
+    el("p", {class:"mesa-dica", text:"Arrasta os cartões para os arrumar. Puxa o fundo para andar, roda a roda do rato para aproximar."}),
+    el("div", {class:"mesa-controlos"},
+      el("button", {class:"btn btn-mini", onclick:() => zoom(0.85), "aria-label":"Afastar", text:"−"}),
+      el("button", {class:"btn btn-mini", onclick:() => zoom(1.18), "aria-label":"Aproximar", text:"+"}),
+      el("button", {class:"btn btn-mini", onclick:() => { ajustarMesa(wrap, pos); }, text:"Ajustar"})));
+}
+
+/* mostrar tudo o que está na mesa */
+function ajustarMesa(wrap, pos){
+  const todos = [...pos.values()];
+  if(!todos.length){ S.cam = {x:40, y:40, z:1}; wrap._aplicar && wrap._aplicar(); return; }
+  const x0 = Math.min(...todos.map(p => p.x)) - 40, y0 = Math.min(...todos.map(p => p.y)) - 40;
+  const x1 = Math.max(...todos.map(p => p.x)) + MESA.cartao + 40, y1 = Math.max(...todos.map(p => p.y)) + 220;
+  const r = wrap.getBoundingClientRect();
+  const z = Math.min(1.2, Math.max(0.3, Math.min(r.width / (x1 - x0), r.height / (y1 - y0))));
+  S.cam = {x: -x0 * z + (r.width - (x1 - x0) * z) / 2, y: -y0 * z + 20, z:z};
+  wrap._aplicar && wrap._aplicar();
+}
+
+/* arrastar um cartão na mesa */
+function arrastavel(card, c, faixas, wrap){
+  let mexe = null;
+  card.addEventListener("pointerdown", ev => {
+    if(ev.target.closest("button")) return;      // o voto não arrasta
+    ev.stopPropagation();
+    mexe = {x:ev.clientX, y:ev.clientY, ox:parseFloat(card.style.left), oy:parseFloat(card.style.top), moveu:false};
+    S.aArrastar = true;
+    try{ card.setPointerCapture(ev.pointerId); }catch(e){}
+  });
+  card.addEventListener("pointermove", ev => {
+    if(!mexe) return;
+    const dx = (ev.clientX - mexe.x) / S.cam.z, dy = (ev.clientY - mexe.y) / S.cam.z;
+    if(!mexe.moveu && Math.abs(dx) + Math.abs(dy) > 4){ mexe.moveu = true; card.classList.add("a-mexer"); }
+    if(!mexe.moveu) return;
+    card.style.left = (mexe.ox + dx) + "px";
+    card.style.top = (mexe.oy + dy) + "px";
+    const meio = mexe.ox + dx + MESA.cartao / 2;
+    faixas.forEach(f => f.classList.toggle("alvo",
+      meio >= parseFloat(f.style.left) && meio < parseFloat(f.style.left) + MESA.faixa));
+  });
+  const largar = ev => {
+    if(!mexe) return;
+    const moveu = mexe.moveu;
+    mexe = null; S.aArrastar = false;
+    card.classList.remove("a-mexer");
+    faixas.forEach(f => f.classList.remove("alvo"));
+    if(!moveu) return;
+    const x = Math.round(parseFloat(card.style.left)), y = Math.round(parseFloat(card.style.top));
+    const meio = x + MESA.cartao / 2;
+    let col = c.coluna;
+    faixas.forEach(f => { if(meio >= parseFloat(f.style.left) && meio < parseFloat(f.style.left) + MESA.faixa) col = f.dataset.col; });
+    mudarCartao(c, col === c.coluna ? {x:x, y:y} : {x:x, y:y, coluna:col});
+  };
+  card.addEventListener("pointerup", largar);
+  card.addEventListener("pointercancel", largar);
+  // um arrasto não abre o cartão
+  card.addEventListener("click", ev => { if(card.classList.contains("mexeu")){ ev.stopPropagation(); } }, true);
 }
 
 function desenharCartao(c, cols, dona, ab){
