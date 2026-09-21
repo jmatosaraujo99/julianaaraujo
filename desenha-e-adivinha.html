@@ -278,7 +278,13 @@ body.projecao #btnComo{display:none}
 .tempo-col{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
 .relogio{font-family:var(--fonte-display);font-size:clamp(44px,calc(7 * var(--fluido)),84px);line-height:.9;
   font-variant-numeric:tabular-nums;letter-spacing:.02em;color:var(--ink);min-width:2.2ch;text-align:right}
-.relogio.fim{color:var(--coral)}
+.relogio.fim{color:var(--coral);animation:bater 1s ease-in-out infinite}
+@keyframes bater{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.relogio.parado{animation:none;opacity:.55}
+/* a sala em pausa: quem está a olhar tem de perceber que o tempo parou */
+.pausa-faixa{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;
+  background:rgba(10,10,10,.5);color:#fff;font-family:var(--fonte-display);text-transform:uppercase;
+  letter-spacing:var(--ls-display);font-size:clamp(28px,calc(6 * var(--fluido)),64px)}
 
 /* pistas de letras */
 .pista{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;align-items:flex-end;min-height:1em}
@@ -713,6 +719,7 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
           <div class="quadro-moldura" style="margin-top:var(--s2)">
             <canvas class="quadro" id="quadroFormador"></canvas>
             <div class="contagem" id="contagem" hidden aria-hidden="true"><span></span></div>
+            <div class="pausa-faixa" id="faixaPausa" hidden>Em pausa</div>
             <div class="quadro-aviso" id="avisoFormador"></div>
             <div class="revelada" id="reveladaFormador" hidden></div>
           </div>
@@ -725,6 +732,7 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
               <p class="passo so-antes"><i>3</i> Quando estiverem todos</p>
               <div class="acts">
                 <button class="btn btn-cheio btn-grande" id="btnRonda">Começar jogo</button>
+                <button class="btn so-jogo" id="btnPausa" disabled title="Parar o relógio sem perder a ronda">⏸ Pausa</button>
                 <button class="btn so-jogo" id="btnPassar" disabled>Passar</button>
               </div>
               <p class="dica so-antes">Não é preciso mexer em mais nada: as palavras, o tempo e as equipas
@@ -905,6 +913,7 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
 
           <div class="quadro-moldura" id="pMoldura" hidden>
             <canvas class="quadro" id="quadroPart"></canvas>
+            <div class="pausa-faixa" id="pFaixaPausa" hidden>Em pausa</div>
             <div class="revelada" id="reveladaPart" hidden></div>
           </div>
 
@@ -1307,7 +1316,7 @@ const F = {
   opcoes:[], relogioEscolha:null,
   mascara:"", momentosPista:[],
   album:[], jogoAcabado:false, ligadosAntes:new Set(), ultimoFim:null,
-  contagemToken:0, contagemTempo:null, ultimoGanho:null
+  contagemToken:0, contagemTempo:null, ultimoGanho:null, sacoDesenho:{}, pausado:false
 };
 
 function confBase(){
@@ -1550,6 +1559,7 @@ function tratarNoFormador(conn, msg){
 
   if(F.fase !== "ronda") return;
 
+  if(msg.t === "traco" && F.pausado) return;
   if(msg.t === "traco" && Array.isArray(msg.pts)){
     const s = {id:String(msg.id), cor:String(msg.cor), larg:+msg.larg || LARGURAS[1],
                pts:msg.pts.filter(q => Array.isArray(q) && q.length === 2).map(q => [clamp(+q[0]), clamp(+q[1])])};
@@ -1583,6 +1593,15 @@ function normalizar(t){
   return String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 }
+/* A palavra é "gato" e a pessoa escreve "o gato" ou "gatos": isso é acertar.
+   Tira-se o artigo, os espaços e o plural antes de comparar. */
+function chavePalpite(t){
+  return normalizar(t)
+    .replace(/^(?:o|a|os|as|um|uma|uns|umas)\s+/, "")
+    .replace(/\s+/g, "")
+    .replace(/(?:es|s)$/, "");
+}
+
 function distancia(a, b){
   a = Array.from(a); b = Array.from(b);
   let ant = b.map((_, j) => j + 1); ant.unshift(0);
@@ -1606,7 +1625,7 @@ function tratarPalpite(l, msg){
   const n = normalizar(texto);
   if(!n) return;
   const alvo = normalizar(F.palavra);
-  if(n === alvo || n.replace(/ /g, "") === alvo.replace(/ /g, "")){
+  if(n === alvo || n.replace(/ /g, "") === alvo.replace(/ /g, "") || chavePalpite(texto) === chavePalpite(F.palavra)){
     enviar(l.conn, {t:"palpite-certo", texto:texto});
     terminarRonda(p.equipa, p.nome);
     return;
@@ -1746,6 +1765,24 @@ function pararRelogios(){
   if(F.relogioEscolha){ clearTimeout(F.relogioEscolha); F.relogioEscolha = null; }
 }
 
+/* Sortear ao acaso dentro da equipa fazia a mesma pessoa desenhar três vezes
+   enquanto outra não desenhava nenhuma. Cada equipa tem um saco: só se repete
+   quando todos os que estão ligados já desenharam uma vez. */
+function escolherDesenhador(eqIdx, ligadas){
+  const daEquipa = ligadas.filter(p => p.equipa === eqIdx);
+  if(!daEquipa.length) return null;
+  const chave = "e" + eqIdx;
+  let saco = (F.sacoDesenho[chave] || []).filter(id => daEquipa.some(p => p.id === id));
+  if(!saco.length){
+    saco = baralhar(daEquipa.map(p => p.id));
+    // quem acabou de desenhar não abre o saco novo, se houver mais alguém
+    if(saco.length > 1 && saco[0] === F.desenhadorId) saco.push(saco.shift());
+  }
+  const id = saco.shift();
+  F.sacoDesenho[chave] = saco;
+  return daEquipa.filter(p => p.id === id)[0] || daEquipa[0];
+}
+
 function novaRonda(){
   if(F.jogoAcabado){ mostrarFim(); return; }
   if(F.fase === "escolha" || F.fase === "ronda") return;
@@ -1767,10 +1804,8 @@ function novaRonda(){
   }
   F.vezEquipa = (eqIdx + 1) % n;
 
-  const daEquipa = ligadas.filter(p => p.equipa === eqIdx);
-  let escolhidos = daEquipa.filter(p => p.id !== F.desenhadorId);
-  if(!escolhidos.length) escolhidos = daEquipa;
-  const quem = escolhidos[Math.floor(Math.random()*escolhidos.length)];
+  const quem = escolherDesenhador(eqIdx, ligadas);
+  if(!quem) return;
 
   pararRelogios();
   F.conf.rondaN += 1; guardarConf();
@@ -1815,6 +1850,11 @@ function comecarDesenho(palavra){
     paraQuemAdivinha({t:"pista", mascara:F.mascara});
   }
 
+  F.pausado = false;
+  $("faixaPausa").hidden = true;
+  $("btnPausa").textContent = "⏸ Pausa";
+  $("relogio").classList.remove("parado");
+  paraTodos({t:"pausa", on:false});
   mostrarRondaFormador();
 
   contagem(3, function(){
@@ -1843,6 +1883,20 @@ function pararContagem(){
   F.contagemToken++;
   if(F.contagemTempo){ clearTimeout(F.contagemTempo); F.contagemTempo = null; }
   $("contagem").hidden = true;
+}
+
+function alternarPausa(){
+  if(F.fase !== "ronda") return;
+  F.pausado = !F.pausado;
+  if(F.pausado){
+    if(F.relogio){ clearInterval(F.relogio); F.relogio = null; }
+  }else{
+    arrancarRelogio();
+  }
+  $("faixaPausa").hidden = !F.pausado;
+  $("btnPausa").textContent = F.pausado ? "▶ Continuar" : "⏸ Pausa";
+  $("relogio").classList.toggle("parado", F.pausado);
+  paraTodos({t:"pausa", on:F.pausado});
 }
 
 function arrancarRelogio(){
@@ -1956,6 +2010,7 @@ function mostrarRondaFormador(){
   btn.disabled = fase === "escolha" || fase === "ronda";
   btn.textContent = F.jogoAcabado ? "Ver resultados" : F.conf.rondaN === 0 ? "Começar jogo" : "Nova ronda";
   $("btnPassar").disabled = !(fase === "escolha" || fase === "ronda");
+  $("btnPausa").disabled = fase !== "ronda";
   $("btnVerPalavra").disabled = fase !== "ronda";
   $("btnTerminar").disabled = F.conf.rondaN === 0;
   $("btnAlbum").textContent = "Álbum · " + F.album.length;
@@ -2415,6 +2470,7 @@ function ligarPainel(){
 
   $("btnRonda").addEventListener("click", novaRonda);
   $("btnPassar").addEventListener("click", () => terminarRonda(null));
+  $("btnPausa").addEventListener("click", alternarPausa);
   $("btnTerminar").addEventListener("click", () => {
     if(!F.jogoAcabado && !confirm("Terminar o jogo e mostrar os resultados?")) return;
     mostrarFim();
@@ -2538,7 +2594,7 @@ function ligarPainel(){
 const P = {
   peer:null, conn:null, codigo:null, jogadorId:null, nome:null, equipa:null,
   fase:"espera", souDesenhador:false, quadro:null, mascara:"",
-  cor:PALETA[0], larg:LARGURAS[1], borracha:false, tentativas:0, aSair:false
+  cor:PALETA[0], larg:LARGURAS[1], borracha:false, tentativas:0, aSair:false, pausado:false
 };
 
 function abrirParticipante(codigo){
@@ -2674,6 +2730,12 @@ function tratarNoParticipante(msg){
     case "tracos":
       if(P.quadro) P.quadro.definir(msg.lista);
       break;
+    case "pausa": {
+      P.pausado = !!msg.on;
+      $("pFaixaPausa").hidden = !P.pausado;
+      $("pTempo").classList.toggle("parado", P.pausado);
+      break;
+    }
     case "revelar": {
       const r = $("reveladaPart");
       r.innerHTML = esc(msg.palavra) + (msg.ganho ? '<em>+' + msg.ganho.pontos + '</em>' : "");
@@ -2757,6 +2819,12 @@ function mostrarEscolha(opcoes){
 
 function aplicarEstado(msg){
   P.fase = msg.fase;
+  // sair da ronda limpa a pausa: senão ficava a faixa de uma ronda anterior
+  if(msg.fase !== "ronda" && P.pausado){
+    P.pausado = false;
+    $("pFaixaPausa").hidden = true;
+    $("pTempo").classList.remove("parado");
+  }
   const euDesenho = msg.desenhadorId === P.jogadorId;
   P.souDesenhador = msg.fase === "ronda" && euDesenho;
 
@@ -2898,7 +2966,7 @@ function ligarDesenho(){
   };
 
   canvas.addEventListener("pointerdown", ev => {
-    if(!P.souDesenhador) return;
+    if(!P.souDesenhador || P.pausado) return;
     ev.preventDefault();
     try{ canvas.setPointerCapture(ev.pointerId); }catch(e){}
     atual = {id:(P.jogadorId || "x") + "-" + Date.now().toString(36) + "-" + (++seq),
