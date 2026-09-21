@@ -31,9 +31,9 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Desenha e Adivinha","applicationCategory":"EducationalApplication","operatingSystem":"Browser","description":"Jogo de desenhar e adivinhar para a sala de formação: os participantes entram pelo telemóvel, só quem desenha vê a palavra, palpites escritos, equipas, listas de palavras por área e álbum dos desenhos.","url":"https://julianaaraujo.pt/desenha-e-adivinha.html","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"copyrightHolder":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/"},"copyrightYear":2026,"creator":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"inLanguage":"pt-PT"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://julianaaraujo.pt/"},{"@type":"ListItem","position":2,"name":"Desenha e Adivinha","item":"https://julianaaraujo.pt/desenha-e-adivinha.html"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"É preciso criar conta ou instalar alguma coisa?","acceptedAnswer":{"@type":"Answer","text":"Não. Quem dá a sessão abre esta página e carrega em Abrir sala. Quem participa entra pelo navegador do telemóvel, com o QR ou com o código de quatro letras."}},{"@type":"Question","name":"Os outros telemóveis conseguem ver a palavra?","acceptedAnswer":{"@type":"Answer","text":"Não. A palavra só é enviada ao telemóvel de quem está a desenhar. O ecrã projetado também não a mostra: se precisares de a ver, carrega e mantém Ver palavra."}},{"@type":"Question","name":"Os palpites têm de estar escritos sem erros?","acceptedAnswer":{"@type":"Answer","text":"Maiúsculas e acentos não contam. Se faltar ou sobrar uma letra, a pessoa recebe um «Quase!» no telemóvel e pode tentar outra vez. Se preferires que o grupo grite, muda os palpites para Em voz alta e marcas tu a equipa que acertou."}},{"@type":"Question","name":"Como experimento antes da sessão?","acceptedAnswer":{"@type":"Answer","text":"Abre a sala e carrega em Experimentar a desenhar: aparece ao lado o ecrã de quem participa, e podes desenhar tu. Para testar os palpites precisas de uma segunda pessoa na sala, porque quem desenha não adivinha."}},{"@type":"Question","name":"Os nomes e os desenhos vão para algum lado?","acceptedAnswer":{"@type":"Answer","text":"Os telemóveis ligam-se diretamente ao computador de quem dá a sessão. Para se encontrarem usam um serviço público de ligação, mas o jogo não guarda nada em nenhum servidor: as palavras, os nomes e os pontos ficam no teu navegador, e os desenhos só existem enquanto a página estiver aberta."}},{"@type":"Question","name":"Funciona em qualquer rede?","acceptedAnswer":{"@type":"Answer","text":"Na maioria, sim. Algumas redes de empresa bloqueiam este tipo de ligação entre aparelhos. Se vais dar a sessão numa rede que não conheces, experimenta antes com um telemóvel."}},{"@type":"Question","name":"Posso guardar os desenhos?","acceptedAnswer":{"@type":"Answer","text":"Podes. Cada ronda fica no Álbum, e o botão de descarregar junta-os todos numa imagem. Descarrega antes de fechar ou recarregar a página, que aí perdem-se."}}]}</script>
-<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
-<link rel="icon" href="favicon.ico?v=2" sizes="any">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -163,6 +163,9 @@ h3{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;let
 .btn-icone{padding:7px 10px;font-size:13px;letter-spacing:0;text-transform:none;font-family:var(--fonte-corpo);
   background:var(--vidro);backdrop-filter:var(--vidro-desfoque);-webkit-backdrop-filter:var(--vidro-desfoque);
   border-color:var(--vidro-borda);box-shadow:inset 0 1px 0 var(--vidro-brilho)}
+/* o Personalizar e o unico botao cheio do topo: e o que se procura */
+.btn-icone.btn-cheio{background:var(--cobalto);border-color:var(--cobalto);color:var(--creme)}
+.btn-icone.btn-cheio:hover{background:#1826b4}
 .acts{display:flex;gap:var(--s1);flex-wrap:wrap;align-items:center}
 
 .campo{width:100%;background:var(--ground);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
@@ -170,6 +173,13 @@ h3{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;let
 textarea.campo{min-height:200px;resize:vertical;line-height:1.5;font-size:14px}
 .aviso{font-size:12.5px;color:var(--ink-3);margin:0}
 .erro{font-size:14px;color:var(--coral);margin:0;font-weight:500}
+/* o resultado do teste de ligação */
+.teste{display:flex;align-items:flex-start;gap:8px;font-size:13.5px;line-height:1.45;margin:0;color:var(--ink-2)}
+.teste i{flex:0 0 9px;width:9px;height:9px;border-radius:50%;background:var(--ink-3);margin-top:5px}
+.teste.bem i{background:var(--acento-verde)}
+.teste.meio i{background:#F2A900}
+.teste.mal i{background:var(--coral)}
+.teste.mal{color:var(--coral)}
 .titulo-bloco{font-family:var(--fonte-etiqueta);font-size:10.5px;font-weight:500;text-transform:uppercase;
   letter-spacing:var(--ls-etiqueta);color:var(--ink-3);margin:0}
 .sep{height:1px;background:var(--line);border:0;margin:0}
@@ -192,12 +202,41 @@ textarea.campo{min-height:200px;resize:vertical;line-height:1.5;font-size:14px}
 .entrada{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s4);margin-top:var(--s4)}
 @media (max-width:760px){.entrada{grid-template-columns:1fr}}
 .cartao-entrada{padding:var(--s5) var(--s4);display:flex;flex-direction:column;gap:var(--s3)}
+/* A entrada é uma pergunta só: quem és tu nesta sala? Duas respostas, mais
+   nada — o código e o QR só aparecem depois de escolher. */
+.escolha{display:flex;flex-direction:column;gap:var(--s3);max-width:560px;margin:var(--s5) auto 0}
+.escolha-btn{display:flex;flex-direction:column;align-items:flex-start;gap:4px;width:100%;
+  border:1px solid var(--line-forte);border-radius:14px;padding:18px 22px;cursor:pointer;
+  background:none;color:var(--ink);text-align:left;transition:background .16s,border-color .16s}
+.escolha-btn:hover{background:var(--surface-2)}
+.escolha-btn b{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;
+  letter-spacing:var(--ls-display);font-size:clamp(19px,calc(2.6 * var(--fluido)),26px);line-height:1.05}
+.escolha-btn small{font-family:var(--fonte-corpo);font-size:14px;color:var(--ink-2);letter-spacing:0;text-transform:none}
+.escolha-btn.btn-cheio{background:var(--cobalto);border-color:var(--cobalto);color:var(--creme)}
+.escolha-btn.btn-cheio:hover{background:#1826b4}
+.escolha-btn.btn-cheio small{color:rgba(242,239,234,.8)}
+.escolha .ajuda{align-self:center;background:none;border:0;cursor:pointer;color:var(--ink-2);
+  font-family:var(--fonte-etiqueta);font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  text-decoration:underline;text-underline-offset:3px;padding:6px}
+.escolha .ajuda:hover{color:var(--acc)}
+#caixaCodigo{max-width:560px;margin:var(--s5) auto 0}
+
+/* ---------- tutorial ---------- */
+.passos-jogo{list-style:none;margin:0;padding:0;display:grid;gap:var(--s3);
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.passos-jogo li{display:flex;gap:var(--s2);align-items:flex-start;border:1px solid var(--line);
+  border-radius:12px;padding:var(--s3);background:var(--surface)}
+.passos-jogo b{display:flex;align-items:center;justify-content:center;flex:0 0 30px;width:30px;height:30px;
+  border-radius:50%;background:var(--cobalto);color:var(--creme);font-family:var(--fonte-display);font-size:16px}
+.passos-jogo p{margin:0;font-size:14.5px;line-height:1.5}
+.passos-jogo p em{font-style:normal;font-weight:600}
+body.projecao #btnComo{display:none}
 .cartao-entrada p{margin:0;color:var(--ink-2)}
 .codigo-campo{font-family:var(--fonte-display);font-size:34px;letter-spacing:var(--ls-etiqueta-18);text-transform:uppercase;text-align:center;padding:10px}
 
 /* ---------- formador ---------- */
-.palco{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(320px,.7fr);gap:var(--s4);align-items:start}
-@media (max-width:980px){.palco{grid-template-columns:1fr}}
+/* O jogo ocupa o ecrã todo: a preparação mudou-se para a gaveta. */
+.palco{display:block}
 .jogo-col{display:flex;flex-direction:column;gap:var(--s3)}
 
 .sala{padding:var(--s3) var(--s4);display:flex;gap:var(--s4);align-items:center;flex-wrap:wrap}
@@ -280,8 +319,40 @@ textarea.campo{min-height:200px;resize:vertical;line-height:1.5;font-size:14px}
 .segurar{user-select:none;-webkit-user-select:none;touch-action:none}
 .palavra-oculta{font-family:var(--fonte-display);font-size:22px;letter-spacing:var(--ls-display);text-transform:uppercase;min-height:28px}
 
-/* painel lateral */
+/* ---------- painel de preparação: gaveta à direita ----------
+   Estava sempre aberto ao lado do jogo, e era a primeira coisa que se via:
+   tempo, pistas, palpites, listas. Agora abre-se em Personalizar, como na
+   Roleta e nos Dados, e o ecrã de abertura fica só com os três passos. */
 .painel{display:flex;flex-direction:column}
+.painel-lateral{
+  position:fixed;top:0;right:0;bottom:0;z-index:58;width:min(430px,100vw);
+  border-radius:0;border-top:0;border-right:0;border-bottom:0;
+  overflow-y:auto;overscroll-behavior:contain;
+  transform:translateX(104%);transition:transform .24s cubic-bezier(.16,.9,.24,1);
+}
+body.personalizar .painel-lateral{transform:none}
+.painel-topo{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;
+  gap:var(--s2);padding:12px var(--s3);border-bottom:1px solid var(--line);background:var(--surface)}
+.painel-topo b{font-family:var(--fonte-etiqueta);font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:var(--ls-etiqueta-14)}
+.veu-painel{position:fixed;inset:0;z-index:57;background:rgba(10,10,10,.45)}
+body:not(.personalizar) .veu-painel{display:none}
+@media (prefers-reduced-motion: reduce){.painel-lateral{transition:none}}
+
+/* ---------- os três passos do ecrã de abertura ----------
+   Quem abre a sala tem de ver, por ordem, onde entram as pessoas, quem já
+   entrou e qual é o botão que começa o jogo. */
+.passo{display:inline-flex;align-items:center;gap:9px;margin:0;
+  font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;
+  text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--ink-2)}
+.passo i{display:inline-flex;align-items:center;justify-content:center;flex:0 0 22px;
+  width:22px;height:22px;border-radius:50%;background:var(--cobalto);color:var(--creme);
+  font-style:normal;font-family:var(--fonte-etiqueta);font-size:12px;font-weight:600;letter-spacing:0}
+.comecar{display:flex;flex-direction:column;gap:var(--s2);align-items:flex-start}
+.comecar .dica{font-size:13.5px;color:var(--ink-3);margin:0}
+/* antes da primeira ronda, os comandos do jogo ainda não fazem nada */
+body:not(.a-jogar) .so-jogo{display:none}
+body.a-jogar .so-antes{display:none}
 .abas{display:flex;border-bottom:1px solid var(--line)}
 .aba{flex:1;background:none;border:0;border-bottom:2px solid transparent;padding:12px 6px;cursor:pointer;
   font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;text-transform:uppercase;
@@ -383,6 +454,15 @@ textarea.campo{min-height:200px;resize:vertical;line-height:1.5;font-size:14px}
 .feed-palpites span.quase{border-color:var(--coral);color:var(--coral)}
 .feed-palpites span.certo{background:var(--cobalto);color:var(--creme);border-color:var(--cobalto)}
 
+/* quanto se ganhou, ao lado da palavra revelada */
+.revelada em{font-style:normal;margin-left:14px;padding:2px 10px;border-radius:8px;
+  background:var(--creme);color:var(--cobalto);font-size:.66em}
+/* a contagem antes de cada ronda: a sala levanta os olhos para o ecrã */
+.contagem{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(10,10,10,.55);color:#fff;z-index:3;
+  font-family:var(--fonte-display);font-size:clamp(90px,calc(22 * var(--fluido)),220px);line-height:1;letter-spacing:.02em}
+.contagem span{animation:pulo .9s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes pulo{0%{transform:scale(.4);opacity:0}45%{transform:scale(1);opacity:1}100%{transform:scale(1.25);opacity:0}}
 .ferramentas{display:flex;flex-direction:column;gap:var(--s2)}
 .cores{display:flex;gap:6px;flex-wrap:wrap}
 .cor{width:38px;height:38px;border-radius:50%;border:2px solid var(--line-forte);cursor:pointer;padding:0;flex:0 0 38px}
@@ -406,7 +486,7 @@ textarea.campo{min-height:200px;resize:vertical;line-height:1.5;font-size:14px}
 .p-class li em{font-style:normal;font-family:var(--fonte-display);font-size:22px}
 
 /* ---------- projeção ---------- */
-body.projecao .painel-lateral,body.projecao .topo .sobrancelha,body.projecao .rodape,body.projecao .so-formador{display:none}
+body.projecao .painel-lateral,body.projecao .veu-painel,body.projecao .topo .sobrancelha,body.projecao .rodape,body.projecao .so-formador{display:none}
 body.projecao .palco{grid-template-columns:1fr}
 body.projecao .app{max-width:none;padding-top:var(--s3)}
 
@@ -540,6 +620,9 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
       <p class="tagline">Um desenha, a sala adivinha. Cada pessoa entra pelo telemóvel.</p>
     </div>
     <div class="topo-acts">
+      <button class="btn btn-icone btn-cheio so-formador" id="btnPersonalizar" aria-expanded="false" aria-controls="painelPrep" hidden
+              title="Palavras, tempo, equipas e nomes">✎ Personalizar</button>
+      <button class="btn btn-icone" id="btnComo" title="Como funciona o jogo">? Como funciona</button>
       <button class="btn btn-icone" id="btnSom" aria-pressed="true">🔊 Som</button>
       <button class="btn btn-icone" id="btnTema">◐ Tema</button>
       <button class="btn btn-icone" id="btnProj" hidden>⛶ Projetar</button>
@@ -551,19 +634,26 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
   <!-- ================================================================== -->
   <section id="ecraInicio">
     <p class="erro vidro" id="avisoCopia" hidden style="padding:var(--s3) var(--s4);margin-top:var(--s4)"></p>
-    <div class="entrada">
-      <div class="cartao-entrada vidro">
-        <p class="sobrancelha">Para quem dá a sessão</p>
-        <h2>Abrir uma sala</h2>
-        <p>Preparas as palavras, as equipas e os nomes. Projetas este ecrã e as pessoas entram pelo telemóvel.</p>
-        <div class="acts"><button class="btn btn-cheio btn-grande" id="btnAbrirSala">Abrir sala</button></div>
-      </div>
-      <div class="cartao-entrada vidro">
-        <p class="sobrancelha">Para quem participa</p>
-        <h2>Entrar numa sala</h2>
-        <p>Escreve o código que aparece no ecrã da sessão.</p>
-        <input class="campo codigo-campo" id="campoCodigoInicio" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="CÓDIGO" aria-label="Código da sala">
-        <div class="acts"><button class="btn btn-cheio btn-grande" id="btnEntrarInicio">Entrar</button></div>
+    <div class="escolha" id="escolha">
+      <button class="escolha-btn btn-cheio" id="btnAbrirSala">
+        <b>Entrar como formador</b>
+        <small>Abro a sala, projeto o ecrã e conduzo o jogo</small>
+      </button>
+      <button class="escolha-btn" id="btnQueroEntrar">
+        <b>Entrar numa sala</b>
+        <small>Já há uma sala aberta e tenho o código</small>
+      </button>
+      <button class="ajuda" id="btnComoInicio">Como funciona o jogo?</button>
+    </div>
+
+    <div class="cartao-entrada vidro" id="caixaCodigo" hidden>
+      <p class="sobrancelha">Para quem participa</p>
+      <h2>Entrar numa sala</h2>
+      <p>Escreve as quatro letras que estão no ecrã da sessão. Ou lê o QR com a câmara do telemóvel.</p>
+      <input class="campo codigo-campo" id="campoCodigoInicio" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="CÓDIGO" aria-label="Código da sala">
+      <div class="acts">
+        <button class="btn btn-cheio btn-grande" id="btnEntrarInicio">Entrar</button>
+        <button class="btn" id="btnVoltarEscolha">Voltar</button>
       </div>
     </div>
   </section>
@@ -574,6 +664,8 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
   <section id="ecraFormador" hidden>
     <div class="palco">
       <div class="jogo-col">
+
+        <p class="passo so-antes"><i>1</i> Projeta este ecrã &mdash; é por aqui que as pessoas entram</p>
 
         <div class="sala vidro" id="salaCartao">
           <div class="qr" id="qr" aria-label="Código QR para entrar na sala"></div>
@@ -587,14 +679,17 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
           <div class="acts so-formador" style="flex-direction:column;align-items:stretch">
             <a class="btn btn-cheio" id="btnExperimentar" target="_blank" rel="noopener" hidden
                title="Entra na tua própria sala como participante, para experimentares desenhar">✎ Experimentar a desenhar</a>
+            <button class="btn btn-mini" id="btnTestarLigacao"
+               title="Vê se esta rede deixa os telemóveis entrar">⚡ Testar a ligação</button>
             <button class="btn btn-mini" id="btnEsconderSala">Esconder</button>
+            <p class="teste" id="resultadoTeste" hidden><i></i><span></span></p>
           </div>
         </div>
 
         <!-- sala de espera: aparece antes da primeira ronda -->
         <div class="lobby vidro" id="lobby">
           <div class="lobby-topo">
-            <span class="sobrancelha">Quem já entrou</span>
+            <span class="passo"><i class="so-antes">2</i> Quem já entrou</span>
             <span class="lobby-conta" id="lobbyConta">0</span>
           </div>
           <div class="lobby-equipas" id="lobbyEquipas"></div>
@@ -617,6 +712,7 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
 
           <div class="quadro-moldura" style="margin-top:var(--s2)">
             <canvas class="quadro" id="quadroFormador"></canvas>
+            <div class="contagem" id="contagem" hidden aria-hidden="true"><span></span></div>
             <div class="quadro-aviso" id="avisoFormador"></div>
             <div class="revelada" id="reveladaFormador" hidden></div>
           </div>
@@ -625,18 +721,23 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
 
         <div class="controlo vidro">
           <div class="faixa">
-            <div class="acts">
-              <button class="btn btn-cheio btn-grande" id="btnRonda">Começar jogo</button>
-              <button class="btn" id="btnPassar" disabled>Passar</button>
+            <div class="comecar">
+              <p class="passo so-antes"><i>3</i> Quando estiverem todos</p>
+              <div class="acts">
+                <button class="btn btn-cheio btn-grande" id="btnRonda">Começar jogo</button>
+                <button class="btn so-jogo" id="btnPassar" disabled>Passar</button>
+              </div>
+              <p class="dica so-antes">Não é preciso mexer em mais nada: as palavras, o tempo e as equipas
+                já estão escolhidos. Muda-os em <b>✎ Personalizar</b>, aqui em cima.</p>
+              <p class="aviso" id="avisoRonda"></p>
             </div>
-            <div class="acts so-formador">
+            <div class="acts so-formador so-jogo">
               <button class="btn segurar" id="btnVerPalavra" disabled title="Carrega e mantém">Ver palavra</button>
               <span class="palavra-oculta" id="palavraOculta"></span>
             </div>
           </div>
-          <div class="pontos" id="pontos"></div>
-          <div class="faixa">
-            <p class="aviso" id="avisoRonda"></p>
+          <div class="pontos so-jogo" id="pontos"></div>
+          <div class="faixa so-jogo">
             <div class="acts">
               <button class="btn btn-mini" id="btnAlbum">Álbum · 0</button>
               <button class="btn btn-mini so-formador" id="btnTerminar" disabled>Terminar jogo</button>
@@ -645,7 +746,12 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
         </div>
       </div>
 
-      <aside class="painel painel-lateral vidro">
+      <div class="veu-painel" id="veuPainel"></div>
+      <aside class="painel painel-lateral vidro" id="painelPrep" aria-label="Preparar o jogo">
+        <div class="painel-topo">
+          <b>Personalizar</b>
+          <button class="btn btn-mini" id="btnFecharPainel">Fechar</button>
+        </div>
         <div class="abas" role="tablist">
           <button class="aba" role="tab" id="aba-pal" aria-selected="true">Palavras</button>
           <button class="aba" role="tab" id="aba-eq" aria-selected="false">Equipas</button>
@@ -670,6 +776,12 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
           <div class="def-linha">
             <p>Pistas de letras<small>Vão aparecendo letras na segunda metade do tempo. Nunca a palavra toda.</small></p>
             <button class="sw" id="swPistas" aria-pressed="true" aria-label="Pistas de letras"></button>
+          </div>
+          <div class="def-linha">
+            <p>Pontos<small>Por rapidez: 3 pontos se acertarem no primeiro terço do tempo, 2 no segundo, 1 no último — e 1 ponto para a equipa de quem desenhou. Simples: 1 ponto a quem acerta.</small></p>
+            <div class="seg" id="segPontos" role="group" aria-label="Como se contam os pontos">
+              <button data-v="rapidez">Por rapidez</button><button data-v="simples">Simples</button>
+            </div>
           </div>
           <div class="def-linha">
             <p>Palpites<small>Escritos: cada pessoa escreve no telemóvel e o jogo dá o ponto sozinho. Em voz alta: carregas tu na equipa que acertou.</small></p>
@@ -830,9 +942,9 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
     <ol>
       <li><b>Abre a sala e projeta.</b> Aparece um código de quatro letras e um QR.</li>
       <li><b>As pessoas entram pelo telemóvel.</b> Leem o QR ou escrevem o código, e escolhem o nome da lista.</li>
-      <li><b>Começa o jogo.</b> Sai alguém ao acaso para desenhar, e só essa pessoa vê a palavra. As outras escrevem o palpite no telemóvel, e quem acertar primeiro ganha o ponto para a equipa.</li>
+      <li><b>Começa o jogo.</b> Sai alguém ao acaso para desenhar, e só essa pessoa vê a palavra. As outras escrevem o palpite no telemóvel. Quem acertar primeiro dá pontos à sua equipa — mais pontos quanto mais cedo acertar — e a equipa de quem desenhou também ganha um.</li>
     </ol>
-    <p>No painel escolhes as palavras, o tempo de cada ronda, as equipas (até cinco) e se os palpites são escritos ou em voz alta. Antes da sessão, carrega em <b>Experimentar a desenhar</b>: o ecrã de quem participa abre ao lado do teu, e podes fazer uma ronda sozinha.</p>
+    <p>Em <b>✎ Personalizar</b>, no canto de cima, escolhes as palavras, o tempo de cada ronda, as equipas (até cinco) e se os palpites são escritos ou em voz alta. Antes da sessão, carrega em <b>Experimentar a desenhar</b>: o ecrã de quem participa abre ao lado do teu, e podes fazer uma ronda sozinha.</p>
 
     <h2>Para que serve numa sessão</h2>
     <ul>
@@ -915,6 +1027,24 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
     <hr class="sep">
     <h3>Álbum</h3>
     <div class="album" id="albumFim"></div>
+  </div>
+</div>
+
+<div class="sobre" id="sobreComo" hidden role="dialog" aria-modal="true" aria-label="Como funciona">
+  <div class="sobre-caixa">
+    <div class="sobre-topo">
+      <div><p class="sobrancelha">Em quatro passos</p><h2 class="titulo-janela">Como funciona</h2></div>
+      <div class="acts"><button class="btn btn-cheio" id="btnFecharComo">Já percebi</button></div>
+    </div>
+    <ol class="passos-jogo">
+      <li><b>1</b><p><em>Abres a sala e projetas este ecrã.</em> Aparece um código de quatro letras e um QR.</p></li>
+      <li><b>2</b><p><em>Cada pessoa entra pelo telemóvel.</em> Lê o QR ou escreve o código, e escolhe o seu nome.</p></li>
+      <li><b>3</b><p><em>Carregas em Começar jogo.</em> Sai alguém ao acaso para desenhar, e só essa pessoa vê a palavra — nem o ecrã projetado a mostra.</p></li>
+      <li><b>4</b><p><em>Os outros escrevem o palpite no telemóvel.</em> Quem acertar primeiro dá pontos à sua equipa: 3 se for no primeiro terço do tempo, 2 no segundo, 1 no último. A equipa de quem desenhou ganha 1 ponto por se ter percebido o desenho.</p></li>
+    </ol>
+    <p class="aviso">As palavras, o tempo de cada ronda, as equipas e os nomes mudam-se em <b>✎ Personalizar</b>,
+      no canto de cima. Para experimentares sozinha antes da sessão, carrega em <b>Experimentar a desenhar</b>,
+      na caixa do código: o ecrã de quem participa abre ao lado do teu.</p>
   </div>
 </div>
 
@@ -1033,6 +1163,7 @@ function mostrarEcra(nome){
   ["ecraInicio","ecraFormador","ecraParticipante"].forEach(id => $(id).hidden = (id !== nome));
   $("btnProj").hidden = (nome !== "ecraFormador");
   document.body.classList.toggle("participante", nome === "ecraParticipante");
+  $("btnPersonalizar").hidden = (nome !== "ecraFormador");
 }
 
 function esc(t){ const d = document.createElement("span"); d.textContent = t; return d.innerHTML; }
@@ -1175,7 +1306,8 @@ const F = {
   tracos:[], relogio:null, vezEquipa:0, quadro:null,
   opcoes:[], relogioEscolha:null,
   mascara:"", momentosPista:[],
-  album:[], jogoAcabado:false, ligadosAntes:new Set(), ultimoFim:null
+  album:[], jogoAcabado:false, ligadosAntes:new Set(), ultimoFim:null,
+  contagemToken:0, contagemTempo:null, ultimoGanho:null
 };
 
 function confBase(){
@@ -1189,6 +1321,7 @@ function confBase(){
     modoPalavra: "3",
     pistas: true,
     palpites: "escrito",
+    pontuacao: "rapidez",
     rondasPorEquipa: 3,
     rondaN: 0
   };
@@ -1207,6 +1340,7 @@ function carregarConf(){
     if(g.modoPalavra === "3" || g.modoPalavra === "acaso") c.modoPalavra = g.modoPalavra;
     if(typeof g.pistas === "boolean") c.pistas = g.pistas;
     if(g.palpites === "escrito" || g.palpites === "voz") c.palpites = g.palpites;
+    if(g.pontuacao === "rapidez" || g.pontuacao === "simples") c.pontuacao = g.pontuacao;
     if([0,2,3,5].indexOf(g.rondasPorEquipa) > -1) c.rondasPorEquipa = g.rondasPorEquipa;
     if(g.rondaN >= 0) c.rondaN = g.rondaN;
   }
@@ -1607,6 +1741,7 @@ function fecharEnsaio(){
 }
 
 function pararRelogios(){
+  pararContagem();
   if(F.relogio){ clearInterval(F.relogio); F.relogio = null; }
   if(F.relogioEscolha){ clearTimeout(F.relogioEscolha); F.relogioEscolha = null; }
 }
@@ -1621,7 +1756,7 @@ function novaRonda(){
     avisarFormador("Ainda não há ninguém ligado. Para experimentares sozinha, carrega em «Experimentar a desenhar», na caixa do código.");
     return;
   }
-  if(!listaPalavras().length){ avisarFormador("Não há palavras — escreve algumas no separador Palavras."); return; }
+  if(!listaPalavras().length){ avisarFormador("Não há palavras — escreve algumas em Personalizar, no separador Palavras."); return; }
   limparAvisoFormador();
 
   // a vez roda pelas equipas; salta as que não têm ninguém ligado
@@ -1681,8 +1816,36 @@ function comecarDesenho(palavra){
   }
 
   mostrarRondaFormador();
-  somInicio();
 
+  contagem(3, function(){
+    if(F.fase !== "ronda") return;   // passou-se ou acabou durante a contagem
+    somInicio();
+    arrancarRelogio();
+  });
+}
+
+/* A contagem dá à sala tempo para olhar para o ecrã antes do primeiro traço. */
+function contagem(n, aseguir){
+  const cx = $("contagem"), num = cx.firstElementChild;
+  const token = ++F.contagemToken;
+  cx.hidden = false;
+  const passo = i => {
+    if(token !== F.contagemToken) return;
+    if(i === 0){ cx.hidden = true; aseguir(); return; }
+    num.textContent = i;
+    num.style.animation = "none"; void num.offsetWidth; num.style.animation = "";
+    somTique();
+    F.contagemTempo = setTimeout(() => passo(i - 1), 900);
+  };
+  passo(n);
+}
+function pararContagem(){
+  F.contagemToken++;
+  if(F.contagemTempo){ clearTimeout(F.contagemTempo); F.contagemTempo = null; }
+  $("contagem").hidden = true;
+}
+
+function arrancarRelogio(){
   F.relogio = setInterval(function(){
     F.restante -= 1;
     pintarRelogio();
@@ -1692,6 +1855,13 @@ function comecarDesenho(palavra){
     if(F.restante <= 5 && F.restante > 0) somTique();
     if(F.restante <= 0) terminarRonda(null);
   }, 1000);
+}
+
+/* 3 pontos no primeiro terço do tempo, 2 no segundo, 1 no último. */
+function pontosDaRonda(){
+  if(F.conf.pontuacao !== "rapidez") return 1;
+  const sobra = F.conf.duracao ? F.restante / F.conf.duracao : 0;
+  return sobra > 0.66 ? 3 : sobra > 0.33 ? 2 : 1;
 }
 
 function terminarRonda(equipaQueAcertou, quemAcertou){
@@ -1706,11 +1876,20 @@ function terminarRonda(equipaQueAcertou, quemAcertou){
     somFim();
   }else{
     if(equipaQueAcertou !== null && F.conf.equipas[equipaQueAcertou]){
-      F.conf.equipas[equipaQueAcertou].pontos += 1;
+      /* Por rapidez: acertar cedo vale mais, e quem desenhou bem também ganha.
+         Sem isto, desenhar não dava nada a ninguém e o relógio não pesava. */
+      const ganhos = pontosDaRonda();
+      F.conf.equipas[equipaQueAcertou].pontos += ganhos;
+      const desenhou = F.conf.equipas[F.equipaIdx];
+      const pontoDeQuemDesenha = F.conf.pontuacao === "rapidez" &&
+        F.conf.nEquipas > 1 && F.equipaIdx !== equipaQueAcertou && desenhou;
+      if(pontoDeQuemDesenha) desenhou.pontos += 1;
+      F.ultimoGanho = {pontos:ganhos, desenhador:pontoDeQuemDesenha ? 1 : 0};
       F.quemAcertou = quemAcertou || null;
       if(quemAcertou) mostrarPalpite(quemAcertou, null, "certo");
       somPonto();
     }else{
+      F.ultimoGanho = null;
       somFim();
     }
     const p = pessoaDe(F.desenhadorId);
@@ -1725,9 +1904,11 @@ function terminarRonda(equipaQueAcertou, quemAcertou){
       umaEquipa: F.conf.nEquipas === 1,
       imagem: tracosParaImagem(F.tracos, 800, 600)
     });
-    paraTodos({t:"revelar", palavra:F.palavra});
+    const ganho = F.ultimoGanho;
+    paraTodos({t:"revelar", palavra:F.palavra, ganho:ganho});
     const rev = $("reveladaFormador");
-    rev.textContent = F.palavra; rev.hidden = false;
+    rev.innerHTML = esc(F.palavra) + (ganho ? '<em>+' + ganho.pontos + '</em>' : "");
+    rev.hidden = false;
   }
 
   guardarConf();
@@ -1767,6 +1948,9 @@ function mostrarRondaFormador(){
   else aviso.hidden = true;
 
   $("pistaFormador").hidden = !(fase === "ronda" && F.conf.pistas);
+
+  /* antes da primeira ronda o ecrã mostra só os três passos */
+  document.body.classList.toggle("a-jogar", F.conf.rondaN > 0);
 
   const btn = $("btnRonda");
   btn.disabled = fase === "escolha" || fase === "ronda";
@@ -1819,7 +2003,7 @@ function desenharLobby(){
   const cx = $("lobbyEquipas"); cx.innerHTML = "";
   if(!total){
     const p = document.createElement("p"); p.className = "aviso";
-    p.textContent = "Ainda ninguém. Junta os nomes no separador Pessoas, ou deixa cada um escrever o seu ao entrar.";
+    p.textContent = "Ainda ninguém. As pessoas entram pelo telemóvel com o código aqui em cima. Podes deixar os nomes prontos em Personalizar \u203a Pessoas, ou deixar cada um escrever o seu.";
     cx.appendChild(p);
   }else{
     for(let i = 0; i < n; i++){
@@ -2035,7 +2219,7 @@ async function descarregarAlbum(){
 function abrirSobre(id){ $(id).hidden = false; document.body.classList.add("sem-scroll"); }
 function fecharSobre(id){
   $(id).hidden = true;
-  if(["sobreFim","sobreAlbum","sobreImagem"].every(x => $(x).hidden)) document.body.classList.remove("sem-scroll");
+  if(["sobreFim","sobreAlbum","sobreImagem","sobreComo"].every(x => $(x).hidden)) document.body.classList.remove("sem-scroll");
 }
 
 /* ---- painel ---- */
@@ -2083,6 +2267,7 @@ function desenharPainel(){
   marcarSeg("segTempo", F.conf.duracao);
   marcarSeg("segModo", F.conf.modoPalavra);
   marcarSeg("segPalpites", F.conf.palpites);
+  marcarSeg("segPontos", F.conf.pontuacao);
   limparAvisoFormador();
   marcarSeg("segEquipas", F.conf.nEquipas);
   marcarSeg("segRondas", F.conf.rondasPorEquipa);
@@ -2185,6 +2370,7 @@ function ligarPainel(){
   }));
   ligarSeg("segTempo", v => { F.conf.duracao = +v; });
   ligarSeg("segModo", v => { F.conf.modoPalavra = v; });
+  ligarSeg("segPontos", v => { F.conf.pontuacao = v; });
   ligarSeg("segPalpites", v => {
     F.conf.palpites = v;
     if(!$("avisoRonda").classList.contains("aviso-forte")) limparAvisoFormador();
@@ -2249,7 +2435,7 @@ function ligarPainel(){
   $("btnDescarregarFim").addEventListener("click", descarregarAlbum);
   document.addEventListener("keydown", ev => {
     if(ev.key !== "Escape") return;
-    for(const id of ["sobreImagem","sobreAlbum","sobreFim"]) if(!$(id).hidden){ fecharSobre(id); return; }
+    for(const id of ["sobreImagem","sobreAlbum","sobreFim","sobreComo"]) if(!$(id).hidden){ fecharSobre(id); return; }
   });
 
   $("btnExperimentar").addEventListener("click", ev => {
@@ -2262,6 +2448,69 @@ function ligarPainel(){
   $("btnReabrir").addEventListener("click", () => {
     tentativasSala = 0;
     ligarAnfitriao(F.codigo || lerSS("desenha-sala") || novoCodigo(), 0);
+  });
+
+  /* ---- testar a ligação antes da sessão ----
+     Abre duas ligações de mentira e tenta falar de uma para a outra. Não prova
+     o telemóvel de cada pessoa, mas apanha o caso mais comum: a rede desta casa
+     ou desta empresa não deixar passar a ligação direta entre aparelhos. */
+  function dizerTeste(classe, texto){
+    const el = $("resultadoTeste");
+    el.hidden = false;
+    el.className = "teste " + classe;
+    el.lastElementChild.textContent = texto;
+  }
+  $("btnTestarLigacao").addEventListener("click", function(){
+    const btn = this;
+    if(typeof Peer === "undefined"){
+      dizerTeste("mal", "Não consegui carregar a biblioteca de ligação. Verifica a internet e recarrega a página.");
+      return;
+    }
+    btn.disabled = true;
+    dizerTeste("", "A testar… demora até quinze segundos.");
+
+    const suf = Math.random().toString(36).slice(2, 8);
+    const anfitriao = new Peer("julianaaraujo-teste-a-" + suf);
+    const visita = new Peer("julianaaraujo-teste-b-" + suf);
+    let acabou = false, abertos = 0, servicoOk = false;
+
+    const arrumar = () => { try{ anfitriao.destroy(); }catch(e){} try{ visita.destroy(); }catch(e){} };
+    const terminar = (classe, texto) => {
+      if(acabou) return;
+      acabou = true;
+      clearTimeout(limite);
+      arrumar();
+      btn.disabled = false;
+      dizerTeste(classe, texto);
+    };
+    const limite = setTimeout(() => {
+      terminar(servicoOk ? "mal" : "mal", servicoOk
+        ? "Cheguei ao serviço de ligação, mas esta rede não deixou passar a ligação entre aparelhos. Os telemóveis podem não conseguir entrar. Experimenta outra rede — por exemplo a partilha de internet do teu telemóvel — ou avisa-me para tratarmos de um servidor de apoio."
+        : "Não consegui falar com o serviço que liga os aparelhos. Vê se tens internet. Em redes de empresa ou de escola, este serviço às vezes está bloqueado.");
+    }, 15000);
+
+    const tentar = () => {
+      if(++abertos < 2) return;
+      servicoOk = true;
+      dizerTeste("", "Serviço de ligação encontrado. A tentar ligar dois aparelhos…");
+      const conn = visita.connect(anfitriao.id, {reliable:true});
+      anfitriao.on("connection", c => {
+        c.on("data", d => { if(d === "ola") enviar(c, "ola de volta"); });
+      });
+      conn.on("open", () => enviar(conn, "ola"));
+      conn.on("data", () => terminar("bem",
+        "A ligação funciona nesta rede. Os telemóveis ligados a este wi-fi devem entrar sem problema. Quem usar dados móveis pode ter outra sorte — vale a pena um telemóvel experimentar antes da sessão."));
+      conn.on("error", () => terminar("mal",
+        "A ligação entre aparelhos falhou nesta rede. Os telemóveis podem não conseguir entrar. Experimenta outra rede, ou avisa-me para tratarmos de um servidor de apoio."));
+    };
+
+    anfitriao.on("open", tentar);
+    visita.on("open", tentar);
+    const falhaServico = e => terminar("mal",
+      "Não consegui falar com o serviço que liga os aparelhos (" + (e && e.type ? e.type : "erro") +
+      "). Vê se tens internet. Em redes de empresa ou de escola, este serviço às vezes está bloqueado.");
+    anfitriao.on("error", falhaServico);
+    visita.on("error", falhaServico);
   });
 
   $("btnEsconderSala").addEventListener("click", () => {
@@ -2426,7 +2675,9 @@ function tratarNoParticipante(msg){
       if(P.quadro) P.quadro.definir(msg.lista);
       break;
     case "revelar": {
-      const r = $("reveladaPart"); r.textContent = msg.palavra; r.hidden = false;
+      const r = $("reveladaPart");
+      r.innerHTML = esc(msg.palavra) + (msg.ganho ? '<em>+' + msg.ganho.pontos + '</em>' : "");
+      r.hidden = false;
       break;
     }
     case "palpite-errado": {
@@ -2720,7 +2971,45 @@ function aplicarTema(t){
 
   ligarPainel();
 
-  $("btnAbrirSala").addEventListener("click", () => { audio(); abrirSala(); });
+  /* a gaveta de preparação */
+  const abrirPrep = () => {
+    document.body.classList.add("personalizar");
+    $("btnPersonalizar").setAttribute("aria-expanded", "true");
+  };
+  const fecharPrep = () => {
+    document.body.classList.remove("personalizar");
+    $("btnPersonalizar").setAttribute("aria-expanded", "false");
+  };
+  $("btnPersonalizar").addEventListener("click", () => {
+    document.body.classList.contains("personalizar") ? fecharPrep() : abrirPrep();
+  });
+  $("btnFecharPainel").addEventListener("click", fecharPrep);
+  $("veuPainel").addEventListener("click", fecharPrep);
+  document.addEventListener("keydown", ev => {
+    if(ev.key === "Escape" && document.body.classList.contains("personalizar")) fecharPrep();
+  });
+
+  /* a entrada: duas respostas, e o código só depois de escolher */
+  const verEscolha = mostrar => {
+    $("escolha").hidden = !mostrar;
+    $("caixaCodigo").hidden = mostrar;
+    if(!mostrar) setTimeout(() => $("campoCodigoInicio").focus(), 60);
+  };
+  $("btnQueroEntrar").addEventListener("click", () => { audio(); verEscolha(false); });
+  $("btnVoltarEscolha").addEventListener("click", () => verEscolha(true));
+
+  /* o tutorial */
+  const CHAVE_TUTORIAL = "desenha-tutorial-visto";
+  $("btnComo").addEventListener("click", () => abrirSobre("sobreComo"));
+  $("btnComoInicio").addEventListener("click", () => abrirSobre("sobreComo"));
+  $("btnFecharComo").addEventListener("click", () => fecharSobre("sobreComo"));
+
+  $("btnAbrirSala").addEventListener("click", () => {
+    audio();
+    abrirSala();
+    // da primeira vez, as instruções aparecem sozinhas
+    if(!lerLS(CHAVE_TUTORIAL)){ gravarLS(CHAVE_TUTORIAL, true); setTimeout(() => abrirSobre("sobreComo"), 500); }
+  });
   const entrarInicio = () => {
     audio();
     const c = limparCodigo($("campoCodigoInicio").value);
