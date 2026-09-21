@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Mural de Ideias | Juliana Araújo</title>
+<meta name="description" content="Quadro de ideias para a sala: as pessoas escrevem pelo telemóvel, sem conta, e as ideias aparecem no ecrã.">
+<!-- Página por listar enquanto está em testes: fora do menu, do recursos.html e do sitemap. -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+<link rel="alternate icon" href="favicon.ico?v=2" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<meta name="theme-color" content="#1F2ED6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+/* ==========================================================================
+   Mural de Ideias — julianaaraujo.pt
+   Quinta ferramenta de sala. Sem contas nenhumas: quem dinamiza é
+   reconhecida por uma marca guardada neste navegador, e quem participa
+   entra por código ou QR. Os dados vivem na Realtime Database da Firebase.
+   Sem configuração, corre em modo de demonstração, com tudo guardado
+   neste navegador.
+   ========================================================================== */
+
+:root{
+  --cobalto:#1F2ED6;
+  --creme:#F2EFEA;
+  --preto:#0A0A0A;
+  --coral:#FF5747;
+
+  --ground:#F2EFEA;
+  --surface:#FBFAF7;
+  --surface-2:#EFEBE4;
+  --ink:#0A0A0A;
+  --ink-2:#57524B;
+  --ink-3:#6B665D;
+  --line:rgba(10,10,10,.14);
+  --line-forte:rgba(10,10,10,.28);
+  --acc:#1F2ED6;
+  --acc-suave:rgba(31,46,214,.10);
+
+  --vidro:rgba(251,250,247,.62);
+  --vidro-borda:rgba(10,10,10,.10);
+  --vidro-brilho:rgba(255,255,255,.75);
+  --vidro-desfoque:blur(16px) saturate(180%);
+  --lavagem-1:rgba(31,46,214,.10);
+  --lavagem-2:rgba(255,196,0,.09);
+  --lavagem-3:rgba(255,77,141,.07);
+  --grao:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='.045'/%3E%3C/svg%3E");
+
+  /* cores dos post-its: claras nos dois temas, texto sempre preto */
+  --pi-amarelo:#FFE68A;
+  --pi-rosa:#FFC9DC;
+  --pi-azul:#CBD3FF;
+  --pi-verde:#C9F0D6;
+  --pi-laranja:#FFD5C0;
+
+  --fonte-display:Anton,Impact,sans-serif;
+  --fonte-corpo:Archivo,Helvetica,Arial,sans-serif;
+  --fonte-etiqueta:'Space Grotesk',Helvetica,Arial,sans-serif;
+  --ls-display:.04em;
+  --ls-etiqueta:.16em;
+
+  --s1:6px; --s2:10px; --s3:16px; --s4:24px; --s5:36px; --s6:56px;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A0A0A; --surface:#151514; --surface-2:#1E1E1C;
+    --ink:#F2EFEA; --ink-2:#A8A29A; --ink-3:#8C877F;
+    --line:rgba(242,239,234,.16); --line-forte:rgba(242,239,234,.32);
+    --acc:#8791FF; --acc-suave:rgba(135,145,255,.14);
+    --vidro:rgba(21,21,20,.55); --vidro-borda:rgba(242,239,234,.14); --vidro-brilho:rgba(255,255,255,.13);
+    --lavagem-1:rgba(31,46,214,.22); --lavagem-2:rgba(255,196,0,.08); --lavagem-3:rgba(255,77,141,.10);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A0A0A; --surface:#151514; --surface-2:#1E1E1C;
+  --ink:#F2EFEA; --ink-2:#A8A29A; --ink-3:#8C877F;
+  --line:rgba(242,239,234,.16); --line-forte:rgba(242,239,234,.32);
+  --acc:#8791FF; --acc-suave:rgba(135,145,255,.14);
+  --vidro:rgba(21,21,20,.55); --vidro-borda:rgba(242,239,234,.14); --vidro-brilho:rgba(255,255,255,.13);
+  --lavagem-1:rgba(31,46,214,.22); --lavagem-2:rgba(255,196,0,.08); --lavagem-3:rgba(255,77,141,.10);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{color-scheme:light dark}
+body{
+  margin:0;min-height:100vh;
+  background:var(--grao),
+    radial-gradient(58% 48% at 12% 6%, var(--lavagem-1), transparent 70%),
+    radial-gradient(52% 46% at 90% 16%, var(--lavagem-2), transparent 70%),
+    radial-gradient(60% 50% at 46% 104%, var(--lavagem-3), transparent 70%),
+    var(--ground);
+  background-repeat:repeat,no-repeat,no-repeat,no-repeat,repeat;
+  background-size:180px 180px,auto,auto,auto,auto;
+  background-attachment:fixed;
+  color:var(--ink);font-family:var(--fonte-corpo);font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+body.sem-scroll{overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+
+.app{max-width:1400px;margin:0 auto;padding:var(--s4) var(--s4) var(--s6);display:flex;flex-direction:column;gap:var(--s4)}
+@media (max-width:700px){.app{padding:var(--s3) var(--s3) 110px}}
+.topo{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s3);flex-wrap:wrap}
+.marca{display:flex;flex-direction:column;gap:2px;min-width:0}
+.sobrancelha{font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--ink-3);margin:0}
+h1,h2,h3{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);margin:0;line-height:1}
+h1{font-size:clamp(28px,4.4vw,44px);line-height:.98}
+h2{font-size:clamp(22px,3vw,30px)}
+h3{font-size:20px}
+p{margin:0}
+.acts{display:flex;gap:var(--s1);flex-wrap:wrap;align-items:center}
+
+.vidro{background:var(--vidro);backdrop-filter:var(--vidro-desfoque);-webkit-backdrop-filter:var(--vidro-desfoque);
+  border:1px solid var(--vidro-borda);border-radius:var(--r);box-shadow:0 8px 30px -20px rgba(10,10,10,.45),inset 0 1px 0 var(--vidro-brilho)}
+
+.btn{background:none;border:1px solid var(--line-forte);border-radius:9px;padding:8px 13px;cursor:pointer;
+  font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--ink);transition:background .16s,border-color .16s;min-height:40px;text-decoration:none;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:hover{background:var(--surface-2)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn-cheio{background:var(--cobalto);border-color:var(--cobalto);color:var(--creme)}
+.btn-cheio:hover{background:#1826b4}
+.btn-grande{padding:14px 26px;font-family:var(--fonte-display);font-size:19px;letter-spacing:var(--ls-display);border-radius:12px;min-height:52px;font-weight:400}
+.btn-mini{padding:5px 10px;font-size:10px;letter-spacing:.08em;border-radius:7px;min-height:32px}
+.btn-perigo{color:var(--coral);border-color:var(--coral)}
+.btn-icone{padding:7px 10px;font-size:13px;letter-spacing:0;text-transform:none;font-family:var(--fonte-corpo);
+  background:var(--vidro);backdrop-filter:var(--vidro-desfoque);-webkit-backdrop-filter:var(--vidro-desfoque);
+  border-color:var(--vidro-borda)}
+
+.campo{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:10px 12px;min-height:44px}
+.campo::placeholder{color:var(--ink-3)}
+textarea.campo{resize:vertical;line-height:1.5}
+.rotulo{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500}
+.aviso{font-size:12.5px;color:var(--ink-3)}
+.erro{font-size:14px;color:var(--coral);font-weight:500}
+.sep{height:1px;background:var(--line);border:0;margin:0}
+
+.seg{display:inline-flex;border:1px solid var(--line-forte);border-radius:10px;overflow:hidden;flex-wrap:wrap}
+.seg button{background:none;border:0;padding:8px 12px;cursor:pointer;font-family:var(--fonte-etiqueta);font-size:11px;
+  text-transform:uppercase;letter-spacing:.08em;min-height:38px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--ground)}
+.sw{width:46px;height:26px;border-radius:99px;border:1px solid var(--line-forte);background:var(--surface-2);position:relative;cursor:pointer;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--ink-3);transition:transform .2s,background .2s}
+.sw[aria-pressed="true"]{background:var(--cobalto);border-color:var(--cobalto)}
+.sw[aria-pressed="true"]::after{transform:translateX(20px);background:var(--creme)}
+
+.pilula{display:inline-flex;align-items:center;gap:6px;font-family:var(--fonte-etiqueta);font-size:10.5px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.12em;padding:4px 10px;border-radius:99px;border:1px solid var(--line-forte);white-space:nowrap}
+.pilula i{width:7px;height:7px;border-radius:50%;background:var(--ink-3)}
+.pilula.aberto i{background:#1DB954}
+.pilula.fechado i{background:var(--coral)}
+
+.faixa-demo{background:var(--preto);color:var(--creme);font-family:var(--fonte-etiqueta);font-size:11.5px;letter-spacing:.06em;
+  padding:8px var(--s4);text-align:center}
+.faixa-demo b{font-weight:600}
+
+/* ---------- entrada ---------- */
+.entrada{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin-top:var(--s4)}
+@media (max-width:760px){.entrada{grid-template-columns:1fr}}
+.cartao-entrada{padding:var(--s5) var(--s4);display:flex;flex-direction:column;gap:var(--s3)}
+.cartao-entrada p{color:var(--ink-2)}
+.codigo-campo{font-family:var(--fonte-display);font-size:34px;letter-spacing:.3em;text-transform:uppercase;text-align:center;padding:10px}
+
+/* ---------- lista de quadros ---------- */
+.barra{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);flex-wrap:wrap}
+.quem{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-2)}
+.quem img{width:30px;height:30px;border-radius:50%}
+.lista-quadros{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:var(--s3)}
+.quadro-item{padding:var(--s4);display:flex;flex-direction:column;gap:var(--s2);cursor:pointer;text-align:left;
+  transition:transform .16s,border-color .16s}
+.quadro-item:hover{transform:translateY(-2px);border-color:var(--line-forte)}
+.quadro-item h3{font-size:22px;line-height:1.05;overflow-wrap:anywhere}
+.quadro-item .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--ink-3)}
+.vazio{padding:var(--s5) var(--s4);text-align:center;display:flex;flex-direction:column;gap:var(--s2);align-items:center}
+/* os passos do tutorial */
+.passos{list-style:none;margin:0;padding:0;display:grid;gap:var(--s3);grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.passos li{display:flex;gap:var(--s2);align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:var(--s3)}
+.passos b{display:flex;align-items:center;justify-content:center;flex:0 0 28px;width:28px;height:28px;border-radius:50%;
+  background:var(--cobalto);color:var(--creme);font-family:var(--fonte-titulo, inherit);font-size:15px}
+.passos p{margin:0;font-size:14.5px;line-height:1.5}
+.passos em{font-style:normal;font-weight:600}
+
+.modelos{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--s2)}
+.modelo{border:1px solid var(--line-forte);border-radius:12px;padding:14px;background:var(--surface);cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px}
+.modelo:hover{border-color:var(--acc)}
+.modelo b{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:18px}
+.modelo span{font-size:12.5px;color:var(--ink-3)}
+
+/* ---------- quadro ---------- */
+.cabeca-quadro{display:flex;justify-content:space-between;gap:var(--s3);flex-wrap:wrap;align-items:flex-start}
+.cabeca-quadro .titulo{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1 1 380px}
+.cabeca-quadro h1{overflow-wrap:anywhere}
+.pergunta{font-size:clamp(16px,1.8vw,21px);line-height:1.4;color:var(--ink-2);max-width:62ch}
+.estatisticas{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--ink-3)}
+.entrar-mini{display:flex;align-items:center;gap:12px;padding:10px 14px}
+.entrar-mini .qr-mini{width:74px;height:74px;background:#fff;padding:5px;border-radius:8px;flex:none}
+.entrar-mini .qr-mini img,.entrar-mini .qr-mini canvas{width:100%!important;height:100%!important}
+.entrar-mini b{font-family:var(--fonte-display);font-weight:400;font-size:30px;letter-spacing:.14em;line-height:1}
+.entrar-mini small{display:block;font-size:11.5px;color:var(--ink-3)}
+
+.ferramentas{display:flex;justify-content:space-between;gap:var(--s2);flex-wrap:wrap;align-items:center}
+
+.colunas{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(270px,1fr);gap:var(--s3);overflow-x:auto;
+  padding-bottom:var(--s2);align-items:start;scroll-snap-type:x proximity}
+.coluna{display:flex;flex-direction:column;gap:var(--s2);min-width:0;scroll-snap-align:start;border-radius:var(--r);
+  padding:var(--s2);transition:background .15s}
+.coluna.alvo{background:var(--acc-suave)}
+.coluna-cabeca{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 4px 6px;border-bottom:3px solid var(--cor-col)}
+.coluna-cabeca h3{font-size:19px;overflow-wrap:anywhere}
+.coluna-cabeca .n{font-family:var(--fonte-etiqueta);font-size:12px;color:var(--ink-3)}
+.coluna-lista{display:flex;flex-direction:column;gap:var(--s2);min-height:60px}
+.coluna-vazia{border:1.5px dashed var(--line-forte);border-radius:12px;padding:16px;text-align:center;font-size:13px;color:var(--ink-3)}
+
+/* separadores de coluna no telemóvel */
+.abas-col{display:none;gap:6px;overflow-x:auto;padding-bottom:4px}
+.abas-col button{flex:none;border:1px solid var(--line-forte);border-radius:99px;background:var(--surface);padding:8px 14px;
+  font-family:var(--fonte-etiqueta);font-size:12px;font-weight:500;cursor:pointer;display:flex;gap:6px;align-items:center;min-height:40px}
+.abas-col button i{width:9px;height:9px;border-radius:3px;background:var(--cor-col)}
+.abas-col button[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+@media (max-width:700px){
+  .abas-col{display:flex}
+  .colunas{display:block;overflow:visible}
+  .coluna{display:none;padding:0}
+  .coluna.activa{display:flex}
+  .coluna-cabeca{display:none}
+}
+
+.cartao{position:relative;background:var(--pi);color:#0A0A0A;border-radius:12px;padding:12px 14px 10px;
+  box-shadow:0 1px 0 rgba(10,10,10,.06),0 10px 24px -18px rgba(10,10,10,.55);cursor:pointer;text-align:left;border:0;width:100%;
+  display:flex;flex-direction:column;gap:8px;font-size:15.5px;line-height:1.45}
+.cartao.novo{animation:entra .42s cubic-bezier(.2,1.3,.4,1) both}
+@keyframes entra{from{opacity:0;transform:translateY(8px) scale(.96)}to{opacity:1;transform:none}}
+.cartao .texto{white-space:pre-wrap;overflow-wrap:anywhere}
+.cartao .pe{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:rgba(10,10,10,.62)}
+.cartao .autor{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cartao.insight{background:var(--cobalto);color:var(--creme)}
+.cartao.insight .pe{color:rgba(242,239,234,.72)}
+.cartao .selo{font-family:var(--fonte-etiqueta);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.14em}
+.cartao.meu{box-shadow:0 0 0 2px rgba(10,10,10,.55),0 10px 24px -18px rgba(10,10,10,.55)}
+.cartao.insight.meu{box-shadow:0 0 0 2px var(--creme),0 10px 24px -18px rgba(10,10,10,.55)}
+.cartao[draggable="true"]{cursor:grab}
+.cartao.a-arrastar{opacity:.4}
+.voto{border:1px solid rgba(10,10,10,.22);background:rgba(255,255,255,.35);border-radius:99px;padding:3px 10px;min-height:30px;
+  font-size:12.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;color:inherit}
+.voto[aria-pressed="true"]{background:#0A0A0A;color:#fff;border-color:#0A0A0A}
+.cartao.insight .voto{border-color:rgba(242,239,234,.4);background:rgba(255,255,255,.1)}
+.cartao.insight .voto[aria-pressed="true"]{background:var(--creme);color:var(--cobalto)}
+.voto:disabled{cursor:default}
+
+.fab{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:30;
+  box-shadow:0 18px 40px -16px rgba(31,46,214,.75)}
+@media (max-width:700px){.fab{left:16px;right:16px}}
+
+.fechado-aviso{padding:12px 16px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);font-size:14px;text-align:center}
+
+/* ---------- folhas e janelas ---------- */
+.fundo{position:fixed;inset:0;z-index:50;background:rgba(10,10,10,.42);display:flex;align-items:flex-end;justify-content:center;
+  padding:0;animation:aparece .18s ease both}
+@media (min-width:701px){.fundo{align-items:center;padding:var(--s4)}}
+@keyframes aparece{from{opacity:0}to{opacity:1}}
+.folha{background:var(--surface);color:var(--ink);width:min(560px,100%);max-height:92vh;overflow-y:auto;border-radius:18px 18px 0 0;
+  padding:var(--s4);display:flex;flex-direction:column;gap:var(--s3);box-shadow:0 -20px 60px -30px rgba(10,10,10,.7);
+  animation:sobe .26s cubic-bezier(.16,.9,.24,1) both;padding-bottom:max(var(--s4),env(safe-area-inset-bottom))}
+@media (min-width:701px){.folha{border-radius:18px}}
+.folha.larga{width:min(760px,100%)}
+@keyframes sobe{from{transform:translateY(24px);opacity:.4}to{transform:none;opacity:1}}
+.folha-topo{display:flex;justify-content:space-between;align-items:center;gap:var(--s2)}
+.escolhas{display:flex;gap:6px;flex-wrap:wrap}
+.escolha{border:1px solid var(--line-forte);border-radius:99px;background:var(--surface);padding:7px 13px;min-height:38px;cursor:pointer;
+  font-size:13.5px;display:inline-flex;align-items:center;gap:7px}
+.escolha i{width:10px;height:10px;border-radius:3px;background:var(--cor-col)}
+.escolha[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.cores{display:flex;gap:8px}
+.cor{width:36px;height:36px;border-radius:10px;border:2px solid transparent;cursor:pointer;background:var(--pi);box-shadow:inset 0 0 0 1px rgba(10,10,10,.12)}
+.cor[aria-pressed="true"]{border-color:var(--ink)}
+.contador{font-size:12px;color:var(--ink-3);text-align:right}
+.pre{border-radius:12px;padding:14px}
+
+.def-linha{display:flex;justify-content:space-between;align-items:center;gap:var(--s3);flex-wrap:wrap}
+.def-linha p{font-weight:500}
+.def-linha small{display:block;font-weight:400;font-size:12.5px;color:var(--ink-3)}
+.col-edit{display:flex;gap:6px;align-items:center}
+.col-edit .campo{min-height:40px;padding:7px 10px}
+.col-edit select{width:auto}
+.btn-quad{width:40px;padding:0}
+
+.partilha{display:flex;flex-direction:column;align-items:center;gap:var(--s3);text-align:center}
+.partilha .qr{background:#fff;padding:12px;border-radius:14px;width:236px;height:236px}
+.partilha .qr img,.partilha .qr canvas{width:100%!important;height:100%!important}
+.partilha .codigo{font-family:var(--fonte-display);font-size:54px;letter-spacing:.2em;line-height:1}
+.ligacao{font-size:13px;color:var(--ink-3);overflow-wrap:anywhere}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:80;background:var(--preto);color:var(--creme);
+  padding:10px 16px;border-radius:10px;font-size:14px;box-shadow:0 14px 30px -14px rgba(10,10,10,.7);max-width:calc(100vw - 32px);
+  animation:aparece .2s ease both}
+.toast.erro-t{background:var(--coral);color:#0A0A0A}
+
+.rodape{display:flex;justify-content:space-between;gap:var(--s3);flex-wrap:wrap;border-top:1px solid var(--line);
+  padding-top:var(--s3);font-family:var(--fonte-etiqueta);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.rodape a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-forte)}
+
+/* ---------- projeção ---------- */
+body.projecao .so-gestao,body.projecao .rodape,body.projecao .topo,body.projecao .faixa-demo{display:none!important}
+body.projecao .app{max-width:none;padding:var(--s4) var(--s5)}
+body.projecao .cartao{font-size:clamp(16px,1.35vw,22px)}
+body.projecao .pergunta{font-size:clamp(20px,2vw,30px)}
+body:not(.projecao) .so-projecao{display:none!important}
+/* no telemóvel de quem participa, o título do quadro é o que importa */
+@media (max-width:700px){body.participante .topo h1{display:none}}
+
+@media print{
+  body{background:#fff;color:#000}
+  .topo,.ferramentas,.rodape,.fab,.so-gestao,.faixa-demo,.entrar-mini,.abas-col{display:none!important}
+  .colunas{display:grid!important;grid-auto-flow:row;grid-template-columns:repeat(3,1fr);overflow:visible}
+  .coluna{display:flex!important;break-inside:avoid}
+  .cartao{box-shadow:none;border:1px solid #999;break-inside:avoid}
+}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<div class="faixa-demo" id="faixaDemo" hidden><b>Modo de demonstração.</b> Tudo fica guardado só neste navegador. Para usar a sério, liga a Firebase.</div>
+
+<div class="app">
+  <header class="topo">
+    <div class="marca">
+      <p class="sobrancelha">Juliana Araújo &middot; Ferramentas de sala</p>
+      <h1 id="tituloApp">Mural de Ideias</h1>
+    </div>
+    <div class="acts">
+      <button class="btn btn-icone" id="btnComo" title="Como funciona o mural">? Como funciona</button>
+      <button class="btn btn-icone" id="btnTema">◐ Tema</button>
+    </div>
+  </header>
+
+  <main id="ecra"></main>
+
+  <footer class="rodape">
+    <span id="estado">&nbsp;</span>
+    <span>Feita por <a href="https://julianaaraujo.pt" target="_blank" rel="noopener">julianaaraujo.pt</a></span>
+  </footer>
+</div>
+
+<script type="module">
+"use strict";
+
+/* ======================================================================
+   Configuração
+   Cola aqui o objeto firebaseConfig da consola da Firebase.
+   Enquanto ficar null, a página corre em modo de demonstração.
+   ====================================================================== */
+const CONFIG_FIREBASE = {
+  apiKey: "AIzaSyDh0mfK9cBCZ3HM3o0bv13MJatoRTlSXaA",
+  authDomain: "mural-de-ideias-ja.firebaseapp.com",
+  databaseURL: "https://mural-de-ideias-ja-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "mural-de-ideias-ja",
+  storageBucket: "mural-de-ideias-ja.firebasestorage.app",
+  messagingSenderId: "195736612536",
+  appId: "1:195736612536:web:ae288f56d002c4d724ce4d"
+};
+const VERSAO_SDK = "12.19.0";
+
+/* ======================================================================
+   Utilitários
+   ====================================================================== */
+const $ = id => document.getElementById(id);
+const params = new URLSearchParams(location.search);
+const DEMO = !CONFIG_FIREBASE || params.has("demo");
+const ALFABETO = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";   // sem 0/O e 1/I
+const MAX_TEXTO = 300, MAX_NOME = 40;
+
+const CORES = [
+  {id:"amarelo", nome:"Amarelo"}, {id:"rosa", nome:"Rosa"}, {id:"azul", nome:"Azul"},
+  {id:"verde", nome:"Verde"}, {id:"laranja", nome:"Laranja"}
+];
+const corPi = c => "var(--pi-" + (CORES.some(x => x.id === c) ? c : "amarelo") + ")";
+
+const MODELOS = [
+  {id:"livre", nome:"Em branco", desc:"Uma coluna para todas as ideias.",
+   titulo:"Novo quadro", pergunta:"", colunas:[["Ideias","amarelo"]]},
+  {id:"retro", nome:"Retrospetiva", desc:"O que correu bem, o que mudar, o que experimentar.",
+   titulo:"Retrospetiva", pergunta:"Olhando para esta sessão…", colunas:[["Correu bem","verde"],["A melhorar","laranja"],["Experimentar","azul"]]},
+  {id:"expect", nome:"Expectativas", desc:"Para abrir uma formação: o que esperam e o que receiam.",
+   titulo:"Expectativas", pergunta:"O que trazes para esta formação?", colunas:[["Espero","amarelo"],["Receio","rosa"],["Posso contribuir com","verde"]]},
+  {id:"ideias", nome:"Ideias e insights", desc:"Ideias soltas de um lado, conclusões do outro.",
+   titulo:"Ideias e insights", pergunta:"", colunas:[["Ideias","amarelo"],["Insights","azul"]]}
+];
+
+function lerLS(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function gravarLS(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+function lerSS(k){ try{ return sessionStorage.getItem(k); }catch(e){ return null; } }
+function gravarSS(k, v){ try{ sessionStorage.setItem(k, v); }catch(e){} }
+const novoId = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+const novoCodigo = () => Array.from({length:5}, () => ALFABETO[Math.floor(Math.random()*ALFABETO.length)]).join("");
+const limparCodigo = v => String(v || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 5);
+function el(tag, attrs, ...filhos){
+  const e = document.createElement(tag);
+  for(const k in (attrs || {})){
+    const v = attrs[k];
+    if(v === null || v === undefined || v === false) continue;
+    if(k === "class") e.className = v;
+    else if(k === "text") e.textContent = v;
+    else if(k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if(k === "style") e.setAttribute("style", v);
+    else e.setAttribute(k, v === true ? "" : v);
+  }
+  for(const f of filhos.flat()){ if(f !== null && f !== undefined && f !== false) e.append(f); }
+  return e;
+}
+function estado(t){ $("estado").textContent = t || " "; }
+let toastT = null;
+function toast(t, erro){
+  document.querySelectorAll(".toast").forEach(x => x.remove());
+  const d = el("div", {class:"toast" + (erro ? " erro-t" : ""), role:"status", text:t});
+  document.body.append(d);
+  clearTimeout(toastT); toastT = setTimeout(() => d.remove(), erro ? 5200 : 2600);
+}
+function mudarUrl(q){ try{ history.replaceState(null, "", location.pathname + q); }catch(e){} }
+const urlParticipar = id => location.origin + location.pathname + "?q=" + encodeURIComponent(id) + (DEMO && params.has("demo") ? "&demo" : "");
+const aberto = q => !!(q && q.aberto && (!q.fechaEm || Date.now() < q.fechaEm));
+const dataCurta = ms => ms ? new Date(ms).toLocaleDateString("pt-PT", {day:"numeric", month:"short", year:"numeric"}) : "";
+const dataHora = ms => ms ? new Date(ms).toLocaleString("pt-PT", {day:"numeric", month:"short", hour:"2-digit", minute:"2-digit"}) : "";
+function mensagemErro(e){
+  const c = e && e.code || "";
+  if(c.includes("permission-denied")) return "Não foi possível: a participação pode ter fechado, ou não tens permissão.";
+  if(c.includes("popup-closed")) return "Janela de entrada fechada antes de terminar.";
+  if(c.includes("unavailable") || c.includes("network")) return "Sem ligação à internet. Tenta outra vez.";
+  return "Algo correu mal" + (c ? " (" + c + ")" : "") + ".";
+}
+
+/* ======================================================================
+   Armazém de demonstração: localStorage + BroadcastChannel
+   Imita as regras da Firebase, para o teste local ser honesto.
+   ====================================================================== */
+function criarArmazemLocal(){
+  const CH = "mural-demo-v1";
+  const canal = "BroadcastChannel" in window ? new BroadcastChannel(CH) : null;
+  const ouvintes = new Set();
+  const ler = () => lerLS(CH) || {quadros:{}, cartoes:{}, codigos:{}};
+  const avisar = () => ouvintes.forEach(f => { try{ f(); }catch(e){ console.error(e); } });
+  const gravar = db => { gravarLS(CH, db); avisar(); if(canal) canal.postMessage(1); };
+  if(canal) canal.onmessage = avisar;
+  else window.addEventListener("storage", e => { if(e.key === CH) avisar(); });
+  const subscrever = f => { ouvintes.add(f); setTimeout(f, 0); return () => ouvintes.delete(f); };
+  const negar = () => { const e = new Error("negado"); e.code = "permission-denied"; return e; };
+
+  let dona = lerLS("mural-demo-dona");
+  const authOuv = new Set();
+  // cada separador é uma pessoa diferente, para se poder testar com vários
+  function uidAnon(){ let u = lerSS("mural-demo-uid"); if(!u){ u = "anon-" + novoId(); gravarSS("mural-demo-uid", u); } return u; }
+
+  return {
+    demo:true,
+    aoMudarUtilizador(cb){ authOuv.add(cb); setTimeout(() => cb(dona), 0); return () => authOuv.delete(cb); },
+    async entrarComoDona(nome){
+      dona = {uid:"demo-formadora", nome:String(nome || "").trim() || "Formadora (demonstração)", email:"", foto:""};
+      gravarLS("mural-demo-dona", dona); authOuv.forEach(f => f(dona)); return dona;
+    },
+    async sair(){ dona = null; try{ localStorage.removeItem("mural-demo-dona"); }catch(e){} authOuv.forEach(f => f(null)); },
+    async garantirParticipante(){ return uidAnon(); },
+    ouvirQuadros(uid, cb){ return subscrever(() => cb(Object.values(ler().quadros).filter(q => q.dona === uid))); },
+    ouvirQuadro(id, cb){ return subscrever(() => cb(ler().quadros[id] || null)); },
+    ouvirCartoes(id, cb){ return subscrever(() => cb(Object.values(ler().cartoes[id] || {}))); },
+    async resolverCodigo(c){ const r = ler().codigos[c]; return r ? r.quadro : null; },
+    async criarQuadro(d){
+      const db = ler();
+      if(db.codigos[d.codigo]) throw Object.assign(new Error("código"), {code:"permission-denied"});
+      const id = novoId();
+      db.quadros[id] = Object.assign({}, d, {id, criadoEm:Date.now(), atualizadoEm:Date.now()});
+      db.codigos[d.codigo] = {quadro:id, dona:d.dona};
+      gravar(db); return id;
+    },
+    async atualizarQuadro(id, p){
+      const db = ler(); if(!db.quadros[id]) throw negar();
+      Object.assign(db.quadros[id], p, {atualizadoEm:Date.now()}); gravar(db);
+    },
+    async apagarQuadro(id){
+      const db = ler(); const q = db.quadros[id]; if(!q) return;
+      delete db.codigos[q.codigo]; delete db.cartoes[id]; delete db.quadros[id]; gravar(db);
+    },
+    async criarCartao(qid, c, souDona){
+      const db = ler(); const q = db.quadros[qid];
+      if(!q || (!souDona && !aberto(q))) throw negar();
+      if(q.modoNome === "anonimo" && c.autorNome !== null) throw negar();
+      const id = novoId();
+      (db.cartoes[qid] = db.cartoes[qid] || {})[id] = Object.assign({}, c, {id, criadoEm:Date.now(), votantes:[]});
+      gravar(db);
+    },
+    async atualizarCartao(qid, cid, p, uid, souDona){
+      const db = ler(); const q = db.quadros[qid]; const c = db.cartoes[qid] && db.cartoes[qid][cid];
+      if(!q || !c) throw negar();
+      if(!souDona && !(aberto(q) && c.autorUid === uid)) throw negar();
+      Object.assign(c, p, {editadoEm:Date.now()}); gravar(db);
+    },
+    async votar(qid, cid, uid, sim){
+      const db = ler(); const q = db.quadros[qid]; const c = db.cartoes[qid] && db.cartoes[qid][cid];
+      if(!q || !c || !aberto(q) || !q.votos) throw negar();
+      c.votantes = (c.votantes || []).filter(x => x !== uid); if(sim) c.votantes.push(uid);
+      gravar(db);
+    },
+    async apagarCartao(qid, cid, uid, souDona){
+      const db = ler(); const q = db.quadros[qid]; const c = db.cartoes[qid] && db.cartoes[qid][cid];
+      if(!q || !c) return;
+      if(!souDona && !(aberto(q) && c.autorUid === uid)) throw negar();
+      delete db.cartoes[qid][cid]; gravar(db);
+    }
+  };
+}
+
+/* ======================================================================
+   Armazém Firebase — Realtime Database, sem contas
+   ----------------------------------------------------------------------
+   A primeira versão usava Firestore com entrada pela conta Google e
+   entrada anónima. Ligar isso exigia autorizações na consola que nunca
+   ficaram feitas, e prendeu o projeto. Esta versão não tem contas
+   nenhumas: quem dinamiza é reconhecido por uma marca guardada neste
+   navegador, e quem participa por outra igual. A base de dados guarda os
+   quadros, e as regras só deixam mexer em quadros e cartões.
+   O preço disto está escrito na página: quem tiver o código de um quadro
+   pode lá escrever, e os quadros vivem no navegador de quem os criou.
+   ====================================================================== */
+async function criarArmazemFirebase(cfg){
+  const base = "https://www.gstatic.com/firebasejs/" + VERSAO_SDK + "/";
+  const [A, DB] = await Promise.all([
+    import(base + "firebase-app.js"), import(base + "firebase-database.js")
+  ]);
+  const app = A.initializeApp(cfg);
+  const db = DB.getDatabase(app);
+
+  const ref = caminho => DB.ref(db, caminho);
+  const agora = () => DB.serverTimestamp();
+  const daLista = (snap, extra) => {
+    const fora = [];
+    snap.forEach(c => { fora.push(Object.assign({id:c.key}, c.val(), extra ? extra(c) : null)); });
+    return fora;
+  };
+  const doCartao = c => Object.assign({}, c, {votantes: c && c.votantes ? Object.keys(c.votantes) : []});
+  /* A base de dados recusa "undefined" e trata null como apagar. Um campo que
+     não existe lê-se como undefined, e ia parar a uma gravação — foi o que
+     impediu reabrir a participação de um quadro sem hora de fecho. */
+  const limpo = o => {
+    const fora = {};
+    Object.keys(o || {}).forEach(k => { fora[k] = o[k] === undefined ? null : o[k]; });
+    return fora;
+  };
+
+  /* quem dinamiza: uma marca neste navegador, não uma conta */
+  let dona = lerLS("mural-dona");
+  const ouvintesDona = new Set();
+
+  return {
+    demo:false,
+    semContas:true,
+    aoMudarUtilizador(cb){ ouvintesDona.add(cb); setTimeout(() => cb(dona), 0); return () => ouvintesDona.delete(cb); },
+    async entrarComoDona(nome){
+      if(!dona) dona = {uid:"d-" + novoId(), nome:String(nome || "").trim(), email:"", foto:""};
+      else if(nome) dona.nome = String(nome).trim();
+      gravarLS("mural-dona", dona);
+      ouvintesDona.forEach(f => f(dona));
+      return dona;
+    },
+    async sair(){ ouvintesDona.forEach(f => f(null)); },
+    async garantirParticipante(){
+      let u = lerLS("mural-eu");
+      if(!u){ u = "p-" + novoId(); gravarLS("mural-eu", u); }
+      return u;
+    },
+
+    ouvirQuadros(uid, cb, erro){
+      const c = DB.query(ref("murais"), DB.orderByChild("dona"), DB.equalTo(uid));
+      return DB.onValue(c, snap => cb(daLista(snap)), erro);
+    },
+    ouvirQuadro(id, cb, erro){
+      return DB.onValue(ref("murais/" + id), snap => cb(snap.exists() ? Object.assign({id:snap.key}, snap.val()) : null), erro);
+    },
+    ouvirCartoes(id, cb, erro){
+      return DB.onValue(ref("cartoes/" + id), snap => {
+        const fora = [];
+        snap.forEach(c => { fora.push(Object.assign({id:c.key}, doCartao(c.val()))); });
+        cb(fora);
+      }, erro);
+    },
+    async resolverCodigo(c){
+      const snap = await DB.get(ref("codigos/" + c));
+      return snap.exists() ? snap.val() : null;
+    },
+
+    async criarQuadro(d){
+      const jaHa = await DB.get(ref("codigos/" + d.codigo));
+      if(jaHa.exists()) throw Object.assign(new Error("código ocupado"), {code:"permission-denied"});
+      const novo = DB.push(ref("murais"));
+      await DB.set(novo, limpo(Object.assign({}, d, {criadoEm:agora(), atualizadoEm:agora()})));
+      await DB.set(ref("codigos/" + d.codigo), novo.key);
+      return novo.key;
+    },
+    async atualizarQuadro(id, p){
+      await DB.update(ref("murais/" + id), limpo(Object.assign({}, p, {atualizadoEm:agora()})));
+    },
+    async apagarQuadro(id, codigo){
+      await DB.remove(ref("cartoes/" + id));
+      if(codigo) await DB.remove(ref("codigos/" + codigo));
+      await DB.remove(ref("murais/" + id));
+    },
+
+    async criarCartao(qid, c){
+      await DB.set(DB.push(ref("cartoes/" + qid)), limpo(Object.assign({}, c, {criadoEm:agora()})));
+    },
+    async atualizarCartao(qid, cid, p){
+      await DB.update(ref("cartoes/" + qid + "/" + cid), limpo(Object.assign({}, p, {editadoEm:agora()})));
+    },
+    async votar(qid, cid, uid, sim){
+      await DB.set(ref("cartoes/" + qid + "/" + cid + "/votantes/" + uid), sim ? true : null);
+    },
+    async apagarCartao(qid, cid){
+      await DB.remove(ref("cartoes/" + qid + "/" + cid));
+    }
+  };
+}
+
+/* ======================================================================
+   Estado e navegação
+   ====================================================================== */
+let A = null;                 // armazém
+const S = {
+  utilizador:null,            // a formadora, quando entrou com Google
+  cancelar:[],                // subscrições do ecrã atual
+  quadro:null, cartoes:[], vistos:new Set(), primeiraCarga:true,
+  modo:null,                  // "gestao" | "participante"
+  uid:null, colunaActiva:null, ordem:"recentes"
+};
+function limparEcra(){
+  S.cancelar.forEach(f => { try{ f(); }catch(e){} });
+  S.cancelar = []; S.quadro = null; S.cartoes = []; S.vistos = new Set(); S.primeiraCarga = true;
+  document.body.classList.remove("projecao", "participante");
+  document.querySelectorAll(".fab").forEach(x => x.remove());
+  $("ecra").innerHTML = "";
+}
+
+/* ---------- entrada ---------- */
+function ecraInicio(){
+  limparEcra(); S.modo = null; mudarUrl("");
+  const campo = el("input", {class:"campo codigo-campo", maxlength:"5", autocomplete:"off", autocapitalize:"characters",
+    placeholder:"CÓDIGO", "aria-label":"Código do quadro"});
+  const erro = el("p", {class:"erro", hidden:true});
+  const entrar = async () => {
+    const c = limparCodigo(campo.value);
+    if(c.length !== 5){ erro.textContent = "O código tem cinco letras."; erro.hidden = false; return; }
+    erro.hidden = true;
+    try{
+      await A.garantirParticipante();
+      const id = await A.resolverCodigo(c);
+      if(!id){ erro.textContent = "Não encontrei nenhum quadro com o código " + c + "."; erro.hidden = false; return; }
+      ecraParticipante(id);
+    }catch(e){ erro.textContent = mensagemErro(e); erro.hidden = false; }
+  };
+  campo.addEventListener("input", () => { campo.value = limparCodigo(campo.value); });
+  campo.addEventListener("keydown", ev => { if(ev.key === "Enter") entrar(); });
+
+  $("ecra").append(el("div", {class:"entrada"},
+    el("section", {class:"cartao-entrada vidro"},
+      el("p", {class:"sobrancelha", text:"Para quem participa"}),
+      el("h2", {text:"Entrar num quadro"}),
+      el("p", {text:"Escreve o código que aparece no ecrã da sessão. Não precisas de conta."}),
+      campo, erro,
+      el("div", {class:"acts"}, el("button", {class:"btn btn-cheio btn-grande", onclick:entrar, text:"Entrar"}))
+    ),
+    (function(){
+      const campoNome = el("input", {class:"campo", id:"campoNome", maxlength:String(MAX_NOME),
+        placeholder:"O teu nome", "aria-label":"O teu nome"});
+      if(S.utilizador && S.utilizador.nome) campoNome.value = S.utilizador.nome;
+      const abrir = () => entrarComoDona(campoNome.value);
+      campoNome.addEventListener("keydown", ev => { if(ev.key === "Enter") abrir(); });
+      return el("section", {class:"cartao-entrada vidro"},
+        el("p", {class:"sobrancelha", text:"Para quem dinamiza"}),
+        el("h2", {text:"Os meus quadros"}),
+        el("p", {text:"Não precisas de conta. Os teus quadros ficam guardados neste navegador, e é por aqui que voltas a eles."}),
+        S.utilizador ? null : campoNome,
+        el("div", {class:"acts"}, el("button", {class:"btn btn-cheio btn-grande", onclick:abrir,
+          text: S.utilizador ? "Continuar como " + primeiroNome(S.utilizador.nome) : "Criar quadros"}))
+      );
+    })()
+  ));
+  estado("Escolhe como entras");
+  setTimeout(() => campo.focus(), 50);
+}
+const primeiroNome = n => String(n || "").split(/\s+/)[0] || "formadora";
+
+async function entrarComoDona(nome){
+  try{
+    S.utilizador = await A.entrarComoDona(nome);
+    if(S.utilizador) ecraQuadros();
+  }catch(e){ toast(mensagemErro(e), true); }
+}
+
+/* ---------- lista de quadros ---------- */
+function ecraQuadros(){
+  if(!S.utilizador){ ecraInicio(); return; }
+  limparEcra(); S.modo = "lista"; mudarUrl(DEMO && params.has("demo") ? "?demo" : "");
+  const lista = el("div", {class:"lista-quadros"});
+  const u = S.utilizador;
+  $("ecra").append(
+    el("div", {class:"barra"},
+      el("div", {class:"quem"}, u.foto ? el("img", {src:u.foto, alt:"", referrerpolicy:"no-referrer"}) : null,
+        el("span", {text:"Olá, " + primeiroNome(u.nome)})),
+      el("div", {class:"acts"},
+        el("button", {class:"btn", onclick: async () => { await A.sair(); S.utilizador = null; ecraInicio(); }, text:"← Início"}),
+        el("button", {class:"btn btn-cheio", onclick:abrirNovoQuadro, text:"+ Novo quadro"}))
+    ),
+    lista
+  );
+  S.cancelar.push(A.ouvirQuadros(u.uid, qs => {
+    lista.innerHTML = "";
+    if(!qs.length){
+      lista.append(el("div", {class:"vazio vidro", style:"grid-column:1/-1"},
+        el("h3", {text:"Ainda não tens quadros"}),
+        el("p", {class:"aviso", text:"Cria o primeiro: escolhes as colunas, projetas o código e as pessoas entram pelo telemóvel."}),
+        el("button", {class:"btn btn-cheio", onclick:abrirNovoQuadro, text:"+ Novo quadro"})));
+      return;
+    }
+    qs.sort((a, b) => (b.atualizadoEm || b.criadoEm || 0) - (a.atualizadoEm || a.criadoEm || 0));
+    qs.forEach(q => {
+      const ab = aberto(q);
+      lista.append(el("button", {class:"quadro-item vidro", onclick:() => ecraGestao(q.id)},
+        el("span", {class:"pilula " + (ab ? "aberto" : "fechado")}, el("i"), ab ? "Aberto" : "Fechado"),
+        el("h3", {text:q.titulo || "Sem título"}),
+        q.pergunta ? el("p", {class:"aviso", text:q.pergunta}) : null,
+        el("div", {class:"meta"},
+          el("span", {text:(q.colunas || []).length + ((q.colunas || []).length === 1 ? " coluna" : " colunas")}),
+          el("span", {text:"·"}), el("span", {text:"Código " + q.codigo}),
+          el("span", {text:"·"}), el("span", {text:dataCurta(q.criadoEm)}))
+      ));
+    });
+  }, erroEscuta));
+  estado(A.demo ? "Modo de demonstração" : "Ligada como " + (u.email || u.nome));
+}
+function erroEscuta(e){ console.error(e); toast(mensagemErro(e), true); }
+
+function abrirNovoQuadro(){
+  const f = folha("Novo quadro", true);
+  f.corpo.append(
+    el("p", {class:"aviso", text:"Escolhe um ponto de partida. Tudo se muda depois."}),
+    el("div", {class:"modelos"}, MODELOS.map(m => el("button", {class:"modelo", onclick:() => criarDeModelo(m, f)},
+      el("b", {text:m.nome}), el("span", {text:m.desc}),
+      el("span", {text:m.colunas.map(c => c[0]).join(" · ")}))))
+  );
+}
+async function criarDeModelo(m, f){
+  const base = {
+    dona:S.utilizador.uid, titulo:m.titulo, pergunta:m.pergunta,
+    colunas:m.colunas.map(([nome, cor]) => ({id:novoId(), nome, cor})),
+    modoNome:"nome", votos:true, aberto:true, fechaEm:null
+  };
+  for(let t = 0; t < 5; t++){
+    try{
+      const id = await A.criarQuadro(Object.assign({}, base, {codigo:novoCodigo()}));
+      f.fechar(); ecraGestao(id, true); return;
+    }catch(e){ if(t === 4 || !String(e.code).includes("permission")){ toast(mensagemErro(e), true); return; } }
+  }
+}
+
+/* ======================================================================
+   O quadro: vista de gestão e vista de participante partilham o desenho
+   ====================================================================== */
+// pelo uid desta sessão: no modo de demonstração cada separador é uma pessoa,
+// mesmo com a formadora ligada noutro
+function souDona(){ return !!(S.quadro && S.uid && S.quadro.dona === S.uid); }
+
+function ecraGestao(id, acabadoDeCriar){
+  limparEcra(); S.modo = "gestao"; S.uid = S.utilizador.uid;
+  // da primeira vez, as instruções aparecem sozinhas
+  if(acabadoDeCriar && !lerLS(CHAVE_TUTORIAL)){ gravarLS(CHAVE_TUTORIAL, true); setTimeout(abrirComoFunciona, 700); }
+  mudarUrl("?gerir=" + encodeURIComponent(id) + (DEMO && params.has("demo") ? "&demo" : ""));
+  montarQuadro(id, acabadoDeCriar);
+}
+async function ecraParticipante(id){
+  limparEcra(); S.modo = "participante"; document.body.classList.add("participante");
+  mudarUrl("?q=" + encodeURIComponent(id) + (DEMO && params.has("demo") ? "&demo" : ""));
+  $("ecra").append(el("p", {class:"aviso", text:"A abrir o quadro…"}));
+  try{ S.uid = await A.garantirParticipante(); }
+  catch(e){ $("ecra").innerHTML = ""; $("ecra").append(el("p", {class:"erro", text:mensagemErro(e)})); return; }
+  $("ecra").innerHTML = "";
+  montarQuadro(id, false);
+}
+
+function montarQuadro(id, acabadoDeCriar){
+  const gestao = S.modo === "gestao";
+  const cab = el("div", {class:"cabeca-quadro"});
+  const ferr = el("div", {class:"ferramentas"});
+  const abas = el("div", {class:"abas-col", role:"tablist"});
+  const avisoFechado = el("div", {class:"fechado-aviso", hidden:true});
+  const colunas = el("div", {class:"colunas"});
+  $("ecra").append(cab, ferr, avisoFechado, abas, colunas);
+
+  let fab = null;
+  if(!gestao){
+    fab = el("button", {class:"btn btn-cheio btn-grande fab", hidden:true, onclick:() => abrirEscrever(null), text:"+ Escrever"});
+    document.body.append(fab);
+  }
+
+  let primeiroQuadro = true;
+  S.cancelar.push(A.ouvirQuadro(id, q => {
+    if(!q){
+      limparEcra();
+      $("ecra").append(el("div", {class:"vazio vidro"}, el("h3", {text:"Quadro não encontrado"}),
+        el("p", {class:"aviso", text:"Pode ter sido apagado. Confirma a ligação ou o código."}),
+        el("button", {class:"btn", onclick:ecraInicio, text:"Voltar ao início"})));
+      return;
+    }
+    if(gestao && q.dona !== S.utilizador.uid){ ecraParticipante(id); return; }
+    S.quadro = q;
+    if(!S.colunaActiva || !(q.colunas || []).some(c => c.id === S.colunaActiva)) S.colunaActiva = (q.colunas[0] || {}).id;
+    desenharCabeca(cab, ferr);
+    const ab = aberto(q);
+    avisoFechado.hidden = ab;
+    avisoFechado.textContent = gestao ? "A participação está fechada. Só tu podes acrescentar ou mudar cartões." : "A participação neste quadro está fechada. Podes ver, mas já não dá para escrever.";
+    if(fab) fab.hidden = !ab;
+    desenharColunas(colunas, abas);
+    if(primeiroQuadro){
+      primeiroQuadro = false;
+      if(!gestao && q.modoNome === "nome" && !nomeGuardado()) pedirNome();
+      if(acabadoDeCriar) abrirDefinicoes();
+    }
+  }, erroEscuta));
+
+  S.cancelar.push(A.ouvirCartoes(id, cs => {
+    S.cartoes = cs;
+    if(S.quadro){ desenharColunas(colunas, abas); desenharEstatisticas(); }
+    // só os cartões que chegam depois da primeira carga entram com animação
+    cs.forEach(c => S.vistos.add(c.id));
+    S.primeiraCarga = false;
+  }, erroEscuta));
+
+  // o fecho por hora tem de se notar sem ninguém mexer no quadro
+  const relogio = setInterval(() => {
+    if(!S.quadro || !S.quadro.fechaEm) return;
+    const ab = aberto(S.quadro);
+    if(ab === avisoFechado.hidden) return;
+    avisoFechado.hidden = ab; if(fab) fab.hidden = !ab;
+    desenharCabeca(cab, ferr); desenharColunas(colunas, abas);
+  }, 15000);
+  S.cancelar.push(() => clearInterval(relogio));
+}
+
+function desenharCabeca(cab, ferr){
+  const q = S.quadro, gestao = S.modo === "gestao", ab = aberto(q);
+  cab.innerHTML = ""; ferr.innerHTML = "";
+  const estadoTxt = ab ? (q.fechaEm ? "Aberto até " + dataHora(q.fechaEm) : "Aberto") : "Fechado";
+  cab.append(
+    el("div", {class:"titulo"},
+      el("div", {class:"acts"},
+        gestao ? el("button", {class:"btn btn-mini so-gestao", onclick:ecraQuadros, text:"← Quadros"}) : null,
+        el("span", {class:"pilula " + (ab ? "aberto" : "fechado")}, el("i"), estadoTxt)),
+      el("h1", {text:q.titulo || "Sem título"}),
+      q.pergunta ? el("p", {class:"pergunta", text:q.pergunta}) : null,
+      el("div", {class:"estatisticas", id:"estatisticas"})
+    )
+  );
+  if(gestao){
+    const qrMini = el("div", {class:"qr-mini", "aria-hidden":"true"});
+    const mini = el("div", {class:"entrar-mini vidro"},
+      qrMini,
+      el("div", {}, el("small", {text:"Entra com o código"}), el("b", {text:q.codigo}),
+        el("small", {text:location.host + location.pathname.replace(/\/[^/]*$/, "/")})));
+    cab.append(mini);
+    desenharQr(qrMini, urlParticipar(q.id), 64);
+  }
+  desenharEstatisticas();
+
+  const ordem = el("div", {class:"seg", role:"group", "aria-label":"Ordenar"},
+    el("button", {"aria-pressed":String(S.ordem === "recentes"), onclick:() => { S.ordem = "recentes"; redesenhar(); }, text:"Recentes"}),
+    q.votos ? el("button", {"aria-pressed":String(S.ordem === "votos"), onclick:() => { S.ordem = "votos"; redesenhar(); }, text:"Mais votados"}) : null,
+    el("button", {"aria-pressed":String(S.ordem === "antigos"), onclick:() => { S.ordem = "antigos"; redesenhar(); }, text:"Por ordem"}));
+  if(!q.votos && S.ordem === "votos") S.ordem = "recentes";
+
+  if(gestao){
+    ferr.append(
+      el("div", {class:"acts"}, ordem),
+      el("div", {class:"acts so-gestao"},
+        el("button", {class:"btn", onclick:() => abrirEscrever(null), text:"+ Escrever"}),
+        el("button", {class:"btn btn-cheio", onclick:abrirPartilha, text:"Partilhar código"}),
+        el("button", {class:"btn", onclick:alternarAberto, text: ab ? "Fechar participação" : "Abrir participação"}),
+        el("button", {class:"btn", onclick:abrirDefinicoes, text:"Definições"}),
+        el("button", {class:"btn", onclick:abrirExportar, text:"Exportar"}),
+        el("button", {class:"btn", onclick:alternarProjecao, text:"⛶ Projetar"})),
+      el("button", {class:"btn so-projecao", onclick:alternarProjecao, text:"Sair da projeção"})
+    );
+  }else{
+    const nome = nomeGuardado();
+    ferr.append(
+      el("div", {class:"acts"}, ordem),
+      q.modoNome === "nome" ? el("div", {class:"acts"},
+        el("span", {class:"aviso", text: nome ? "Escreves como " + nome : "Ainda sem nome"}),
+        el("button", {class:"btn btn-mini", onclick:pedirNome, text: nome ? "Mudar" : "Pôr nome"})) :
+        el("span", {class:"aviso", text:"Quadro anónimo: o teu nome não aparece."})
+    );
+  }
+}
+function redesenhar(){
+  const cab = document.querySelector(".cabeca-quadro"), ferr = document.querySelector(".ferramentas");
+  if(cab && ferr) desenharCabeca(cab, ferr);
+  const cols = document.querySelector(".colunas"), abas = document.querySelector(".abas-col");
+  if(cols && abas) desenharColunas(cols, abas);
+}
+function desenharEstatisticas(){
+  const e = $("estatisticas"); if(!e) return;
+  const n = S.cartoes.length, pessoas = new Set(S.cartoes.map(c => c.autorUid)).size;
+  const ins = S.cartoes.filter(c => c.tipo === "insight").length;
+  e.textContent = n + (n === 1 ? " cartão" : " cartões") + " · " + pessoas + (pessoas === 1 ? " pessoa" : " pessoas") +
+    (ins ? " · " + ins + (ins === 1 ? " insight" : " insights") : "");
+}
+
+function ordenar(lista){
+  const l = lista.slice();
+  if(S.ordem === "votos") l.sort((a, b) => (b.votantes || []).length - (a.votantes || []).length || b.criadoEm - a.criadoEm);
+  else if(S.ordem === "antigos") l.sort((a, b) => a.criadoEm - b.criadoEm);
+  else l.sort((a, b) => b.criadoEm - a.criadoEm);
+  return l;
+}
+
+function desenharColunas(cx, abas){
+  const q = S.quadro; if(!q) return;
+  const gestao = S.modo === "gestao", dona = souDona(), ab = aberto(q);
+  const cols = q.colunas || [];
+  const idsCol = new Set(cols.map(c => c.id));
+  // cartões de uma coluna que foi apagada vão para a primeira, para não desaparecerem
+  const porCol = new Map(cols.map(c => [c.id, []]));
+  S.cartoes.forEach(c => { const k = idsCol.has(c.coluna) ? c.coluna : (cols[0] || {}).id; if(porCol.has(k)) porCol.get(k).push(c); });
+
+  abas.innerHTML = "";
+  cols.forEach(c => abas.append(el("button", {role:"tab", style:"--cor-col:" + corPi(c.cor),
+    "aria-pressed":String(c.id === S.colunaActiva),
+    onclick:() => { S.colunaActiva = c.id; desenharColunas(cx, abas); }},
+    el("i"), c.nome, el("span", {class:"aviso", text:String(porCol.get(c.id).length)}))));
+  abas.hidden = cols.length < 2;
+
+  const scroll = cx.scrollLeft;
+  cx.innerHTML = "";
+  cols.forEach(col => {
+    const lista = el("div", {class:"coluna-lista"});
+    const doCol = ordenar(porCol.get(col.id));
+    if(!doCol.length) lista.append(el("div", {class:"coluna-vazia",
+      text: gestao ? "Ainda sem cartões — carrega em Partilhar código e projeta o QR" :
+            ab ? "Ainda sem cartões" : "Sem cartões"}));
+    doCol.forEach(c => lista.append(desenharCartao(c, cols, dona, ab)));
+
+    const coluna = el("section", {class:"coluna" + (col.id === S.colunaActiva ? " activa" : ""), style:"--cor-col:" + corPi(col.cor), "data-col":col.id},
+      el("div", {class:"coluna-cabeca"}, el("h3", {text:col.nome}), el("span", {class:"n", text:String(doCol.length)})),
+      lista);
+    if(dona){
+      coluna.addEventListener("dragover", ev => { ev.preventDefault(); coluna.classList.add("alvo"); });
+      coluna.addEventListener("dragleave", () => coluna.classList.remove("alvo"));
+      coluna.addEventListener("drop", ev => {
+        ev.preventDefault(); coluna.classList.remove("alvo");
+        const cid = ev.dataTransfer.getData("text/plain");
+        const c = S.cartoes.find(x => x.id === cid);
+        if(c && c.coluna !== col.id) mudarCartao(c, {coluna:col.id});
+      });
+    }
+    cx.append(coluna);
+  });
+  cx.scrollLeft = scroll;
+}
+
+function desenharCartao(c, cols, dona, ab){
+  const meu = c.autorUid === S.uid;
+  const novo = !S.primeiraCarga && !S.vistos.has(c.id);
+  S.vistos.add(c.id);
+  const votos = (c.votantes || []).length, votei = (c.votantes || []).includes(S.uid);
+  const insight = c.tipo === "insight";
+  const q = S.quadro;
+  const card = el("article", {class:"cartao" + (insight ? " insight" : "") + (meu && S.modo === "participante" ? " meu" : "") + (novo ? " novo" : ""),
+    style:"--pi:" + corPi(c.cor), tabindex:"0", "aria-label":(insight ? "Insight: " : "Ideia: ") + c.texto});
+  if(insight) card.append(el("span", {class:"selo", text:"✦ Insight"}));
+  card.append(
+    el("div", {class:"texto", text:c.texto}),
+    el("div", {class:"pe"},
+      el("span", {class:"autor", text: q.modoNome === "anonimo" ? (meu && S.modo === "participante" ? "Tu" : "") : (c.autorNome || "") + (meu && S.modo === "participante" ? " (tu)" : "")}),
+      q.votos ? el("button", {class:"voto", "aria-pressed":String(votei), disabled: !ab ? true : null,
+        "aria-label": (votei ? "Tirar voto" : "Votar") + " (" + votos + ")",
+        onclick: ev => { ev.stopPropagation(); votar(c, !votei); }}, "▲ ", String(votos)) : null)
+  );
+  card.addEventListener("click", () => abrirCartao(c));
+  card.addEventListener("keydown", ev => { if(ev.key === "Enter" && ev.target === card) abrirCartao(c); });
+  if(dona){
+    card.draggable = true;
+    card.addEventListener("dragstart", ev => { ev.dataTransfer.setData("text/plain", c.id); card.classList.add("a-arrastar"); });
+    card.addEventListener("dragend", () => card.classList.remove("a-arrastar"));
+  }
+  return card;
+}
+
+/* ---------- ações sobre cartões ---------- */
+async function votar(c, sim){
+  try{ await A.votar(S.quadro.id, c.id, S.uid, sim); }
+  catch(e){ toast(mensagemErro(e), true); }
+}
+async function mudarCartao(c, p){
+  try{ await A.atualizarCartao(S.quadro.id, c.id, p, S.uid, souDona()); }
+  catch(e){ toast(mensagemErro(e), true); }
+}
+async function apagarCartao(c){
+  try{ await A.apagarCartao(S.quadro.id, c.id, S.uid, souDona()); toast("Cartão apagado"); }
+  catch(e){ toast(mensagemErro(e), true); }
+}
+
+function abrirCartao(c){
+  const q = S.quadro, dona = souDona(), meu = c.autorUid === S.uid, ab = aberto(q);
+  const podeEditar = dona || (meu && ab);
+  const f = folha(c.tipo === "insight" ? "Insight" : "Ideia");
+  const col = (q.colunas || []).find(x => x.id === c.coluna);
+  f.corpo.append(
+    el("div", {class:"cartao pre" + (c.tipo === "insight" ? " insight" : ""), style:"--pi:" + corPi(c.cor) + ";cursor:default"},
+      el("div", {class:"texto", text:c.texto}),
+      el("div", {class:"pe"},
+        el("span", {text:[q.modoNome !== "anonimo" ? c.autorNome : null, col ? col.nome : null, dataHora(c.criadoEm)].filter(Boolean).join(" · ")}),
+        q.votos ? el("span", {text:"▲ " + (c.votantes || []).length}) : null))
+  );
+  if(dona && (q.colunas || []).length > 1){
+    f.corpo.append(el("p", {class:"rotulo", text:"Mover para"}),
+      el("div", {class:"escolhas"}, q.colunas.map(k => el("button", {class:"escolha", style:"--cor-col:" + corPi(k.cor),
+        "aria-pressed":String(k.id === c.coluna),
+        onclick:() => { if(k.id !== c.coluna) mudarCartao(c, {coluna:k.id}); f.fechar(); }}, el("i"), k.nome))));
+  }
+  const acts = el("div", {class:"acts", style:"justify-content:flex-end"});
+  if(podeEditar) acts.append(
+    el("button", {class:"btn btn-perigo", onclick:() => { if(confirm("Apagar este cartão?")){ apagarCartao(c); f.fechar(); } }, text:"Apagar"}),
+    el("button", {class:"btn", onclick:() => { f.fechar(); abrirEscrever(c); }, text:"Editar"}));
+  acts.append(el("button", {class:"btn btn-cheio", onclick:f.fechar, text:"Fechar"}));
+  f.corpo.append(acts);
+}
+
+/* ---------- escrever / editar ---------- */
+function abrirEscrever(existente){
+  const q = S.quadro; if(!q) return;
+  const dona = souDona();
+  if(!dona && !aberto(q)){ toast("A participação está fechada.", true); return; }
+  if(!dona && q.modoNome === "nome" && !nomeGuardado()){ pedirNome(() => abrirEscrever(existente)); return; }
+
+  const cols = q.colunas || [];
+  let coluna = existente ? existente.coluna : (S.colunaActiva || (cols[0] || {}).id);
+  let tipo = existente ? existente.tipo : "ideia";
+  const corDaColuna = id => ((cols.find(x => x.id === id) || {}).cor) || "amarelo";
+  let cor = existente ? existente.cor : corDaColuna(coluna);
+  let corMexida = !!existente;
+
+  const f = folha(existente ? "Editar" : "Escrever");
+  const texto = el("textarea", {class:"campo", rows:"4", maxlength:String(MAX_TEXTO), placeholder:"A tua ideia…", "aria-label":"Texto"});
+  texto.value = existente ? existente.texto : "";
+  const conta = el("div", {class:"contador"});
+  const pre = el("div", {class:"cartao pre", style:"cursor:default"}, el("div", {class:"texto"}));
+  const contar = () => {
+    conta.textContent = texto.value.length + " / " + MAX_TEXTO;
+    pre.className = "cartao pre" + (tipo === "insight" ? " insight" : "");
+    pre.style.setProperty("--pi", corPi(cor));
+    pre.querySelector(".texto").textContent = texto.value || (tipo === "insight" ? "O teu insight aparece assim" : "A tua ideia aparece assim");
+  };
+  texto.addEventListener("input", contar);
+
+  const escCols = el("div", {class:"escolhas"});
+  const pintarCols = () => { escCols.innerHTML = ""; cols.forEach(k => escCols.append(el("button", {class:"escolha", style:"--cor-col:" + corPi(k.cor),
+    "aria-pressed":String(k.id === coluna), onclick:() => { coluna = k.id; if(!corMexida) cor = corDaColuna(k.id); pintarCols(); pintarCores(); contar(); }}, el("i"), k.nome))); };
+  const escTipo = el("div", {class:"seg", role:"group", "aria-label":"Tipo"});
+  const pintarTipo = () => { escTipo.innerHTML = ""; [["ideia","Ideia"],["insight","✦ Insight"]].forEach(([v, n]) =>
+    escTipo.append(el("button", {"aria-pressed":String(tipo === v), onclick:() => { tipo = v; pintarTipo(); contar(); pintarCores(); }, text:n}))); };
+  const escCor = el("div", {class:"cores", role:"group", "aria-label":"Cor"});
+  const pintarCores = () => { escCor.innerHTML = ""; escCor.hidden = tipo === "insight";
+    CORES.forEach(k => escCor.append(el("button", {class:"cor", style:"--pi:" + corPi(k.id), "aria-label":k.nome, "aria-pressed":String(k.id === cor),
+      onclick:() => { cor = k.id; corMexida = true; pintarCores(); contar(); }}))); };
+  pintarCols(); pintarTipo(); pintarCores(); contar();
+
+  const erro = el("p", {class:"erro", hidden:true});
+  const publicar = el("button", {class:"btn btn-cheio btn-grande", text: existente ? "Guardar" : "Publicar"});
+  publicar.addEventListener("click", async () => {
+    const t = texto.value.trim();
+    if(!t){ erro.textContent = "Escreve alguma coisa primeiro."; erro.hidden = false; texto.focus(); return; }
+    publicar.disabled = true;
+    try{
+      if(existente){
+        await A.atualizarCartao(q.id, existente.id, {texto:t, tipo, cor, coluna}, S.uid, dona);
+      }else{
+        const autorNome = q.modoNome === "anonimo" ? null :
+          (S.modo === "gestao" ? primeiroNome(S.utilizador.nome) : nomeGuardado()).slice(0, MAX_NOME);
+        await A.criarCartao(q.id, {coluna, texto:t, tipo, cor, autorUid:S.uid, autorNome}, dona);
+        S.colunaActiva = coluna;
+      }
+      f.fechar();
+      toast(existente ? "Guardado" : "Publicado");
+    }catch(e){ publicar.disabled = false; erro.textContent = mensagemErro(e); erro.hidden = false; }
+  });
+  texto.addEventListener("keydown", ev => { if(ev.key === "Enter" && (ev.ctrlKey || ev.metaKey)) publicar.click(); });
+
+  f.corpo.append(
+    cols.length > 1 ? el("div", {class:"rotulo"}, "Coluna", escCols) : "",
+    el("div", {class:"def-linha"}, escTipo, escCor),
+    texto, conta, pre, erro,
+    el("div", {class:"acts", style:"justify-content:flex-end"}, el("button", {class:"btn", onclick:f.fechar, text:"Cancelar"}), publicar)
+  );
+  setTimeout(() => texto.focus(), 80);
+}
+
+/* ---------- nome de quem participa ---------- */
+const nomeGuardado = () => String(lerLS("mural-nome") || "").slice(0, MAX_NOME);
+function pedirNome(depois){
+  const f = folha("Como te chamas?");
+  const campo = el("input", {class:"campo", maxlength:String(MAX_NOME), placeholder:"O teu nome", autocomplete:"given-name", "aria-label":"Nome"});
+  campo.value = nomeGuardado();
+  const ok = () => {
+    const n = campo.value.trim().replace(/\s+/g, " ");
+    if(!n){ campo.focus(); return; }
+    gravarLS("mural-nome", n); f.fechar(); redesenhar();
+    if(typeof depois === "function") depois();
+  };
+  campo.addEventListener("keydown", ev => { if(ev.key === "Enter") ok(); });
+  f.corpo.append(
+    el("p", {class:"aviso", text:"Aparece junto aos cartões que escreves neste quadro."}),
+    campo,
+    el("div", {class:"acts", style:"justify-content:flex-end"}, el("button", {class:"btn btn-cheio btn-grande", onclick:ok, text:"Continuar"})));
+  setTimeout(() => campo.focus(), 80);
+}
+
+/* ---------- gestão ---------- */
+async function alternarAberto(){
+  const q = S.quadro, ab = aberto(q);
+  try{
+    // reabrir um quadro que fechou por hora tira-lhe a hora de fecho
+    await A.atualizarQuadro(q.id, ab ? {aberto:false} : {aberto:true, fechaEm: q.fechaEm && q.fechaEm < Date.now() ? null : q.fechaEm});
+    toast(ab ? "Participação fechada" : "Participação aberta");
+  }catch(e){ toast(mensagemErro(e), true); }
+}
+
+function alternarProjecao(){
+  const on = document.body.classList.toggle("projecao");
+  try{
+    if(on && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    else if(!on && document.fullscreenElement) document.exitFullscreen();
+  }catch(e){}
+}
+document.addEventListener("fullscreenchange", () => { if(!document.fullscreenElement) document.body.classList.remove("projecao"); });
+
+function desenharQr(alvo, texto, tamanho){
+  if(!alvo) return;
+  alvo.innerHTML = "";
+  if(typeof QRCode === "undefined"){ alvo.hidden = true; return; }
+  new QRCode(alvo, {text:texto, width:tamanho * 3, height:tamanho * 3, colorDark:"#0A0A0A", colorLight:"#FFFFFF", correctLevel:QRCode.CorrectLevel.M});
+}
+
+function abrirPartilha(){
+  const q = S.quadro, url = urlParticipar(q.id);
+  const f = folha("Partilhar");
+  const qr = el("div", {class:"qr", "aria-label":"Código QR para entrar"});
+  f.corpo.append(el("div", {class:"partilha"},
+    qr,
+    el("p", {class:"sobrancelha", text:"Ou escreve o código"}),
+    el("div", {class:"codigo", text:q.codigo}),
+    el("p", {class:"ligacao", text:url}),
+    el("div", {class:"acts"},
+      el("button", {class:"btn btn-cheio", onclick: async () => {
+        try{ await navigator.clipboard.writeText(url); toast("Ligação copiada"); }catch(e){ toast("Não consegui copiar. Seleciona a ligação à mão.", true); }
+      }, text:"Copiar ligação"}),
+      el("a", {class:"btn", href:url, target:"_blank", rel:"noopener", text:"Ver como participante"}))));
+  desenharQr(qr, url, 70);
+}
+
+function abrirDefinicoes(){
+  const q = S.quadro;
+  const f = folha("Definições", true);
+  const rascunho = {
+    titulo:q.titulo || "", pergunta:q.pergunta || "",
+    colunas:(q.colunas || []).map(c => Object.assign({}, c)),
+    modoNome:q.modoNome || "nome", votos:q.votos !== false, fechaEm:q.fechaEm || null
+  };
+  const titulo = el("input", {class:"campo", maxlength:"80", value:rascunho.titulo});
+  const pergunta = el("textarea", {class:"campo", rows:"2", maxlength:"200", placeholder:"Opcional — aparece por baixo do título"});
+  pergunta.value = rascunho.pergunta;
+
+  const listaCols = el("div", {style:"display:flex;flex-direction:column;gap:8px"});
+  const pintarCols = () => {
+    listaCols.innerHTML = "";
+    rascunho.colunas.forEach((c, i) => {
+      const nome = el("input", {class:"campo", maxlength:"40", value:c.nome, "aria-label":"Nome da coluna " + (i + 1)});
+      nome.addEventListener("input", () => { c.nome = nome.value; });
+      const cor = el("select", {class:"campo", "aria-label":"Cor da coluna " + (i + 1)},
+        CORES.map(k => el("option", {value:k.id, selected: k.id === c.cor ? true : null, text:k.nome})));
+      cor.addEventListener("change", () => { c.cor = cor.value; });
+      const mover = d => { const j = i + d; if(j < 0 || j >= rascunho.colunas.length) return;
+        const t = rascunho.colunas[i]; rascunho.colunas[i] = rascunho.colunas[j]; rascunho.colunas[j] = t; pintarCols(); };
+      const n = S.cartoes.filter(x => x.coluna === c.id).length;
+      listaCols.append(el("div", {class:"col-edit"}, nome, cor,
+        el("button", {class:"btn btn-quad", "aria-label":"Subir", onclick:() => mover(-1), disabled: i === 0 ? true : null, text:"↑"}),
+        el("button", {class:"btn btn-quad", "aria-label":"Descer", onclick:() => mover(1), disabled: i === rascunho.colunas.length - 1 ? true : null, text:"↓"}),
+        el("button", {class:"btn btn-quad btn-perigo", "aria-label":"Tirar coluna", disabled: rascunho.colunas.length === 1 ? true : null,
+          onclick:() => {
+            if(n && !confirm("Esta coluna tem " + n + (n === 1 ? " cartão" : " cartões") + ". Passam para a primeira coluna. Continuar?")) return;
+            rascunho.colunas.splice(i, 1); pintarCols();
+          }, text:"×"})));
+    });
+    if(rascunho.colunas.length < 8) listaCols.append(el("div", {}, el("button", {class:"btn btn-mini",
+      onclick:() => { rascunho.colunas.push({id:novoId(), nome:"Nova coluna", cor:CORES[rascunho.colunas.length % CORES.length].id}); pintarCols(); },
+      text:"+ Coluna"})));
+  };
+  pintarCols();
+
+  const seg = (opcoes, atual, aplicar) => {
+    const g = el("div", {class:"seg", role:"group"});
+    const pintar = v => { g.innerHTML = ""; opcoes.forEach(([val, txt]) => g.append(el("button", {"aria-pressed":String(val === v),
+      onclick:() => { aplicar(val); pintar(val); }, text:txt}))); };
+    pintar(atual); return g;
+  };
+  const sw = (atual, aplicar) => { const b = el("button", {class:"sw", "aria-pressed":String(atual)});
+    b.addEventListener("click", () => { const v = b.getAttribute("aria-pressed") !== "true"; b.setAttribute("aria-pressed", String(v)); aplicar(v); }); return b; };
+
+  const toLocal = ms => { if(!ms) return ""; const d = new Date(ms); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 16); };
+  const fecho = el("input", {class:"campo", type:"datetime-local", value:toLocal(rascunho.fechaEm), style:"width:auto"});
+  fecho.addEventListener("change", () => { rascunho.fechaEm = fecho.value ? new Date(fecho.value).getTime() : null; });
+  const temCartoes = S.cartoes.length > 0;
+
+  const erro = el("p", {class:"erro", hidden:true});
+  const guardar = el("button", {class:"btn btn-cheio btn-grande", text:"Guardar"});
+  guardar.addEventListener("click", async () => {
+    const cols = rascunho.colunas.map(c => ({id:c.id, nome:(c.nome || "").trim() || "Sem nome", cor:c.cor}));
+    const p = {titulo:titulo.value.trim() || "Sem título", pergunta:pergunta.value.trim(), colunas:cols,
+      modoNome:rascunho.modoNome, votos:rascunho.votos, fechaEm:rascunho.fechaEm};
+    if(p.fechaEm && p.fechaEm > Date.now() && !S.quadro.aberto) p.aberto = true;   // marcar uma hora de fecho futura reabre
+    guardar.disabled = true;
+    try{
+      await A.atualizarQuadro(q.id, p);
+      // cartões de colunas apagadas passam para a primeira
+      const ids = new Set(cols.map(c => c.id));
+      for(const c of S.cartoes.filter(x => !ids.has(x.coluna))) await A.atualizarCartao(q.id, c.id, {coluna:cols[0].id}, S.uid, true);
+      f.fechar(); toast("Definições guardadas");
+    }catch(e){ guardar.disabled = false; erro.textContent = mensagemErro(e); erro.hidden = false; }
+  });
+
+  f.corpo.append(
+    el("label", {class:"rotulo"}, "Título", titulo),
+    el("label", {class:"rotulo"}, "Pergunta orientadora", pergunta),
+    el("hr", {class:"sep"}),
+    el("p", {class:"sobrancelha", text:"Colunas"}), listaCols,
+    el("hr", {class:"sep"}),
+    el("div", {class:"def-linha"},
+      el("p", {}, "Nome de quem escreve", el("small", {text: temCartoes
+        ? "Anónimo esconde os nomes de todos os cartões, e os novos já não guardam nome. Os antigos voltam a mostrá-lo se regressares a Com nome."
+        : "Com nome, cada pessoa escreve o seu. Anónimo, o nome nunca é guardado."})),
+      seg([["nome","Com nome"],["anonimo","Anónimo"]], rascunho.modoNome, v => { rascunho.modoNome = v; })),
+    el("div", {class:"def-linha"},
+      el("p", {}, "Votos", el("small", {text:"Cada pessoa dá um voto por cartão."})),
+      sw(rascunho.votos, v => { rascunho.votos = v; })),
+    el("div", {class:"def-linha"},
+      el("p", {}, "Fechar automaticamente", el("small", {text:"Para deixar o quadro aberto uns dias depois da sessão. Vazio: fica aberto até o fechares."})),
+      el("div", {class:"acts"}, fecho, el("button", {class:"btn btn-mini", onclick:() => { fecho.value = ""; rascunho.fechaEm = null; }, text:"Limpar"}))),
+    erro,
+    el("div", {class:"acts", style:"justify-content:space-between"},
+      el("button", {class:"btn btn-perigo", onclick:() => apagarQuadro(f), text:"Apagar quadro"}),
+      el("div", {class:"acts"}, el("button", {class:"btn", onclick:f.fechar, text:"Cancelar"}), guardar))
+  );
+}
+
+async function apagarQuadro(f){
+  const q = S.quadro;
+  const escrito = prompt("Isto apaga o quadro e os " + S.cartoes.length + " cartões, sem volta.\nPara confirmar, escreve o código do quadro: " + q.codigo);
+  if(limparCodigo(escrito) !== q.codigo) return;
+  try{
+    f.fechar();
+    const id = q.id, codigo = q.codigo;
+    limparEcra();
+    await A.apagarQuadro(id, codigo);
+    toast("Quadro apagado"); ecraQuadros();
+  }catch(e){ toast(mensagemErro(e), true); ecraQuadros(); }
+}
+
+/* ---------- exportar ---------- */
+function abrirExportar(){
+  const f = folha("Exportar");
+  f.corpo.append(
+    el("p", {class:"aviso", text:"Os cartões ficam guardados no quadro. Exportar serve para os levares para outro sítio."}),
+    el("div", {class:"acts"},
+      el("button", {class:"btn btn-cheio", onclick:() => { exportarCsv(); f.fechar(); }, text:"Folha de cálculo (CSV)"}),
+      el("button", {class:"btn", onclick:() => { f.fechar(); setTimeout(() => window.print(), 250); }, text:"Imprimir ou PDF"})));
+}
+function exportarCsv(){
+  const q = S.quadro, cols = q.colunas || [];
+  const nomeCol = id => (cols.find(c => c.id === id) || cols[0] || {}).nome || "";
+  const linhas = [["Coluna", "Tipo", "Texto", "Autor", "Votos", "Data"]];
+  const ordemCol = id => { const i = cols.findIndex(c => c.id === id); return i < 0 ? 0 : i; };
+  S.cartoes.slice().sort((a, b) => ordemCol(a.coluna) - ordemCol(b.coluna) || a.criadoEm - b.criadoEm).forEach(c => linhas.push([
+    nomeCol(c.coluna), c.tipo === "insight" ? "Insight" : "Ideia", c.texto,
+    q.modoNome === "anonimo" ? "" : (c.autorNome || ""), String((c.votantes || []).length),
+    new Date(c.criadoEm).toLocaleString("pt-PT")]));
+  // ponto e vírgula e BOM: é o que o Excel em português abre sem baralhar as colunas
+  const csv = "﻿" + linhas.map(l => l.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(";")).join("\r\n");
+  const a = el("a", {href:URL.createObjectURL(new Blob([csv], {type:"text/csv;charset=utf-8"})),
+    download:(q.titulo || "quadro").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^\w]+/g, "-").toLowerCase() + ".csv"});
+  document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+
+/* ---------- folha (janela) genérica ---------- */
+/* O tutorial: quatro passos, na primeira vez que ela cria um quadro e
+   sempre que carregar em "? Como funciona". */
+const CHAVE_TUTORIAL = "mural-tutorial-visto";
+function abrirComoFunciona(){
+  const f = folha("Como funciona", true);
+  const passo = (n, forte, resto) => el("li", {}, el("b", {text:String(n)}),
+    el("p", {}, el("em", {text:forte}), document.createTextNode(" " + resto)));
+  f.corpo.append(
+    el("ol", {class:"passos"},
+      passo(1, "Cria um quadro.", "Escolhes as colunas — ou começas com uma só — e escreves a pergunta que queres fazer ao grupo."),
+      passo(2, "Partilha o código.", "Carrega em Partilhar: aparece um código e um QR para projetares. As pessoas entram pelo telemóvel, sem instalar nem criar conta."),
+      passo(3, "As ideias aparecem aqui.", "Cada pessoa escreve no telemóvel e o cartão surge no teu ecrã na hora. Podes deixar votar, e projetar o quadro para a sala acompanhar."),
+      passo(4, "No fim, fecha e guarda.", "Fechar participação deixa o quadro só de leitura. Exportar leva tudo para uma folha de cálculo.")),
+    el("p", {class:"aviso", style:"margin-top:var(--s3)"},
+      document.createTextNode("Os teus quadros ficam guardados neste navegador — é por aqui que voltas a eles. Quem tiver o código pode escrever, por isso partilha-o só com o grupo.")),
+    el("div", {class:"acts", style:"justify-content:flex-end;margin-top:var(--s3)"},
+      el("button", {class:"btn btn-cheio", onclick:() => f.fechar(), text:"Já percebi"})));
+}
+
+function folha(titulo, larga){
+  const fechar = () => { fundo.remove(); document.removeEventListener("keydown", esc);
+    if(!document.querySelector(".fundo")) document.body.classList.remove("sem-scroll"); };
+  const esc = ev => { if(ev.key === "Escape" && document.querySelector(".fundo:last-of-type") === fundo) fechar(); };
+  const corpo = el("div", {class:"folha" + (larga ? " larga" : ""), role:"dialog", "aria-modal":"true", "aria-label":titulo},
+    el("div", {class:"folha-topo"}, el("h2", {text:titulo}), el("button", {class:"btn btn-mini", onclick:() => fechar(), text:"Fechar"})));
+  const fundo = el("div", {class:"fundo"}, corpo);
+  fundo.addEventListener("mousedown", ev => { if(ev.target === fundo) fechar(); });
+  document.addEventListener("keydown", esc);
+  document.body.append(fundo); document.body.classList.add("sem-scroll");
+  return {corpo, fechar};
+}
+
+/* ======================================================================
+   Arranque
+   ====================================================================== */
+function aplicarTema(t){ if(t) document.documentElement.setAttribute("data-theme", t); else document.documentElement.removeAttribute("data-theme"); }
+aplicarTema(lerLS("mural-tema"));
+$("btnComo").addEventListener("click", abrirComoFunciona);
+$("btnTema").addEventListener("click", () => {
+  const atual = document.documentElement.getAttribute("data-theme");
+  const escuro = atual === "dark" || (!atual && matchMedia("(prefers-color-scheme: dark)").matches);
+  const novo = escuro ? "light" : "dark"; aplicarTema(novo); gravarLS("mural-tema", novo);
+});
+
+(async function arrancar(){
+  $("faixaDemo").hidden = !DEMO;
+  if(location.protocol === "file:" || location.protocol === "data:"){
+    $("ecra").append(el("p", {class:"erro", text:"Abre esta página a partir de um endereço http:// ou https://. Aberta como ficheiro, não consegue guardar nem ligar pessoas."}));
+    return;
+  }
+  try{
+    A = DEMO ? criarArmazemLocal() : await criarArmazemFirebase(CONFIG_FIREBASE);
+  }catch(e){
+    console.error(e);
+    $("ecra").append(el("p", {class:"erro", text:"Não consegui carregar o serviço de dados. Confirma a ligação à internet e recarrega a página."}));
+    return;
+  }
+
+  const q = params.get("q"), gerir = params.get("gerir");
+  let primeiro = true;
+  A.aoMudarUtilizador(u => {
+    S.utilizador = u;
+    if(!primeiro){
+      // saiu noutro separador, ou a sessão expirou
+      if(!u && (S.modo === "gestao" || S.modo === "lista")) ecraInicio();
+      return;
+    }
+    primeiro = false;
+    if(q) ecraParticipante(q);
+    else if(gerir && u) ecraGestao(gerir);
+    else if(u) ecraQuadros();
+    else ecraInicio();
+  });
+})();
+</script>
+</body>
+</html>
