@@ -168,7 +168,9 @@ h1{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;let
   padding:calc(var(--d)*.22) 0;
   width:100%;
 }
-/* no telemóvel o espaço volta a ser curto, senão cinco dados saltam para duas filas */
+/* três, quatro ou cinco dados numa só fila ficam pequenos e leem-se mal ao
+   longe: a partir de três partem-se em duas filas, e a quebra faz isso. */
+.quebra{flex-basis:100%;height:0;margin:0}
 @media (max-width:600px){.mesa{--gap:14px}}
 .suporte{width:var(--d);height:var(--d);position:relative;perspective:calc(var(--d)*3.2)}
 .suporte.saltar{animation:salto 1.7s cubic-bezier(.3,.7,.3,1)}
@@ -599,8 +601,8 @@ body.projecao .credito-proj{display:block}
             </div>
           </div>
           <div class="def-linha">
-            <p>Não repetir a combinação anterior</p>
-            <button class="sw" id="swRepetir" aria-pressed="true" aria-label="Não repetir a combinação anterior"></button>
+            <p>Não repetir objetos já saídos</p>
+            <button class="sw" id="swRepetir" aria-pressed="true" aria-label="Não repetir objetos já saídos"></button>
           </div>
           <div class="def-linha">
             <p>Fluxo de luz<small>A animação suave que acompanha o resultado.</small></p>
@@ -1767,6 +1769,7 @@ const mesa = document.getElementById("mesa");
 const btnLancar = document.getElementById("btnLancar");
 const MAX_DADOS = 5;
 let cubos = [], suportes = [], giro = [], aRolar = false;
+let quebra = null;
 
 /* Um dado tem seis faces, mas o conjunto pode ter muitos mais objetos: a cada
    lançamento as faces vão buscar-se à lista toda. O que não pode acontecer é
@@ -1782,7 +1785,7 @@ const frente = [];
 
 /* Quanto maior o punhado, mais pequeno cada dado, senao nao cabem. */
 const TAMANHOS = {
-  1:"clamp(140px,calc(22 * var(--fluido)),290px)", 2:"clamp(125px,calc(18.5 * var(--fluido)),235px)", 3:"clamp(105px,calc(14.5 * var(--fluido)),186px)",
+  1:"clamp(140px,calc(22 * var(--fluido)),290px)", 2:"clamp(125px,calc(18.5 * var(--fluido)),235px)", 3:"clamp(105px,calc(16 * var(--fluido)),210px)",
   4:"clamp(92px,calc(11.7 * var(--fluido)),151px)", 5:"clamp(80px,calc(10.3 * var(--fluido)),130px)"
 };
 let ultimoPar = null, saiu = null;
@@ -1801,6 +1804,9 @@ const POSE = [
 function construirDados(){
   mesa.innerHTML = "";
   cubos = []; suportes = []; giro = [];
+  quebra = document.createElement("div");
+  quebra.className = "quebra";
+  quebra.hidden = true;
   const inicio = [0, 2, 4, 1, 3];
   for(let d = 0; d < MAX_DADOS; d++){
     const sup = document.createElement("div");
@@ -1833,13 +1839,28 @@ const CABE_ALTURA = "calc((100vh - 340px) / 1.44)";
 const CABE_ALTURA_PROJ = "calc((100vh - 290px) / 1.44)";
 const TEM_CQI = !!(window.CSS && CSS.supports && CSS.supports("width", "calc(100cqi - 1px)"));
 
+/* Quantos dados por fila. Em cima ficam sempre os que sobram, para o
+   conjunto ler como um punhado atirado e nao como uma grelha. */
+const ARRANJO = { 1:[1], 2:[2], 3:[2,1], 4:[2,2], 5:[3,2] };
+
 function mostrarDados(){
   const n = Math.min(MAX_DADOS, Math.max(1, estado.dados || 2));
   const proj = document.body.classList.contains("projecao");
-  const limites = [TAMANHOS[n], proj ? CABE_ALTURA_PROJ : CABE_ALTURA];
-  if(TEM_CQI) limites.push("calc((100cqi - " + (n - 1) + " * var(--gap)) / " + n + ")");
+  const filas = ARRANJO[n];
+  const porFila = Math.max.apply(null, filas);
+  const alturaLivre = proj ? CABE_ALTURA_PROJ : CABE_ALTURA;
+  const limites = [TAMANHOS[porFila]];
+  /* A altura tem de chegar para todas as filas, mais o espaco entre elas. */
+  limites.push(filas.length > 1
+    ? "calc((" + alturaLivre + " * 1.44 - " + (filas.length - 1) + " * var(--gap)) / " + (filas.length + 0.44) + ")"
+    : alturaLivre);
+  if(TEM_CQI) limites.push("calc((100cqi - " + (porFila - 1) + " * var(--gap)) / " + porFila + ")");
   mesa.style.setProperty("--d", "max(56px, min(" + limites.join(", ") + "))");
   suportes.forEach(function(s, i){ s.hidden = i >= n; });
+  if(quebra){
+    if(filas.length > 1){ quebra.hidden = false; mesa.insertBefore(quebra, suportes[filas[0]]); }
+    else quebra.hidden = true;
+  }
 }
 
 /* Um dado que aterra a direito parece uma carta virada. A inclinação é
@@ -1869,7 +1890,7 @@ function facesLivres(conjunto){
   return livres.length ? livres : conjunto;
 }
 
-function sortear(n){
+function sortearAoAcaso(n){
   const saidos = [], jaSaiu = {};
   for(let d = 0; d < n; d++){
     const conjunto = facesLivres(conjuntoDoDado(d));
@@ -1883,6 +1904,36 @@ function sortear(n){
   return saidos;
 }
 
+/* O saco: sortear ao acaso a cada lancamento faz sair a mesma palavra tres
+   vezes em cinco jogadas, e numa turma isso nota-se. Aqui os objetos saem de
+   um saco baralhado e so voltam la para dentro quando o saco esvazia — ou
+   seja, ninguem repete enquanto houver objetos por sair. */
+let saco = [], sacoChave = "";
+function chaveDo(lista){ return lista.map(f => f.id).join(","); }
+function encherSaco(conjunto, evitar){
+  const novo = misturar(conjunto);
+  // os que acabaram de sair vao para o fundo, para nao reaparecerem de imediato
+  const ultimos = novo.filter(f => evitar && evitar[f.id]);
+  return novo.filter(f => !(evitar && evitar[f.id])).concat(ultimos);
+}
+function sortear(n){
+  const conjunto = facesLivres(conjuntoDoDado());
+  const chave = chaveDo(conjunto);
+  if(chave !== sacoChave){ saco = misturar(conjunto); sacoChave = chave; }
+  const saidos = [], jaSaiu = {};
+  while(saidos.length < n && saidos.length < conjunto.length){
+    if(!saco.length) saco = encherSaco(conjunto, jaSaiu);
+    const f = saco.shift();
+    if(jaSaiu[f.id]) continue;          // so acontece com conjuntos pequenos
+    jaSaiu[f.id] = true;
+    saidos.push(f);
+  }
+  // conjunto mais pequeno do que o punhado de dados: ai tem mesmo de repetir
+  while(saidos.length < n) saidos.push(conjunto[Math.floor(Math.random()*conjunto.length)]);
+  return saidos;
+}
+function esvaziarSaco(){ saco = []; sacoChave = ""; }
+
 function lancar(){
   if(aRolar) return;
   aRolar = true;
@@ -1892,11 +1943,13 @@ function lancar(){
   const quantos = Math.min(MAX_DADOS, Math.max(1, estado.dados || 2));
   const igual = lista => lista.map(f => f.id).join("|");
 
-  let par = sortear(quantos);
-  if(estado.naoRepetir && ultimoPar){
+  /* Com o saco ligado nao ha combinacoes repetidas enquanto houver objetos
+     por sair, por isso nao e preciso sortear outra vez. */
+  let par = estado.naoRepetir ? sortear(quantos) : sortearAoAcaso(quantos);
+  if(!estado.naoRepetir && ultimoPar){
     let tentativas = 0;
     while(tentativas < 12 && igual(par) === ultimoPar.join("|")){
-      par = sortear(quantos); tentativas++;
+      par = sortearAoAcaso(quantos); tentativas++;
     }
   }
 
@@ -2270,6 +2323,7 @@ function desenharConjuntos(){
       if(estado.conjunto === chave) return;
       estado.conjunto = chave;
       ultimoPar = null;
+      esvaziarSaco();
       construirDados();
       desenharFaces();
       desenharConjuntos();
