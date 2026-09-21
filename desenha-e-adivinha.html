@@ -1085,7 +1085,8 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
 
 <!-- As bibliotecas carregam aqui e não no head, para a página aparecer sem
      esperar por elas. Ficam antes do código do jogo, que as usa. -->
-<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 (function(){
@@ -1097,7 +1098,100 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
 
 // Os IDs no serviço de ligação são públicos e partilhados por toda a gente
 // que usa a PeerJS. O prefixo evita colidir com a sala de outro site.
-const PREFIXO = "julianaaraujo-desenha-";
+/* ======================================================================
+   A ligação — pelo Firebase da Juliana
+   ----------------------------------------------------------------------
+   Antes isto ia por WebRTC, com um serviço público de terceiros a pôr os
+   aparelhos em contacto. Falhava em redes de empresa e em alguns
+   telemóveis: a ligação direta entre aparelhos nem sempre passa.
+   Agora os telemóveis e o computador falam com a base de dados dela por
+   HTTPS, como quem abre um site. Passa onde o resto não passava.
+   O jogo por cima não mudou: as mensagens são as mesmas, e cada "canal"
+   tem a mesma cara que tinha a ligação de antes (open, send, on, close).
+   ====================================================================== */
+const FB = {
+  apiKey: "AIzaSyBY6AXz5fbnDYrQh_FPZsHEfemUWj20fQ0",
+  authDomain: "desenho-6b00b.firebaseapp.com",
+  databaseURL: "https://desenho-6b00b-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "desenho-6b00b",
+  appId: "1:283520686247:web:56f65f5cc022b30487a382"
+};
+let _bd = null;
+function bd(){
+  if(_bd) return _bd;
+  if(typeof firebase === "undefined" || !firebase.database) return null;
+  try{
+    const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FB);
+    _bd = firebase.database(app);
+  }catch(e){ return null; }
+  return _bd;
+}
+const refSala = cod => bd().ref("salas/" + cod);
+/* as chaves do Firebase são cronológicas: servem de marco para ouvir só o
+   que chegar a partir de agora, e para varrer o que já é velho */
+const chaveAgora = () => bd().ref("marcos").push().key;
+
+/* ----------------------------------------------------------------------
+   A palavra de quem desenha
+   ----------------------------------------------------------------------
+   Com o WebRTC, a palavra ia por um canal que só existia entre dois
+   aparelhos. Agora tudo passa pela base de dados, onde alguém curioso
+   podia ir espreitar. Por isso a palavra (e as três opções) viajam
+   cifradas: cada telemóvel faz um par de chaves ao entrar, publica a
+   pública e guarda a privada só na sua memória. Na base de dados fica
+   texto baralhado que só aquele telemóvel abre.
+   ---------------------------------------------------------------------- */
+const temCifra = !!(window.crypto && crypto.subtle && window.TextEncoder);
+const PAR_RSA = {name:"RSA-OAEP", modulusLength:2048, publicExponent:new Uint8Array([1,0,1]), hash:"SHA-256"};
+const b64 = buf => btoa(String.fromCharCode.apply(null, new Uint8Array(buf)));
+const deB64 = t => Uint8Array.from(atob(t), c => c.charCodeAt(0));
+
+async function fazerChaves(){
+  if(!temCifra) return null;
+  try{
+    const par = await crypto.subtle.generateKey(PAR_RSA, true, ["encrypt","decrypt"]);
+    const publica = await crypto.subtle.exportKey("jwk", par.publicKey);
+    return {privada: par.privateKey, publica: publica};
+  }catch(e){ return null; }
+}
+async function cifrarPara(jwk, obj){
+  const chave = await crypto.subtle.importKey("jwk", jwk, {name:"RSA-OAEP", hash:"SHA-256"}, false, ["encrypt"]);
+  const dados = new TextEncoder().encode(JSON.stringify(obj));
+  return b64(await crypto.subtle.encrypt({name:"RSA-OAEP"}, chave, dados));
+}
+async function decifrar(privada, texto){
+  const claro = await crypto.subtle.decrypt({name:"RSA-OAEP"}, privada, deB64(texto));
+  return JSON.parse(new TextDecoder().decode(claro));
+}
+
+function Canal(refEnvio, refEscuta){
+  const ouvintes = {};
+  const c = {
+    open: true, peer: null,
+    on(ev, fn){ (ouvintes[ev] = ouvintes[ev] || []).push(fn); return c; },
+    emitir(ev, d){ (ouvintes[ev] || []).forEach(f => { try{ f(d); }catch(e){} }); },
+    send(msg){
+      if(!c.open) return;
+      try{ refEnvio.push({d: JSON.stringify(msg)}); }catch(e){}
+    },
+    close(){
+      if(!c.open) return;
+      c.open = false;
+      try{ refEscuta.off(); }catch(e){}
+      c.emitir("close");
+    }
+  };
+  const marco = chaveAgora();
+  refEscuta.orderByKey().startAt(marco).on("child_added", snap => {
+    if(!c.open) return;
+    const v = snap.val();
+    snap.ref.remove().catch(() => {});
+    let msg = null;
+    try{ msg = JSON.parse(v && v.d); }catch(e){ return; }
+    if(msg) c.emitir("data", msg);
+  });
+  return c;
+}
 const ALFABETO = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";   // sem 0/O e 1/I
 const CHAVE_CONF = "desenha-conf-v1";
 const SEGUNDOS_ESCOLHA = 20;
@@ -1316,6 +1410,7 @@ const F = {
   opcoes:[], relogioEscolha:null,
   mascara:"", momentosPista:[],
   album:[], jogoAcabado:false, ligadosAntes:new Set(), ultimoFim:null,
+  raizSala:null, canais:new Map(), varrer:null, ouvinteLigado:null,
   contagemToken:0, contagemTempo:null, ultimoGanho:null, sacoDesenho:{}, pausado:false
 };
 
@@ -1371,8 +1466,8 @@ function abrirSala(){
   desenharPainel();
   mostrarRondaFormador();
 
-  if(typeof Peer === "undefined"){
-    salaEstado("mal", "Não consegui carregar a biblioteca de ligação. Verifica a internet e recarrega.");
+  if(!bd()){
+    salaEstado("mal", "Não consegui carregar a biblioteca de ligação. Verifica a internet e recarrega a página.");
     return;
   }
   // tenta reaver o código anterior, para quem já tinha entrado voltar sozinho
@@ -1393,38 +1488,33 @@ const MAX_TENTATIVAS_SALA = 5;
 let tentativasSala = 0, vigiaSala = null;
 
 function ligarAnfitriao(codigo, reaverVezes){
-  if(F.peer){ try{ F.peer.destroy(); }catch(e){} }
+  fecharSalaAnterior();
   clearTimeout(vigiaSala);
   tentativasSala += 1;
   $("btnReabrir").hidden = true;
   salaEstado("", tentativasSala > 1 ? "A abrir a sala… (tentativa " + tentativasSala + " de " + MAX_TENTATIVAS_SALA + ")" : "A abrir a sala…");
 
-  const peer = new Peer(PREFIXO + codigo, {debug:0});
-  F.peer = peer;
+  const db = bd();
+  if(!db){ salaEstado("mal", "Não consegui carregar a biblioteca de ligação. Recarrega a página."); return; }
+  const raiz = refSala(codigo);
+  F.raizSala = raiz;
+  F.canais = new Map();
   let abriu = false;
 
-  const tentarDeNovo = (proximo, espera) => {
-    setTimeout(() => { if(F.peer === peer) ligarAnfitriao(proximo, Math.max(0, reaverVezes - 1)); }, espera);
-  };
-
-  // a sala não abriu: tenta outra vez, e ao fim de algumas tentativas diz-o
-  const falhou = () => {
-    if(F.peer !== peer || abriu) return;
+  const falhou = motivo => {
+    if(abriu) return;
     clearTimeout(vigiaSala);
-    try{ peer.destroy(); }catch(e){}
     if(tentativasSala >= MAX_TENTATIVAS_SALA){
-      salaEstado("mal", "Não consegui abrir a sala: o serviço de ligação não está a responder.");
+      salaEstado("mal", "Não consegui abrir a sala: " + motivo);
       $("btnReabrir").hidden = false;
       return;
     }
-    // as primeiras tentativas mantêm o código, para quem já o leu poder entrar
-    tentarDeNovo(tentativasSala <= 2 ? codigo : novoCodigo(), 1500);
+    setTimeout(() => ligarAnfitriao(tentativasSala <= 2 ? codigo : novoCodigo(), 0), 1500);
   };
+  vigiaSala = setTimeout(() => falhou("a base de dados não respondeu."), 9000);
 
-  vigiaSala = setTimeout(falhou, 8000);
-
-  peer.on("open", function(){
-    if(F.peer !== peer) return;
+  raiz.child("aberta").set(firebase.database.ServerValue.TIMESTAMP).then(() => {
+    if(F.raizSala !== raiz) return;
     abriu = true;
     clearTimeout(vigiaSala);
     tentativasSala = 0;
@@ -1444,38 +1534,72 @@ function ligarAnfitriao(codigo, reaverVezes){
     const ligados = F.conf.pessoas.filter(p => estaLigado(p.id)).length;
     salaEstado("on", ligados ? (ligados + (ligados === 1 ? " pessoa ligada" : " pessoas ligadas")) : "Sala aberta — à espera de pessoas");
     desenharPessoas();
+  }).catch(err => falhou("a base de dados recusou (" + (err && err.code ? err.code : "erro") + ")."));
+
+  // se o computador se desligar, a sala desaparece sozinha
+  raiz.onDisconnect().remove();
+
+  // cada telemóvel que entra cria uma sessão aqui dentro
+  const refSessoes = raiz.child("sessoes");
+  refSessoes.on("child_added", snap => {
+    if(F.raizSala !== raiz) return;
+    const sid = snap.key;
+    if(F.canais.has(sid)) return;                 // já é conhecida (voltou a ligar)
+    const canal = Canal(raiz.child("sessoes/" + sid + "/a"), raiz.child("sessoes/" + sid + "/p"));
+    canal.peer = sid;
+    const dados = snap.val();
+    if(dados && dados.pk) canal.chavePublica = dados.pk;
+    // a chave pode chegar um instante depois da sessão
+    raiz.child("sessoes/" + sid + "/pk").on("value", sn => { if(sn.exists()) canal.chavePublica = sn.val(); });
+    F.canais.set(sid, canal);
+    aoLigarParticipante(canal);
+    canal.emitir("open");
+  });
+  refSessoes.on("child_removed", snap => {
+    if(F.raizSala !== raiz) return;
+    const canal = F.canais.get(snap.key);
+    if(canal){ F.canais.delete(snap.key); canal.close(); }
   });
 
-  peer.on("connection", conn => { if(F.peer === peer) aoLigarParticipante(conn); });
+  // a lista de mensagens para todos não pode crescer para sempre
+  clearInterval(F.varrer);
+  F.varrer = setInterval(() => {
+    if(F.raizSala !== raiz) return;
+    const limite = chaveAgora();
+    raiz.child("todos").orderByKey().endAt(limite).limitToLast(400).once("value").then(sn => {
+      const todas = [];
+      sn.forEach(c => { todas.push(c.key); });
+      // guarda as últimas 20, apaga o resto
+      todas.slice(0, Math.max(0, todas.length - 20)).forEach(k => raiz.child("todos/" + k).remove().catch(() => {}));
+    }).catch(() => {});
+  }, 20000);
 
-  peer.on("error", function(err){
-    if(F.peer !== peer) return;
-    const tipo = err && err.type;
-    if(tipo === "unavailable-id"){
-      // o código está preso pela sessão anterior, ou tem dono: não é falha do serviço
-      clearTimeout(vigiaSala);
-      tentativasSala = Math.max(0, tentativasSala - 1);
-      try{ peer.destroy(); }catch(e){}
-      if(reaverVezes > 0) tentarDeNovo(codigo, 2000);
-      else tentarDeNovo(novoCodigo(), 200);
-      return;
+  // aviso se a base de dados se desligar
+  const refLigado = db.ref(".info/connected");
+  if(F.ouvinteLigado) try{ db.ref(".info/connected").off("value", F.ouvinteLigado); }catch(e){}
+  F.ouvinteLigado = refLigado.on("value", sn => {
+    if(F.raizSala !== raiz || !abriu) return;
+    if(sn.val()){
+      raiz.child("aberta").set(firebase.database.ServerValue.TIMESTAMP);
+      raiz.onDisconnect().remove();
+      const ligados = F.conf.pessoas.filter(p => estaLigado(p.id)).length;
+      salaEstado("on", ligados ? (ligados + (ligados === 1 ? " pessoa ligada" : " pessoas ligadas")) : "Sala aberta — à espera de pessoas");
+    }else{
+      salaEstado("mal", "Perdi a ligação à base de dados. A tentar de novo…");
     }
-    if(!abriu){ falhou(); return; }
-    if(tipo === "network" || tipo === "server-error" || tipo === "socket-error" || tipo === "socket-closed"){
-      salaEstado("mal", "Perdi a ligação ao serviço. A tentar de novo…");
-      setTimeout(() => { if(F.peer === peer && peer.disconnected && !peer.destroyed){ try{ peer.reconnect(); }catch(e){} } }, 2500);
-      return;
-    }
-    salaEstado("mal", "Erro na sala: " + (tipo || "desconhecido"));
   });
+}
 
-  peer.on("disconnected", function(){
-    if(F.peer !== peer) return;
-    // antes de abrir não há nada para religar: é uma tentativa falhada
-    if(!abriu){ falhou(); return; }
-    salaEstado("mal", "Desligada do serviço. A tentar de novo…");
-    setTimeout(() => { if(F.peer === peer && !peer.destroyed){ try{ peer.reconnect(); }catch(e){} } }, 2000);
-  });
+function fecharSalaAnterior(){
+  if(F.varrer){ clearInterval(F.varrer); F.varrer = null; }
+  if(F.canais){ F.canais.forEach(c => c.close()); F.canais.clear(); }
+  if(F.raizSala){
+    const velha = F.raizSala;
+    F.raizSala = null;
+    try{ velha.child("sessoes").off(); }catch(e){}
+    try{ velha.onDisconnect().cancel(); }catch(e){}
+    velha.remove().catch(() => {});
+  }
 }
 
 /* ---- ligações ---- */
@@ -1495,9 +1619,27 @@ function aoLigarParticipante(conn){
   conn.on("error", fechar);
 }
 
-function enviar(conn, msg){ try{ if(conn && conn.open) conn.send(msg); }catch(e){} }
+/* As mensagens que contêm a palavra só seguem cifradas. Se o telemóvel for
+   antigo e não souber cifrar, seguem como dantes — o jogo continua a andar. */
+const SEGREDOS = {palavra:1, escolher:1};
+function enviar(conn, msg){
+  try{
+    if(!conn || !conn.open) return;
+    if(msg && SEGREDOS[msg.t] && conn.chavePublica){
+      cifrarPara(conn.chavePublica, msg)
+        .then(texto => { if(conn.open) conn.send({t:"cifra", d:texto}); })
+        .catch(() => { if(conn.open) conn.send(msg); });
+      return;
+    }
+    conn.send(msg);
+  }catch(e){}
+}
+/* Mandar o mesmo a vinte telemóveis são vinte escritas. Aqui é uma só: os
+   telemóveis ouvem todos a mesma lista, e quem enviou ignora o seu eco. */
 function paraTodos(msg, excepto){
-  F.ligacoes.forEach(l => { if(l.jogadorId && l.conn !== excepto) enviar(l.conn, msg); });
+  if(!F.raizSala) return;
+  const fora = excepto && excepto.peer ? excepto.peer : null;
+  try{ F.raizSala.child("todos").push({d: JSON.stringify(msg), x: fora}); }catch(e){}
 }
 function paraQuemAdivinha(msg){
   F.ligacoes.forEach(l => { if(l.jogadorId && l.jogadorId !== F.desenhadorId) enviar(l.conn, msg); });
@@ -2518,55 +2660,35 @@ function ligarPainel(){
   }
   $("btnTestarLigacao").addEventListener("click", function(){
     const btn = this;
-    if(typeof Peer === "undefined"){
+    const db = bd();
+    if(!db){
       dizerTeste("mal", "Não consegui carregar a biblioteca de ligação. Verifica a internet e recarrega a página.");
       return;
     }
     btn.disabled = true;
-    dizerTeste("", "A testar… demora até quinze segundos.");
-
-    const suf = Math.random().toString(36).slice(2, 8);
-    const anfitriao = new Peer("julianaaraujo-teste-a-" + suf);
-    const visita = new Peer("julianaaraujo-teste-b-" + suf);
-    let acabou = false, abertos = 0, servicoOk = false;
-
-    const arrumar = () => { try{ anfitriao.destroy(); }catch(e){} try{ visita.destroy(); }catch(e){} };
-    const terminar = (classe, texto) => {
-      if(acabou) return;
-      acabou = true;
-      clearTimeout(limite);
-      arrumar();
-      btn.disabled = false;
-      dizerTeste(classe, texto);
-    };
+    dizerTeste("", "A testar…");
+    const marca = db.ref("salas/TEST/aberta");
+    let respondeu = false;
     const limite = setTimeout(() => {
-      terminar(servicoOk ? "mal" : "mal", servicoOk
-        ? "Cheguei ao serviço de ligação, mas esta rede não deixou passar a ligação entre aparelhos. Os telemóveis podem não conseguir entrar. Experimenta outra rede — por exemplo a partilha de internet do teu telemóvel — ou avisa-me para tratarmos de um servidor de apoio."
-        : "Não consegui falar com o serviço que liga os aparelhos. Vê se tens internet. Em redes de empresa ou de escola, este serviço às vezes está bloqueado.");
-    }, 15000);
-
-    const tentar = () => {
-      if(++abertos < 2) return;
-      servicoOk = true;
-      dizerTeste("", "Serviço de ligação encontrado. A tentar ligar dois aparelhos…");
-      const conn = visita.connect(anfitriao.id, {reliable:true});
-      anfitriao.on("connection", c => {
-        c.on("data", d => { if(d === "ola") enviar(c, "ola de volta"); });
+      if(respondeu) return;
+      respondeu = true;
+      btn.disabled = false;
+      dizerTeste("mal", "A base de dados do jogo não respondeu em dez segundos. Vê se tens internet. Em redes muito fechadas, experimenta os dados móveis do telemóvel.");
+    }, 10000);
+    marca.set(Date.now())
+      .then(() => marca.once("value"))
+      .then(sn => {
+        if(respondeu) return;
+        respondeu = true; clearTimeout(limite); btn.disabled = false;
+        marca.remove().catch(() => {});
+        if(sn.exists()) dizerTeste("bem", "A ligação funciona nesta rede. Os telemóveis devem entrar sem problema — mesmo em dados móveis.");
+        else dizerTeste("meio", "Escrevi na base de dados mas não li de volta. Tenta outra vez.");
+      })
+      .catch(err => {
+        if(respondeu) return;
+        respondeu = true; clearTimeout(limite); btn.disabled = false;
+        dizerTeste("mal", "Não consegui falar com a base de dados do jogo (" + (err && err.code ? err.code : "erro") + "). Vê se tens internet; numa rede de empresa, experimenta os dados móveis.");
       });
-      conn.on("open", () => enviar(conn, "ola"));
-      conn.on("data", () => terminar("bem",
-        "A ligação funciona nesta rede. Os telemóveis ligados a este wi-fi devem entrar sem problema. Quem usar dados móveis pode ter outra sorte — vale a pena um telemóvel experimentar antes da sessão."));
-      conn.on("error", () => terminar("mal",
-        "A ligação entre aparelhos falhou nesta rede. Os telemóveis podem não conseguir entrar. Experimenta outra rede, ou avisa-me para tratarmos de um servidor de apoio."));
-    };
-
-    anfitriao.on("open", tentar);
-    visita.on("open", tentar);
-    const falhaServico = e => terminar("mal",
-      "Não consegui falar com o serviço que liga os aparelhos (" + (e && e.type ? e.type : "erro") +
-      "). Vê se tens internet. Em redes de empresa ou de escola, este serviço às vezes está bloqueado.");
-    anfitriao.on("error", falhaServico);
-    visita.on("error", falhaServico);
   });
 
   $("btnEsconderSala").addEventListener("click", () => {
@@ -2595,7 +2717,7 @@ const P = {
   peer:null, conn:null, codigo:null, jogadorId:null, nome:null, equipa:null,
   fase:"espera", souDesenhador:false, quadro:null, mascara:"",
   cor:PALETA[0], larg:LARGURAS[1], borracha:false, tentativas:0, aSair:false, pausado:false,
-  tentativasServico:0
+  tentativasServico:0, minhaSessao:null, raizSala:null, chavePrivada:null
 };
 
 function abrirParticipante(codigo){
@@ -2610,39 +2732,92 @@ function erroLigar(t){ const e = $("erroLigar"); e.textContent = t; e.hidden = !
 function ligarParticipante(codigo){
   codigo = limparCodigo(codigo);
   if(codigo.length !== 4){ erroLigar("O código tem quatro letras ou números."); return; }
-  if(typeof Peer === "undefined"){ erroLigar("Não consegui carregar a ligação. Verifica a internet e recarrega."); return; }
+  const db = bd();
+  if(!db){ erroLigar("Não consegui carregar a ligação. Verifica a internet e recarrega."); return; }
   erroLigar("");
   P.codigo = codigo;
   $("btnLigar").disabled = true; $("btnLigar").textContent = "A entrar…";
   // guardado por sala: se a ligação cair, volta a entrar com o mesmo nome
   P.jogadorId = lerSS("desenha-eu-" + codigo);
 
-  if(P.peer && !P.peer.destroyed && P.peer.open){ abrirLigacao(); return; }
-  if(P.peer){ try{ P.peer.destroy(); }catch(e){} }
-  const peer = new Peer({debug:0});
-  P.peer = peer;
-  peer.on("open", abrirLigacao);
-  peer.on("error", function(err){
-    const tipo = err && err.type;
-    if(tipo === "peer-unavailable"){
-      if(P.jogadorId && P.tentativas > 0) return agendarReligar();
+  const raiz = refSala(codigo);
+  raiz.child("aberta").once("value").then(sn => {
+    if(!sn.exists()){
       falhaLigar("Não encontrei a sala " + codigo + ". Confirma o código no ecrã da sessão.");
-    }else if(tipo === "network" || tipo === "server-error" || tipo === "socket-error" || tipo === "socket-closed"){
-      if(P.jogadorId) return agendarReligar();
-      /* O serviço público falha de vez em quando e volta a si sozinho. Em vez
-         de despejar um erro à primeira, tenta-se quatro vezes. */
-      if(P.tentativasServico < 4){
-        P.tentativasServico++;
-        erroLigar("O serviço que liga os aparelhos não respondeu. A tentar outra vez (" + P.tentativasServico + " de 4)…");
-        try{ peer.destroy(); }catch(e){}
-        setTimeout(() => { if(!P.jogadorId) ligarParticipante(codigo); }, 900 * P.tentativasServico);
-        return;
-      }
-      falhaLigar("Não consegui chegar ao serviço que liga os aparelhos, mesmo depois de quatro tentativas. Costuma ser a rede: se estás no wi-fi, experimenta dados móveis; se estás em dados móveis, experimenta o wi-fi. Depois carrega em Entrar outra vez.");
+      return;
+    }
+    entrarNaSala(raiz);
+  }).catch(err => {
+    const codigoErro = err && err.code ? err.code : "erro";
+    if(P.tentativasServico < 4){
+      P.tentativasServico++;
+      erroLigar("A base de dados não respondeu. A tentar outra vez (" + P.tentativasServico + " de 4)…");
+      setTimeout(() => { if(!P.jogadorId || !P.conn) ligarParticipante(codigo); }, 900 * P.tentativasServico);
+      return;
+    }
+    falhaLigar("Não consegui chegar à base de dados do jogo (" + codigoErro + "). Vê se tens internet; se estiveres numa rede de empresa, experimenta os dados móveis.");
+  });
+}
+
+/* A sala existe: cria-se aqui a sessão deste telemóvel. */
+function entrarNaSala(raiz){
+  const db = bd();
+  if(P.conn){ try{ P.conn.close(); }catch(e){} }
+  if(P.minhaSessao){ try{ raiz.child("sessoes/" + P.minhaSessao).off(); }catch(e){} }
+
+  const sid = novoId("s");
+  P.minhaSessao = sid;
+  P.raizSala = raiz;
+  const meu = raiz.child("sessoes/" + sid);
+
+  const canal = Canal(meu.child("p"), meu.child("a"));
+  canal.peer = sid;
+  P.conn = canal;
+  canal.on("data", tratarNoParticipante);
+
+  // o par de chaves deste telemóvel: a privada não sai daqui
+  fazerChaves().then(par => {
+    if(!par || P.conn !== canal) return;
+    P.chavePrivada = par.privada;
+    meu.child("pk").set(par.publica).catch(() => {});
+  });
+
+  // as mensagens que o formador manda a toda a gente
+  const marco = chaveAgora();
+  try{ raiz.child("todos").off(); }catch(e){}
+  raiz.child("todos").orderByKey().startAt(marco).on("child_added", snap => {
+    if(P.conn !== canal) return;
+    const v = snap.val();
+    if(!v || v.x === sid) return;                  // o eco do que eu próprio enviei
+    let msg = null;
+    try{ msg = JSON.parse(v.d); }catch(e){ return; }
+    if(msg) tratarNoParticipante(msg);
+  });
+
+  // a sala fechou (o computador saiu)
+  try{ raiz.child("aberta").off(); }catch(e){}
+  raiz.child("aberta").on("value", sn => {
+    if(P.conn !== canal) return;
+    if(!sn.exists()){ ligadoUI(false); $("pTxtLig").textContent = "A sala fechou"; }
+  });
+
+  // presença: some daqui se o telemóvel se desligar, e volta a pôr-se se voltar
+  const refLigado = db.ref(".info/connected");
+  try{ refLigado.off(); }catch(e){}
+  refLigado.on("value", sn => {
+    if(P.conn !== canal) return;
+    if(sn.val()){
+      meu.child("vivo").set(firebase.database.ServerValue.TIMESTAMP);
+      meu.onDisconnect().remove();
+      P.tentativas = 0; P.tentativasServico = 0;
+      ligadoUI(true);
+      if(P.jogadorId) enviarP({t:"sou", jogadorId:P.jogadorId});
     }else{
-      falhaLigar("Não consegui entrar (" + (tipo || "erro") + ").");
+      ligadoUI(false);
     }
   });
+
+  $("btnLigar").disabled = false; $("btnLigar").textContent = "Entrar";
 }
 
 function falhaLigar(t){
@@ -2651,32 +2826,9 @@ function falhaLigar(t){
   $("pLigar").hidden = false; $("pNome").hidden = true; $("pJogo").hidden = true;
 }
 
-function abrirLigacao(){
-  const conn = P.peer.connect(PREFIXO + P.codigo, {reliable:true});
-  P.conn = conn;
-  const limite = setTimeout(() => { if(!conn.open){ try{ conn.close(); }catch(e){} if(!P.jogadorId) falhaLigar("A sala " + P.codigo + " não respondeu. Confirma o código."); else agendarReligar(); } }, 9000);
-  conn.on("open", () => {
-    clearTimeout(limite);
-    P.tentativas = 0;
-    P.tentativasServico = 0;
-    ligadoUI(true);
-    if(P.jogadorId) enviarP({t:"sou", jogadorId:P.jogadorId});
-  });
-  conn.on("data", tratarNoParticipante);
-  conn.on("close", () => { clearTimeout(limite); if(P.conn === conn && !P.aSair) agendarReligar(); });
-  conn.on("error", () => { clearTimeout(limite); if(P.conn === conn && !P.aSair) agendarReligar(); });
-}
-
-function agendarReligar(){
-  ligadoUI(false);
-  if(P.tentativas > 20){ falhaLigar("Perdi a ligação à sala. Tenta entrar outra vez."); return; }
-  P.tentativas++;
-  setTimeout(() => {
-    if(P.peer && !P.peer.destroyed && P.peer.disconnected){ try{ P.peer.reconnect(); }catch(e){} }
-    if(P.peer && P.peer.open) abrirLigacao();
-    else if(P.peer && !P.peer.destroyed) P.peer.once("open", abrirLigacao);
-  }, Math.min(1000 + P.tentativas*500, 5000));
-}
+/* Com o Firebase não há ligação para reabrir: a biblioteca religa-se
+   sozinha e a presença volta a pôr-se no ouvinte de .info/connected. */
+function agendarReligar(){ ligadoUI(false); }
 
 function ligadoUI(on){
   $("pPonto").className = "ponto" + (on ? " on" : " mal");
@@ -2686,6 +2838,11 @@ function ligadoUI(on){
 const enviarP = msg => { try{ if(P.conn && P.conn.open) P.conn.send(msg); }catch(e){} };
 
 function tratarNoParticipante(msg){
+  if(msg && msg.t === "cifra"){
+    if(!P.chavePrivada) return;
+    decifrar(P.chavePrivada, msg.d).then(aberta => tratarNoParticipante(aberta)).catch(() => {});
+    return;
+  }
   if(!msg || typeof msg !== "object") return;
   switch(msg.t){
     case "boas-vindas":
