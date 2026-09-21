@@ -2594,7 +2594,8 @@ function ligarPainel(){
 const P = {
   peer:null, conn:null, codigo:null, jogadorId:null, nome:null, equipa:null,
   fase:"espera", souDesenhador:false, quadro:null, mascara:"",
-  cor:PALETA[0], larg:LARGURAS[1], borracha:false, tentativas:0, aSair:false, pausado:false
+  cor:PALETA[0], larg:LARGURAS[1], borracha:false, tentativas:0, aSair:false, pausado:false,
+  tentativasServico:0
 };
 
 function abrirParticipante(codigo){
@@ -2628,7 +2629,16 @@ function ligarParticipante(codigo){
       falhaLigar("Não encontrei a sala " + codigo + ". Confirma o código no ecrã da sessão.");
     }else if(tipo === "network" || tipo === "server-error" || tipo === "socket-error" || tipo === "socket-closed"){
       if(P.jogadorId) return agendarReligar();
-      falhaLigar("Não consegui chegar ao serviço de ligação. Verifica a internet.");
+      /* O serviço público falha de vez em quando e volta a si sozinho. Em vez
+         de despejar um erro à primeira, tenta-se quatro vezes. */
+      if(P.tentativasServico < 4){
+        P.tentativasServico++;
+        erroLigar("O serviço que liga os aparelhos não respondeu. A tentar outra vez (" + P.tentativasServico + " de 4)…");
+        try{ peer.destroy(); }catch(e){}
+        setTimeout(() => { if(!P.jogadorId) ligarParticipante(codigo); }, 900 * P.tentativasServico);
+        return;
+      }
+      falhaLigar("Não consegui chegar ao serviço que liga os aparelhos, mesmo depois de quatro tentativas. Costuma ser a rede: se estás no wi-fi, experimenta dados móveis; se estás em dados móveis, experimenta o wi-fi. Depois carrega em Entrar outra vez.");
     }else{
       falhaLigar("Não consegui entrar (" + (tipo || "erro") + ").");
     }
@@ -2648,6 +2658,7 @@ function abrirLigacao(){
   conn.on("open", () => {
     clearTimeout(limite);
     P.tentativas = 0;
+    P.tentativasServico = 0;
     ligadoUI(true);
     if(P.jogadorId) enviarP({t:"sou", jogadorId:P.jogadorId});
   });
