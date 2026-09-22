@@ -248,6 +248,9 @@ textarea.campo{resize:vertical;line-height:1.5}
 .mesa-dica{position:absolute;left:12px;bottom:12px;z-index:6;margin:0;font-size:12.5px;color:var(--ink-3);
   background:var(--ground);border-radius:8px;padding:6px 10px;opacity:.95}
 @media (max-width:700px){.mesa-wrap{height:60vh}.mesa-dica{display:none}}
+/* projetada, a mesa aproveita o ecrã todo e dispensa a dica */
+body.projecao .mesa-wrap{height:calc(100vh - 200px);max-height:none}
+body.projecao .mesa-dica{display:none}
 
 .abas-col{display:none;gap:6px;overflow-x:auto;padding-bottom:4px}
 .abas-col button{flex:none;border:1px solid var(--line-forte);border-radius:99px;background:var(--surface);padding:8px 14px;
@@ -1008,7 +1011,7 @@ function desenharColunas(cx, abas){
 }
 
 /* ---------- a mesa ---------- */
-const MESA = {faixa:330, cartao:230, margem:28, topo:56, linha:168};
+const MESA = {faixa:520, cartao:230, margem:26, topo:58, linha:172, coluna:250};
 
 function mudarVista(v){
   S.vista = v;
@@ -1037,7 +1040,9 @@ function posicoesDaMesa(cols){
     if(typeof c.x === "number" && typeof c.y === "number"){ fora.set(c.id, {x:c.x, y:c.y, col:colId}); return; }
     const k = contas.get(colId) || 0;
     contas.set(colId, k + 1);
-    fora.set(c.id, {x: i * MESA.faixa + MESA.margem + (k % 2 ? 18 : 0), y: MESA.topo + k * MESA.linha, col:colId});
+    // dentro da faixa, dois a dois: uma pilha só ficava alta demais para ver de uma vez
+    fora.set(c.id, {x: i * MESA.faixa + MESA.margem + (k % 2) * MESA.coluna,
+                    y: MESA.topo + Math.floor(k / 2) * MESA.linha, col:colId});
   });
   return fora;
 }
@@ -1120,7 +1125,8 @@ function desenharMesa(wrap){
     el("div", {class:"mesa-controlos"},
       el("button", {class:"btn btn-mini", onclick:() => zoom(0.85), "aria-label":"Afastar", text:"−"}),
       el("button", {class:"btn btn-mini", onclick:() => zoom(1.18), "aria-label":"Aproximar", text:"+"}),
-      el("button", {class:"btn btn-mini", onclick:() => { ajustarMesa(wrap, pos); }, text:"Ajustar"})));
+      el("button", {class:"btn btn-mini", onclick:() => { ajustarMesa(wrap, pos); }, text:"Ajustar"}),
+      dona ? el("button", {class:"btn btn-mini", onclick:arrumarMesa, title:"Voltar a pôr os cartões em ordem dentro de cada coluna", text:"Arrumar"}) : null));
 }
 
 /* mostrar tudo o que está na mesa */
@@ -1130,9 +1136,22 @@ function ajustarMesa(wrap, pos){
   const x0 = Math.min(...todos.map(p => p.x)) - 40, y0 = Math.min(...todos.map(p => p.y)) - 40;
   const x1 = Math.max(...todos.map(p => p.x)) + MESA.cartao + 40, y1 = Math.max(...todos.map(p => p.y)) + 220;
   const r = wrap.getBoundingClientRect();
-  const z = Math.min(1.2, Math.max(0.3, Math.min(r.width / (x1 - x0), r.height / (y1 - y0))));
-  S.cam = {x: -x0 * z + (r.width - (x1 - x0) * z) / 2, y: -y0 * z + 20, z:z};
+  // nunca encolher abaixo de 0.5: por baixo disso não se lê nada, e é
+  // preferível ver a largura toda e andar para baixo
+  const z = Math.min(1.2, Math.max(0.5, Math.min(r.width / (x1 - x0), r.height / (y1 - y0))));
+  S.cam = {x: -x0 * z + Math.max(0, (r.width - (x1 - x0) * z) / 2), y: -y0 * z + 20, z:z};
   wrap._aplicar && wrap._aplicar();
+}
+
+/* Voltar a arrumar: tira as posições postas à mão e deixa os cartões
+   caírem outra vez em ordem dentro da faixa da sua coluna. */
+async function arrumarMesa(){
+  const mexidos = S.cartoes.filter(c => typeof c.x === "number" || typeof c.y === "number");
+  if(!mexidos.length){ toast("Já está tudo arrumado"); return; }
+  try{
+    for(const c of mexidos) await A.atualizarCartao(S.quadro.id, c.id, {x:null, y:null}, S.uid, true);
+    toast("Cartões arrumados");
+  }catch(e){ toast(mensagemErro(e), true); }
 }
 
 /* arrastar um cartão na mesa */
