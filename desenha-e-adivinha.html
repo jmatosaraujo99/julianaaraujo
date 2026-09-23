@@ -231,6 +231,9 @@ textarea.campo{min-height:200px;resize:vertical;line-height:1.5;font-size:14px}
 .passos-jogo p{margin:0;font-size:14.5px;line-height:1.5}
 .passos-jogo p em{font-style:normal;font-weight:600}
 body.projecao #btnComo{display:none}
+/* o som é do telemóvel de quem joga; no computador vive dentro da gaveta */
+.so-participante{display:none}
+body.participante .so-participante{display:inline-flex}
 .cartao-entrada p{margin:0;color:var(--ink-2)}
 .codigo-campo{font-family:var(--fonte-display);font-size:34px;letter-spacing:var(--ls-etiqueta-18);text-transform:uppercase;text-align:center;padding:10px}
 
@@ -600,6 +603,12 @@ body.projecao .credito-proj{display:block}
    dentro do ecrã do formador, o texto do site só atrapalha. */
 body.projecao .cabeca-site,body.projecao .apoio,body.projecao .rodape-site{display:none}
 body.participante .cabeca-site,body.participante .apoio,body.participante .tagline{display:none}
+/* No telemovel de quem joga, o cabecalho da pagina rouba espaco ao quadro:
+   fica so o nome pequeno, e o rodape do site sai da frente. */
+body.participante .topo .sobrancelha{display:none}
+body.participante .topo h1{font-size:20px;letter-spacing:.06em}
+body.participante .topo{align-items:center}
+body.participante .rodape,body.participante .rodape-site{display:none}
 body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{display:none}
 
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
@@ -637,8 +646,7 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
       <button class="btn btn-icone btn-cheio so-formador" id="btnPersonalizar" aria-expanded="false" aria-controls="painelPrep" hidden
               title="Palavras, tempo, equipas e nomes">✎ Personalizar</button>
       <button class="btn btn-icone" id="btnComo" title="Como funciona o jogo">? Como funciona</button>
-      <button class="btn btn-icone" id="btnSom" aria-pressed="true">🔊 Som</button>
-      <button class="btn btn-icone" id="btnTema">◐ Tema</button>
+      <button class="btn btn-icone so-participante" id="btnSom" aria-pressed="true">🔊 Som</button>
       <button class="btn btn-icone" id="btnProj" hidden>⛶ Projetar</button>
     </div>
   </header>
@@ -740,6 +748,7 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
               <p class="passo so-antes"><i>3</i> Quando estiverem todos</p>
               <div class="acts">
                 <button class="btn btn-cheio btn-grande" id="btnRonda">Começar jogo</button>
+                <button class="btn" id="btnRecomecar" hidden title="Pontos a zero e ronda 1">Recomeçar do zero</button>
                 <button class="btn so-jogo" id="btnPausa" disabled title="Parar o relógio sem perder a ronda">⏸ Pausa</button>
                 <button class="btn so-jogo" id="btnPassar" disabled>Passar</button>
               </div>
@@ -767,7 +776,11 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
       <aside class="painel painel-lateral vidro" id="painelPrep" aria-label="Preparar o jogo">
         <div class="painel-topo">
           <b>Personalizar</b>
-          <button class="btn btn-mini" id="btnFecharPainel">Fechar</button>
+          <div class="acts">
+            <button class="btn btn-mini" id="btnSomPainel" aria-pressed="true">🔊 Som</button>
+            <button class="btn btn-mini" id="btnTema">◐ Tema</button>
+            <button class="btn btn-mini" id="btnFecharPainel">Fechar</button>
+          </div>
         </div>
         <div class="abas" role="tablist">
           <button class="aba" role="tab" id="aba-pal" aria-selected="true">Palavras</button>
@@ -1194,8 +1207,12 @@ function Canal(refEnvio, refEscuta){
       c.emitir("close");
     }
   };
-  const marco = chaveAgora();
-  refEscuta.orderByKey().startAt(marco).on("child_added", snap => {
+  /* Sem marca de tempo: estes canais são só para mensagens por ler (cada uma
+     é apagada assim que chega), e um marco criado aqui deixava de fora o que
+     tivesse sido escrito um instante antes. Era o que acontecia a quem voltava
+     a entrar: o telemóvel mandava logo o "sou", o anfitrião criava o canal a
+     seguir, e a mensagem ficava para trás — a pessoa ficava presa no código. */
+  refEscuta.on("child_added", snap => {
     if(!c.open) return;
     const v = snap.val();
     snap.ref.remove().catch(() => {});
@@ -1217,8 +1234,10 @@ const EQUIPAS_BASE = [
   {nome:"Roxa",     cor:"#7B2FF7"}
 ];
 
-const PALETA = ["#0A0A0A","#6B665D","#1F2ED6","#00B4D8","#00BFA6","#1DB954",
-                "#FFC400","#FF6B35","#FF5747","#FF4D8D","#7B2FF7","#8B5A2B"];
+/* Oito cores bem separadas: doze enchiam três filas num telemóvel e
+   roubavam espaço ao quadro, que é o que interessa. */
+const PALETA = ["#0A0A0A","#1F2ED6","#00B4D8","#1DB954",
+                "#FFC400","#FF6B35","#FF4D8D","#7B2FF7"];
 const BORRACHA = "#FFFFFF";
 const LARGURAS = [0.007, 0.016, 0.034];   // em fração da largura do quadro
 
@@ -2175,6 +2194,9 @@ function mostrarRondaFormador(){
   $("btnPausa").disabled = fase !== "ronda";
   $("btnVerPalavra").disabled = fase !== "ronda";
   $("btnTerminar").disabled = F.conf.rondaN === 0;
+  /* Uma sessão nova que abre em cima de um jogo antigo (os pontos ficam
+     guardados) precisa de uma saída à vista, sem passar pelos resultados. */
+  $("btnRecomecar").hidden = !(F.conf.rondaN > 0 && fase === "espera");
   $("btnAlbum").textContent = "Álbum · " + F.album.length;
   const av = $("avisoPontos");
   if(av) av.textContent = F.conf.palpites === "voz"
@@ -2644,6 +2666,10 @@ function ligarPainel(){
   $("btnTerminar").addEventListener("click", () => {
     if(!F.jogoAcabado && !confirm("Terminar o jogo e mostrar os resultados?")) return;
     mostrarFim();
+  });
+  $("btnRecomecar").addEventListener("click", () => {
+    if(!confirm("Recomeçar do zero? Os pontos voltam a zero e a contagem das rondas também.")) return;
+    novoJogo();
   });
   $("btnNovoJogo").addEventListener("click", () => {
     if(F.album.length && !confirm("Começar um jogo novo? Os pontos voltam a zero e o álbum deste jogo desaparece — descarrega-o antes se o quiseres guardar.")) return;
@@ -3241,6 +3267,8 @@ function aplicarTema(t){
     somLigado = !somLigado;
     $("btnSom").textContent = somLigado ? "🔊 Som" : "🔇 Som";
     $("btnSom").setAttribute("aria-pressed", String(somLigado));
+    const eco = $("btnSomPainel");
+    if(eco){ eco.textContent = $("btnSom").textContent; eco.setAttribute("aria-pressed", String(somLigado)); }
     pref.som = somLigado; gravarLS("desenha-pref", pref);
     if(somLigado) somTique();
   });
@@ -3271,6 +3299,7 @@ function aplicarTema(t){
     document.body.classList.remove("personalizar");
     $("btnPersonalizar").setAttribute("aria-expanded", "false");
   };
+  $("btnSomPainel").addEventListener("click", () => $("btnSom").click());
   $("btnPersonalizar").addEventListener("click", () => {
     document.body.classList.contains("personalizar") ? fecharPrep() : abrirPrep();
   });
