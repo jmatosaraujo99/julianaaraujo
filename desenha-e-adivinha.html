@@ -448,6 +448,14 @@ body.a-jogar .so-antes{display:none}
 .palpite{display:flex;gap:var(--s1)}
 .palpite .campo{font-size:17px;min-height:50px;flex:1;min-width:0}
 .palpite .btn{min-height:50px;padding:0 18px;flex:0 0 auto}
+/* A resposta ao palpite, em grande: quem escreve tem de saber logo se
+   acertou ou não, sem ter de procurar o seu palpite na lista de baixo. */
+.resposta{margin:0;padding:10px 14px;border-radius:12px;text-align:center;
+  font-family:var(--fonte-etiqueta);font-size:15px;font-weight:600;letter-spacing:.02em;
+  animation:entra-chip .25s ease both}
+.resposta.errado{background:color-mix(in srgb, var(--coral) 16%, transparent);color:var(--coral)}
+.resposta.quase{background:color-mix(in srgb, var(--coral) 24%, transparent);color:var(--coral)}
+.resposta.certo{background:var(--cobalto);color:var(--creme)}
 .palpite-eco{display:flex;flex-wrap:wrap;gap:6px}
 .palpite-eco:empty{display:none}
 .palpite-eco span{font-size:13px;color:var(--ink-3);text-decoration:line-through;border:1px solid var(--line);border-radius:999px;padding:3px 10px}
@@ -926,6 +934,7 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
               enterkeyhint="send" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="O teu palpite">
             <button class="btn btn-cheio" type="submit">Enviar</button>
           </form>
+          <p class="resposta" id="pResposta" hidden aria-live="assertive"></p>
           <div class="palpite-eco" id="pEco" aria-live="polite"></div>
 
           <div class="ferramentas vidro" id="pFerramentas" hidden style="padding:var(--s3)">
@@ -2930,15 +2939,19 @@ function tratarNoParticipante(msg){
       break;
     }
     case "palpite-errado": {
+      responder(msg.quase ? "quase" : "errado",
+        msg.quase ? "Quase! Estás perto — tenta outra vez" : "Não é essa. Tenta outra vez");
+      if(navigator.vibrate) try{ navigator.vibrate(msg.quase ? 60 : 25); }catch(e){}
       const s = document.createElement("span");
-      s.textContent = msg.quase ? "Quase! " + msg.texto : msg.texto;
-      if(msg.quase){ s.className = "quase"; if(navigator.vibrate) try{ navigator.vibrate(60); }catch(e){} }
+      s.textContent = msg.quase ? "Quase! " + msg.texto : "✗ " + msg.texto;
+      if(msg.quase){ s.className = "quase"; }
       const cx = $("pEco");
       cx.insertBefore(s, cx.firstChild);
       while(cx.children.length > 6) cx.removeChild(cx.lastChild);
       break;
     }
     case "palpite-certo": {
+      responder("certo", "✓ Acertaste!", true);
       const cx = $("pEco"); cx.innerHTML = "";
       const s = document.createElement("span"); s.className = "certo"; s.textContent = "Acertaste! " + msg.texto;
       cx.appendChild(s);
@@ -2993,6 +3006,23 @@ function mostrarNomes(pessoas, equipas){
   });
 }
 
+/* A resposta fica à vista uns segundos; a de acertar fica até à ronda seguinte. */
+let relogioResposta = null;
+function responder(classe, texto, ficar){
+  const el = $("pResposta");
+  if(!el) return;
+  clearTimeout(relogioResposta);
+  el.className = "resposta " + classe;
+  el.textContent = texto;
+  el.hidden = false;
+  if(!ficar) relogioResposta = setTimeout(() => { el.hidden = true; }, 2600);
+}
+function limparResposta(){
+  clearTimeout(relogioResposta);
+  const el = $("pResposta");
+  if(el){ el.hidden = true; el.textContent = ""; }
+}
+
 function mostrarEscolha(opcoes){
   const cx = $("pEscolhaBtns"); cx.innerHTML = "";
   opcoes.forEach((w, i) => {
@@ -3035,8 +3065,8 @@ function aplicarEstado(msg){
   const eraVisivel = !$("pPalpite").hidden;
   $("pPalpite").hidden = !adivinha;
   if(!adivinha && document.activeElement === $("pPalpiteCampo")) $("pPalpiteCampo").blur();
-  if(escolha || msg.fase === "espera"){ $("pEco").innerHTML = ""; $("pPalpiteCampo").value = ""; }
-  if(adivinha && !eraVisivel) $("pEco").innerHTML = "";
+  if(escolha || msg.fase === "espera"){ $("pEco").innerHTML = ""; $("pPalpiteCampo").value = ""; limparResposta(); }
+  if(adivinha && !eraVisivel){ $("pEco").innerHTML = ""; limparResposta(); }
 
   if(msg.fase === "espera"){
     $("pEsperaRot").textContent = "Estás dentro";
