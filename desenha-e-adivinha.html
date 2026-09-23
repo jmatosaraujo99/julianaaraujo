@@ -683,9 +683,9 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
             <button class="btn btn-mini btn-cheio" id="btnReabrir" hidden style="align-self:flex-start">Tentar outra vez</button>
           </div>
           <div class="acts so-formador" style="flex-direction:column;align-items:stretch">
-            <a class="btn btn-cheio" id="btnExperimentar" target="_blank" rel="noopener" hidden
+            <a class="btn btn-cheio so-antes" id="btnExperimentar" target="_blank" rel="noopener" hidden
                title="Entra na tua própria sala como participante, para experimentares desenhar">✎ Experimentar a desenhar</a>
-            <button class="btn btn-mini" id="btnTestarLigacao"
+            <button class="btn btn-mini so-antes" id="btnTestarLigacao"
                title="Vê se esta rede deixa os telemóveis entrar">⚡ Testar a ligação</button>
             <button class="btn btn-mini" id="btnEsconderSala">Esconder</button>
             <p class="teste" id="resultadoTeste" hidden><i></i><span></span></p>
@@ -746,6 +746,7 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
           </div>
           <div class="pontos so-jogo" id="pontos"></div>
           <div class="faixa so-jogo">
+            <p class="aviso" id="avisoPontos"></p>
             <div class="acts">
               <button class="btn btn-mini" id="btnAlbum">Álbum · 0</button>
               <button class="btn btn-mini so-formador" id="btnTerminar" disabled>Terminar jogo</button>
@@ -864,12 +865,15 @@ body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{displ
         <p class="sobrancelha">Sala <span id="pSalaCodigo"></span></p>
         <h2>Quem és tu?</h2>
         <div class="nomes" id="pNomes"></div>
-        <hr class="sep">
-        <p class="aviso">Não estás na lista?</p>
-        <form class="acts" id="pFormNovo" style="flex-wrap:nowrap">
-          <input class="campo" id="pCampoNovo" placeholder="O teu nome" aria-label="O teu nome">
-          <button class="btn btn-cheio" type="submit">Entrar</button>
-        </form>
+        <div id="pOutroNome">
+          <hr class="sep">
+          <p class="aviso" id="pOutroTxt">Não estás na lista?</p>
+          <form class="acts" id="pFormNovo" style="flex-wrap:nowrap">
+            <input class="campo" id="pCampoNovo" placeholder="O teu nome" aria-label="O teu nome">
+            <button class="btn btn-cheio" type="submit">Entrar</button>
+          </form>
+        </div>
+        <button class="btn btn-mini" id="btnOutroNome" hidden>O meu nome não está aqui</button>
       </div>
 
       <div id="pJogo" hidden>
@@ -1411,7 +1415,8 @@ const F = {
   mascara:"", momentosPista:[],
   album:[], jogoAcabado:false, ligadosAntes:new Set(), ultimoFim:null,
   raizSala:null, canais:new Map(), varrer:null, ouvinteLigado:null,
-  contagemToken:0, contagemTempo:null, ultimoGanho:null, sacoDesenho:{}, pausado:false
+  contagemToken:0, contagemTempo:null, ultimoGanho:null, sacoDesenho:{}, pausado:false,
+  encolheuSala:false
 };
 
 function confBase(){
@@ -1907,22 +1912,21 @@ function pararRelogios(){
   if(F.relogioEscolha){ clearTimeout(F.relogioEscolha); F.relogioEscolha = null; }
 }
 
-/* Sortear ao acaso dentro da equipa fazia a mesma pessoa desenhar três vezes
-   enquanto outra não desenhava nenhuma. Cada equipa tem um saco: só se repete
-   quando todos os que estão ligados já desenharam uma vez. */
-function escolherDesenhador(eqIdx, ligadas){
-  const daEquipa = ligadas.filter(p => p.equipa === eqIdx);
-  if(!daEquipa.length) return null;
-  const chave = "e" + eqIdx;
-  let saco = (F.sacoDesenho[chave] || []).filter(id => daEquipa.some(p => p.id === id));
+/* Um saco com toda a gente que está ligada: cada pessoa desenha uma vez
+   antes de alguém repetir, seja qual for a equipa. Antes o saco era por
+   equipa, e numa equipa onde só estava uma pessoa ligada calhava sempre
+   à mesma — foi o que ela viu a acontecer. */
+function escolherDesenhador(ligadas){
+  if(!ligadas.length) return null;
+  let saco = (F.sacoDesenho.todos || []).filter(id => ligadas.some(p => p.id === id));
   if(!saco.length){
-    saco = baralhar(daEquipa.map(p => p.id));
+    saco = baralhar(ligadas.map(p => p.id));
     // quem acabou de desenhar não abre o saco novo, se houver mais alguém
     if(saco.length > 1 && saco[0] === F.desenhadorId) saco.push(saco.shift());
   }
   const id = saco.shift();
-  F.sacoDesenho[chave] = saco;
-  return daEquipa.filter(p => p.id === id)[0] || daEquipa[0];
+  F.sacoDesenho.todos = saco;
+  return ligadas.filter(p => p.id === id)[0] || ligadas[0];
 }
 
 function novaRonda(){
@@ -1938,16 +1942,11 @@ function novaRonda(){
   if(!listaPalavras().length){ avisarFormador("Não há palavras — escreve algumas em Personalizar, no separador Palavras."); return; }
   limparAvisoFormador();
 
-  // a vez roda pelas equipas; salta as que não têm ninguém ligado
-  let eqIdx = -1;
-  for(let k = 0; k < n; k++){
-    const cand = (F.vezEquipa + k) % n;
-    if(ligadas.some(p => p.equipa === cand)){ eqIdx = cand; break; }
-  }
-  F.vezEquipa = (eqIdx + 1) % n;
-
-  const quem = escolherDesenhador(eqIdx, ligadas);
+  // sai alguém ao acaso de entre todos os ligados; a equipa da ronda é a dela
+  const quem = escolherDesenhador(ligadas);
   if(!quem) return;
+  const eqIdx = Math.min(quem.equipa, n - 1);
+  F.vezEquipa = (eqIdx + 1) % n;
 
   pararRelogios();
   F.conf.rondaN += 1; guardarConf();
@@ -2146,7 +2145,19 @@ function mostrarRondaFormador(){
   $("pistaFormador").hidden = !(fase === "ronda" && F.conf.pistas);
 
   /* antes da primeira ronda o ecrã mostra só os três passos */
-  document.body.classList.toggle("a-jogar", F.conf.rondaN > 0);
+  const aJogar = F.conf.rondaN > 0;
+  document.body.classList.toggle("a-jogar", aJogar);
+  /* começado o jogo, o QR e o endereço saem da frente: fica só o código,
+     que chega para quem entrar a meio. Volta com "Mostrar QR". */
+  if(aJogar && !F.encolheuSala){
+    F.encolheuSala = true;
+    const c = $("salaCartao");
+    if(c && c.dataset.min !== "1"){
+      c.dataset.min = "1";
+      $("qr").hidden = true; $("salaUrl").hidden = true;
+      $("btnEsconderSala").textContent = "Mostrar QR";
+    }
+  }
 
   const btn = $("btnRonda");
   btn.disabled = fase === "escolha" || fase === "ronda";
@@ -2156,6 +2167,10 @@ function mostrarRondaFormador(){
   $("btnVerPalavra").disabled = fase !== "ronda";
   $("btnTerminar").disabled = F.conf.rondaN === 0;
   $("btnAlbum").textContent = "Álbum · " + F.album.length;
+  const av = $("avisoPontos");
+  if(av) av.textContent = F.conf.palpites === "voz"
+    ? "Quem acertar em voz alta: carrega no botão da equipa."
+    : "";
 
   pintarRelogio();
   desenharPontos();
@@ -2179,12 +2194,16 @@ function desenharPontos(){
     d.innerHTML =
       '<div class="topo-eq"><span class="chip-equipa"><i style="background:' + e.cor + '"></i>' + esc(e.nome) + '</span>' +
       '<span class="n">' + e.pontos + '</span></div>';
-    const b = document.createElement("button");
-    b.className = "btn btn-mini";
-    b.textContent = n > 1 ? "Acertou" : "Acertaram";
-    b.disabled = F.fase !== "ronda";
-    b.addEventListener("click", () => terminarRonda(i));
-    d.appendChild(b);
+    /* Com palpites escritos o ponto é dado pelo jogo; o botão só faz falta
+       a quem joga em voz alta. */
+    if(F.conf.palpites === "voz"){
+      const b = document.createElement("button");
+      b.className = "btn btn-mini";
+      b.textContent = n > 1 ? "Acertou" : "Acertaram";
+      b.disabled = F.fase !== "ronda";
+      b.addEventListener("click", () => terminarRonda(i));
+      d.appendChild(b);
+    }
     cx.appendChild(d);
   }
 }
@@ -2951,9 +2970,15 @@ function mostrarNomes(pessoas, equipas){
   // no ensaio a formadora entra com um nome seu, sem ocupar o de um participante
   if(document.body.classList.contains("embutido") && !$("pCampoNovo").value) $("pCampoNovo").value = "Formadora";
   const cx = $("pNomes"); cx.innerHTML = "";
-  if(!pessoas.length){
+  /* Primeiro a lista: quem entra procura o seu nome. A caixa para escrever
+     um nome novo só aparece a quem não estiver lá — ou se a lista estiver
+     vazia, que é quando ela deixa cada um escrever o seu. */
+  const haLista = pessoas.length > 0;
+  $("pOutroNome").hidden = haLista;
+  $("btnOutroNome").hidden = !haLista;
+  if(!haLista){
     const p = document.createElement("p"); p.className = "aviso";
-    p.textContent = "A lista ainda está vazia. Escreve o teu nome aqui em baixo.";
+    p.textContent = "A lista ainda está vazia. Escreve aqui o teu nome.";
     cx.appendChild(p);
   }
   pessoas.forEach(function(p){
@@ -3262,6 +3287,11 @@ function aplicarTema(t){
   $("campoCodigo").addEventListener("keydown", ev => { if(ev.key === "Enter") ligarParticipante($("campoCodigo").value); });
   $("campoCodigo").addEventListener("input", ev => { ev.target.value = limparCodigo(ev.target.value); });
 
+  $("btnOutroNome").addEventListener("click", function(){
+    $("pOutroNome").hidden = false;
+    this.hidden = true;
+    setTimeout(() => $("pCampoNovo").focus(), 60);
+  });
   $("pFormNovo").addEventListener("submit", ev => {
     ev.preventDefault();
     const n = $("pCampoNovo").value.trim();
