@@ -426,7 +426,12 @@ body.a-jogar .so-antes{display:none}
 /* ---------- participante ---------- */
 .part{max-width:720px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:var(--s3)}
 .part-cartao{padding:var(--s4);display:flex;flex-direction:column;gap:var(--s3)}
-.nomes{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--s1)}
+.nomes{display:flex;flex-direction:column;gap:var(--s2)}
+.nomes-grelha{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--s1)}
+.titulo-equipa{display:flex;align-items:center;gap:8px;margin:0;
+  font-family:var(--fonte-etiqueta);font-size:11px;font-weight:600;text-transform:uppercase;
+  letter-spacing:var(--ls-etiqueta-14);color:var(--ink-2)}
+.titulo-equipa i{width:11px;height:11px;border-radius:3px;display:block}
 .nome-btn{border:1px solid var(--line-forte);border-radius:10px;padding:12px;background:var(--surface);
   cursor:pointer;text-align:left;display:flex;align-items:center;gap:8px;min-height:48px;font-size:15px}
 .nome-btn:hover{border-color:var(--acc)}
@@ -1503,8 +1508,19 @@ function abrirSala(){
     salaEstado("mal", "Não consegui carregar a biblioteca de ligação. Verifica a internet e recarrega a página.");
     return;
   }
-  // tenta reaver o código anterior, para quem já tinha entrado voltar sozinho
+  /* Sessão nova (código novo, não recuperado de um recarregar) começa
+     limpa: os nomes e os pontos eram da sessão anterior e não dizem nada a
+     quem está agora na sala. Recarregar a página a meio mantém tudo. */
   const anterior = lerSS("desenha-sala");
+  if(!anterior && (F.conf.pessoas.length || F.conf.rondaN)){
+    F.conf.pessoas = [];
+    F.conf.equipas.forEach(e => e.pontos = 0);
+    F.conf.rondaN = 0;
+    F.jogoAcabado = false; F.album = []; F.ultimoFim = null;
+    guardarConf();
+    desenharPainel();
+    mostrarRondaFormador();
+  }
   ligarAnfitriao(anterior || novoCodigo(), anterior ? 5 : 0);
 }
 
@@ -2771,7 +2787,7 @@ const P = {
   peer:null, conn:null, codigo:null, jogadorId:null, nome:null, equipa:null,
   fase:"espera", souDesenhador:false, quadro:null, mascara:"",
   cor:PALETA[0], larg:LARGURAS[1], borracha:false, tentativas:0, aSair:false, pausado:false,
-  tentativasServico:0, minhaSessao:null, raizSala:null, chavePrivada:null
+  tentativasServico:0, minhaSessao:null, raizSala:null, chavePrivada:null, nEquipas:1
 };
 
 function abrirParticipante(codigo){
@@ -3020,7 +3036,9 @@ function mostrarNomes(pessoas, equipas){
     p.textContent = "A lista ainda está vazia. Escreve aqui o teu nome.";
     cx.appendChild(p);
   }
-  pessoas.forEach(function(p){
+  /* Com mais do que uma equipa, os nomes vêm agrupados e com o título da
+     equipa por cima: "Azul" e "Rosa" não querem dizer nada a quem chega. */
+  const botao = p => {
     const b = document.createElement("button");
     b.className = "nome-btn";
     const eq = equipas[p.equipa];
@@ -3028,8 +3046,27 @@ function mostrarNomes(pessoas, equipas){
     b.disabled = !!p.ocupado;
     if(p.ocupado) b.title = "Já entrou";
     b.addEventListener("click", () => { enviarP({t:"sou", jogadorId:p.id}); });
-    cx.appendChild(b);
-  });
+    return b;
+  };
+  if(equipas.length > 1){
+    equipas.forEach(function(eq, i){
+      const daEquipa = pessoas.filter(p => p.equipa === i);
+      if(!daEquipa.length) return;
+      const h = document.createElement("p");
+      h.className = "titulo-equipa";
+      h.innerHTML = '<i style="background:' + eq.cor + '"></i>Equipa ' + esc(eq.nome);
+      cx.appendChild(h);
+      const grelha = document.createElement("div");
+      grelha.className = "nomes-grelha";
+      daEquipa.forEach(p => grelha.appendChild(botao(p)));
+      cx.appendChild(grelha);
+    });
+  }else{
+    const grelha = document.createElement("div");
+    grelha.className = "nomes-grelha";
+    pessoas.forEach(p => grelha.appendChild(botao(p)));
+    cx.appendChild(grelha);
+  }
 }
 
 /* A resposta fica à vista uns segundos; a de acertar fica até à ronda seguinte. */
@@ -3068,6 +3105,7 @@ function mostrarEscolha(opcoes){
 
 function aplicarEstado(msg){
   P.fase = msg.fase;
+  P.nEquipas = (msg.equipas || []).length;
   // sair da ronda limpa a pausa: senão ficava a faixa de uma ronda anterior
   if(msg.fase !== "ronda" && P.pausado){
     P.pausado = false;
@@ -3095,7 +3133,9 @@ function aplicarEstado(msg){
   if(adivinha && !eraVisivel){ $("pEco").innerHTML = ""; limparResposta(); }
 
   if(msg.fase === "espera"){
-    $("pEsperaRot").textContent = "Estás dentro";
+    // com equipas, é aqui que a pessoa percebe em que equipa ficou
+    $("pEsperaRot").textContent = P.nEquipas > 1 && P.equipa
+      ? "Estás na equipa " + P.equipa.nome : "Estás dentro";
     $("pEsperaTxt").textContent = "À espera da ronda";
   }
   if(escolha){
