@@ -266,3 +266,15 @@
 @media (prefers-reduced-motion:reduce){.palco *{transition:none!important;animation:none!important}}
 
 .ord{font-family:var(--texto);font-weight:800;font-size:.5em;vertical-align:.75em;margin-left:.05em;letter-spacing:0}
+
+/* ---------- tela livre ---------- */
+.sl.tela{padding:0}
+.tl-camada{position:absolute;inset:0}
+.tl-el{position:absolute;box-sizing:border-box}
+.tl-texto{display:flex;flex-direction:column;overflow:visible;overflow-wrap:break-word}
+.tl-tx{white-space:pre-wrap;outline:none;min-height:1em}
+.tl-tx.tl-ph{opacity:.38}
+.tl-imagem{overflow:hidden}
+.tl-imagem img{width:100%;height:100%;display:block}
+.tl-semimg{display:grid;place-items:center;border:4px dashed var(--linha);color:var(--suave);font-weight:700;font-size:26px;text-align:center;padding:20px}
+.tl-falhou{background:var(--trilho)}

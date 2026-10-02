@@ -10,8 +10,8 @@
 
   B.modelos = [
     {
-      id: "branco", nome: "Em branco", desc: "Começa com uma pergunta de escolha múltipla.",
-      atividade: function () { return { titulo: "Nova atividade", tema: "tenda", pedirAlcunha: false, slides: [B.novoSlide("escolha")] }; }
+      id: "branco", nome: "Em branco", desc: "Uma tela vazia. Depois acrescentas o que quiseres: perguntas, layouts, textos, imagens.",
+      atividade: function () { return { titulo: "Nova atividade", tema: "tenda", pedirAlcunha: false, slides: [B.slideDeLayout("branco")] }; }
     },
     {
       id: "raiox", nome: "Raio-X da tenda", desc: "Competências transversais: raio-X inicial, o jogo «Contratado!» e perguntas da sala no fim (13 diapositivos).",

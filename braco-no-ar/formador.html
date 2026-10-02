@@ -170,6 +170,61 @@
   .tema-c .am{display:grid;grid-template-columns:2fr 1fr 1fr;height:44px;border-radius:7px;overflow:hidden}
   .tema-c .cs{display:flex;gap:3px}.tema-c .cs i{flex:1;height:6px;border-radius:3px}
 
+  /* tela livre (editor) */
+  .tl-editor [hidden],.tl-menu[hidden],.tl-barra-sel[hidden],.tl-guia[hidden]{display:none!important}
+  .tl-editor{width:100%;max-width:1100px;display:flex;flex-direction:column;gap:10px}
+  .tl-barra{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#fff;border:1px solid var(--linha);border-radius:12px;padding:6px}
+  .tl-sep{width:1px;height:24px;background:var(--linha);margin:0 4px}
+  .tl-rel{position:relative}
+  .tl-menu{position:absolute;top:calc(100% + 6px);left:0;z-index:30;background:#fff;border:1px solid var(--linha);border-radius:12px;box-shadow:0 14px 40px rgba(19,42,39,.18);padding:6px;display:flex;flex-direction:column;min-width:170px}
+  .tl-menu-lay{min-width:200px}
+  .tl-menu button{border:0;background:transparent;text-align:left;padding:8px 10px;border-radius:8px;font:inherit;font-weight:600;font-size:13.5px;cursor:pointer;color:var(--tinta)}
+  .tl-menu button:hover{background:var(--papel-2)}
+  .tl-barra-sel{display:inline-flex;gap:6px;margin-left:auto}
+  .tl-estado{font-size:12.5px;color:var(--tinta-2)}
+  .tl-caixa{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;box-shadow:0 10px 40px rgba(19,42,39,.18);touch-action:none;user-select:none}
+  .tl-caixa .tl-el{cursor:move}
+  .tl-caixa .tl-el:hover{outline:calc(2px / var(--esc,1)) dashed rgba(30,126,117,.55)}
+  .tl-caixa .tl-el.tl-sel{outline:calc(3px / var(--esc,1)) solid var(--teal)}
+  .tl-caixa .tl-el.tl-a-editar{cursor:text;user-select:text}
+  .tl-caixa .tl-a-editar .tl-tx{user-select:text;cursor:text}
+  .tl-caixa .tl-el.tl-a-editar{text-transform:none!important}  /* senão o innerText lê o texto já em maiúsculas */
+  .tl-pega{position:absolute;width:calc(14px / var(--esc,1));height:calc(14px / var(--esc,1));background:#fff;border:calc(2px / var(--esc,1)) solid var(--teal);border-radius:50%;z-index:5}
+  .tl-pega.nw{left:0;top:0;transform:translate(-50%,-50%);cursor:nwse-resize}
+  .tl-pega.ne{right:0;top:0;transform:translate(50%,-50%);cursor:nesw-resize}
+  .tl-pega.sw{left:0;bottom:0;transform:translate(-50%,50%);cursor:nesw-resize}
+  .tl-pega.se{right:0;bottom:0;transform:translate(50%,50%);cursor:nwse-resize}
+  .tl-guia{position:absolute;z-index:6;pointer-events:none;background:#e3562d}
+  .tl-guia.v{top:0;bottom:0;width:calc(1.5px / var(--esc,1))}
+  .tl-guia.h{left:0;right:0;height:calc(1.5px / var(--esc,1))}
+  .tl-rodape{position:absolute;left:0;right:0;top:812px;bottom:0;border-top:calc(1.5px / var(--esc,1)) dashed rgba(127,127,127,.45);pointer-events:none}
+  .tl-ajuda{background:var(--papel);border-radius:12px;padding:12px 14px;font-size:13.5px;line-height:1.5}
+  .tl-ajuda p{margin:0}.tl-ajuda p+p{margin-top:8px}
+  .tl-cab-el{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid var(--linha);padding-top:12px}
+  .tl-cab-el b{font-weight:800;font-size:13px;letter-spacing:.05em;text-transform:uppercase}
+  .tl-ordem{display:flex;gap:2px}
+  .tl-cores{display:flex;flex-wrap:wrap;gap:6px}
+  .tl-cor{width:26px;height:26px;border-radius:50%;border:1px solid rgba(19,42,39,.25);cursor:pointer;padding:0}
+  .tl-cor.on{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--teal)}
+  .tl-cor.nenhuma{background:linear-gradient(135deg,transparent 45%,var(--vermelho) 45%,var(--vermelho) 55%,transparent 55%) !important}
+  .tl-seg{display:flex;flex-wrap:wrap}
+  .tl-seg button{padding:6px 12px;font-size:12.5px}
+  .tl-num{display:flex;align-items:center;gap:10px}
+  .tl-num input{flex:1;accent-color:var(--teal)}
+  .tl-num output{min-width:58px;text-align:right;font-variant-numeric:tabular-nums;font-size:13px;color:var(--tinta-2)}
+
+  /* galeria de diapositivos novos */
+  dialog.larga{width:min(1080px,96vw)}
+  .gal-sec+.gal-sec{margin-top:6px}
+  .gal-sec h3{margin:0 0 8px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-2)}
+  .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+  .gal-c{border:1px solid var(--linha);background:#fff;border-radius:14px;padding:8px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px;font:inherit;color:var(--tinta)}
+  .gal-c:hover,.gal-c:focus-visible{border-color:var(--teal);box-shadow:0 0 0 3px rgba(30,126,117,.15);outline:none}
+  .gal-c .mini{border-radius:8px;box-shadow:0 0 0 1px var(--linha);pointer-events:none;width:100%}
+  .gal-c b{font-size:14px;padding:0 4px}
+  .gal-c span{font-size:12px;line-height:1.35;color:var(--tinta-2);padding:0 4px 4px}
+  .gal-c.destacado{border:2px dashed rgba(30,126,117,.5)}
+
   /* janelas */
   dialog{border:0;border-radius:18px;padding:0;width:min(680px,94vw);max-height:90vh;color:var(--tinta);background:var(--papel);box-shadow:0 30px 80px rgba(0,0,0,.35)}
   dialog::backdrop{background:rgba(5,12,11,.55)}
@@ -237,6 +292,7 @@
 <script src="qrcode.min.js"></script>
 <script src="nucleo.js"></script>
 <script src="tipos.js"></script>
+<script src="tela.js"></script>
 <script src="modelos.js"></script>
 <script src="participante.js"></script>
 <script>
@@ -259,6 +315,7 @@
     return B.demo ? el("div", { class: "faixa-demo" }, "Modo de demonstração: ainda não ligaste a Firebase, por isso tudo fica guardado só neste browser e os participantes são simulados. Para usar com telemóveis a sério, segue o LEIA-ME.") : null;
   }
   function janela(titulo, kids) {
+    $("dlg").classList.remove("larga");
     BNA.por($("dlg-c"), el("button", { class: "fechar", "aria-label": "Fechar", onclick: fecharJanela }, "×"), el("h2", null, titulo), kids);
     if (!$("dlg").open) $("dlg").showModal();
   }
@@ -364,14 +421,14 @@
   }
   function janelaNova() {
     janela("Nova atividade", [
-      el("p", { style: { margin: 0, color: "var(--tinta-2)" } }, "Começa do zero ou parte de um modelo. Depois podes mudar tudo."),
+      el("p", { style: { margin: 0, color: "var(--tinta-2)" } }, "Começa numa tela em branco e vai acrescentando perguntas e layouts, ou parte de um modelo. Depois podes mudar tudo."),
       botoesModelos(fecharJanela)]);
   }
 
   /* exportar e importar (as imagens vão dentro do ficheiro) */
   function exportar(at) {
     var ids = {};
-    (at.slides || []).forEach(function (s) { if (s.imagem) ids[s.imagem] = 1; });
+    (at.slides || []).forEach(function (s) { B.imagensDe(s).forEach(function (id) { ids[id] = 1; }); });
     var l = Object.keys(ids);
     Promise.all(l.map(urlImagem)).then(function (urls) {
       var imgs = {};
@@ -400,7 +457,7 @@
         })).then(function (pares) {
           var mapa = {};
           pares.forEach(function (p) { mapa[p[0]] = p[1]; });
-          at.slides.forEach(function (s) { if (s.imagem && s.imagem in mapa) { if (mapa[s.imagem]) s.imagem = mapa[s.imagem]; else delete s.imagem; } });
+          at.slides.forEach(function (s) { B.trocarImagens(s, mapa); });
           criarAtividade(at);
         });
       };
@@ -508,7 +565,7 @@
       if (!reg || !reg.dados) { BNA.por(raiz, topo(null, contaDir()), el("main", { class: "pagina" }, el("p", null, "Esta atividade já não existe. "), el("a", { href: "#/" }, "Voltar à biblioteca"))); return; }
       at = JSON.parse(reg.dados);
       at.slides = (at.slides || []).filter(function (s) { return s && T[s.tipo]; });
-      if (!at.slides.length) at.slides.push(B.novoSlide("escolha"));
+      if (!at.slides.length) at.slides.push(B.slideDeLayout("branco"));
       at.tema = at.tema || "tenda";
       montar();
     }).catch(function (e) { BNA.por(raiz, topo(null, contaDir()), el("main", { class: "pagina" }, el("p", { class: "erro" }, e.message))); });
@@ -750,12 +807,22 @@
     };
 
     /* ---------- pré-visualização ---------- */
+    var editorT = null;
     function desenharPrevia() {
       var s = at.slides[idx];
+      if (s.tipo === "tela" && modoPrevia === "ecra" && editorT && editorT.s === s && editorT.tema === at.tema && editorT.el.isConnected) { editorT.atualizar(); return; }
       var seg = el("div", { class: "seg", role: "tablist" },
         el("button", { class: modoPrevia === "ecra" ? "on" : null, onclick: function () { modoPrevia = "ecra"; desenharPrevia(); } }, "Ecrã"),
         el("button", { class: modoPrevia === "tel" ? "on" : null, onclick: function () { modoPrevia = "tel"; desenharPrevia(); } }, "Telemóvel"));
       var corpo, livre = at.ritmo === "livre";
+      if (modoPrevia === "ecra" && s.tipo === "tela") {
+        editorT = B.editorTela(s, { at: at, tema: B.tema(at.tema), imagem: urlImagem, escolherImagem: ctxImagens.escolher,
+          mudar: mudar, aoSelecionar: function () { desenharPainel(); } });
+        editorT.tema = at.tema;
+        BNA.por(previaEl, seg, editorT.el);
+        return;
+      }
+      editorT = null;
       if (modoPrevia === "ecra") {
         var t = B.tema(at.tema);
         corpo = el("div", { class: "previa" }, B.miniatura(at, s, null, {
@@ -799,7 +866,9 @@
         el("p", { class: "ajuda", style: { marginTop: "-8px" } }, def.desc),
         caixaAvisos(),
         campos,
-        el("details", { open: aberto ? "open" : null }, el("summary", null, "Mais opções"),
+        s.tipo === "tela"
+          ? B.ed.select("Fundo da tela", s, "fundo", [["auto", "Claro"], ["escuro", "Escuro"], ["destaque", "Cor do tema"]], mudar, { depois: function () { desenharPrevia(); desenharPainel(); } })
+          : el("details", { open: aberto ? "open" : null }, el("summary", null, "Mais opções"),
           B.ed.texto("Etiqueta (texto pequeno por cima)", s, "etiqueta", mudar, { max: 60, placeholder: "Ex.: Ronda 1 · Diz ou mostra?" }),
           B.ed.select("Fundo", s, "fundo", [["auto", "Automático"], ["claro", "Claro"], ["escuro", "Escuro"], ["destaque", "Cor do tema"]], mudar)),
         el("div", { class: "acoes" },
@@ -829,17 +898,50 @@
       });
       desenharLista(); desenharPrevia(); desenharPainel();
     }
+    /* Novo diapositivo: uma galeria com o aspeto real de cada um. Perguntas
+       (os tipos interativos), layouts (telas já arrumadas, que depois se
+       mexem à vontade) e dinâmicas. */
+    function inserir(novo) {
+      fecharJanela();
+      estrutura(function () { at.slides.splice(idx + 1, 0, novo); idx++; });
+      desenharLista(); desenharPrevia(); desenharPainel();
+      var li = listaEl.children[idx]; if (li && li.scrollIntoView) li.scrollIntoView({ block: "nearest" });
+      if (novo.tipo !== "tela") setTimeout(function () { var f = painelEl.querySelector("textarea,input[type=text]"); if (f) f.focus(); }, 30);
+    }
+    var EXEMPLOS = {
+      escolha: { pergunta: "Qual destas preferes?", opcoes: ["Manhã", "Tarde", "Noite"] },
+      quiz: { pergunta: "Qual é a capital de Portugal?", opcoes: ["Porto", "Lisboa", "Braga", "Faro"], certa: 1 },
+      nuvem: { pergunta: "Numa palavra: como estás hoje?" },
+      aberta: { pergunta: "O que levas desta sessão?" },
+      escala: { pergunta: "Até que ponto concordas?", afirmacoes: ["Percebi o objetivo", "Vou aplicar já"] },
+      ordenar: { pergunta: "Põe por ordem de importância", itens: ["Tempo", "Equipa", "Dinheiro", "Ideias"] },
+      perguntas: { pergunta: "Ficou alguma dúvida?" },
+      texto: { titulo: "Pausa de dez minutos", texto: "- Água | Bebe qualquer coisa\n- Ar | Abre a janela" },
+      roleta: { titulo: "Quem começa?", segmentos: [{ t: "Grupo A", d: "" }, { t: "Grupo B", d: "" }, { t: "Grupo C", d: "" }, { t: "Grupo D", d: "" }] },
+      classificacao: {}
+    };
+    function cartaoGal(nome, desc, amostra, criar, destacado) {
+      var c = el("button", { class: "gal-c" + (destacado ? " destacado" : ""), type: "button", onclick: function () { inserir(criar()); } },
+        B.miniatura(at, amostra, null, { imagem: urlImagem }), el("b", null, nome), el("span", null, desc));
+      return c;
+    }
     function escolherTipo() {
-      janela("Novo diapositivo", [el("div", { class: "tipos" }, B.ordemTipos.map(function (k) {
-        var d = T[k];
-        return el("button", { class: "tipo-c", type: "button", onclick: function () {
-          fecharJanela();
-          estrutura(function () { at.slides.splice(idx + 1, 0, B.novoSlide(k)); idx++; });
-          desenharLista(); desenharPrevia(); desenharPainel();
-          var li = listaEl.children[idx]; if (li && li.scrollIntoView) li.scrollIntoView({ block: "nearest" });
-          setTimeout(function () { var f = painelEl.querySelector("textarea,input[type=text]"); if (f) f.focus(); }, 30);
-        } }, el("i", null, d.icone), el("b", null, d.nome), el("span", null, d.desc));
-      }))]);
+      function deTipo(k) {
+        var amostra = Object.assign(B.novoSlide(k), EXEMPLOS[k] || {});
+        return cartaoGal(T[k].nome, T[k].desc, amostra, function () { return B.novoSlide(k); });
+      }
+      var perguntas = ["escolha", "quiz", "nuvem", "aberta", "escala", "ordenar", "perguntas"];
+      var dinamicas = ["roleta", "classificacao"];
+      var layouts = B.layoutsTela.map(function (L) {
+        return cartaoGal(L.nome, L.desc, B.slideDeLayout(L.id, true), function () { return B.slideDeLayout(L.id); }, L.id === "branco");
+      });
+      layouts.push(deTipo("texto"));
+      janela("Novo diapositivo", [
+        el("div", { class: "gal-sec" }, el("h3", null, "Perguntas para a sala responder"), el("div", { class: "gal" }, perguntas.map(deTipo))),
+        el("div", { class: "gal-sec" }, el("h3", null, "Layouts e tela livre · mexes em tudo depois"), el("div", { class: "gal" }, layouts)),
+        el("div", { class: "gal-sec" }, el("h3", null, "Dinâmicas"), el("div", { class: "gal" }, dinamicas.map(deTipo)))]);
+      $("dlg").classList.add("larga");
+      setTimeout(B.limparMinis, 0);
     }
     function janelaDefinicoes() {
       var temas = el("div", { class: "temas" });
