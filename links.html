@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ligações | Juliana Araújo</title>
+<meta name="description" content="Formação prática para equipas: comunicação, gestão de conflitos e liderança. Pedir proposta, oferta formativa, recursos de sala e avaliações.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://julianaaraujo.pt/links.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:title" content="Juliana Araújo · Formadora">
+<meta property="og:description" content="Formação prática para equipas: comunicação, gestão de conflitos e liderança.">
+<meta property="og:url" content="https://julianaaraujo.pt/links.html">
+<meta property="og:image" content="https://julianaaraujo.pt/media/og-cartao.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="favicon.ico?v=2" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css?v=20260915">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--creme);
+    color: var(--preto);
+    font-family: var(--fonte-corpo);
+    font-size: 17px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: clamp(40px, calc(6 * var(--fluido)), 72px) 20px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    flex: 1;
+  }
+
+  .perfil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+  }
+
+  .retrato {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--cobalto);
+    border: 3px solid var(--cobalto);
+  }
+
+  .perfil .etiqueta {
+    font-family: var(--fonte-etiqueta);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: var(--ls-etiqueta);
+    text-transform: uppercase;
+    color: var(--cinza);
+  }
+
+  h1 {
+    font-family: var(--fonte-display);
+    font-weight: 400;
+    font-size: clamp(34px, calc(5 * var(--fluido)), 44px);
+    line-height: 1;
+    letter-spacing: var(--ls-display);
+    text-transform: uppercase;
+  }
+
+  .perfil p.resumo {
+    color: var(--cinza-forte);
+    max-width: 36ch;
+    text-wrap: balance;
+  }
+
+  .lista {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .lista .grupo {
+    font-family: var(--fonte-etiqueta);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: var(--ls-etiqueta);
+    text-transform: uppercase;
+    color: var(--cinza);
+    text-align: center;
+    margin-top: 12px;
+  }
+
+  .botao {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 56px;
+    padding: 14px 20px;
+    border: 1.5px solid var(--preto);
+    border-radius: 999px;
+    color: var(--preto);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.3;
+    transition: background-color .2s, color .2s, border-color .2s;
+  }
+
+  .botao small {
+    display: block;
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--cinza);
+  }
+
+  .botao .seta { font-family: var(--fonte-etiqueta); flex: none; }
+
+  .botao:hover { background: var(--areia); }
+
+  .botao.principal {
+    background: var(--cobalto);
+    border-color: var(--cobalto);
+    color: var(--creme);
+  }
+
+  .botao.principal small { color: var(--creme-suave); }
+
+  .botao.principal:hover { background: var(--preto); border-color: var(--preto); }
+
+  .botao:focus-visible {
+    outline: 3px solid var(--cobalto);
+    outline-offset: 3px;
+  }
+
+  .redes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 20px;
+    font-family: var(--fonte-etiqueta);
+    font-size: 12px;
+    letter-spacing: var(--ls-etiqueta);
+    text-transform: uppercase;
+  }
+
+  .redes a {
+    color: var(--preto);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .redes a:hover { color: var(--cobalto); }
+
+  footer {
+    border-top: 1px solid var(--linha-preta);
+    padding: 20px;
+    font-size: 13px;
+    color: var(--cinza);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+
+  footer a { color: var(--cinza); }
+  footer a:hover { color: var(--cobalto); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .botao { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <section class="perfil">
+    <img class="retrato" src="media/juliana-avatar.jpg" alt="Juliana Araújo" width="112" height="112">
+    <p class="etiqueta">Formadora certificada · Barcelos</p>
+    <h1>Juliana Araújo</h1>
+    <p class="resumo">Formação prática para equipas: comunicação, gestão de conflitos e liderança. Para empresas e entidades formadoras, presencial e online.</p>
+  </section>
+
+  <nav class="lista" aria-label="Ligações">
+    <a class="botao principal" href="https://api.whatsapp.com/send/?phone=351961955373&text=Ol%C3%A1+Juliana%2C+gostaria+de+saber+mais+sobre+as+suas+forma%C3%A7%C3%B5es&type=phone_number&app_absent=0" target="_blank" rel="noopener">
+      <span>Pedir proposta<small>Pelo WhatsApp, com o objetivo e o número de pessoas</small></span>
+      <span class="seta" aria-hidden="true">→</span>
+    </a>
+    <a class="botao" href="index.html#formacoes">
+      <span>Oferta formativa<small>Soft skills, ação educativa, mediação intercultural e digital</small></span>
+      <span class="seta" aria-hidden="true">→</span>
+    </a>
+    <a class="botao" href="index.html#sobre">
+      <span>Sobre mim</span>
+      <span class="seta" aria-hidden="true">→</span>
+    </a>
+
+    <p class="grupo">Recursos de sala</p>
+    <a class="botao" href="roleta.html">
+      <span>Roleta da Sessão</span>
+      <span class="seta" aria-hidden="true">→</span>
+    </a>
+    <a class="botao" href="dados-storytelling.html">
+      <span>Dados de Storytelling</span>
+      <span class="seta" aria-hidden="true">→</span>
+    </a>
+    <a class="botao" href="recursos.html">
+      <span>Todos os recursos</span>
+      <span class="seta" aria-hidden="true">→</span>
+    </a>
+
+    <p class="grupo">Já teve formação comigo?</p>
+    <a class="botao" href="https://g.page/r/CbW95RDHkJElECE/review" target="_blank" rel="noopener">
+      <span>Deixar uma avaliação no Google</span>
+      <span class="seta" aria-hidden="true">→</span>
+    </a>
+  </nav>
+
+  <nav class="redes" aria-label="Redes sociais">
+    <a href="https://www.instagram.com/julianaaraujo.pt/" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.linkedin.com/in/juliana9/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://www.facebook.com/FormadoraJuliana" target="_blank" rel="noopener">Facebook</a>
+    <a href="mailto:jmatosaraujo99@gmail.com">Email</a>
+  </nav>
+</main>
+
+<footer>
+  <span>© 2026 Juliana Araújo</span>
+  <a href="index.html">julianaaraujo.pt</a>
+  <a href="privacidade.html">Privacidade</a>
+</footer>
+
+</body>
+</html>
