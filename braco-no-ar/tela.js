@@ -369,6 +369,8 @@
 
     /* escrever diretamente na tela */
     function editarTexto(n, e) {
+      if (aEditar && aEditar !== n) terminarEdicao(n.getAttribute("data-id"));
+      n = palco.querySelector('.tl-el[data-id="' + e.id + '"]') || n;
       var t = n.querySelector(".tl-tx");
       aEditar = n;
       n.classList.add("tl-a-editar");
@@ -382,6 +384,9 @@
       t.onkeydown = function (ev) { if (ev.key === "Escape") { ev.preventDefault(); t.blur(); } };
       t.onblur = function () { terminarEdicao(); };
     }
+    /* Termina a escrita direta. Chama-se também antes de qualquer ação da barra:
+       sem foco na janela o navegador não avisa que se saiu da caixa (blur), e a
+       tela ficava presa a não se redesenhar. */
     function terminarEdicao() {
       if (!aEditar) return;
       var n = aEditar; aEditar = null;
@@ -393,6 +398,7 @@
     /* acrescentar elementos */
     function centrar(e) { e.x = Math.round((W - e.w) / 2); e.y = Math.round((RODAPE - e.h) / 2); }
     function por(e) {
+      terminarEdicao();
       s.elementos = s.elementos || [];
       s.elementos.push(e);
       B.telaSel(s, e.id);
@@ -405,15 +411,17 @@
         if (id === null) { estado.textContent = "A carregar a imagem…"; return; }
         estado.textContent = erro || "";
         if (!id) return;
+        terminarEdicao();
         var alvo = e || novoEl("imagem");
         alvo.imagem = id;
         o.imagem(id).then(function (u) {
           var img = new Image();
           img.onload = function () {
             if (!e && img.naturalWidth) { var r = img.naturalHeight / img.naturalWidth; alvo.w = 620; alvo.h = Math.round(Math.min(700, 620 * r)); alvo.w = Math.round(alvo.h / r); centrar(alvo); }
+            terminarEdicao();
             if (e) { o.mudar(); desenhar(); } else por(alvo);
           };
-          img.onerror = function () { if (e) { o.mudar(); desenhar(); } else por(alvo); };
+          img.onerror = function () { terminarEdicao(); if (e) { o.mudar(); desenhar(); } else por(alvo); };
           img.src = u;
         });
       });
@@ -433,6 +441,7 @@
     var menuLayout = el("div", { class: "tl-menu tl-menu-lay", hidden: "hidden" }, B.layoutsTela.map(function (L) {
       return el("button", { type: "button", onclick: function () {
         menuLayout.hidden = true;
+        terminarEdicao();
         if ((s.elementos || []).length && !confirm("Trocar o que está nesta tela pelo layout «" + L.nome + "»? (Ctrl+Z desfaz)")) return;
         var r = L.fazer();
         s.elementos = r.elementos; if (r.fundo) s.fundo = r.fundo;
@@ -450,15 +459,17 @@
       el("button", { type: "button", class: "bt peq", onclick: function () { escolherImagem(null); } }, "+ Imagem"),
       el("span", { class: "tl-rel" }, el("button", { type: "button", class: "bt peq", onclick: function () { alternar(menuForma); } }, "+ Forma ▾"), menuForma),
       el("span", { class: "tl-sep" }),
-      el("span", { class: "tl-rel" }, el("button", { type: "button", class: "bt peq fant", onclick: function () { alternar(menuLayout); } }, "Layout ▾"), menuLayout),
+      el("span", { class: "tl-rel" }, el("button", { type: "button", class: "bt peq", onclick: function () { alternar(menuLayout); } }, "Layout ▾"), menuLayout),
       barraSel, estado);
 
     function duplicar() {
+      terminarEdicao();
       var e = achar(s, B.telaSel(s)); if (!e) return;
       var c = B.clone(e); c.id = B.novoId(); c.x = Math.min(W - c.w, c.x + 30); c.y = Math.min(H - c.h, c.y + 30);
       por(c);
     }
     function apagar() {
+      terminarEdicao();
       var id = B.telaSel(s); if (!id) return;
       s.elementos = (s.elementos || []).filter(function (e) { return e.id !== id; });
       B.telaSel(s, null); o.mudar(); desenhar(); if (o.aoSelecionar) o.aoSelecionar();
