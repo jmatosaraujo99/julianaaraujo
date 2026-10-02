@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#1e7e75">
+<link rel="icon" href="data:,">
+<title>Braço no Ar · responder</title>
+<link rel="stylesheet" href="telemovel.css">
+<style>
+  html,body{margin:0;height:100%;background:#1e7e75}
+  body{min-height:100dvh;display:flex;flex-direction:column}
+  body>.ph{flex:1;padding-bottom:env(safe-area-inset-bottom)}
+</style>
+</head>
+<body>
+<script>window.BNA_PAPEL = "aluno";</script>
+<script src="config.js"></script>
+<script src="nucleo.js"></script>
+<script src="tipos.js"></script>
+<script src="participante.js"></script>
+<script>
+  (function () {
+    var c = null;
+    try { c = new URLSearchParams(location.search).get("c"); } catch (e) {}
+    BNA.montarParticipante(document.body, { codigo: c && /^\d{6}$/.test(c.replace(/\D/g, "")) ? c.replace(/\D/g, "") : null });
+  })();
+</script>
+</body>
+</html>

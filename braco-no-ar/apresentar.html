@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23132a27'/%3E%3Crect x='7' y='14' width='4' height='11' rx='2' fill='%23e3562d'/%3E%3Crect x='14' y='7' width='4' height='18' rx='2' fill='%23fdc200'/%3E%3Crect x='21' y='11' width='4' height='14' rx='2' fill='%233ea6d5'/%3E%3C/svg%3E">
+<title>Apresentar · Braço no Ar</title>
+<link rel="stylesheet" href="palco.css">
+<link rel="stylesheet" href="telemovel.css">
+<style>
+  :root{--escuro:#132a27;--amarelo:#fdc200;--creme:#f3eee5;--teal:#1e7e75;--vermelho:#e3562d;--display:'Anton',Impact,sans-serif;--texto:'Archivo',system-ui,sans-serif}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;font-family:var(--texto);background:var(--fundo-pag,#132a27);transition:background .4s}
+  #app{position:fixed;inset:0;display:flex}
+  #palco-wrap{position:relative;flex:1;overflow:hidden}
+  #tel[hidden]{display:none!important}
+  #tel{flex:none;width:420px;background:#0c1b19;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;border-left:1px solid rgba(255,255,255,.08)}
+  #tel .moldura{width:350px;height:min(720px,calc(100vh - 90px));border-radius:42px;background:#000;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  #tel-ecra{width:100%;height:100%;border-radius:32px;overflow:auto;display:flex;flex-direction:column;background:#fff}
+  #tel-ecra>.ph{flex:1}
+  #tel>p{margin:0;color:rgba(255,255,255,.6);font-size:13px;text-align:center;max-width:330px;line-height:1.4}
+
+  #ctl{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);display:flex;gap:4px;align-items:center;background:rgba(10,20,18,.94);color:#fff;border-radius:999px;padding:6px 8px;box-shadow:0 10px 30px rgba(0,0,0,.35);transition:opacity .35s;z-index:20;font-size:14px;max-width:calc(100vw - 24px);overflow-x:auto}
+  #ctl.escondido{opacity:0;pointer-events:none}
+  #ctl button{all:unset;cursor:pointer;padding:9px 13px;border-radius:999px;font-weight:600;white-space:nowrap}
+  #ctl button[hidden]{display:none}
+  #ctl button:hover{background:rgba(255,255,255,.1)}
+  #ctl button:focus-visible{outline:2px solid var(--amarelo)}
+  #ctl button:disabled{opacity:.35;cursor:default}
+  #ctl .pos{padding:0 8px;color:rgba(255,255,255,.65);font-variant-numeric:tabular-nums;min-width:58px;text-align:center;cursor:pointer}
+  #ctl .sep{width:1px;height:22px;background:rgba(255,255,255,.18);margin:0 2px;flex:none}
+  #ctl .prim{background:var(--amarelo);color:var(--escuro)}
+  #ctl .prim:hover{background:#ffd43a}
+  #selo{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:21;font:700 13px/1.2 var(--texto);letter-spacing:.02em;padding:8px 14px;border-radius:999px;display:none;cursor:pointer;max-width:90vw;text-align:center}
+  #selo.demo{display:block;background:var(--amarelo);color:var(--escuro)}
+  #selo.erro{display:block;background:var(--vermelho);color:#fff}
+  #selo.leitura{display:block;background:#fff;color:var(--escuro)}
+  #aviso{position:fixed;top:54px;left:50%;transform:translate(-50%,-8px);z-index:21;font:700 14px/1.2 var(--texto);padding:10px 16px;border-radius:12px;background:var(--teal);color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+  #aviso.on{opacity:1;transform:translate(-50%,0)}
+
+  /* temporizador (dentro do palco, por isso escala com ele) */
+  .crono[hidden]{display:none}
+  .crono{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:12px;padding:7px 24px 7px 9px;border-radius:999px;background:rgba(10,20,18,.94);color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.3);font-family:var(--texto)}
+  .crono svg{width:48px;height:48px;transform:rotate(-90deg);flex:none}
+  .crono circle{fill:none;stroke-width:9}
+  .crono .f{stroke:rgba(255,255,255,.16)}
+  .crono .a{stroke:var(--t-acento,#fdc200);stroke-linecap:round;transition:stroke-dashoffset .25s linear}
+  .crono b{font-family:var(--display);font-weight:400;font-size:42px;line-height:1;font-variant-numeric:tabular-nums;min-width:96px}
+  .crono span{font-size:17px;font-weight:600;color:rgba(255,255,255,.75);max-width:380px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .crono.urgente .a{stroke:#ff6a4d}
+  .crono.urgente b{color:#ff8a70}
+  .crono.fim{background:var(--vermelho);animation:pulsar .9s ease-in-out 3}
+  .crono.fim svg{display:none}
+  @keyframes pulsar{50%{transform:translateX(-50%) scale(1.06)}}
+
+  /* QR em grande para quem chega atrasado */
+  .juntar{position:absolute;inset:0;z-index:7;background:rgba(10,20,18,.96);display:flex;align-items:center;justify-content:center;gap:90px;color:#fff;cursor:pointer}
+  .juntar .q{width:560px;height:560px;background:#fff;border-radius:28px;padding:22px}
+  .juntar .q svg{display:block;width:100%;height:100%}
+  .juntar p{margin:0;font-family:var(--display);font-size:24px;letter-spacing:.1em;text-transform:uppercase;color:var(--t-acento,#fdc200)}
+  .juntar .site{font-family:var(--display);font-size:60px;line-height:1.05;margin:14px 0 30px}
+  .juntar .cod{font-family:var(--display);font-size:190px;line-height:.9;letter-spacing:.04em;color:var(--t-acento,#fdc200)}
+  .juntar small{display:block;margin-top:34px;font-size:20px;font-weight:600;color:rgba(255,255,255,.6)}
+
+  dialog{border:0;border-radius:18px;padding:0;width:min(640px,92vw);max-height:88vh;font-family:var(--texto);color:var(--escuro);background:var(--creme);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+  dialog::backdrop{background:rgba(5,12,11,.6)}
+  .dlg{padding:26px 28px 22px;overflow:auto;max-height:88vh}
+  .dlg h2{font-family:var(--display);font-weight:400;font-size:30px;text-transform:uppercase;margin:0 0 6px}
+  .dlg h3{font-family:var(--display);font-weight:400;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin:22px 0 8px}
+  .dlg p{margin:0 0 8px;line-height:1.5;font-size:15px}
+  .dlg code{display:block;background:#fff;border:1px solid rgba(19,42,39,.15);border-radius:8px;padding:10px 12px;font-size:13px;word-break:break-all;margin:6px 0 8px}
+  .dlg .bts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .dlg button{font:inherit;font-weight:600;font-size:14px;padding:9px 14px;border-radius:9px;border:1px solid rgba(19,42,39,.2);background:#fff;color:var(--escuro);cursor:pointer}
+  .dlg button.prim{background:var(--teal);border-color:var(--teal);color:#fff}
+  .dlg button.perigo{border-color:var(--vermelho);color:var(--vermelho)}
+  .dlg ul{margin:4px 0 0;padding-left:18px;line-height:1.75;font-size:14px}
+  .dlg kbd{font:600 12px/1 var(--texto);background:#fff;border:1px solid rgba(19,42,39,.25);border-bottom-width:2px;border-radius:5px;padding:2px 6px}
+  .dlg .fechar{float:right;border:0;background:transparent;font-size:24px;line-height:1;padding:2px 6px}
+  .dlg .predef{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+  .dlg .predef button{padding:16px 10px;font-family:var(--display);font-weight:400;font-size:22px;letter-spacing:.03em}
+  .dlg .linha-tempo{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
+  .dlg input{font:inherit;font-size:15px;padding:9px 12px;border-radius:9px;border:1px solid rgba(19,42,39,.25);background:#fff}
+  .ir{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+  .ir button{width:100%;text-align:left;display:flex;gap:12px;align-items:center;border:0!important;background:transparent!important;padding:10px 10px!important;border-radius:10px!important}
+  .ir button:hover,.ir button.atual{background:#fff!important}
+  .ir .n{font-family:var(--display);font-size:18px;color:var(--teal);width:30px}
+  .ir .tp{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(19,42,39,.55);width:130px;flex:none}
+  .ir .tx{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  .cortina{position:fixed;inset:0;z-index:30;background:var(--escuro);color:#fff;display:grid;place-items:center;padding:24px;font-family:var(--texto)}
+  .cortina .caixa{max-width:560px;width:100%}
+  .cortina h1{font-family:var(--display);font-weight:400;font-size:52px;text-transform:uppercase;line-height:1;margin:0 0 14px}
+  .cortina p{font-size:17px;line-height:1.5;color:rgba(255,255,255,.75);margin:0 0 18px}
+  .cortina .opcoes{display:flex;flex-direction:column;gap:10px}
+  .cortina button,.cortina a{all:unset;cursor:pointer;display:block;padding:16px 18px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-weight:600;font-size:16px;line-height:1.4}
+  .cortina button:hover,.cortina a:hover{background:rgba(255,255,255,.14)}
+  .cortina button:focus-visible,.cortina a:focus-visible{outline:3px solid var(--amarelo)}
+  .cortina button b{display:block;font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:.04em;text-transform:uppercase;color:var(--amarelo)}
+  .cortina .prim{background:var(--amarelo);color:var(--escuro);border-color:var(--amarelo)}
+  .cortina .prim b{color:var(--escuro)}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="palco-wrap"><div id="palco" class="palco"></div></div>
+  <aside id="tel" hidden aria-label="Telemóvel de teste">
+    <div class="moldura"><div id="tel-ecra"></div></div>
+    <p>Telemóvel de teste. Responde aqui como se fosses um participante.</p>
+  </aside>
+</div>
+<div id="selo" role="status"></div>
+<div id="aviso" role="status" aria-live="polite"></div>
+<nav id="ctl" aria-label="Controlos">
+  <button id="b-ant" title="Anterior (←)">‹</button>
+  <span class="pos" id="b-pos" title="Ir para… (G)">–</span>
+  <button id="b-seg" class="prim" title="Seguinte (→ ou espaço)">Seguinte ›</button>
+  <span class="sep"></span>
+  <button id="b-acao" hidden></button>
+  <button id="b-ocultar" title="Esconder ou mostrar resultados (H)" hidden>Esconder</button>
+  <button id="b-tempo" title="Temporizador (T)">⏱ Tempo</button>
+  <button id="b-qr" title="Código e QR em grande (Q)">QR</button>
+  <span class="sep"></span>
+  <button id="b-tel" title="Telemóvel de teste" hidden>📱</button>
+  <button id="b-ecra" title="Ecrã inteiro (F)">⛶</button>
+  <button id="b-defs" title="Sessão, link e atalhos">⚙</button>
+</nav>
+<dialog id="dlg"><div class="dlg" id="dlg-c"></div></dialog>
+
+<script>window.BNA_PAPEL = "ecra";</script>
+<script src="config.js"></script>
+<script src="qrcode.min.js"></script>
+<script src="nucleo.js"></script>
+<script src="tipos.js"></script>
+<script src="modelos.js"></script>
+<script src="participante.js"></script>
+<script>
+(function () {
+  "use strict";
+  var B = window.BNA, el = B.el, T = B.tipos, db = B.db, cam = B.caminho;
+  var $ = function (id) { return document.getElementById(id); };
+  var q = new URLSearchParams(location.search);
+  var aid = q.get("a");
+  var uid = null, at = null, atJson = "", tema = null, codigo = null;
+  var estado = { i: -1 };
+  var resp = {}, parts = {}, extra = {};
+  var inicios = {};               /* início de cada quiz (hora do servidor) */
+  var vista = null, ligacao = { ok: true, msg: "" };
+  var soLeitura = false;          /* sessão terminada aberta só para mostrar resultados */
+  var livreVer = -1;              /* questionário: -1 = painel; senão, o diapositivo cujos resultados se mostram */
+  var juntarAberto = false;
+
+  function livre() { return at && at.ritmo === "livre"; }
+
+  /* ---------------- arranque ---------------- */
+  function cortina(titulo, texto, opcoes) {
+    var c = el("div", { class: "cortina" }, el("div", { class: "caixa" }, el("h1", null, titulo), texto ? el("p", null, texto) : null,
+      opcoes ? el("div", { class: "opcoes" }, opcoes) : null));
+    document.body.appendChild(c);
+    var b = c.querySelector("button,a"); if (b) setTimeout(function () { try { b.focus(); } catch (e) {} }, 30);
+    return c;
+  }
+
+  if (B.demo && !B.auth.ativo()) B.auth.entrar("demo@exemplo.pt", "");
+  if (!B.auth.ativo()) {
+    cortina("Entra primeiro", "Para apresentar, entra com a tua conta de formador.", [el("a", { class: "prim", href: "formador.html" }, "Ir para a página de entrada")]);
+    return;
+  }
+  uid = B.auth.uid();
+  var preparar = Promise.resolve();
+  function gravarModelo(mod) {
+    var atm = B.deModelo(mod);
+    return db.put(cam.atividade(uid, "demo" + mod), { titulo: atm.titulo, tema: atm.tema, n: atm.slides.length, alterado: Date.now(), dados: JSON.stringify(atm) }, { auth: true });
+  }
+  if (!aid && B.demo) {
+    /* demonstração sem biblioteca: usa um modelo (#raiox, #avaliacao ou #todos), sempre acabado de criar */
+    var h = location.hash;
+    var mod = /raiox/.test(h) ? "raiox" : /avalia/.test(h) ? "avaliacao" : /todos/.test(h) ? "todos" : (B.store.get("bna-demo-modelo") || "todos");
+    aid = "demo" + mod;
+    preparar = gravarModelo(mod);
+  } else if (B.demo && /^demo(raiox|todos|avaliacao)$/.test(aid)) {
+    /* recarregar a página da demonstração: se o browser não guardou nada, volta a criar o modelo */
+    preparar = db.get(cam.atividade(uid, aid), { auth: true }).then(function (reg) { if (!reg || !reg.dados) return gravarModelo(aid.slice(4)); });
+  }
+  if (!aid) { cortina("Falta a atividade", "Abre a apresentação a partir da tua biblioteca.", [el("a", { class: "prim", href: "formador.html" }, "Ir para a biblioteca")]); return; }
+
+  preparar.then(function () { return db.get(cam.atividade(uid, aid), { auth: true }); }).then(function (reg) {
+    if (!reg || !reg.dados) throw new Error("Não encontrámos esta atividade na tua biblioteca.");
+    atJson = reg.dados;
+    at = JSON.parse(reg.dados);
+    at.slides = at.slides || [];
+    tema = B.tema(at.tema);
+    B.aplicarTema($("palco"), at.tema);
+    document.title = (at.titulo || "Atividade") + " · " + B.nome;
+    return db.get(cam.indiceSessoes(uid), { auth: true });
+  }).then(function (sessoes) {
+    if (!at) return;
+    var pedida = q.get("s"), lista = [];
+    for (var c in sessoes || {}) if (sessoes[c] && sessoes[c].a === aid) lista.push({ c: c, criada: sessoes[c].criada || 0, fim: sessoes[c].fim });
+    lista.sort(function (a, b) { return b.criada - a.criada; });
+    if (q.get("nova") === "1") return criarSessao();
+    if (pedida && lista.some(function (x) { return x.c === pedida; })) return abrirPedida(pedida);
+    var recente = lista.filter(function (x) { return !x.fim && Date.now() - x.criada < 16 * 3600 * 1000; })[0];
+    if (!recente || B.demo) return criarSessao();
+    var cort = cortina("Apresentar", "Já tens uma sessão desta atividade aberta hoje.", [
+      el("button", { class: "prim", onclick: function () { cort.remove(); retomar(recente.c); } }, el("b", null, "Continuar a sessão " + B.fmtCodigo(recente.c)), "Mantém as respostas que já entraram (" + B.data(recente.criada) + ")."),
+      el("button", { onclick: function () { cort.remove(); criarSessao(); } }, el("b", null, "Começar uma sessão nova"), "Código novo, sem respostas.")
+    ]);
+  }).catch(function (e) {
+    cortina("Não foi possível abrir", e.message || String(e), [el("a", { class: "prim", href: "formador.html" }, "Voltar à biblioteca")]);
+  });
+
+  function estadoInicial() {
+    var e = { i: -1, cv: Date.now() };
+    if (livre()) e.modo = "livre";
+    return e;
+  }
+  function criarSessao(tent) {
+    tent = tent || 0;
+    var c = B.novoCodigo();
+    return db.get(cam.sessao(c) + "/dono").then(function (d) {
+      if (d && tent < 6) return criarSessao(tent + 1);
+      codigo = c;
+      estado = estadoInicial();
+      var s = { dono: uid, atividade: aid, titulo: at.titulo || "", criada: { ".sv": "timestamp" }, ativa: true,
+        conteudo: JSON.stringify(B.conteudoPublico(at)), estado: estado };
+      return db.put(cam.sessao(c), s, { auth: true }).then(function () {
+        return db.put(cam.indiceSessao(uid, c), { a: aid, titulo: at.titulo || "", criada: { ".sv": "timestamp" }, conteudo: JSON.stringify(at) }, { auth: true });
+      }).then(comecar);
+    }).catch(erroFatal);
+  }
+  /* uma sessão pedida pelo endereço: se já terminou, pergunta o que fazer */
+  function abrirPedida(c) {
+    return db.get(cam.sessao(c), { auth: true }).then(function (s) {
+      if (!s) return criarSessao();
+      var terminou = s.ativa === false || (s.estado && s.estado.fim);
+      if (!terminou) return retomar(c, s);
+      var cort = cortina("Esta sessão terminou", "O que queres fazer com a sessão " + B.fmtCodigo(c) + "?", [
+        el("button", { class: "prim", onclick: function () {
+          cort.remove(); soLeitura = true; codigo = c;
+          extra = s.x || {};
+          for (var k in extra.inicios || {}) if (typeof extra.inicios[k] === "number") inicios[k] = extra.inicios[k];
+          estado = { i: -1 };
+          comecar();
+          if (!livre() && at.slides.length) ir(0);
+        } }, el("b", null, "Mostrar os resultados"), "Percorres os diapositivos no ecrã. A sessão continua fechada para os telemóveis."),
+        el("button", { onclick: function () { cort.remove(); retomar(c, s); } }, el("b", null, "Reabrir a sessão"), "Os participantes podem voltar a responder, com o mesmo código."),
+        el("button", { onclick: function () { cort.remove(); criarSessao(); } }, el("b", null, "Começar uma sessão nova"), "Código novo, sem respostas.")
+      ]);
+    }).catch(erroFatal);
+  }
+  function retomar(c, s) {
+    codigo = c;
+    var obter = s ? Promise.resolve(s) : db.get(cam.sessao(c), { auth: true });
+    return obter.then(function (s) {
+      if (!s) return criarSessao();
+      estado = s.estado || { i: -1 };
+      delete estado.fim;
+      if (typeof estado.i === "number" && estado.i >= 0) {
+        var pos = at.slides.map(function (x) { return x.id; }).indexOf(estado.id);
+        estado.i = pos >= 0 ? pos : Math.min(estado.i, at.slides.length - 1);
+        estado.id = at.slides[estado.i] ? at.slides[estado.i].id : null;
+      }
+      if (livre()) estado.modo = "livre"; else delete estado.modo;
+      estado.cv = Date.now();
+      var upd = { conteudo: JSON.stringify(B.conteudoPublico(at)), ativa: true, titulo: at.titulo || "", estado: estado };
+      return db.patch(cam.sessao(c), upd, { auth: true }).then(function () {
+        return db.patch(cam.indiceSessao(uid, c), { conteudo: JSON.stringify(at), fim: null }, { auth: true });
+      }).then(comecar);
+    }).catch(erroFatal);
+  }
+  function erroFatal(e) {
+    cortina("Não foi possível começar", (e && e.message) || String(e), [el("button", { class: "prim", onclick: function () { location.reload(); } }, "Tentar outra vez")]);
+  }
+
+  function comecar() {
+    if (!window.BNA_ARTEFACTO) try { history.replaceState(null, "", location.pathname + "?a=" + aid + "&s=" + codigo + (B.demo && q.has("demo") ? "&demo" : "")); } catch (e) {}
+    db.ouvir(cam.respostas(codigo), function (d, ok, err) { resp = d || {}; setLigacao(ok, err); pedir(); });
+    db.ouvir(cam.participantes(codigo), function (d) { parts = d || {}; pedir(); });
+    db.ouvir(cam.sessao(codigo) + "/x", function (d) {
+      extra = d || {};
+      if (extra.inicios) for (var k in extra.inicios) if (typeof extra.inicios[k] === "number") inicios[k] = extra.inicios[k];
+      pedir();
+    }, { auth: true });
+    if (!soLeitura) {
+      /* acompanha as alterações feitas no editor durante a apresentação */
+      db.ouvir(cam.atividade(uid, aid) + "/dados", function (d, ok) { if (ok) aoMudarAtividade(d); }, { auth: true, intervalo: 6000 });
+      /* acerta o relógio com o servidor (para o tempo do quiz ser igual em todos os aparelhos) */
+      var t0 = Date.now();
+      db.put(cam.sessao(codigo) + "/x/hora", { ".sv": "timestamp" }, { auth: true }).then(function () {
+        var t1 = Date.now();
+        return db.get(cam.sessao(codigo) + "/x/hora", { auth: true }).then(function (srv) { B.acertarRelogio(t0, t1, srv); });
+      }).catch(function () {});
+    }
+    ajustar();
+    desenhar();
+    mexeu();
+    atualizarSelo();
+    setInterval(tickCrono, 250);
+    if (B.demo && !soLeitura) { simComecar(); if (window.innerWidth >= 1100) mostrarTel(true); }
+  }
+
+  function aoMudarAtividade(dados) {
+    if (!dados || typeof dados !== "string" || dados === atJson) return;
+    var novo;
+    try { novo = JSON.parse(dados); } catch (e) { return; }
+    atJson = dados;
+    var idAtual = estado.id;
+    at = novo; at.slides = at.slides || [];
+    tema = B.tema(at.tema); B.aplicarTema($("palco"), at.tema);
+    document.title = (at.titulo || "Atividade") + " · " + B.nome;
+    if (livre()) { estado.modo = "livre"; estado.i = -1; estado.id = null; }
+    else {
+      delete estado.modo;
+      if (typeof estado.i === "number" && estado.i >= 0) {
+        var pos = at.slides.map(function (x) { return x.id; }).indexOf(idAtual);
+        if (pos >= 0) estado.i = pos;
+        else irPara(Math.min(estado.i, at.slides.length - 1)); /* o diapositivo no ecrã foi apagado */
+      }
+    }
+    if (livreVer >= at.slides.length) livreVer = -1;
+    estado.cv = Date.now();
+    db.patch(cam.sessao(codigo), { conteudo: JSON.stringify(B.conteudoPublico(at)), titulo: at.titulo || "" }, { auth: true })
+      .then(function () { gravar(); }).catch(function () {});
+    db.patch(cam.indiceSessao(uid, codigo), { conteudo: JSON.stringify(at) }, { auth: true }).catch(function () {});
+    avisar("Atividade atualizada a partir do editor");
+    desenhar();
+  }
+
+  /* ---------------- estado ---------------- */
+  var aGravar = false, deNovo = false;
+  function gravar() {
+    if (!codigo || soLeitura) return;
+    if (aGravar) { deNovo = true; return; }
+    aGravar = true;
+    db.put(cam.sessao(codigo) + "/estado", estado, { auth: true }).then(function () { setLigacao(true); })
+      .catch(function (e) { setLigacao(false, e); deNovo = true; })
+      .then(function () { aGravar = false; if (deNovo) { deNovo = false; setTimeout(gravar, ligacao.ok ? 0 : 2500); } });
+  }
+  function setLigacao(ok, err) {
+    var msg = ok ? "" : (err && err.message) || "Sem ligação à internet. A tentar outra vez…";
+    if (ok === ligacao.ok && msg === ligacao.msg) return;
+    ligacao = { ok: ok, msg: msg };
+    atualizarSelo();
+  }
+  function atualizarSelo() {
+    var s = $("selo");
+    s.className = "";
+    if (!ligacao.ok) { s.className = "erro"; s.textContent = ligacao.msg; }
+    else if (soLeitura) { s.className = "leitura"; s.textContent = "SESSÃO TERMINADA · só a mostrar resultados"; }
+    else if (B.demo) { s.className = "demo"; s.textContent = "MODO DEMONSTRAÇÃO · participantes simulados neste computador"; }
+    else s.textContent = "";
+  }
+  $("selo").onclick = function () { abrirDefs(); };
+  var avisoTimer = null;
+  function avisar(txt) {
+    var a = $("aviso");
+    a.textContent = txt; a.classList.add("on");
+    clearTimeout(avisoTimer);
+    avisoTimer = setTimeout(function () { a.classList.remove("on"); }, 3200);
+  }
+
+  /* ---------------- dados para o diapositivo ---------------- */
+  function slideAtual() {
+    if (livre()) return livreVer >= 0 ? at.slides[livreVer] || null : null;
+    return estado.i >= 0 ? at.slides[estado.i] || null : null;
+  }
+  function placar() { return B.placar(at, resp, inicios, extra.revelados, parts); }
+  function dados(s) {
+    var d = { r: s ? resp[s.id] || {} : {}, todas: resp, oculto: !!estado.oc && !livre(), revelado: livre() ? true : !!estado.rev, estado: estado,
+      ocultos: s && extra.ocultos ? extra.ocultos[s.id] || {} : {}, respondidas: s && extra.respondidas ? extra.respondidas[s.id] || {} : {},
+      n: Object.keys(parts).length, parts: parts };
+    if (s && s.tipo === "classificacao") d.placar = placar();
+    return d;
+  }
+  var raf = false;
+  function pedir() {
+    if (raf) return;
+    raf = true;
+    requestAnimationFrame(function () { raf = false; atualizar(); });
+  }
+  function atualizar() {
+    if (!vista) return;
+    var s = slideAtual(), d = dados(s);
+    var n = vista.upd ? vista.upd(d) : 0;
+    atualizarRodape(s, n || 0, d.n);
+    atualizarControlos();
+    if (s && s.tipo === "perguntas" && !livre()) publicarPerguntas(s);
+  }
+
+  /* lista de perguntas que os telemóveis veem (só o necessário, no máximo de 2,5 em 2,5 s) */
+  var qaUltima = "", qaTimer = null;
+  function publicarPerguntas(s) {
+    if (soLeitura) return;
+    var l = B.perguntasDe(resp[s.id], resp[s.id + "g"], (extra.ocultos || {})[s.id], (extra.respondidas || {})[s.id]).slice(0, 20)
+      .map(function (x) { return { k: x.k, v: x.txt.slice(0, 200), n: x.n, r: x.r ? 1 : 0 }; });
+    var j = s.id + JSON.stringify(l);
+    if (j === qaUltima || qaTimer) return;
+    qaTimer = setTimeout(function () {
+      qaTimer = null;
+      var s2 = slideAtual();
+      if (!s2 || s2.tipo !== "perguntas") return;
+      var l2 = B.perguntasDe(resp[s2.id], resp[s2.id + "g"], (extra.ocultos || {})[s2.id], (extra.respondidas || {})[s2.id]).slice(0, 20)
+        .map(function (x) { return { k: x.k, v: x.txt.slice(0, 200), n: x.n, r: x.r ? 1 : 0 }; });
+      qaUltima = s2.id + JSON.stringify(l2);
+      db.put(cam.perguntas(codigo), { s: s2.id, l: l2, v: Date.now() }, { auth: true }).catch(function () {});
+    }, qaUltima ? 2500 : 300);
+  }
+
+  /* pontos do quiz: escritos à parte; cada telemóvel lê só os seus */
+  function publicarPontos(s) {
+    if (soLeitura) return;
+    var rev = Object.assign({}, extra.revelados || {});
+    if (s && s.tipo === "quiz") rev[s.id] = true;
+    var pl = B.placar(at, resp, inicios, rev, parts);
+    var delta = s && s.tipo === "quiz" ? B.pontosQuiz(s, resp[s.id], inicios[s.id]) : {};
+    var m = {};
+    pl.forEach(function (x) { m[x.pid] = [delta[x.pid] || 0, x.total, x.pos]; });
+    for (var pid in delta) if (!m[pid]) m[pid] = [0, 0, 0];
+    var pv = Date.now();
+    db.put(cam.pontos(codigo), m, { auth: true }).then(function () {
+      estado.pv = pv; estado.np = pl.length;
+      gravar();
+    }).catch(function () {});
+  }
+
+  /* ---------------- desenhar ---------------- */
+  function ajustar() {
+    var w = $("palco-wrap").clientWidth, h = $("palco-wrap").clientHeight;
+    var k = Math.min(w / 1600, h / 900);
+    $("palco").style.transform = "translate(" + (w - 1600 * k) / 2 + "px," + (h - 900 * k) / 2 + "px) scale(" + k + ")";
+  }
+  window.addEventListener("resize", ajustar);
+
+  var qrCache = {};
+  function qr() { var l = B.linkEntrar(codigo); if (!qrCache[l]) qrCache[l] = B.qrSvg(l, "#111", "#fff"); return qrCache[l]; }
+  function canto() {
+    var curto = B.siteCurto();
+    return el("div", { class: "canto" },
+      el("div", { class: "txt" }, curto ? "Entra em " + curto : "Código", el("b", null, B.fmtCodigo(codigo))),
+      el("div", { class: "qr", html: qr() }));
+  }
+  var rodapeDir = null;
+  function rodape() {
+    rodapeDir = el("span", { class: "dir" });
+    return el("footer", { class: "pe" }, el("span", { class: "esq" },
+      el("span", { class: "pontos", "aria-hidden": "true" }, tema.cores.slice(0, 5).map(function (c) { return el("i", { style: { background: c } }); })),
+      at.titulo || B.nome), rodapeDir);
+  }
+  function atualizarRodape(s, nResp, nPart) {
+    if (!rodapeDir) return;
+    var l = [];
+    if (s && T[s.tipo] && T[s.tipo].interativo) {
+      var palavras = s.tipo === "perguntas" ? [" pergunta", " perguntas"] : [" resposta", " respostas"];
+      l.push(el("span", null, el("b", null, String(nResp)), nResp === 1 ? palavras[0] : palavras[1]));
+    }
+    l.push(el("span", null, el("b", null, String(nPart)), nPart === 1 ? " participante" : " participantes"));
+    l.push(el("span", null, "Código ", el("b", null, B.fmtCodigo(codigo))));
+    var i = livre() ? livreVer : estado.i;
+    if (s && i >= 0) l.push(el("span", null, String(i + 1).padStart(2, "0") + "/" + String(at.slides.length).padStart(2, "0")));
+    BNA.por(rodapeDir, l);
+  }
+
+  function vistaEntrada() {
+    var cont = el("b", null, "0"), chips = el("div", { class: "alcunhas" });
+    var curto = B.siteCurto();
+    if (soLeitura) {
+      var capa = el("section", { class: "sl sup-destaque" },
+        el("div", { class: "conteudo" },
+          el("p", { class: "kicker" }, "Resultados · sessão " + B.fmtCodigo(codigo)),
+          el("h1", { class: "tit" }, at.titulo || "Atividade"),
+          el("div", { class: "contador" }, cont, el("span", null, "participaram"))),
+        rodape());
+      return { el: capa, upd: function (d) { cont.textContent = String(d.n); return 0; } };
+    }
+    var sec = el("section", { class: "sl sup-destaque" },
+      el("div", { class: "entrada" },
+        el("div", null,
+          el("p", { class: "kicker" }, "Entra e responde"),
+          el("h1", { class: "tit" }, at.titulo || "Atividade"),
+          el("ol", { class: "passos" },
+            curto ? el("li", null, el("b", null, "1"), el("span", null, "Vai a ", el("strong", null, curto))) : el("li", null, el("b", null, "1"), "Aponta a câmara ao código QR"),
+            el("li", null, el("b", null, "2"), el("span", null, "Escreve o código ", el("strong", null, B.fmtCodigo(codigo))))),
+          el("div", { class: "contador" }, cont, el("span", null, "já entraram")),
+          at.pedirAlcunha ? chips : null),
+        el("div", { class: "qrg", html: qr() })),
+      rodape());
+    sec.querySelector(".tit").style.fontSize = (at.titulo || "").length > 40 ? "76px" : "110px";
+    var vistos = {};
+    return {
+      el: sec, upd: function (d) {
+        cont.textContent = String(d.n);
+        if (at.pedirAlcunha) {
+          Object.keys(d.parts).forEach(function (p) {
+            var n = d.parts[p] && d.parts[p].n;
+            if (n && !vistos[p] && !B.improprio(n)) { vistos[p] = 1; chips.prepend(el("span", null, n)); }
+          });
+          while (chips.children.length > 40) chips.lastChild.remove();
+        }
+        return 0;
+      }
+    };
+  }
+
+  /* questionário ao ritmo de cada um: painel com o progresso de cada pergunta */
+  function vistaPainel() {
+    var interativos = [];
+    at.slides.forEach(function (s, i) { if (T[s.tipo] && T[s.tipo].interativo) interativos.push({ s: s, i: i }); });
+    var nPart = el("b", null, "0"), nFim = el("b", null, "0");
+    var curto = B.siteCurto();
+    var linhas = interativos.slice(0, 9).map(function (x, k) {
+      var fill = el("i"), v = el("span", { class: "v" }, "0");
+      var row = el("button", { type: "button", class: "prow", onclick: function () { livreVer = x.i; desenhar(); } },
+        el("span", { class: "n" }, String(k + 1)), el("span", { class: "t" }, B.textoSlide(x.s) || T[x.s.tipo].nome), el("span", { class: "tr" }, fill), v);
+      return { row: row, fill: fill, v: v, s: x.s };
+    });
+    var sec = el("section", { class: "sl sup-destaque" },
+      el("div", { class: "painel" },
+        el("div", { class: "esq" },
+          el("p", { class: "kicker" }, soLeitura ? "Questionário · resultados" : "Questionário · cada um ao seu ritmo"),
+          el("h1", { class: "tit" }, at.titulo || "Questionário"),
+          soLeitura ? null : el("ol", { class: "passos" },
+            curto ? el("li", null, el("b", null, "1"), el("span", null, "Vai a ", el("strong", null, curto))) : el("li", null, el("b", null, "1"), "Aponta a câmara ao código QR"),
+            el("li", null, el("b", null, "2"), el("span", null, "Código ", el("strong", null, B.fmtCodigo(codigo))))),
+          soLeitura ? null : el("div", { class: "qrp", html: qr() }),
+          el("div", { class: "nums" }, el("div", null, nPart, el("span", null, "entraram")), el("div", null, nFim, el("span", null, "concluíram")))),
+        el("div", { class: "dir" },
+          el("h3", null, "Respostas por pergunta"),
+          el("div", { class: "prows" }, linhas.map(function (x) { return x.row; })),
+          interativos.length > 9 ? el("p", { class: "dica" }, "+ " + (interativos.length - 9) + " perguntas · usa → para as ver todas") : null,
+          el("p", { class: "dica" }, "Clica numa pergunta (ou carrega em →) para mostrar os resultados."))),
+      rodape());
+    return {
+      el: sec, upd: function (d) {
+        var np = Object.keys(d.parts).length, fim = 0;
+        for (var p in d.parts) if (d.parts[p] && d.parts[p].f) fim++;
+        nPart.textContent = String(np); nFim.textContent = String(fim);
+        linhas.forEach(function (x) {
+          var quem = {};
+          Object.keys(resp[x.s.id] || {}).forEach(function (k) { quem[k.replace(/-\d+$/, "")] = 1; });
+          var n = Object.keys(quem).length;
+          x.v.textContent = String(n);
+          x.fill.style.width = (np ? Math.min(100, (n / np) * 100) : 0) + "%";
+        });
+        return 0;
+      }
+    };
+  }
+
+  function desenhar() {
+    var s = slideAtual();
+    rodapeDir = null;
+    if (!s) vista = livre() ? vistaPainel() : vistaEntrada();
+    else {
+      var def = T[s.tipo];
+      vista = def.ecra(s, {
+        tema: tema, modo: livre() || soLeitura ? "resultados" : "vivo", atividade: at, canto: soLeitura ? null : canto, rodape: rodape,
+        imagem: function (id) { return B.imagens.url(uid, id); },
+        ocultar: soLeitura ? null : function (chave) { db.put(cam.sessao(codigo) + "/x/ocultos/" + s.id + "/" + chave, true, { auth: true }).catch(function () {}); },
+        responder: soLeitura ? null : function (chave) {
+          var feita = extra.respondidas && extra.respondidas[s.id] && extra.respondidas[s.id][chave];
+          var caminho = cam.sessao(codigo) + "/x/respondidas/" + s.id + "/" + chave;
+          (feita ? db.del(caminho, { auth: true }) : db.put(caminho, true, { auth: true })).catch(function () {});
+        },
+        inicio: function () { return estado.ini || inicios[s.id] || null; },
+        revelado: function () { return !!estado.rev; },
+        aoAcabar: livre() || soLeitura ? null : function () { if (!estado.rev && !aRevelar) { aRevelar = true; setTimeout(function () { aRevelar = false; if (!estado.rev && slideAtual() === s) revelar(); }, 900); } },
+        aoRodar: soLeitura ? null : function (rol) {
+          estado.rol = rol; gravar(); atualizarControlos();
+          if (rol && rol.r >= 0) db.put(cam.sessao(codigo) + "/x/rol/" + s.id, rol, { auth: true }).catch(function () {});
+        },
+        estadoRoleta: function () { return estado.rol || {}; }
+      });
+    }
+    BNA.por($("palco"), vista.el, crono.el, juntarAberto ? vistaJuntar() : null);
+    var sup = (vista.el.className.match(/sup-(\w+)/) || [])[1] || "escuro";
+    document.body.style.setProperty("--fundo-pag", sup === "claro" ? tema.claro : sup === "destaque" ? tema.destaque : tema.escuro);
+    atualizar();
+    simSlide(s);
+  }
+  var aRevelar = false;
+
+  /* ---------------- navegação ---------------- */
+  function ir(i) {
+    if (livre()) { livreVer = i; desenhar(); return; }
+    irPara(i);
+    gravar();
+    desenhar();
+  }
+  /* prepara o estado de um diapositivo (sem gravar nem desenhar) */
+  function irPara(i) {
+    i = Math.max(-1, Math.min(at.slides.length - 1, i));
+    var s = at.slides[i];
+    var novo = { i: i, id: s ? s.id : null, cv: estado.cv, rev: false, oc: !!(s && s.esconder), rol: null };
+    if (estado.tmp) novo.tmp = estado.tmp;
+    if (estado.pv) { novo.pv = estado.pv; novo.np = estado.np; }
+    estado = novo;
+    if (s && s.tipo === "quiz") {
+      if (!inicios[s.id] && !soLeitura) {
+        inicios[s.id] = B.agora();
+        db.put(cam.sessao(codigo) + "/x/inicios/" + s.id, inicios[s.id], { auth: true }).catch(function () {});
+      }
+      if (inicios[s.id]) estado.ini = inicios[s.id];
+      if (extra.revelados && extra.revelados[s.id]) { estado.rev = true; estado.qc = s.certa; estado.qe = s.explicacao || ""; publicarPontos(s); }
+    }
+    if (s && s.tipo === "roleta" && extra.rol && extra.rol[s.id]) estado.rol = extra.rol[s.id];
+    if (s && s.tipo === "classificacao") publicarPontos(null);
+  }
+  function interativosLivres() { var l = []; at.slides.forEach(function (s, i) { if (T[s.tipo] && T[s.tipo].interativo) l.push(i); }); return l; }
+  function avancar() {
+    if (livre()) {
+      var l = interativosLivres(), k = l.indexOf(livreVer);
+      if (k < l.length - 1) ir(l[k + 1]);
+      return;
+    }
+    var s = slideAtual();
+    if (s && s.tipo === "quiz" && !estado.rev) return revelar();
+    if (s && s.tipo === "roleta" && !soLeitura && vista.temResultado && !vista.temResultado() && !(vista.aGirar && vista.aGirar())) return vista.acao("rodar", { estado: estado });
+    if (vista && vista.aGirar && vista.aGirar()) return;
+    if (estado.i < at.slides.length - 1) ir(estado.i + 1);
+  }
+  function recuar() {
+    if (livre()) {
+      var l = interativosLivres(), k = l.indexOf(livreVer);
+      ir(k > 0 ? l[k - 1] : -1);
+      return;
+    }
+    if (estado.i > -1) ir(estado.i - 1);
+  }
+  function revelar() {
+    var s = slideAtual();
+    if (!s || s.tipo !== "quiz" || livre()) return;
+    estado.rev = !estado.rev;
+    if (estado.rev) {
+      estado.qc = s.certa; estado.qe = s.explicacao || "";
+      simParar();
+      if (!soLeitura) {
+        /* a partir daqui a base de dados recusa respostas a este quiz */
+        db.put(cam.sessao(codigo) + "/x/revelados/" + s.id, true, { auth: true }).catch(function () {});
+        extra.revelados = Object.assign({}, extra.revelados || {}); extra.revelados[s.id] = true;
+        publicarPontos(s);
+      }
+    } else { delete estado.qc; delete estado.qe; }
+    gravar();
+    atualizar();
+  }
+  function ocultar() {
+    var s = slideAtual();
+    if (!s || livre() || !/escolha|escala|ordenar/.test(s.tipo)) return;
+    estado.oc = !estado.oc;
+    gravar();
+    atualizar();
+  }
+  function acao() {
+    var s = slideAtual();
+    if (!s || livre()) return;
+    if (s.tipo === "quiz") revelar();
+    else if (s.tipo === "roleta" && vista.acao && !soLeitura) vista.acao("rodar", { estado: estado });
+  }
+
+  /* ---------------- temporizador ---------------- */
+  var crono = (function () {
+    var R = 27, C = 2 * Math.PI * R;
+    var b = el("b"), span = el("span");
+    var svg = el("span", { html: '<svg viewBox="0 0 66 66" aria-hidden="true"><circle class="f" cx="33" cy="33" r="' + R + '"/><circle class="a" cx="33" cy="33" r="' + R + '" stroke-dasharray="' + C + '" stroke-dashoffset="0"/></svg>' }).firstChild;
+    var e = el("div", { class: "crono", role: "timer", hidden: "hidden" }, svg, b, span);
+    return { el: e, b: b, span: span, arco: svg.querySelector(".a"), C: C, tocou: null };
+  })();
+  function tickCrono() {
+    var tm = estado.tmp;
+    if (!tm || !tm.fim) { crono.el.hidden = true; return; }
+    var resta = tm.fim - B.agora();
+    crono.el.hidden = false;
+    crono.span.textContent = tm.rot || "";
+    crono.span.hidden = !tm.rot;
+    if (resta > 0) {
+      crono.el.classList.remove("fim");
+      crono.el.classList.toggle("urgente", resta <= 10000);
+      crono.b.textContent = B.mmss(resta);
+      crono.arco.setAttribute("stroke-dashoffset", String(crono.C * (1 - resta / (tm.dur || resta))));
+    } else {
+      crono.el.classList.add("fim"); crono.el.classList.remove("urgente");
+      crono.b.textContent = "Tempo!";
+      if (crono.tocou !== tm.fim) { crono.tocou = tm.fim; apito(); }
+      if (resta < -10000 && !soLeitura) { delete estado.tmp; gravar(); crono.el.hidden = true; atualizarControlos(); }
+    }
+  }
+  var audio = null;
+  function apito() {
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      [0, 0.28].forEach(function (atraso) {
+        var o = audio.createOscillator(), g = audio.createGain();
+        o.type = "sine"; o.frequency.value = 880;
+        g.gain.setValueAtTime(0.0001, audio.currentTime + atraso);
+        g.gain.exponentialRampToValueAtTime(0.25, audio.currentTime + atraso + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + atraso + 0.22);
+        o.connect(g); g.connect(audio.destination);
+        o.start(audio.currentTime + atraso); o.stop(audio.currentTime + atraso + 0.25);
+      });
+    } catch (e) {}
+  }
+  function iniciarTempo(seg, rot) {
+    if (soLeitura) return;
+    try { audio = audio || new (window.AudioContext || window.webkitAudioContext)(); if (audio.resume) audio.resume(); } catch (e) {}
+    estado.tmp = { fim: B.agora() + seg * 1000, dur: seg * 1000 };
+    if (rot) estado.tmp.rot = String(rot).slice(0, 80);
+    gravar(); tickCrono(); atualizarControlos();
+  }
+  function pararTempo() { delete estado.tmp; gravar(); tickCrono(); atualizarControlos(); }
+  function tempo() {
+    if (soLeitura) return;
+    var s = slideAtual();
+    var correr = estado.tmp && estado.tmp.fim > B.agora();
+    if (!correr && s && s.tipo === "roleta" && Number(s.tempo) && vista.temResultado && vista.temResultado()) {
+      var seg = s.segmentos[(estado.rol || {}).r];
+      return iniciarTempo(Number(s.tempo), seg ? seg.t : "");
+    }
+    abrirTempo();
+  }
+  function abrirTempo() {
+    var correr = estado.tmp && estado.tmp.fim > B.agora();
+    var rot = el("input", { type: "text", maxlength: 60, placeholder: "Ex.: Discussão em grupo (opcional)", style: { flex: "1", minWidth: "200px" } });
+    var min = el("input", { type: "number", min: "1", max: "120", step: "1", value: "4", style: { width: "90px" }, "aria-label": "Minutos" });
+    function vai(seg) { $("dlg").close(); iniciarTempo(seg, rot.value.trim()); }
+    janela("Temporizador", [
+      correr ? el("div", null, el("p", null, "Está a decorrer: faltam ", el("b", null, B.mmss(estado.tmp.fim - B.agora())), "."),
+        el("div", { class: "bts" },
+          el("button", { onclick: function () { estado.tmp.fim += 60000; estado.tmp.dur += 60000; gravar(); $("dlg").close(); } }, "+ 1 minuto"),
+          el("button", { class: "perigo", onclick: function () { pararTempo(); $("dlg").close(); } }, "Parar"))) : null,
+      el("h3", null, correr ? "Começar outro" : "Começar"),
+      el("p", null, "Aparece no ecrã e nos telemóveis. No fim, toca um aviso sonoro."),
+      el("div", { class: "linha-tempo" }, rot),
+      el("div", { class: "predef" }, [[30, "30 s"], [60, "1 min"], [120, "2 min"], [180, "3 min"], [300, "5 min"], [600, "10 min"]].map(function (p) {
+        return el("button", { onclick: function () { vai(p[0]); } }, p[1]);
+      })),
+      el("div", { class: "linha-tempo" }, min, el("span", null, "minutos"), el("button", { class: "prim", onclick: function () { var m = Math.max(1, Math.min(120, Number(min.value) || 0)); vai(m * 60); } }, "Começar"))
+    ]);
+  }
+
+  /* ---------------- QR em grande ---------------- */
+  function vistaJuntar() {
+    var curto = B.siteCurto();
+    return el("div", { class: "juntar", onclick: function () { alternarJuntar(false); } },
+      el("div", { class: "q", html: qr() }),
+      el("div", null, el("p", null, "Entra e responde"),
+        curto ? el("div", { class: "site" }, curto) : el("div", { class: "site" }, "Aponta a câmara ao código"),
+        el("div", { class: "cod" }, B.fmtCodigo(codigo)), el("small", null, "Carrega em Q para fechar")));
+  }
+  function alternarJuntar(sim) {
+    if (soLeitura) return;
+    juntarAberto = sim === undefined ? !juntarAberto : sim;
+    var atual = $("palco").querySelector(".juntar");
+    if (atual) atual.remove();
+    if (juntarAberto) $("palco").appendChild(vistaJuntar());
+    atualizarControlos();
+  }
+
+  function atualizarControlos() {
+    if (!at) return;
+    var s = slideAtual(), n = at.slides.length, lv = livre();
+    $("b-pos").textContent = lv ? (livreVer < 0 ? "Painel" : (livreVer + 1) + " / " + n) : (estado.i < 0 ? "Entrada" : (estado.i + 1) + " / " + n);
+    $("b-ant").disabled = lv ? livreVer < 0 : estado.i < 0;
+    var b = $("b-acao");
+    b.hidden = lv || !(s && (s.tipo === "quiz" || (s.tipo === "roleta" && !soLeitura)));
+    if (s && s.tipo === "quiz") b.textContent = estado.rev ? "Esconder resposta" : "Revelar (R)";
+    if (s && s.tipo === "roleta") b.textContent = vista && vista.temResultado && vista.temResultado() ? "Rodar de novo (R)" : "Rodar (R)";
+    $("b-ocultar").hidden = lv || !(s && /escolha|escala|ordenar/.test(s.tipo));
+    $("b-ocultar").textContent = estado.oc ? "Mostrar resultados (H)" : "Esconder resultados (H)";
+    var correr = estado.tmp && estado.tmp.fim > B.agora();
+    $("b-tempo").hidden = soLeitura;
+    $("b-tempo").textContent = correr ? "⏱ " + B.mmss(estado.tmp.fim - B.agora()) : "⏱ Tempo";
+    $("b-qr").textContent = juntarAberto ? "Fechar QR" : "QR";
+    $("b-qr").hidden = soLeitura;
+    var seg = $("b-seg");
+    if (lv) {
+      var l = interativosLivres(), k = l.indexOf(livreVer);
+      seg.textContent = livreVer < 0 ? "Ver resultados ›" : k < l.length - 1 ? "Seguinte ›" : "Fim";
+      seg.disabled = livreVer >= 0 && k >= l.length - 1;
+    } else {
+      if (s && s.tipo === "quiz" && !estado.rev) seg.textContent = "Revelar ›";
+      else if (s && s.tipo === "roleta" && !soLeitura && vista && vista.temResultado && !vista.temResultado()) seg.textContent = "Rodar ›";
+      else seg.textContent = estado.i >= n - 1 ? "Fim" : estado.i < 0 ? "Começar ›" : "Seguinte ›";
+      seg.disabled = estado.i >= n - 1 && !(s && s.tipo === "quiz" && !estado.rev);
+    }
+    $("b-tel").hidden = !B.demo || soLeitura;
+  }
+  setInterval(function () { if (estado.tmp) atualizarControlos(); }, 1000);
+
+  $("b-ant").onclick = recuar;
+  $("b-seg").onclick = avancar;
+  $("b-acao").onclick = acao;
+  $("b-tempo").onclick = tempo;
+  $("b-qr").onclick = function () { alternarJuntar(); };
+  $("b-ocultar").onclick = ocultar;
+  $("b-ecra").onclick = ecraInteiro;
+  $("b-defs").onclick = function () { abrirDefs(); };
+  $("b-pos").onclick = abrirIr;
+  $("b-tel").onclick = function () { mostrarTel($("tel").hidden); };
+  $("ctl").addEventListener("mousedown", function (e) { e.preventDefault(); });
+  $("palco").addEventListener("mousedown", function (e) { if (e.target.closest("button")) e.preventDefault(); });
+
+  function ecraInteiro() {
+    try { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(function () {}); } catch (e) {}
+  }
+  document.addEventListener("keydown", function (e) {
+    if (!at || !codigo) return;
+    if ($("dlg").open || /input|textarea|select/i.test((e.target && e.target.tagName) || "")) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var k = e.key;
+    if (k === "ArrowRight" || k === "PageDown" || k === " " || k === "Enter") { e.preventDefault(); if (juntarAberto) alternarJuntar(false); else avancar(); }
+    else if (k === "ArrowLeft" || k === "PageUp" || k === "Backspace") { e.preventDefault(); recuar(); }
+    else if (k === "Escape") { if (juntarAberto) alternarJuntar(false); else if (livre() && livreVer >= 0) ir(-1); }
+    else if (k === "r" || k === "R") acao();
+    else if (k === "h" || k === "H") ocultar();
+    else if (k === "t" || k === "T") tempo();
+    else if (k === "q" || k === "Q") alternarJuntar();
+    else if (k === "f" || k === "F") ecraInteiro();
+    else if (k === "g" || k === "G") abrirIr();
+    mexeu();
+  });
+  var timerCtl = null;
+  function mexeu() {
+    $("ctl").classList.remove("escondido");
+    document.body.style.cursor = "";
+    clearTimeout(timerCtl);
+    timerCtl = setTimeout(function () {
+      if ($("ctl").matches(":hover") || $("dlg").open) return mexeu();
+      $("ctl").classList.add("escondido");
+      document.body.style.cursor = "none";
+    }, 3000);
+  }
+  document.addEventListener("mousemove", mexeu);
+  document.addEventListener("touchstart", mexeu, { passive: true });
+
+  /* ---------------- janelas ---------------- */
+  function janela(titulo, kids) {
+    var c = $("dlg-c");
+    BNA.por(c, el("button", { class: "fechar", "aria-label": "Fechar", onclick: function () { $("dlg").close(); } }, "×"), el("h2", null, titulo), kids);
+    if (!$("dlg").open) $("dlg").showModal();
+  }
+  function abrirIr() {
+    var lista = el("ul", { class: "ir" }), lv = livre();
+    lista.appendChild(el("li", null, el("button", { class: (lv ? livreVer : estado.i) < 0 ? "atual" : null, onclick: function () { $("dlg").close(); ir(-1); } },
+      el("span", { class: "n" }, "·"), el("span", { class: "tp" }, lv ? "Painel" : "Entrada"), el("span", { class: "tx" }, lv ? "Progresso do questionário" : "Código e QR"))));
+    at.slides.forEach(function (s, i) {
+      if (lv && !(T[s.tipo] && T[s.tipo].interativo)) return;
+      lista.appendChild(el("li", null, el("button", { class: i === (lv ? livreVer : estado.i) ? "atual" : null, onclick: function () { $("dlg").close(); ir(i); } },
+        el("span", { class: "n" }, String(i + 1)), el("span", { class: "tp" }, T[s.tipo] ? T[s.tipo].nome : s.tipo), el("span", { class: "tx" }, B.textoSlide(s) || "—"))));
+    });
+    janela(lv ? "Mostrar resultados de…" : "Ir para…", [lista]);
+  }
+  function abrirDefs() {
+    var link = B.linkEntrar(codigo || "000000"), art = !!window.BNA_ARTEFACTO;
+    var kids = [
+      el("h3", null, "Sessão"),
+      el("p", null, "Código ", el("b", null, B.fmtCodigo(codigo)), " · ", String(Object.keys(parts).length), art ? " participantes simulados." : " participantes."),
+      art ? null : el("code", null, link),
+      art ? null : el("div", { class: "bts" },
+        el("button", { onclick: function (ev) { var b = ev.currentTarget; try { navigator.clipboard.writeText(link).then(function () { b.textContent = "Copiado ✓"; }, function () {}); } catch (e) {} } }, "Copiar link"),
+        el("button", { onclick: function () { window.open(link, "_blank"); } }, "Abrir como participante")),
+      location.protocol === "file:" ? el("p", { style: { color: "#e3562d", fontWeight: "700" } }, "Abriste o ficheiro a partir do computador. Para os telemóveis entrarem, o site tem de estar online.") : null,
+      soLeitura ? null : el("h3", null, "Moderação"),
+      soLeitura ? null : el("p", null, "Na nuvem de palavras, nas respostas abertas e nas perguntas da sala, clica numa palavra ou nota para a esconder (nas perguntas, para a marcar como respondida). As palavras impróprias já ficam escondidas."),
+      soLeitura ? null : el("div", { class: "bts" }, el("button", { onclick: function () {
+        var s = slideAtual(); if (!s) return;
+        db.del(cam.sessao(codigo) + "/x/ocultos/" + s.id, { auth: true }).then(function () { $("dlg").close(); });
+      } }, "Mostrar outra vez o que escondi neste diapositivo")),
+      el("h3", null, art ? "Recomeçar" : "Terminar"),
+      el("p", null, art ? "Isto é uma demonstração. No site a sério, «Terminar a sessão» fecha a sessão nos telemóveis e abre os resultados." : soLeitura ? "Esta sessão já está terminada." : "Os resultados ficam guardados na biblioteca. Terminar fecha a sessão nos telemóveis."),
+      el("div", { class: "bts" },
+        soLeitura || art ? null : confirmar("Terminar a sessão", "Clica outra vez para terminar", function () {
+          estado.fim = true; delete estado.tmp; gravar();
+          db.patch(cam.sessao(codigo), { ativa: false }, { auth: true }).catch(function () {});
+          db.patch(cam.indiceSessao(uid, codigo), { fim: { ".sv": "timestamp" } }, { auth: true }).catch(function () {});
+          setTimeout(function () { location.href = "formador.html#/resultados/" + codigo; }, 700);
+        }),
+        confirmar("Começar sessão nova", "Clica outra vez: código novo, sem respostas", function () {
+          if (art) { location.reload(); return; }
+          location.href = location.pathname + "?a=" + aid + (B.demo && q.has("demo") ? "&demo" : "") + "&nova=1";
+        }),
+        art ? null : el("a", { href: "formador.html#/editar/" + aid, target: "_blank", style: { alignSelf: "center", marginLeft: "6px", color: "#1e7e75", fontWeight: "600" } }, "Abrir o editor")),
+      B.demo && /^demo/.test(aid) ? el("h3", null, "Experimentar outro modelo") : null,
+      B.demo && /^demo/.test(aid) ? el("div", { class: "bts" }, [["todos", "Um de cada tipo"], ["raiox", "Raio-X da tenda"], ["avaliacao", "Avaliação da formação (questionário)"]].map(function (m) {
+        return el("button", { class: aid === "demo" + m[0] ? "prim" : null, onclick: function () {
+          B.store.set("bna-demo-modelo", m[0]);
+          try { if (art) location.hash = m[0]; else history.replaceState(null, "", location.pathname + "#" + m[0]); } catch (e) {}
+          location.reload();
+        } }, m[1]);
+      })) : null,
+      el("h3", null, "Atalhos (também com o comando de apresentação)"),
+      el("ul", null,
+        el("li", null, el("kbd", null, "→"), " ", el("kbd", null, "espaço"), " seguinte (no quiz revela primeiro; na roleta roda primeiro)"),
+        el("li", null, el("kbd", null, "←"), " anterior · ", el("kbd", null, "G"), " ir para um diapositivo"),
+        el("li", null, el("kbd", null, "R"), " revelar a resposta do quiz ou rodar a roleta · ", el("kbd", null, "H"), " esconder resultados"),
+        el("li", null, el("kbd", null, "T"), " temporizador · ", el("kbd", null, "Q"), " código e QR em grande · ", el("kbd", null, "F"), " ecrã inteiro")),
+      art ? null : el("p", { style: { marginTop: "10px", color: "rgba(19,42,39,.7)" } }, "Podes editar a atividade noutra janela enquanto apresentas: as alterações aparecem aqui sozinhas.")
+    ];
+    janela("Sessão " + B.fmtCodigo(codigo), kids);
+  }
+  function confirmar(texto, textoConfirmar, f) {
+    var b = el("button", { class: "perigo", onclick: function () {
+      if (b.getAttribute("data-ok")) { f(); return; }
+      b.setAttribute("data-ok", "1"); b.textContent = textoConfirmar;
+    } }, texto);
+    return b;
+  }
+
+  /* ---------------- telemóvel de teste (demonstração) ---------------- */
+  var telMontado = false;
+  function mostrarTel(sim) {
+    $("tel").hidden = !sim;
+    if (sim && !telMontado) { telMontado = true; B.montarParticipante($("tel-ecra"), { codigo: codigo, pid: "telemovel", embutido: true, alcunha: "Eu" }); }
+    ajustar();
+  }
+
+  /* ---------------- participantes simulados (demonstração) ---------------- */
+  var SIM = { ids: [], timers: [] };
+  var NOMES = ["Rita", "Tiago", "Inês", "Duarte", "Beatriz", "Gonçalo", "Leonor", "Rodrigo", "Matilde", "Afonso", "Carolina", "Martim", "Sofia", "Diogo", "Mariana", "Tomás", "Lara", "Rafael", "Joana", "Pedro", "Clara", "Miguel", "Alice", "Vasco", "Íris", "Salvador", "Benedita", "Lourenço", "Madalena", "Henrique"];
+  function valorSimulado(s, i) {
+    var v = T[s.tipo].exemplo(s, Math.random, i);
+    if (v === null || v === undefined) return null;
+    if (v && typeof v === "object" && "t" in v) v = { v: v.v, t: { ".sv": "timestamp" } };
+    return v;
+  }
+  function simComecar() {
+    if (!B.demo) return;
+    SIM.ids = [];
+    for (var i = 0; i < 28; i++) SIM.ids.push("sim" + i);
+    SIM.ids.forEach(function (id, i) {
+      setTimeout(function () {
+        var v = { t: { ".sv": "timestamp" } };
+        if (at.pedirAlcunha) v.n = NOMES[i % NOMES.length];
+        db.put(cam.participante(codigo, id), v);
+        if (livre()) simQuestionario(id, i);
+      }, 400 + Math.random() * 9000);
+    });
+  }
+  function simQuestionario(id, i) {
+    var t = 0;
+    B.paginasLivres(at).forEach(function (s) {
+      t += 1500 + Math.random() * 5000;
+      if (!T[s.tipo].interativo || !T[s.tipo].exemplo) return;
+      setTimeout(function () {
+        var v = valorSimulado(s, i);
+        if (v !== null) db.put(cam.resposta(codigo, s.id, s.tipo === "perguntas" ? id + "-1" : id), v);
+      }, t);
+    });
+    if (Math.random() < 0.85) setTimeout(function () { db.put(cam.participante(codigo, id) + "/f", { ".sv": "timestamp" }); }, t + 2000);
+  }
+  function simParar() { SIM.timers.forEach(clearTimeout); SIM.timers = []; }
+  function simSlide(s) {
+    if (!B.demo || livre() || soLeitura) return;
+    simParar();
+    if (!s || !T[s.tipo].interativo || !T[s.tipo].exemplo) return;
+    if (s.tipo === "quiz" && estado.rev) return;
+    var ja = resp[s.id] || {};
+    SIM.ids.forEach(function (id, i) {
+      var chave = s.tipo === "perguntas" ? id + "-1" : id;
+      if (ja[chave] !== undefined || Math.random() < 0.08) return;
+      var d = 900 + (s.tipo === "quiz" ? (Number(s.tempo) || 20) * 700 : 11000) * Math.pow(Math.random(), 1.5);
+      SIM.timers.push(setTimeout(function () {
+        if (slideAtual() !== s) return;
+        var v = valorSimulado(s, i);
+        if (v !== null) db.put(cam.resposta(codigo, s.id, chave), v);
+        if (s.tipo === "perguntas" && i >= 8) {
+          var chaves = Object.keys(resp[s.id] || {});
+          if (chaves.length) db.put(cam.resposta(codigo, s.id + "g", id), chaves.filter(function () { return Math.random() < 0.35; }).slice(0, 3).join(",") || chaves[0]);
+        }
+      }, d));
+    });
+  }
+})();
+</script>
+</body>
+</html>
