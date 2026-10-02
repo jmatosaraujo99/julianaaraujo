@@ -249,6 +249,35 @@ body.participante .so-participante{display:inline-flex}
 /* O jogo ocupa o ecrã todo: a preparação mudou-se para a gaveta. */
 .palco{display:block}
 .jogo-col{display:flex;flex-direction:column;gap:var(--s3)}
+/* ecrã estreito: uma coluna, pela ordem código, sala de espera/quadro, palpites, comandos */
+.jogo-lado,.jogo-principal{display:contents}
+.jogo-lado .feed-palpites{order:1}
+.jogo-lado .controlo{order:2}
+/* o quadro nunca fica mais largo do que a altura do ecrã deixa (ver caberQuadros) */
+#palcoRonda{width:100%;margin-inline:auto}
+/* a jogar, num ecrã grande sem Projetar, o quadro pode ir além dos 1240px da página */
+body.a-jogar .app{max-width:1680px}
+#pMoldura{margin-inline:auto}
+/* telemóvel deitado: em coluna, o quadro ficava metade fora do ecrã. Passa
+   para a esquerda, e a palavra, o palpite e as cores para a direita. */
+@media (orientation:landscape) and (max-height:520px){
+  #pJogo .part{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(220px,1fr);column-gap:var(--s3);align-items:start;max-width:none}
+  #pJogo .part > *{grid-column:2;min-width:0}
+  #pJogo .part > #pMoldura{grid-column:1;grid-row:1 / span 20;margin:0}
+}
+/* ecrã largo e deitado: duas colunas. Antes do jogo o código fica à esquerda
+   e quem entrou à direita; durante o jogo o quadro fica com quase tudo. */
+@media (min-width:800px) and (min-aspect-ratio:5/4){
+  .jogo-col{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:var(--s4);align-items:start}
+  .jogo-lado,.jogo-principal{display:flex;flex-direction:column;gap:var(--s3);min-width:0}
+  .jogo-lado{grid-column:2;grid-row:1}
+  .jogo-principal{grid-column:1;grid-row:1}
+  .jogo-lado > *{order:0!important}
+  body:not(.a-jogar) .jogo-col{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  body:not(.a-jogar) .jogo-lado{grid-column:1}
+  body:not(.a-jogar) .jogo-principal{grid-column:2}
+  .jogo-lado .pontos .equipa-pontos{min-width:130px}
+}
 
 .sala{padding:var(--s4);display:flex;gap:var(--s4);align-items:center;flex-wrap:wrap}
 .sala[data-min="1"]{padding:var(--s3) var(--s4)}
@@ -525,6 +554,10 @@ body.a-jogar .so-antes{display:none}
 body.projecao .painel-lateral,body.projecao .veu-painel,body.projecao .topo .sobrancelha,body.projecao .rodape,body.projecao .so-formador{display:none}
 body.projecao .palco{grid-template-columns:1fr}
 body.projecao .app{max-width:none;padding-top:var(--s3)}
+/* a projetar, o título só rouba altura ao quadro: fica o botão de sair, discreto num canto */
+body.projecao .topo .marca{display:none}
+body.projecao .topo{position:fixed;right:12px;bottom:40px;z-index:5;opacity:.55;transition:opacity .2s}
+body.projecao .topo:hover,body.projecao .topo:focus-within{opacity:1}
 
 .rodape{display:flex;justify-content:space-between;gap:var(--s3);flex-wrap:wrap;border-top:1px solid var(--line);
   padding-top:var(--s3);font-family:var(--fonte-etiqueta);font-size:11px;letter-spacing:.08em;
@@ -631,6 +664,8 @@ body.participante .rodape,body.participante .rodape-site{display:none}
 body.embutido .cabeca-site,body.embutido .apoio,body.embutido .rodape-site{display:none}
 /* Com a sala aberta, a formadora só precisa do jogo: o texto de apoio sai. */
 body.formador .apoio,body.formador .tagline{display:none}
+/* Durante o jogo o menu do site só empurra o quadro para baixo. */
+body.formador.a-jogar .cabeca-site{display:none}
 
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .vidro,.btn-icone{background:var(--surface);border-color:var(--line)}
@@ -707,74 +742,82 @@ body.formador .apoio,body.formador .tagline{display:none}
     <div class="palco">
       <div class="jogo-col">
 
-        <div class="sala vidro" id="salaCartao">
-          <div class="qr" id="qr" aria-label="Código QR para entrar na sala"></div>
-          <div class="sala-txt">
-            <span class="sobrancelha">Código da sala</span>
-            <span class="sala-codigo" id="salaCodigo">····</span>
-            <span class="sala-url" id="salaUrl"></span>
-            <span class="estado-ligacao"><span class="ponto" id="pontoSala"></span><span id="txtSala">A abrir a sala…</span></span>
-            <button class="btn btn-mini btn-cheio" id="btnReabrir" hidden style="align-self:flex-start">Tentar outra vez</button>
-          </div>
-          <button class="btn btn-mini so-jogo" id="btnEsconderSala">Mostrar QR</button>
-        </div>
-
-        <!-- sala de espera: aparece antes da primeira ronda -->
-        <div class="lobby vidro" id="lobby">
-          <div class="lobby-topo">
-            <span class="passo">Quem já entrou</span>
-            <span class="lobby-conta" id="lobbyConta">0</span>
-          </div>
-          <div class="lobby-equipas" id="lobbyEquipas"></div>
-        </div>
-
-        <div id="palcoRonda" hidden>
-          <div class="faixa">
-            <div class="quem-desenha">
-              <span class="sobrancelha" id="rotuloDesenha">—</span>
-              <span class="nome" id="nomeDesenha">—</span>
-              <span class="chip-equipa" id="chipEquipa" hidden><i id="chipCor"></i><span id="chipNome"></span></span>
+        <!-- Num ecrã largo (portátil, televisão) há duas colunas: o quadro e,
+             ao lado, o código, os comandos e os palpites. Num ecrã estreito as
+             duas caixas desfazem-se (display:contents) e tudo fica em coluna. -->
+        <div class="jogo-lado">
+          <div class="sala vidro" id="salaCartao">
+            <div class="qr" id="qr" aria-label="Código QR para entrar na sala"></div>
+            <div class="sala-txt">
+              <span class="sobrancelha">Código da sala</span>
+              <span class="sala-codigo" id="salaCodigo">····</span>
+              <span class="sala-url" id="salaUrl"></span>
+              <span class="estado-ligacao"><span class="ponto" id="pontoSala"></span><span id="txtSala">A abrir a sala…</span></span>
+              <button class="btn btn-mini btn-cheio" id="btnReabrir" hidden style="align-self:flex-start">Tentar outra vez</button>
             </div>
-            <div class="tempo-col">
-              <span class="sobrancelha" id="contaRonda"></span>
-              <div class="relogio" id="relogio">—</div>
-            </div>
+            <button class="btn btn-mini so-jogo" id="btnEsconderSala">Mostrar QR</button>
           </div>
 
-          <div class="pista pista-grande" id="pistaFormador" hidden style="margin:var(--s3) 0"></div>
-
-          <div class="quadro-moldura" style="margin-top:var(--s2)">
-            <canvas class="quadro" id="quadroFormador"></canvas>
-            <div class="contagem" id="contagem" hidden aria-hidden="true"><span></span></div>
-            <div class="pausa-faixa" id="faixaPausa" hidden>Em pausa</div>
-            <div class="quadro-aviso" id="avisoFormador"></div>
-            <div class="revelada" id="reveladaFormador" hidden></div>
-          </div>
-          <div class="feed-palpites" id="feedPalpites" aria-live="polite"></div>
-        </div>
-
-        <div class="controlo vidro">
-          <div class="faixa">
-            <div class="comecar">
-              <div class="acts">
-                <button class="btn btn-cheio btn-grande" id="btnRonda">Começar jogo</button>
-                <button class="btn" id="btnRecomecar" hidden title="Pontos a zero e ronda 1">Recomeçar do zero</button>
-                <button class="btn so-jogo" id="btnPausa" disabled title="Parar o relógio sem perder a ronda">⏸ Pausa</button>
-                <button class="btn so-jogo" id="btnPassar" disabled>Passar</button>
+          <div class="controlo vidro">
+            <div class="faixa">
+              <div class="comecar">
+                <div class="acts">
+                  <button class="btn btn-cheio btn-grande" id="btnRonda">Começar jogo</button>
+                  <button class="btn" id="btnRecomecar" hidden title="Pontos a zero e ronda 1">Recomeçar do zero</button>
+                  <button class="btn so-jogo" id="btnPausa" disabled title="Parar o relógio sem perder a ronda">⏸ Pausa</button>
+                  <button class="btn so-jogo" id="btnPassar" disabled>Passar</button>
+                </div>
+                <p class="aviso" id="avisoRonda"></p>
               </div>
-              <p class="aviso" id="avisoRonda"></p>
+              <div class="acts so-formador so-jogo">
+                <button class="btn segurar" id="btnVerPalavra" disabled title="Carrega e mantém">Ver palavra</button>
+                <span class="palavra-oculta" id="palavraOculta"></span>
+              </div>
             </div>
-            <div class="acts so-formador so-jogo">
-              <button class="btn segurar" id="btnVerPalavra" disabled title="Carrega e mantém">Ver palavra</button>
-              <span class="palavra-oculta" id="palavraOculta"></span>
+            <div class="pontos so-jogo" id="pontos"></div>
+            <div class="faixa so-jogo">
+              <p class="aviso" id="avisoPontos"></p>
+              <div class="acts">
+                <button class="btn btn-mini" id="btnAlbum">Álbum · 0</button>
+                <button class="btn btn-mini so-formador" id="btnTerminar" disabled>Terminar jogo</button>
+              </div>
             </div>
           </div>
-          <div class="pontos so-jogo" id="pontos"></div>
-          <div class="faixa so-jogo">
-            <p class="aviso" id="avisoPontos"></p>
-            <div class="acts">
-              <button class="btn btn-mini" id="btnAlbum">Álbum · 0</button>
-              <button class="btn btn-mini so-formador" id="btnTerminar" disabled>Terminar jogo</button>
+
+          <div class="feed-palpites" id="feedPalpites" aria-live="polite" hidden></div>
+        </div>
+
+        <div class="jogo-principal">
+          <!-- sala de espera: aparece antes da primeira ronda -->
+          <div class="lobby vidro" id="lobby">
+            <div class="lobby-topo">
+              <span class="passo">Quem já entrou</span>
+              <span class="lobby-conta" id="lobbyConta">0</span>
+            </div>
+            <div class="lobby-equipas" id="lobbyEquipas"></div>
+          </div>
+
+          <div id="palcoRonda" hidden>
+            <div class="faixa">
+              <div class="quem-desenha">
+                <span class="sobrancelha" id="rotuloDesenha">—</span>
+                <span class="nome" id="nomeDesenha">—</span>
+                <span class="chip-equipa" id="chipEquipa" hidden><i id="chipCor"></i><span id="chipNome"></span></span>
+              </div>
+              <div class="tempo-col">
+                <span class="sobrancelha" id="contaRonda"></span>
+                <div class="relogio" id="relogio">—</div>
+              </div>
+            </div>
+
+            <div class="pista pista-grande" id="pistaFormador" hidden style="margin:var(--s2) 0"></div>
+
+            <div class="quadro-moldura" id="molduraFormador" style="margin-top:var(--s2)">
+              <canvas class="quadro" id="quadroFormador"></canvas>
+              <div class="contagem" id="contagem" hidden aria-hidden="true"><span></span></div>
+              <div class="pausa-faixa" id="faixaPausa" hidden>Em pausa</div>
+              <div class="quadro-aviso" id="avisoFormador"></div>
+              <div class="revelada" id="reveladaFormador" hidden></div>
             </div>
           </div>
         </div>
@@ -2176,7 +2219,8 @@ function mostrarRondaFormador(){
 
   $("lobby").hidden = fase !== "espera";
   $("palcoRonda").hidden = fase === "espera";
-  if(fase !== "espera") requestAnimationFrame(() => F.quadro.medir());
+  $("feedPalpites").hidden = fase === "espera";
+  if(fase !== "espera") requestAnimationFrame(() => { caberQuadros(); F.quadro.medir(); });
 
   $("rotuloDesenha").textContent =
     fase === "escolha" ? "Está a escolher a palavra" :
@@ -2274,6 +2318,34 @@ function desenharPontos(){
     cx.appendChild(d);
   }
 }
+
+/* ---- o quadro cabe inteiro no ecrã ----
+   Num ecrã largo (uma televisão de 1920×1080, um portátil) o quadro 4:3 com a
+   largura toda descia para fora do ecrã. A largura passa a sair da altura que
+   sobra por baixo do topo do quadro, e nunca fica abaixo de um mínimo — aí,
+   num ecrã muito baixo, vale mais descer um pouco do que desenhar num selo. */
+function caberQuadro(moldura, caixa, minimo){
+  if(!moldura || !caixa || !moldura.offsetParent) return;
+  const topo = moldura.getBoundingClientRect().top + window.scrollY;
+  const livre = window.innerHeight - topo - 16;
+  caixa.style.maxWidth = Math.max(minimo, Math.floor(livre * 4 / 3)) + "px";
+}
+function caberQuadros(){
+  caberQuadro($("molduraFormador"), $("palcoRonda"), 300);
+  const pm = $("pMoldura");
+  if(!pm) return;
+  // ao alto o telemóvel já limita o quadro pela largura, e o teclado a abrir
+  // encolhia o quadro a meio de um palpite
+  if(window.innerWidth > window.innerHeight) caberQuadro(pm, pm, 280);
+  else pm.style.maxWidth = "";
+}
+let caberPedido = 0;
+function pedirCaber(){
+  cancelAnimationFrame(caberPedido);
+  caberPedido = requestAnimationFrame(caberQuadros);
+}
+window.addEventListener("resize", pedirCaber);
+document.addEventListener("fullscreenchange", pedirCaber);
 
 /* ---- sala de espera ---- */
 
@@ -2787,6 +2859,7 @@ function ligarPainel(){
     $("qr").hidden = !escondido;
     $("salaUrl").hidden = !escondido;
     $("btnEsconderSala").textContent = escondido ? "Esconder QR" : "Mostrar QR";
+    pedirCaber();
   });
 
   // a palavra só aparece enquanto se carrega — o ecrã está a ser projetado
@@ -3180,7 +3253,7 @@ function aplicarEstado(msg){
     $("quadroPart").classList.remove("editavel");
     P.souDesenhador = false; P.mascara = "";
   }
-  if(P.quadro) requestAnimationFrame(() => P.quadro.medir());
+  if(P.quadro) requestAnimationFrame(() => { caberQuadros(); P.quadro.medir(); });
 }
 
 function mostrarFimP(msg){
@@ -3342,7 +3415,7 @@ function aplicarTema(t){
       else if(!on && document.exitFullscreen && document.fullscreenElement) document.exitFullscreen();
     }catch(e){}
     $("btnProj").textContent = on ? "⤢ Sair" : "⛶ Projetar";
-    if(F.quadro) requestAnimationFrame(() => F.quadro.medir());
+    if(F.quadro) requestAnimationFrame(() => { caberQuadros(); F.quadro.medir(); });
   });
 
   ligarPainel();
