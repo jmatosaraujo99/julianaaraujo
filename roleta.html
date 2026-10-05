@@ -792,6 +792,11 @@ body.projecao .credito-proj{display:block}
           <button class="btn" id="btnGuardar">Guardar</button>
         </div>
         <ul class="guardadas" id="guardadas"></ul>
+
+        <hr class="sep">
+
+        <p class="titulo-bloco">Modelos prontos</p>
+        <ul class="guardadas" id="modelos"></ul>
       </div>
 
       <!-- ASPETO -->
@@ -1002,6 +1007,28 @@ const SEMENTES = {
     "Que competência queres treinar hoje?"
   ]
 };
+
+// modelos que vêm com a roleta: não se guardam no navegador, aparecem sempre
+const MODELOS = [
+  {
+    nome:"Diagnóstico e planeamento",
+    nota:"Apresentação e entrada no tema: quem roda diz o nome e responde à pergunta que sair.",
+    itens:[
+      "Qual foi a melhor formação que já fizeste, e porquê?",
+      "Uma formação que não te serviu para nada: o que falhou?",
+      "Se pudesses escolher uma formação para amanhã, qual seria?",
+      "O que é, para ti, uma necessidade de formação?",
+      "Como descobres o que alguém precisa de aprender?",
+      "O médico pergunta antes de receitar. Que perguntas farias antes de propor uma formação?",
+      "Uma chefia diz «a minha equipa precisa de formação». O que lhe perguntas?",
+      "Quem deve decidir que formação faz uma equipa?",
+      "Uma coisa que aprendeste sem nenhum curso: como aprendeste?",
+      "Planeias as férias ou improvisas? E no trabalho?",
+      "Uma palavra que associas a «diagnóstico»",
+      "Com que expectativa chegas a este módulo?"
+    ]
+  }
+];
 
 const CHAVE = "roleta-sessao-v1";
 
@@ -1777,6 +1804,33 @@ function desenharGuardadas(){
   });
 }
 
+const ulModelos = document.getElementById("modelos");
+function desenharModelos(){
+  ulModelos.innerHTML = "";
+  MODELOS.forEach(function(m){
+    const li = document.createElement("li");
+    const b = document.createElement("button");
+    b.className = "nome";
+    b.title = m.nota;
+    b.appendChild(document.createTextNode(m.nome + " "));
+    const em = document.createElement("em");
+    em.textContent = "· " + m.itens.length + " perguntas";
+    b.appendChild(em);
+    b.addEventListener("click", function(){
+      trocarModo("perguntas");
+      if(!carregarLista(m.itens)){ estadoTexto("Não coube no navegador"); return; }
+      estadoTexto("Carregado o modelo " + m.nome);
+    });
+    const p = document.createElement("p");
+    p.className = "aviso";
+    p.textContent = m.nota;
+    li.style.flexDirection = "column";
+    li.style.alignItems = "stretch";
+    li.appendChild(b); li.appendChild(p);
+    ulModelos.appendChild(li);
+  });
+}
+
 /* ======================================================================
    Modo, tema, ligações
    ====================================================================== */
@@ -1873,6 +1927,7 @@ function arrancar(){
   desenharLista();
   desenharPaletas();
   desenharGuardadas();
+  desenharModelos();
   desenharHistorico();
   ligarAbas();
 
