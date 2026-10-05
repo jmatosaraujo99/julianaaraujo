@@ -14,6 +14,7 @@
   html,body{margin:0;height:100%;overflow:hidden;font-family:var(--texto);background:var(--fundo-pag,#132a27);transition:background .4s}
   #app{position:fixed;inset:0;display:flex}
   #palco-wrap{position:relative;flex:1;overflow:hidden}
+  body.ver #ctl,body.ver #selo:empty{display:none!important}
   #tel[hidden]{display:none!important}
   #tel{flex:none;width:420px;background:#0c1b19;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;border-left:1px solid rgba(255,255,255,.08)}
   #tel .moldura{width:350px;height:min(720px,calc(100vh - 90px));border-radius:42px;background:#000;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
@@ -133,6 +134,7 @@
 <script src="nucleo.js"></script>
 <script src="tipos.js"></script>
 <script src="tela.js"></script>
+<script src="resultados.js"></script>
 <script src="modelos.js"></script>
 <script src="participante.js"></script>
 <script>
@@ -150,6 +152,9 @@
   var soLeitura = false;          /* sessão terminada aberta só para mostrar resultados */
   var livreVer = -1;              /* questionário: -1 = painel; senão, o diapositivo cujos resultados se mostram */
   var juntarAberto = false;
+  var fixo = null;                /* código fixo da atividade: é este que aparece no ecrã e no QR */
+  var ver = (q.get("ver") || "").replace(/\D/g, "");   /* visualizador: só acompanha, sem comandos */
+  function codPub() { return fixo || codigo; }
 
   function livre() { return at && at.ritmo === "livre"; }
 
@@ -162,6 +167,8 @@
     return c;
   }
 
+  if (ver) arrancarVer(ver);
+  else {
   if (B.demo && !B.auth.ativo()) B.auth.entrar("demo@exemplo.pt", "");
   if (!B.auth.ativo()) {
     cortina("Entra primeiro", "Para apresentar, entra com a tua conta de formador.", [el("a", { class: "prim", href: "formador.html" }, "Ir para a página de entrada")]);
@@ -210,6 +217,68 @@
   }).catch(function (e) {
     cortina("Não foi possível abrir", e.message || String(e), [el("a", { class: "prim", href: "formador.html" }, "Voltar à biblioteca")]);
   });
+  }
+
+  /* ---------------- visualizador (ligação partilhada, sem conta) ---------------- */
+  var cortinaVer = null;
+  function arrancarVer(c) {
+    document.body.classList.add("ver");
+    db.get(cam.sessao(c) + "/conteudo").then(function (cont) {
+      if (cont) return sessaoVer(c, null);
+      return db.get(cam.fixo(c)).then(function (fx) {
+        if (!fx || !fx.dono) { if (!cortinaVer) cortinaVer = cortina("Não encontrámos esta apresentação", "Confirma a ligação que te enviaram."); return; }
+        if (fx.s) return sessaoVer(String(fx.s), c);
+        if (!cortinaVer) cortinaVer = cortina(fx.t || "Ainda não começou", "A apresentação aparece aqui sozinha quando a formadora começar.");
+        setTimeout(function () { arrancarVer(c); }, 4000);
+      });
+    }).catch(function () { setTimeout(function () { arrancarVer(c); }, 5000); });
+  }
+  function sessaoVer(c, f) {
+    return db.get(cam.sessao(c)).then(function (sess) {
+      if (!sess || !sess.conteudo) throw new Error("Sessão sem conteúdo.");
+      if (cortinaVer) { cortinaVer.remove(); cortinaVer = null; }
+      codigo = c; fixo = f; uid = sess.dono; soLeitura = false;
+      at = JSON.parse(sess.conteudo); at.slides = at.slides || [];
+      tema = B.tema(at.tema); B.aplicarTema($("palco"), at.tema);
+      document.title = (at.titulo || "Apresentação") + " · " + B.nome;
+      estado = sess.estado || { i: -1 };
+      var cvVer = estado.cv;
+      db.ouvir(cam.respostas(codigo), function (d, ok, err) { resp = d || {}; setLigacao(ok, err); pedir(); });
+      db.ouvir(cam.participantes(codigo), function (d) { parts = d || {}; pedir(); });
+      db.ouvir(cam.sessao(codigo) + "/x", function (d) {
+        extra = d || {};
+        if (extra.inicios) for (var k in extra.inicios) if (typeof extra.inicios[k] === "number") inicios[k] = extra.inicios[k];
+        quizVer();
+        pedir();
+      });
+      db.ouvir(cam.sessao(codigo) + "/estado", function (e, ok) {
+        if (!ok) return;
+        var antes = estado.i + "|" + estado.id + "|" + (estado.rev ? 1 : 0) + "|" + (estado.oc ? 1 : 0) + "|" + JSON.stringify(estado.rol || null);
+        estado = e || { i: -1 };
+        if (estado.fim) { if (!cortinaVer) cortinaVer = cortina("A apresentação terminou", "Obrigado por acompanhares."); return; }
+        if (estado.cv && cvVer && estado.cv !== cvVer) {
+          cvVer = estado.cv;
+          db.get(cam.sessao(codigo) + "/conteudo").then(function (x) { try { at = JSON.parse(x); at.slides = at.slides || []; tema = B.tema(at.tema); B.aplicarTema($("palco"), at.tema); } catch (er) {} quizVer(); desenhar(); });
+          return;
+        }
+        quizVer();
+        var depois = estado.i + "|" + estado.id + "|" + (estado.rev ? 1 : 0) + "|" + (estado.oc ? 1 : 0) + "|" + JSON.stringify(estado.rol || null);
+        if (antes !== depois) desenhar(); else atualizar();
+      });
+      quizVer();
+      ajustar();
+      desenhar();
+      atualizarSelo();
+      setInterval(tickCrono, 250);
+    }).catch(function (e) { cortina("Não foi possível abrir", (e && e.message) || String(e)); });
+  }
+  /* o conteúdo público não traz a resposta certa: chega no estado quando é revelada */
+  function quizVer() {
+    var certas = (extra && extra.certas) || {};
+    (at && at.slides || []).forEach(function (x) { if (x.tipo === "quiz" && certas[x.id] && typeof certas[x.id].c === "number") { x.certa = certas[x.id].c; x.explicacao = certas[x.id].e || ""; } });
+    var s = slideAtual();
+    if (s && s.tipo === "quiz" && estado.rev && typeof estado.qc === "number") { s.certa = estado.qc; s.explicacao = estado.qe || ""; }
+  }
 
   function estadoInicial() {
     var e = { i: -1, cv: Date.now() };
@@ -219,7 +288,8 @@
   function criarSessao(tent) {
     tent = tent || 0;
     var c = B.novoCodigo();
-    return db.get(cam.sessao(c) + "/dono").then(function (d) {
+    return Promise.all([db.get(cam.sessao(c) + "/dono"), db.get(cam.fixo(c) + "/dono")]).then(function (r) {
+      var d = r[0] || r[1];
       if (d && tent < 6) return criarSessao(tent + 1);
       codigo = c;
       estado = estadoInicial();
@@ -299,6 +369,12 @@
     atualizarSelo();
     setInterval(tickCrono, 250);
     if (B.demo && !soLeitura) { simComecar(); if (window.innerWidth >= 1100) mostrarTel(true); }
+    if (!soLeitura) {
+      B.codigoFixo(uid, aid, at.titulo).then(function (f) {
+        fixo = f;
+        return db.patch(cam.fixo(f), { s: codigo, t: String(at.titulo || "").slice(0, 90) }, { auth: true });
+      }).then(function () { qrCache = {}; desenhar(); if (juntarAberto) alternarJuntar(true); }).catch(function () {});
+    }
   }
 
   function aoMudarAtividade(dados) {
@@ -331,7 +407,7 @@
   /* ---------------- estado ---------------- */
   var aGravar = false, deNovo = false;
   function gravar() {
-    if (!codigo || soLeitura) return;
+    if (!codigo || soLeitura || ver) return;
     if (aGravar) { deNovo = true; return; }
     aGravar = true;
     db.put(cam.sessao(codigo) + "/estado", estado, { auth: true }).then(function () { setLigacao(true); })
@@ -387,12 +463,30 @@
     atualizarRodape(s, n || 0, d.n);
     atualizarControlos();
     if (s && s.tipo === "perguntas" && !livre()) publicarPerguntas(s);
+    if (!livre()) publicarResumo(s, d);
+  }
+
+  /* resumo para os telemóveis (no máximo de 2 em 2 segundos) */
+  var resUltimo = "", resTimer = null;
+  function publicarResumo(s, d) {
+    if (soLeitura || ver || !codigo) return;
+    var r = s ? B.resumoTel(s, d, estado) : null;
+    var j = JSON.stringify(r);
+    if (j === resUltimo) return;
+    if (resTimer) return;
+    resTimer = setTimeout(function () {
+      resTimer = null;
+      var s2 = slideAtual(), r2 = s2 ? B.resumoTel(s2, dados(s2), estado) : null, j2 = JSON.stringify(r2);
+      if (j2 === resUltimo) return;
+      resUltimo = j2;
+      db.put(cam.resumo(codigo), r2, { auth: true }).catch(function () { resUltimo = ""; });
+    }, resUltimo ? 2000 : 400);
   }
 
   /* lista de perguntas que os telemóveis veem (só o necessário, no máximo de 2,5 em 2,5 s) */
   var qaUltima = "", qaTimer = null;
   function publicarPerguntas(s) {
-    if (soLeitura) return;
+    if (soLeitura || ver) return;
     var l = B.perguntasDe(resp[s.id], resp[s.id + "g"], (extra.ocultos || {})[s.id], (extra.respondidas || {})[s.id]).slice(0, 20)
       .map(function (x) { return { k: x.k, v: x.txt.slice(0, 200), n: x.n, r: x.r ? 1 : 0 }; });
     var j = s.id + JSON.stringify(l);
@@ -410,7 +504,7 @@
 
   /* pontos do quiz: escritos à parte; cada telemóvel lê só os seus */
   function publicarPontos(s) {
-    if (soLeitura) return;
+    if (soLeitura || ver) return;
     var rev = Object.assign({}, extra.revelados || {});
     if (s && s.tipo === "quiz") rev[s.id] = true;
     var pl = B.placar(at, resp, inicios, rev, parts);
@@ -434,11 +528,11 @@
   window.addEventListener("resize", ajustar);
 
   var qrCache = {};
-  function qr() { var l = B.linkEntrar(codigo); if (!qrCache[l]) qrCache[l] = B.qrSvg(l, "#111", "#fff"); return qrCache[l]; }
+  function qr() { var l = B.linkEntrar(codPub()); if (!qrCache[l]) qrCache[l] = B.qrSvg(l, "#111", "#fff"); return qrCache[l]; }
   function canto() {
     var curto = B.siteCurto();
     return el("div", { class: "canto" },
-      el("div", { class: "txt" }, curto ? "Entra em " + curto : "Código", el("b", null, B.fmtCodigo(codigo))),
+      el("div", { class: "txt" }, curto ? "Entra em " + curto : "Código", el("b", null, B.fmtCodigo(codPub()))),
       el("div", { class: "qr", html: qr() }));
   }
   var rodapeDir = null;
@@ -456,7 +550,7 @@
       l.push(el("span", null, el("b", null, String(nResp)), nResp === 1 ? palavras[0] : palavras[1]));
     }
     l.push(el("span", null, el("b", null, String(nPart)), nPart === 1 ? " participante" : " participantes"));
-    l.push(el("span", null, "Código ", el("b", null, B.fmtCodigo(codigo))));
+    l.push(el("span", null, "Código ", el("b", null, B.fmtCodigo(codPub()))));
     var i = livre() ? livreVer : estado.i;
     if (s && i >= 0) l.push(el("span", null, String(i + 1).padStart(2, "0") + "/" + String(at.slides.length).padStart(2, "0")));
     BNA.por(rodapeDir, l);
@@ -481,7 +575,7 @@
           el("h1", { class: "tit" }, at.titulo || "Atividade"),
           el("ol", { class: "passos" },
             curto ? el("li", null, el("b", null, "1"), el("span", null, "Vai a ", el("strong", null, curto))) : el("li", null, el("b", null, "1"), "Aponta a câmara ao código QR"),
-            el("li", null, el("b", null, "2"), el("span", null, "Escreve o código ", el("strong", null, B.fmtCodigo(codigo))))),
+            el("li", null, el("b", null, "2"), el("span", null, "Escreve o código ", el("strong", null, B.fmtCodigo(codPub()))))),
           el("div", { class: "contador" }, cont, el("span", null, "já entraram")),
           at.pedirAlcunha ? chips : null),
         el("div", { class: "qrg", html: qr() })),
@@ -522,7 +616,7 @@
           el("h1", { class: "tit" }, at.titulo || "Questionário"),
           soLeitura ? null : el("ol", { class: "passos" },
             curto ? el("li", null, el("b", null, "1"), el("span", null, "Vai a ", el("strong", null, curto))) : el("li", null, el("b", null, "1"), "Aponta a câmara ao código QR"),
-            el("li", null, el("b", null, "2"), el("span", null, "Código ", el("strong", null, B.fmtCodigo(codigo))))),
+            el("li", null, el("b", null, "2"), el("span", null, "Código ", el("strong", null, B.fmtCodigo(codPub()))))),
           soLeitura ? null : el("div", { class: "qrp", html: qr() }),
           el("div", { class: "nums" }, el("div", null, nPart, el("span", null, "entraram")), el("div", null, nFim, el("span", null, "concluíram")))),
         el("div", { class: "dir" },
@@ -556,17 +650,18 @@
       var def = T[s.tipo];
       vista = def.ecra(s, {
         tema: tema, modo: livre() || soLeitura ? "resultados" : "vivo", atividade: at, canto: soLeitura ? null : canto, rodape: rodape,
+        visualizador: !!ver,
         imagem: function (id) { return B.imagens.url(uid, id); },
-        ocultar: soLeitura ? null : function (chave) { db.put(cam.sessao(codigo) + "/x/ocultos/" + s.id + "/" + chave, true, { auth: true }).catch(function () {}); },
-        responder: soLeitura ? null : function (chave) {
+        ocultar: soLeitura || ver ? null : function (chave) { db.put(cam.sessao(codigo) + "/x/ocultos/" + s.id + "/" + chave, true, { auth: true }).catch(function () {}); },
+        responder: soLeitura || ver ? null : function (chave) {
           var feita = extra.respondidas && extra.respondidas[s.id] && extra.respondidas[s.id][chave];
           var caminho = cam.sessao(codigo) + "/x/respondidas/" + s.id + "/" + chave;
           (feita ? db.del(caminho, { auth: true }) : db.put(caminho, true, { auth: true })).catch(function () {});
         },
         inicio: function () { return estado.ini || inicios[s.id] || null; },
         revelado: function () { return !!estado.rev; },
-        aoAcabar: livre() || soLeitura ? null : function () { if (!estado.rev && !aRevelar) { aRevelar = true; setTimeout(function () { aRevelar = false; if (!estado.rev && slideAtual() === s) revelar(); }, 900); } },
-        aoRodar: soLeitura ? null : function (rol) {
+        aoAcabar: livre() || soLeitura || ver ? null : function () { if (!estado.rev && !aRevelar) { aRevelar = true; setTimeout(function () { aRevelar = false; if (!estado.rev && slideAtual() === s) revelar(); }, 900); } },
+        aoRodar: soLeitura || ver ? null : function (rol) {
           estado.rol = rol; gravar(); atualizarControlos();
           if (rol && rol.r >= 0) db.put(cam.sessao(codigo) + "/x/rol/" + s.id, rol, { auth: true }).catch(function () {});
         },
@@ -638,6 +733,8 @@
       if (!soLeitura) {
         /* a partir daqui a base de dados recusa respostas a este quiz */
         db.put(cam.sessao(codigo) + "/x/revelados/" + s.id, true, { auth: true }).catch(function () {});
+        /* a resposta certa só sai do ecrã depois de revelada: o visualizador precisa dela para a classificação */
+        db.put(cam.sessao(codigo) + "/x/certas/" + s.id, { c: s.certa, e: s.explicacao || "" }, { auth: true }).catch(function () {});
         extra.revelados = Object.assign({}, extra.revelados || {}); extra.revelados[s.id] = true;
         publicarPontos(s);
       }
@@ -746,7 +843,7 @@
       el("div", { class: "q", html: qr() }),
       el("div", null, el("p", null, "Entra e responde"),
         curto ? el("div", { class: "site" }, curto) : el("div", { class: "site" }, "Aponta a câmara ao código"),
-        el("div", { class: "cod" }, B.fmtCodigo(codigo)), el("small", null, "Carrega em Q para fechar")));
+        el("div", { class: "cod" }, B.fmtCodigo(codPub())), el("small", null, "Carrega em Q para fechar")));
   }
   function alternarJuntar(sim) {
     if (soLeitura) return;
@@ -805,7 +902,7 @@
     try { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(function () {}); } catch (e) {}
   }
   document.addEventListener("keydown", function (e) {
-    if (!at || !codigo) return;
+    if (!at || !codigo || ver) return;
     if ($("dlg").open || /input|textarea|select/i.test((e.target && e.target.tagName) || "")) return;
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     var k = e.key;
@@ -852,10 +949,11 @@
     janela(lv ? "Mostrar resultados de…" : "Ir para…", [lista]);
   }
   function abrirDefs() {
-    var link = B.linkEntrar(codigo || "000000"), art = !!window.BNA_ARTEFACTO;
+    var link = B.linkEntrar(codPub() || "000000"), art = !!window.BNA_ARTEFACTO;
     var kids = [
       el("h3", null, "Sessão"),
-      el("p", null, "Código ", el("b", null, B.fmtCodigo(codigo)), " · ", String(Object.keys(parts).length), art ? " participantes simulados." : " participantes."),
+      el("p", null, "Código ", el("b", null, B.fmtCodigo(codPub())), " · ", String(Object.keys(parts).length), art ? " participantes simulados." : " participantes."),
+      fixo ? el("p", { style: { color: "rgba(19,42,39,.7)", fontSize: "14px" } }, "É o código fixo desta atividade: o mesmo QR serve em todas as sessões.") : null,
       art ? null : el("code", null, link),
       art ? null : el("div", { class: "bts" },
         el("button", { onclick: function (ev) { var b = ev.currentTarget; try { navigator.clipboard.writeText(link).then(function () { b.textContent = "Copiado ✓"; }, function () {}); } catch (e) {} } }, "Copiar link"),
@@ -873,6 +971,7 @@
         soLeitura || art ? null : confirmar("Terminar a sessão", "Clica outra vez para terminar", function () {
           estado.fim = true; delete estado.tmp; gravar();
           db.patch(cam.sessao(codigo), { ativa: false }, { auth: true }).catch(function () {});
+          if (fixo) db.patch(cam.fixo(fixo), { s: null }, { auth: true }).catch(function () {});
           db.patch(cam.indiceSessao(uid, codigo), { fim: { ".sv": "timestamp" } }, { auth: true }).catch(function () {});
           setTimeout(function () { location.href = "formador.html#/resultados/" + codigo; }, 700);
         }),
@@ -897,7 +996,7 @@
         el("li", null, el("kbd", null, "T"), " temporizador · ", el("kbd", null, "Q"), " código e QR em grande · ", el("kbd", null, "F"), " ecrã inteiro")),
       art ? null : el("p", { style: { marginTop: "10px", color: "rgba(19,42,39,.7)" } }, "Podes editar a atividade noutra janela enquanto apresentas: as alterações aparecem aqui sozinhas.")
     ];
-    janela("Sessão " + B.fmtCodigo(codigo), kids);
+    janela("Sessão " + B.fmtCodigo(codPub()), kids);
   }
   function confirmar(texto, textoConfirmar, f) {
     var b = el("button", { class: "perigo", onclick: function () {

@@ -58,6 +58,7 @@
     return out;
   }
   B.estatEscala = estatEscala;
+  B.contarEscolha = function (r, n) { return contarEscolha(r, n); };
   function lerOrdem(v, n) {
     v = valorDe(v);
     if (typeof v !== "string" || !v) return [];
@@ -76,6 +77,9 @@
     it.forEach(function (x) { x.mediaPos = x.t ? x.somaPos / x.t : null; });
     return { itens: it, t: votos };
   }
+  B.estatOrdem = function (r, n) { return estatOrdem(r, n); };
+  B.palavrasDe = function (r, o) { return palavrasDe(r, o); };
+  B.abertasDe = function (r, o) { return abertasDe(r, o); };
   function palavrasDe(r, ocultos) {
     var cont = {}, ordem = {}, n = 0, total = 0;
     for (var k in r || {}) {

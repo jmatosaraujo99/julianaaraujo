@@ -456,8 +456,33 @@
     participante: function (c, p) { return "participantes/" + c + "/" + p; },
     pontos: function (c) { return "sessoes/" + c + "/pts"; },
     perguntas: function (c) { return "sessoes/" + c + "/qa"; },
+    resumo: function (c) { return "sessoes/" + c + "/res"; },
+    fixo: function (f) { return "fixos/" + f; },
+    fixoDe: function (uid, aid) { return "u/" + uid + "/fixos/" + aid; },
     imagem: function (uid, id) { return "u/" + uid + "/imagens/" + id; }
   };
+
+  /* ---------------- código fixo de cada atividade ----------------
+     Como no Mentimeter: o código e o QR de uma atividade não mudam de sessão
+     para sessão. fixos/<código> diz qual é a sessão aberta nesse momento (s). */
+  B.codigoFixo = function (uid, aid, titulo) {
+    var cm = B.caminho;
+    return Db.get(cm.fixoDe(uid, aid), { auth: true }).then(function (f) {
+      if (f && /^\d{6}$/.test(String(f))) return String(f);
+      function tentar(n) {
+        var c = B.novoCodigo();
+        return Promise.all([Db.get(cm.sessao(c) + "/dono"), Db.get(cm.fixo(c) + "/dono")]).then(function (r) {
+          if ((r[0] || r[1]) && n < 8) return tentar(n + 1);
+          return Db.put(cm.fixo(c), { dono: uid, a: aid, t: String(titulo || "").slice(0, 90) }, { auth: true })
+            .then(function () { return Db.put(cm.fixoDe(uid, aid), c, { auth: true }); })
+            .then(function () { return c; });
+        });
+      }
+      return tentar(0);
+    });
+  };
+  B.linkVer = function (c) { return B.urlSite() + "apresentar.html?ver=" + c; };
+  B.linkEditar = function (aid) { return B.urlSite() + "formador.html#/editar/" + aid; };
 
   /* ---------------- imagens (guardadas à parte, só para o formador) ---------------- */
   B.imagens = {

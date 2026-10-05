@@ -213,6 +213,19 @@
   .tl-num input{flex:1;accent-color:var(--teal)}
   .tl-num output{min-width:58px;text-align:right;font-variant-numeric:tabular-nums;font-size:13px;color:var(--tinta-2)}
 
+  /* partilhar */
+  .part{display:flex;flex-direction:column;gap:18px}
+  .part h3{margin:0 0 4px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+  .part-p{display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:start}
+  .part-qr{background:#fff;border-radius:14px;padding:10px;box-shadow:0 0 0 1px var(--linha)}
+  .part-qr svg{display:block;width:100%;height:auto}
+  .part-cod{font-family:var(--display);font-size:46px;letter-spacing:.05em;line-height:1.1;margin:8px 0 10px}
+  .part-l{display:block;margin-top:10px;font-size:12.5px;word-break:break-all;color:var(--tinta-2)}
+  .part-bloco{border-top:1px solid var(--linha);padding-top:14px}
+  .part-link{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+  .part-link code{flex:1;min-width:200px;font-size:12.5px;background:#fff;border:1px solid var(--linha);border-radius:8px;padding:8px 10px;word-break:break-all}
+  @media (max-width:560px){.part-p{grid-template-columns:1fr}.part-qr{max-width:220px}}
+
   /* galeria de diapositivos novos */
   dialog.larga{width:min(1080px,96vw)}
   .gal-sec+.gal-sec{margin-top:6px}
@@ -293,6 +306,7 @@
 <script src="nucleo.js"></script>
 <script src="tipos.js"></script>
 <script src="tela.js"></script>
+<script src="resultados.js"></script>
 <script src="modelos.js"></script>
 <script src="participante.js"></script>
 <script>
@@ -529,12 +543,62 @@
         el("button", { class: "bt", onclick: function () {
           var c = B.clone(at); c.titulo = (c.titulo || "Atividade") + " (cópia)"; fecharJanela(); criarAtividade(c);
         } }, "Duplicar"),
+        el("button", { class: "bt prim", onclick: function () { janelaPartilhar(aid, reg.titulo); } }, "Partilhar"),
         el("button", { class: "bt", onclick: function () { exportar(at); } }, "Exportar (ficheiro .json)"),
         confirmar("Apagar atividade", "Clica outra vez para apagar de vez", function () {
           db.del(cam.atividade(B.auth.uid(), aid), { auth: true }).then(function () { fecharJanela(); biblioteca(); });
         })),
       el("p", { class: "ajuda" }, "O ficheiro exportado leva as imagens e serve para passares a atividade a outro formador. Apagar a atividade não apaga os resultados das sessões que já fizeste.")]);
   }
+  /* Partilhar, como no Mentimeter: o QR e o código dos participantes (fixos para
+     esta atividade), a ligação para ver a apresentação sem comandos e a
+     ligação para editar. */
+  function copiar(texto, botao) {
+    var ok = function () { var t = botao.textContent; botao.textContent = "Copiado ✓"; setTimeout(function () { botao.textContent = t; }, 1800); };
+    try { navigator.clipboard.writeText(texto).then(ok, function () { prompt("Copia esta ligação:", texto); }); } catch (e) { prompt("Copia esta ligação:", texto); }
+  }
+  function descarregarQr(svgTexto, nome) {
+    var img = new Image(), url = URL.createObjectURL(new Blob([svgTexto], { type: "image/svg+xml" }));
+    img.onload = function () {
+      var t = 1200, cv = document.createElement("canvas"); cv.width = cv.height = t;
+      var g = cv.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, t, t);
+      g.drawImage(img, 60, 60, t - 120, t - 120);
+      URL.revokeObjectURL(url);
+      cv.toBlob(function (b) {
+        var a = el("a", { href: URL.createObjectURL(b), download: nome });
+        document.body.appendChild(a); a.click(); a.remove();
+      }, "image/png");
+    };
+    img.src = url;
+  }
+  function linhaLigacao(rotulo, link, ajuda, extra) {
+    var b = el("button", { type: "button", class: "bt peq prim", onclick: function () { copiar(link, b); } }, "Copiar ligação");
+    return el("div", { class: "part-bloco" },
+      el("h3", null, rotulo), ajuda ? el("p", { class: "ajuda" }, ajuda) : null,
+      el("div", { class: "part-link" }, el("code", null, link), b, extra || null));
+  }
+  function janelaPartilhar(aid, titulo) {
+    var corpo = el("div", { class: "part" }, el("p", { class: "carregar" }, "A preparar o código desta atividade…"));
+    janela("Partilhar", [corpo]);
+    B.codigoFixo(B.auth.uid(), aid, titulo).then(function (f) {
+      var linkP = B.linkEntrar(f), svg = B.qrSvg(linkP, "#111", "#fff"), nome = nomeFicheiro(titulo || "atividade");
+      BNA.por(corpo,
+        el("div", { class: "part-p" },
+          el("div", { class: "part-qr", html: svg }),
+          el("div", null,
+            el("h3", null, "Participantes"),
+            el("p", { class: "ajuda" }, "Este código e este QR são sempre os mesmos para esta atividade. Podes imprimi-los ou pô-los nos teus slides: em cada sessão, quem os usar entra na sessão que estiver aberta."),
+            el("div", { class: "part-cod" }, B.fmtCodigo(f)),
+            el("div", { class: "bts" },
+              (function () { var b = el("button", { type: "button", class: "bt prim peq", onclick: function () { copiar(linkP, b); } }, "Copiar ligação"); return b; })(),
+              el("button", { type: "button", class: "bt peq", onclick: function () { descarregarQr(svg, "qr-" + nome + ".png"); } }, "Descarregar QR"),
+              el("a", { class: "bt peq", href: linkP, target: "_blank", rel: "noopener" }, "Abrir")),
+            el("code", { class: "part-l" }, linkP))),
+        linhaLigacao("Visualizador", B.linkVer(f), "Para quem acompanha noutro ecrã ou à distância: vê o diapositivo e os resultados em direto, sem comandos e sem precisar de conta. As imagens só aparecem no teu ecrã."),
+        linhaLigacao("Editar", B.linkEditar(aid), "Para abrires esta atividade noutro computador (entra com a tua conta). Para outro formador ficar com uma cópia, usa «Exportar» e ele importa o ficheiro."));
+    }).catch(function (e) { BNA.por(corpo, el("p", { class: "erro" }, (e && e.message) || "Não deu para preparar o código.")); });
+  }
+
   function janelaSessoes(aid, titulo) {
     var corpo = el("div", null, el("p", { class: "carregar", style: { padding: "20px" } }, "A carregar…"));
     janela("Sessões · " + (titulo || ""), [corpo]);
@@ -640,6 +704,7 @@
       btRefazer = el("button", { class: "bt fant peq", title: "Refazer (Ctrl+Shift+Z)", "aria-label": "Refazer", disabled: "disabled", onclick: refazer }, "↷");
       var dir = el("div", { style: { display: "flex", gap: "8px", alignItems: "center" } },
         el("div", { class: "desf" }, btDesfazer, btRefazer), estadoG,
+        el("button", { class: "bt fant", onclick: function () { janelaPartilhar(aid, at.titulo); } }, "Partilhar"),
         el("button", { class: "bt fant", onclick: janelaDefinicoes }, "Definições"),
         el("button", { class: "bt am", onclick: preparadoParaApresentar }, "▶ Apresentar"));
       listaEl = el("ol", { class: "slides" });

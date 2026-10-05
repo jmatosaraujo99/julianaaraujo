@@ -95,6 +95,8 @@
     var meus = {}, edicao = {}, rascunhos = {}, vistos = {}, pendentes = {}, gostos = {};
     var ligado = true, ultimoJson = "", relogioTimer = null, tempoTimer = null;
     var pontos = { v: null, d: null }, qa = { id: null, lista: null };
+    var res = { id: null, d: null, j: "" }, pararRes = null;
+    var fixo = null, fixoTimer = null;   /* código fixo da atividade (o do QR impresso) */
     var livre = { pos: 0, fim: false };
 
     function chaveLocal() { return "bna-r-" + codigo + "-" + pid; }
@@ -132,11 +134,20 @@
 
     function aCarregar(txt) { BNA.por(mold.main, M.grande(txt || "A entrar…", "")); }
 
-    function entrar(c) {
+    function entrar(c, viaFixo) {
+      if (viaFixo) fixo = viaFixo;
       codigo = c;
       aCarregar();
       B.db.get(B.caminho.sessao(c) + "/conteudo").then(function (conteudo) {
-        if (!conteudo) { codigo = null; ecraEntrar("Não encontrámos a sessão " + B.fmtCodigo(c) + ". Confirma o código."); return null; }
+        if (!conteudo && !viaFixo) {
+          /* não é uma sessão: talvez seja o código fixo de uma atividade */
+          return B.db.get(B.caminho.fixo(c)).then(function (fx) {
+            if (!fx || !fx.dono) { codigo = null; ecraEntrar("Não encontrámos a sessão " + B.fmtCodigo(c) + ". Confirma o código."); return; }
+            fixo = c;
+            if (fx.s) entrar(String(fx.s), c); else esperarFixo(c, fx);
+          });
+        }
+        if (!conteudo) { codigo = null; esperarFixo(viaFixo, {}); return null; }
         try { at = JSON.parse(conteudo); } catch (e) { ecraEntrar("Esta sessão tem um problema. Pede ao formador para a recomeçar."); return null; }
         return B.db.get(B.caminho.sessao(c) + "/estado").then(function (e) {
           estado = e || {};
@@ -146,9 +157,11 @@
           corTopo(t.destaque);
           mold.marca(at.titulo || B.nome);
           mold.rodape.textContent = "Sessão " + B.fmtCodigo(c) + " · respostas anónimas";
-          if (!opts.embutido) try { history.replaceState(null, "", location.pathname + "?c=" + c + (B.demo ? "&demo" : "")); } catch (e2) {}
+          if (!opts.embutido) try { history.replaceState(null, "", location.pathname + "?c=" + (fixo || c) + (B.demo ? "&demo" : "")); } catch (e2) {}
+          vigiarFixo();
           carregarMeus();
-          var guardada = B.store.get("bna-alcunha-" + c + "-" + pid);
+          var guardada = B.store.get("bna-alcunha-" + c + "-" + pid) || (fixo ? B.store.get("bna-alcunha-f-" + fixo + "-" + pid) : null);
+          if (guardada) B.store.set("bna-alcunha-" + c + "-" + pid, guardada);
           if (at.pedirAlcunha && !guardada && !opts.alcunha) pedirAlcunha();
           else registar(opts.alcunha || guardada);
         });
@@ -157,6 +170,38 @@
         codigo = null;
         ecraEntrar(e && e.status === 401 ? "A sessão não está disponível." : "Sem ligação. Confirma a internet e tenta outra vez.");
       });
+    }
+
+    /* código fixo sem sessão aberta: espera aqui e entra sozinho quando começar */
+    function esperarFixo(f, fx) {
+      clearTimeout(fixoTimer);
+      codigo = null;
+      mold.sup("destaque");
+      if (fx && fx.t) mold.marca(fx.t);
+      BNA.por(mold.main, M.grande("Ainda não <em>começou.</em>", "Fica nesta página: entras sozinho quando a sessão começar."), B.esperaTel("À espera da formadora"));
+      fixoTimer = setTimeout(function () {
+        B.db.get(B.caminho.fixo(f)).then(function (x) {
+          if (x && x.s) entrar(String(x.s), f); else esperarFixo(f, x || fx);
+        }).catch(function () { esperarFixo(f, fx); });
+      }, 3000);
+    }
+    /* quem entrou pelo código fixo segue a formadora se ela abrir uma sessão nova */
+    function vigiarFixo() {
+      clearTimeout(fixoTimer);
+      if (!fixo) return;
+      fixoTimer = setTimeout(function () {
+        B.db.get(B.caminho.fixo(fixo) + "/s").then(function (s) {
+          if (s && String(s) !== codigo) { mudarDeSessao(String(s)); return; }
+          vigiarFixo();
+        }).catch(function () { vigiarFixo(); });
+      }, 10000);
+    }
+    function mudarDeSessao(s) {
+      if (pararEstado) { pararEstado(); pararEstado = null; }
+      pararPerguntas(); pararResultados();
+      at = null; estado = null; cv = null; ativa = true; ultimoJson = "";
+      meus = {}; edicao = {}; rascunhos = {}; pendentes = {}; gostos = {};
+      entrar(s, fixo);
     }
 
     function pedirAlcunha() {
@@ -169,6 +214,7 @@
         if (n.length < 2) { erro.textContent = "Escreve pelo menos 2 letras."; return; }
         if (B.improprio(n)) { erro.textContent = "Escolhe outra alcunha."; return; }
         B.store.set("bna-alcunha-" + codigo + "-" + pid, n);
+        if (fixo) B.store.set("bna-alcunha-f-" + fixo + "-" + pid, n);   /* a próxima sessão desta atividade já não pergunta */
         registar(n);
       } }, el("h1", { html: "Como te <em>chamas?</em>" }), el("p", null, "Esta alcunha aparece na classificação do quiz."), inp, erro,
         el("button", { class: "ph-bt", type: "submit" }, "Continuar")));
@@ -225,8 +271,26 @@
       var s = slideAtual();
       if (s && s.tipo === "perguntas" && s.apoiar !== false && !estado.modo) ouvirPerguntas(s.id);
       else pararPerguntas();
+      if (s && T[s.tipo] && T[s.tipo].interativo && s.tipo !== "perguntas" && !estado.modo) ouvirResultados(s.id);
+      else pararResultados();
       render();
     }
+    /* resultados da pergunta no ecrã: o formador publica um resumo, aqui só se lê */
+    function ouvirResultados(id) {
+      if (res.id === id && pararRes) return;
+      pararResultados();
+      res = { id: id, d: null, j: "" };
+      pararRes = B.db.ouvir(B.caminho.resumo(codigo), function (d, ok) {
+        if (!ok) return;
+        var x = d && d.id === id ? d : null, j = JSON.stringify(x);
+        if (res.j === j) return;
+        res.d = x; res.j = j;
+        var s = slideAtual();
+        if (s && s.id === id && (respondeu(s) || (s.tipo === "quiz" && estado.rev))) render();
+      }, { semSse: true, intervalo: 3000 });
+    }
+    function pararResultados() { if (pararRes) { pararRes(); pararRes = null; } res = { id: null, d: null, j: "" }; }
+    function respondeu(s) { return Object.keys(meus).some(function (k) { return k === s.id || k.indexOf(s.id + "-") === 0; }); }
     function ouvirPerguntas(id) {
       if (qa.id === id && pararQa) return;
       pararPerguntas();
@@ -361,10 +425,18 @@
         mold._slide = null;
         var nome = B.store.get("bna-alcunha-" + codigo + "-" + pid);
         BNA.por(mold.main, topo, M.grande("Estás <em>dentro!</em>", (nome ? nome + ", olha" : "Olha") + " para o ecrã. As perguntas aparecem aqui sozinhas.",
-          el("div", { class: "ph-visto-g", "aria-hidden": "true" }, "✓")));
+          el("div", { class: "ph-visto-g", "aria-hidden": "true" }, "✓")), B.esperaTel("À espera que a sessão comece"));
         return;
       }
       B.desenharTel(mold, s, ctxPara(s), topo);
+      var def = T[s.tipo];
+      if (!def.interativo) { mold.main.appendChild(B.esperaTel("A próxima pergunta aparece aqui sozinha")); return; }
+      var quizRevelado = s.tipo === "quiz" && estado.rev;
+      if (s.tipo === "perguntas" || (!respondeu(s) && !quizRevelado)) return;
+      if (s.tipo === "quiz" && !estado.rev) { mold.main.appendChild(B.esperaTel("À espera da resposta certa")); return; }
+      if (estado.oc) mold.main.appendChild(el("p", { class: "ph-res-nota", style: { marginTop: "16px" } }, "Os resultados aparecem no ecrã quando a formadora os mostrar."));
+      else if (res.d && res.d.id === s.id) mold.main.appendChild(B.resultadosTel(s, res.d, B.tema(at.tema)));
+      mold.main.appendChild(B.esperaTel("À espera da próxima pergunta"));
     }
 
     /* questionário: cada participante avança ao seu ritmo */
