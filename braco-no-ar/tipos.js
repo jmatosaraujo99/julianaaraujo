@@ -674,7 +674,7 @@
           });
           for (var k in nos) if (!vivos[k]) { nos[k].remove(); delete nos[k]; }
           frag.forEach(function (no) { mural.appendChild(no); });
-          mais.textContent = l.length > limite ? "+ " + (l.length - limite) + " respostas" : "";
+          mais.textContent = l.length > limite ? "+ " + (l.length - limite) + (l.length - limite === 1 ? " resposta" : " respostas") : "";
           return l.length;
         }
       };
@@ -766,8 +766,8 @@
             var eb = estatEscala(d.r, s)[0];
             na.textContent = ea.m === null ? "–" : B.virgula(ea.m);
             nb.textContent = eb.m === null ? "–" : B.virgula(eb.m);
-            da.textContent = (outra ? "de " + outra.max + " · " : "") + ea.t + " respostas";
-            dbb.textContent = "de " + max + " · " + eb.t + " respostas";
+            da.textContent = (outra ? "de " + outra.max + " · " : "") + ea.t + (ea.t === 1 ? " resposta" : " respostas");
+            dbb.textContent = "de " + max + " · " + eb.t + (eb.t === 1 ? " resposta" : " respostas");
             return eb.t;
           }
         };

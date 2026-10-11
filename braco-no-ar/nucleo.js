@@ -279,7 +279,7 @@
     ouvir: function (path, cb, o) {
       o = o || {};
       if (B.demo) return Local.ouvir(path, cb);
-      var arvore = null, es = null, parado = false, timer = null, falhas = 0;
+      var arvore = null, es = null, parado = false, timer = null, falhas = 0, vigia = null;
       var lento = o.intervalo || 2000, intervalo = lento;
       function aplicar(p, data) {
         var partes = String(p || "/").split("/").filter(Boolean);
@@ -300,12 +300,23 @@
           if (parado) return;
           es = new EventSource(u);
           intervalo = 15000;
+          /* a Firebase manda logo o primeiro «put» e depois um «keep-alive» de 30 em 30 s.
+             Se o primeiro não chega em 6 s, ou se ficam 45 s sem nada, a rede está a reter
+             a ligação (há wi-fi de escolas e empresas assim): passa a perguntar de 2 em 2 s
+             em vez de ficar 15 s atrasado */
+          var recebeu = false, ultimo = Date.now(), esta = es;
+          vigia = setInterval(function () {
+            if (es !== esta) return;
+            var calado = Date.now() - ultimo;
+            if ((!recebeu && calado > 6000) || calado > 45000) { fecharSse(); intervalo = lento; agendar(0); }
+          }, 3000);
+          es.addEventListener("keep-alive", function () { ultimo = Date.now(); });
           es.addEventListener("put", function (ev) {
-            falhas = 0;
+            falhas = 0; recebeu = true; ultimo = Date.now();
             try { var m = JSON.parse(ev.data); aplicar(m.path, m.data); avisar(true); } catch (e) {}
           });
           es.addEventListener("patch", function (ev) {
-            falhas = 0;
+            falhas = 0; recebeu = true; ultimo = Date.now();
             try {
               var m = JSON.parse(ev.data), base = String(m.path || "/").replace(/\/$/, "");
               for (var k in m.data) aplicar(base + "/" + k, m.data[k]);
@@ -320,7 +331,7 @@
           };
         }).catch(function () { intervalo = lento; });
       }
-      function fecharSse() { if (es) { es.close(); es = null; } }
+      function fecharSse() { clearInterval(vigia); vigia = null; if (es) { es.close(); es = null; } }
       function ciclo() {
         if (parado) return;
         Db.get(path, { auth: o.auth }).then(function (t) { arvore = t; avisar(true); })
