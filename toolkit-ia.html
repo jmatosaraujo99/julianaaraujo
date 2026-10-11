@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pensamento crítico na IA · Toolkit | Juliana Araújo</title>
+<meta name="description" content="Toolkit gratuito: três passos para usar a inteligência artificial sem lhe entregar o pensamento. Duas páginas, com um exercício por dia durante sete dias.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://julianaaraujo.pt/toolkit-ia.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:title" content="Pensamento crítico na IA · Toolkit">
+<meta property="og:description" content="Três passos para usar a IA sem lhe entregar o pensamento. Descarrega o toolkit em PDF.">
+<meta property="og:url" content="https://julianaaraujo.pt/toolkit-ia.html">
+<meta property="og:image" content="https://julianaaraujo.pt/media/og-cartao.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="favicon.ico?v=2" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css?v=20260915">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+  [hidden] { display: none !important; }
+
+  body {
+    background: var(--creme);
+    color: var(--preto);
+    font-family: var(--fonte-corpo);
+    font-size: 17px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: clamp(40px, calc(6 * var(--fluido)), 72px) 20px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    flex: 1;
+  }
+
+  .topo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+  }
+
+  .etiqueta {
+    font-family: var(--fonte-etiqueta);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: var(--ls-etiqueta);
+    text-transform: uppercase;
+    color: var(--cinza);
+  }
+
+  h1, h2 {
+    font-family: var(--fonte-display);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: var(--ls-display);
+    text-transform: uppercase;
+  }
+
+  h1 { font-size: clamp(34px, calc(5 * var(--fluido)), 44px); }
+
+  .topo p.resumo {
+    color: var(--cinza-forte);
+    max-width: 36ch;
+    text-wrap: balance;
+  }
+
+  .capa {
+    display: block;
+    width: min(100%, 240px);
+    border: 1.5px solid var(--preto);
+    line-height: 0;
+  }
+
+  .capa img { width: 100%; height: auto; }
+
+  .lista {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .botao {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 56px;
+    padding: 14px 20px;
+    border: 1.5px solid var(--preto);
+    border-radius: 999px;
+    color: var(--preto);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.3;
+    transition: background-color .2s, color .2s, border-color .2s;
+  }
+
+  .botao small {
+    display: block;
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--cinza);
+  }
+
+  .botao .seta { font-family: var(--fonte-etiqueta); flex: none; }
+
+  .botao:hover { background: var(--areia); }
+
+  .botao.principal {
+    background: var(--cobalto);
+    border-color: var(--cobalto);
+    color: var(--creme);
+  }
+
+  .botao.principal small { color: var(--creme-suave); }
+
+  .botao.principal:hover { background: var(--preto); border-color: var(--preto); }
+
+  .botao:focus-visible, .sala-sair:focus-visible, .discreto:focus-visible {
+    outline: 3px solid var(--cobalto);
+    outline-offset: 3px;
+  }
+
+  .seguir {
+    width: 100%;
+    background: var(--cobalto);
+    color: var(--creme);
+    border-radius: 24px;
+    padding: 24px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-align: center;
+  }
+
+  .seguir .etiqueta { color: var(--creme-suave); }
+
+  .seguir h2 { font-size: clamp(26px, calc(3.6 * var(--fluido)), 32px); }
+
+  .seguir p { color: var(--creme-suave); text-wrap: balance; }
+
+  .seguir .botao {
+    background: var(--creme);
+    border-color: var(--creme);
+    color: var(--preto);
+  }
+
+  .seguir .botao small { color: var(--cinza-forte); }
+
+  .seguir .botao:hover { background: var(--areia); border-color: var(--areia); }
+
+  .discreto {
+    font-family: var(--fonte-etiqueta);
+    font-size: 12px;
+    letter-spacing: var(--ls-etiqueta);
+    text-transform: uppercase;
+    color: var(--cinza);
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .discreto:hover { color: var(--cobalto); }
+
+  footer {
+    border-top: 1px solid var(--linha-preta);
+    padding: 20px;
+    font-size: 13px;
+    color: var(--cinza);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+
+  footer a { color: var(--cinza); }
+  footer a:hover { color: var(--cobalto); }
+
+  /* Modo sala: os dois QR codes para projetar (toolkit-ia.html#sala) */
+  .sala { display: none; }
+
+  .sala:target {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background: var(--creme);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    justify-content: safe center;
+    gap: clamp(16px, calc(2.4 * var(--fluido)), 40px);
+    padding: 24px;
+    overflow-y: auto;
+    text-align: center;
+  }
+
+  body:has(.sala:target) { overflow: hidden; }
+
+  .sala h2 { font-size: clamp(34px, calc(4.6 * var(--fluido)), 80px); }
+
+  .sala-qrs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(24px, calc(5 * var(--fluido)), 96px);
+  }
+
+  .sala figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sala figure .etiqueta {
+    font-size: clamp(12px, calc(1.2 * var(--fluido)), 20px);
+    color: var(--cobalto);
+  }
+
+  .sala .qr {
+    width: min(34vw, 58vh);
+    min-width: 200px;
+    aspect-ratio: 1;
+    color: var(--preto);
+    background: var(--creme);
+    border: 1.5px solid var(--preto);
+    padding: 4px;
+  }
+
+  .sala .qr svg { display: block; width: 100%; height: 100%; }
+
+  .sala figcaption {
+    font-weight: 600;
+    font-size: clamp(16px, calc(1.8 * var(--fluido)), 30px);
+    line-height: 1.2;
+  }
+
+  .sala-acoes {
+    display: flex;
+    gap: 12px;
+  }
+
+  .sala-sair {
+    font-family: var(--fonte-etiqueta);
+    font-size: 12px;
+    letter-spacing: var(--ls-etiqueta);
+    text-transform: uppercase;
+    color: var(--cinza);
+    background: none;
+    border: 1px solid var(--linha-preta);
+    border-radius: 999px;
+    padding: 0 18px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .sala-sair:hover { color: var(--cobalto); border-color: var(--cobalto); }
+
+  :fullscreen .sala-acoes { opacity: 0; transition: opacity .3s; }
+  :fullscreen .sala-acoes:hover, :fullscreen .sala-acoes:focus-within { opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .botao, :fullscreen .sala-acoes { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <section class="topo">
+    <p class="etiqueta">Toolkit · Sessão de inteligência artificial</p>
+    <h1>Pensamento crítico na IA</h1>
+    <p class="resumo">Três passos para usares a IA sem lhe entregares o pensamento. Duas páginas, com um exercício por dia durante sete dias.</p>
+  </section>
+
+  <nav class="lista" aria-label="Toolkit">
+    <a class="botao principal" href="media/toolkit-pensamento-critico-ia.pdf" download="Toolkit - Pensamento critico na IA.pdf">
+      <span>Descarregar o toolkit<small>PDF · 2 páginas · 350 KB</small></span>
+      <span class="seta" aria-hidden="true">↓</span>
+    </a>
+    <a class="botao" href="https://canva.link/me5pxmzbiweozhv" target="_blank" rel="noopener">
+      <span>Ver online<small>Abre no Canva, sem precisares de conta</small></span>
+      <span class="seta" aria-hidden="true">→</span>
+    </a>
+  </nav>
+
+  <section class="seguir" aria-labelledby="titulo-seguir">
+    <p class="etiqueta">Gostaste?</p>
+    <h2 id="titulo-seguir">Segue @julianaaraujo.pt</h2>
+    <p>Partilho lá mais ferramentas e exercícios como este. E se fizeres o compromisso da página 2, põe-no nas stories e identifica-me.</p>
+    <a class="botao" href="https://www.instagram.com/julianaaraujo.pt/" target="_blank" rel="noopener">
+      <span>Seguir no Instagram<small>Abre a app, se a tiveres</small></span>
+      <span class="seta" aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <a class="capa" href="media/toolkit-pensamento-critico-ia.pdf" download>
+    <img src="media/toolkit-ia-capa.jpg" alt="Primeira página do toolkit: A IA responde sempre. Nem sempre tem razão." width="720" height="1018">
+  </a>
+
+  <a class="discreto" href="#sala">Modo sala · projetar os QR codes</a>
+</main>
+
+<footer>
+  <span>© 2026 Juliana Araújo</span>
+  <a href="index.html">julianaaraujo.pt</a>
+  <a href="privacidade.html">Privacidade</a>
+</footer>
+
+<section class="sala" id="sala" aria-labelledby="titulo-sala">
+  <h2 id="titulo-sala">Leva o toolkit</h2>
+  <div class="sala-qrs">
+    <figure>
+      <p class="etiqueta">1 · Descarrega</p>
+      <div class="qr"><svg role="img" aria-label="QR code para julianaaraujo.pt/toolkit-ia" shape-rendering="crispEdges" viewBox="0 0 33 33" class="segno"><path class="qrline" stroke="currentColor" d="M2 2.5h7m1 0h1m3 0h1m1 0h4m4 0h7m-29 1h1m5 0h1m2 0h3m1 0h2m7 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m1 0h2m4 0h5m3 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m4 0h1m2 0h1m2 0h3m2 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h3m1 0h5m2 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m1 0h2m1 0h2m3 0h1m1 0h1m1 0h1m1 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-19 1h1m1 0h1m1 0h1m4 0h2m-21 1h1m1 0h1m3 0h2m5 0h4m1 0h1m1 0h1m2 0h1m2 0h1m1 0h1m-27 1h2m1 0h1m1 0h2m2 0h7m1 0h2m1 0h2m3 0h2m-29 1h1m1 0h2m2 0h1m3 0h1m1 0h1m2 0h1m3 0h4m1 0h3m1 0h1m-29 1h3m1 0h2m1 0h2m1 0h4m4 0h2m1 0h1m2 0h2m-26 1h1m3 0h1m1 0h1m3 0h1m2 0h1m2 0h1m3 0h1m1 0h2m4 0h1m-29 1h6m3 0h2m1 0h1m2 0h2m1 0h3m1 0h2m3 0h2m-29 1h1m1 0h1m1 0h1m1 0h1m1 0h2m3 0h3m1 0h1m1 0h1m3 0h2m3 0h1m-28 1h2m1 0h1m2 0h2m1 0h2m2 0h1m1 0h1m3 0h1m1 0h3m-25 1h1m1 0h1m3 0h1m1 0h3m1 0h3m1 0h1m2 0h1m2 0h2m4 0h1m-28 1h2m1 0h1m2 0h1m2 0h1m2 0h3m1 0h1m1 0h2m1 0h2m2 0h3m-29 1h4m2 0h3m3 0h1m2 0h2m2 0h1m1 0h2m1 0h2m2 0h1m-25 1h2m1 0h4m2 0h1m2 0h1m1 0h1m2 0h1m1 0h1m-24 1h2m1 0h8m2 0h1m1 0h1m3 0h7m1 0h1m-20 1h1m1 0h3m2 0h3m2 0h1m3 0h3m1 0h1m-29 1h7m1 0h1m4 0h3m4 0h1m1 0h1m1 0h1m3 0h1m-29 1h1m5 0h1m3 0h1m1 0h1m1 0h1m3 0h3m3 0h1m2 0h2m-29 1h1m1 0h3m1 0h1m4 0h4m1 0h1m2 0h7m1 0h2m-29 1h1m1 0h3m1 0h1m2 0h1m2 0h1m1 0h4m2 0h2m1 0h4m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h2m5 0h1m1 0h1m1 0h3m2 0h1m2 0h2m-29 1h1m5 0h1m3 0h1m2 0h1m1 0h1m3 0h2m3 0h2m-26 1h7m1 0h3m2 0h2m1 0h1m3 0h1m1 0h2m1 0h1m2 0h1"/></svg></div>
+      <figcaption>julianaaraujo.pt/toolkit-ia</figcaption>
+    </figure>
+    <figure>
+      <p class="etiqueta">2 · Segue</p>
+      <div class="qr"><svg role="img" aria-label="QR code para o Instagram @julianaaraujo.pt" shape-rendering="crispEdges" viewBox="0 0 37 37" class="segno"><path class="qrline" stroke="currentColor" d="M2 2.5h7m1 0h2m1 0h1m1 0h4m1 0h1m1 0h3m3 0h7m-33 1h1m5 0h1m1 0h1m1 0h4m1 0h3m2 0h1m1 0h1m3 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m4 0h2m3 0h3m1 0h3m1 0h1m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m5 0h1m1 0h1m1 0h1m2 0h3m1 0h1m2 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m2 0h6m1 0h3m4 0h1m2 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m2 0h1m1 0h1m1 0h1m1 0h3m3 0h2m3 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-19 1h2m2 0h1m5 0h1m-24 1h1m4 0h4m1 0h3m2 0h2m4 0h1m1 0h2m5 0h2m-31 1h4m4 0h1m1 0h4m2 0h2m1 0h1m1 0h1m4 0h3m-28 1h4m1 0h2m1 0h6m1 0h1m1 0h1m3 0h1m3 0h1m1 0h1m-29 1h1m1 0h1m2 0h1m1 0h2m2 0h1m1 0h2m6 0h1m1 0h1m1 0h5m-31 1h2m3 0h4m3 0h1m1 0h6m3 0h1m1 0h2m-28 1h3m2 0h1m1 0h1m1 0h3m3 0h1m1 0h1m5 0h1m2 0h2m1 0h1m1 0h2m-31 1h1m3 0h1m1 0h1m2 0h1m1 0h2m1 0h1m1 0h1m1 0h1m3 0h3m2 0h1m1 0h1m-28 1h2m1 0h1m1 0h1m1 0h4m1 0h2m1 0h1m3 0h3m3 0h2m1 0h1m-32 1h1m2 0h1m1 0h2m1 0h5m1 0h1m1 0h3m2 0h1m1 0h2m1 0h2m3 0h1m-33 1h2m6 0h1m1 0h1m1 0h3m1 0h2m1 0h8m2 0h2m1 0h1m-33 1h4m2 0h1m1 0h3m1 0h1m1 0h1m1 0h2m1 0h2m2 0h1m3 0h1m1 0h2m1 0h1m-33 1h2m2 0h1m3 0h2m2 0h5m1 0h2m2 0h2m2 0h1m1 0h5m-33 1h2m2 0h5m1 0h1m1 0h2m4 0h1m6 0h1m1 0h3m1 0h2m-33 1h1m1 0h1m1 0h1m2 0h1m3 0h1m1 0h1m1 0h1m1 0h4m1 0h2m3 0h2m-29 1h1m1 0h1m2 0h3m1 0h1m1 0h3m1 0h2m4 0h2m2 0h1m1 0h1m3 0h1m-32 1h1m1 0h1m4 0h1m2 0h1m3 0h2m1 0h1m2 0h1m3 0h9m-33 1h4m1 0h4m3 0h3m1 0h2m1 0h1m3 0h6m2 0h1m-24 1h1m2 0h1m2 0h2m1 0h1m1 0h3m1 0h2m3 0h1m1 0h1m1 0h1m-33 1h7m1 0h1m1 0h4m1 0h2m1 0h1m1 0h1m1 0h3m1 0h1m1 0h1m1 0h2m-32 1h1m5 0h1m2 0h2m1 0h3m4 0h1m2 0h3m3 0h4m-32 1h1m1 0h3m1 0h1m3 0h2m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h6m-30 1h1m1 0h3m1 0h1m2 0h4m2 0h2m1 0h3m1 0h2m1 0h1m1 0h4m1 0h1m-33 1h1m1 0h3m1 0h1m2 0h1m1 0h1m7 0h4m1 0h1m2 0h2m1 0h3m-33 1h1m5 0h1m1 0h2m2 0h1m3 0h3m3 0h1m4 0h4m-31 1h7m3 0h1m3 0h1m2 0h1m4 0h4m1 0h1m3 0h1"/></svg></div>
+      <figcaption>@julianaaraujo.pt</figcaption>
+    </figure>
+  </div>
+  <div class="sala-acoes">
+    <button class="sala-sair" type="button" id="ecra-inteiro">Ecrã inteiro</button>
+    <a class="sala-sair" href="#">Sair</a>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var botao = document.getElementById('ecra-inteiro');
+    if (!document.documentElement.requestFullscreen) { botao.hidden = true; return; }
+    botao.addEventListener('click', function () {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    });
+    document.addEventListener('fullscreenchange', function () {
+      botao.textContent = document.fullscreenElement ? 'Sair do ecrã inteiro' : 'Ecrã inteiro';
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && location.hash === '#sala' && !document.fullscreenElement) location.hash = '';
+    });
+  })();
+</script>
+
+</body>
+</html>
