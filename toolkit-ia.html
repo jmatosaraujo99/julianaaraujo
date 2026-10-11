@@ -284,6 +284,70 @@
   :fullscreen .sala-acoes { opacity: 0; transition: opacity .3s; }
   :fullscreen .sala-acoes:hover, :fullscreen .sala-acoes:focus-within { opacity: 1; }
 
+
+  /* Pop-up: seguir antes de levar o toolkit */
+  .porta {
+    margin: auto;
+    width: min(100% - 32px, 420px);
+    max-height: calc(100% - 32px);
+    overflow-y: auto;
+    border: none;
+    border-radius: 24px;
+    background: var(--creme);
+    color: var(--preto);
+    padding: 28px 22px 22px;
+    text-align: center;
+  }
+
+  .porta::backdrop {
+    background: rgba(10, 10, 10, 0.6);
+    background: color-mix(in srgb, var(--preto) 60%, transparent);
+  }
+
+  .porta[open] { display: flex; flex-direction: column; gap: 14px; }
+
+  .porta h2 { font-size: clamp(26px, calc(3.6 * var(--fluido)), 32px); }
+
+  .porta p { color: var(--cinza-forte); text-wrap: balance; }
+
+  .porta .passo {
+    font-family: var(--fonte-etiqueta);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: var(--ls-etiqueta);
+    text-transform: uppercase;
+    color: var(--cobalto);
+    margin-top: 6px;
+  }
+
+  .porta .botao[aria-disabled="true"] {
+    background: var(--areia);
+    border-color: var(--areia);
+    color: var(--cinza-forte);
+    cursor: not-allowed;
+  }
+
+  .porta .botao[aria-disabled="true"] small { color: var(--cinza-forte); }
+
+  .porta-fechar {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: none;
+    font-size: 24px;
+    line-height: 1;
+    color: var(--cinza);
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  .porta-fechar:hover { color: var(--preto); background: var(--areia); }
+  .porta-fechar:focus-visible { outline: 3px solid var(--cobalto); outline-offset: 2px; }
+
+
   @media (prefers-reduced-motion: reduce) {
     .botao, :fullscreen .sala-acoes { transition: none; }
   }
@@ -299,11 +363,11 @@
   </section>
 
   <nav class="lista" aria-label="Toolkit">
-    <a class="botao principal" href="media/toolkit-pensamento-critico-ia.pdf" download="Toolkit - Pensamento critico na IA.pdf">
+    <a class="botao principal" data-porta href="media/toolkit-pensamento-critico-ia.pdf" download="Toolkit - Pensamento critico na IA.pdf">
       <span>Descarregar o toolkit<small>PDF · 2 páginas · 350 KB</small></span>
       <span class="seta" aria-hidden="true">↓</span>
     </a>
-    <a class="botao" href="https://canva.link/me5pxmzbiweozhv" target="_blank" rel="noopener">
+    <a class="botao" data-porta href="https://canva.link/me5pxmzbiweozhv" target="_blank" rel="noopener">
       <span>Ver online<small>Abre no Canva, sem precisares de conta</small></span>
       <span class="seta" aria-hidden="true">→</span>
     </a>
@@ -313,13 +377,13 @@
     <p class="etiqueta">Gostaste?</p>
     <h2 id="titulo-seguir">Segue @julianaaraujo.pt</h2>
     <p>Partilho lá mais ferramentas e exercícios como este. E se fizeres o compromisso da página 2, põe-no nas stories e identifica-me.</p>
-    <a class="botao" href="https://www.instagram.com/julianaaraujo.pt/" target="_blank" rel="noopener">
+    <a class="botao" data-segue href="https://www.instagram.com/julianaaraujo.pt/" target="_blank" rel="noopener">
       <span>Seguir no Instagram<small>Abre a app, se a tiveres</small></span>
       <span class="seta" aria-hidden="true">→</span>
     </a>
   </section>
 
-  <a class="capa" href="media/toolkit-pensamento-critico-ia.pdf" download>
+  <a class="capa" data-porta href="media/toolkit-pensamento-critico-ia.pdf" download>
     <img src="media/toolkit-ia-capa.jpg" alt="Primeira página do toolkit: A IA responde sempre. Nem sempre tem razão." width="720" height="1018">
   </a>
 
@@ -352,6 +416,23 @@
   </div>
 </section>
 
+<dialog class="porta" id="porta" aria-labelledby="porta-titulo">
+  <button class="porta-fechar" type="button" data-fechar aria-label="Fechar">×</button>
+  <p class="etiqueta">Antes de levares o toolkit</p>
+  <h2 id="porta-titulo">Segue @julianaaraujo.pt</h2>
+  <p>É só isto que te peço em troca. Segue a conta e volta aqui: o toolkit fica logo disponível.</p>
+  <p class="passo">Passo 1</p>
+  <a class="botao principal" data-segue href="https://www.instagram.com/julianaaraujo.pt/" target="_blank" rel="noopener">
+    <span>Seguir no Instagram<small>Abre a app, se a tiveres</small></span>
+    <span class="seta" aria-hidden="true">→</span>
+  </a>
+  <p class="passo">Passo 2</p>
+  <a class="botao" id="porta-levar" href="media/toolkit-pensamento-critico-ia.pdf" aria-disabled="true">
+    <span id="porta-levar-texto">Já sigo · levar o toolkit<small>Fica disponível depois do passo 1</small></span>
+    <span class="seta" aria-hidden="true">↓</span>
+  </a>
+</dialog>
+
 <script>
   (function () {
     var botao = document.getElementById('ecra-inteiro');
@@ -366,6 +447,69 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && location.hash === '#sala' && !document.fullscreenElement) location.hash = '';
     });
+  })();
+</script>
+
+<script>
+  (function () {
+    var CHAVE = 'toolkit-ia-segue';
+    var porta = document.getElementById('porta');
+    var levar = document.getElementById('porta-levar');
+    var levarTexto = document.getElementById('porta-levar-texto');
+    var pendente = null;
+    var carregouSeguir = false;
+
+    function jaSegue() {
+      try { return localStorage.getItem(CHAVE) === '1'; } catch (e) { return false; }
+    }
+
+    function libertar() {
+      levar.removeAttribute('aria-disabled');
+      levar.classList.add('principal');
+      levarTexto.innerHTML = 'Levar o toolkit<small>Obrigada por seguires!</small>';
+      try { localStorage.setItem(CHAVE, '1'); } catch (e) {}
+    }
+
+    // Sem suporte para <dialog>, as ligações funcionam como sempre.
+    if (!porta || typeof porta.showModal !== 'function') return;
+
+    document.querySelectorAll('[data-porta]').forEach(function (ligacao) {
+      ligacao.addEventListener('click', function (e) {
+        if (jaSegue()) return;
+        e.preventDefault();
+        pendente = ligacao;
+        levar.href = ligacao.getAttribute('href');
+        if (ligacao.hasAttribute('download')) levar.setAttribute('download', ligacao.getAttribute('download') || '');
+        else levar.removeAttribute('download');
+        if (ligacao.target) { levar.target = ligacao.target; levar.rel = 'noopener'; }
+        else { levar.removeAttribute('target'); levar.removeAttribute('rel'); }
+        porta.showModal();
+      });
+    });
+
+    document.querySelectorAll('[data-segue]').forEach(function (botao) {
+      botao.addEventListener('click', function () {
+        carregouSeguir = true;
+        // Liberta quando a pessoa volta do Instagram, ou ao fim de 4 s se ficar na página.
+        setTimeout(function () { if (!levar.hasAttribute('aria-disabled')) return; libertar(); }, 4000);
+      });
+    });
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible' && carregouSeguir && levar.hasAttribute('aria-disabled')) libertar();
+    });
+
+    levar.addEventListener('click', function (e) {
+      if (levar.hasAttribute('aria-disabled')) {
+        e.preventDefault();
+        levarTexto.innerHTML = 'Primeiro, o passo 1<small>Carrega em Seguir no Instagram</small>';
+        return;
+      }
+      setTimeout(function () { porta.close(); }, 300);
+    });
+
+    porta.querySelector('[data-fechar]').addEventListener('click', function () { porta.close(); });
+    porta.addEventListener('click', function (e) { if (e.target === porta) porta.close(); });
   })();
 </script>
 
