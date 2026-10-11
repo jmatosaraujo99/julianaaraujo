@@ -136,6 +136,7 @@
 <script src="tela.js"></script>
 <script src="resultados.js"></script>
 <script src="modelos.js"></script>
+<script src="quizzes.js"></script>
 <script src="participante.js"></script>
 <script>
 (function () {
@@ -443,10 +444,24 @@
     return estado.i >= 0 ? at.slides[estado.i] || null : null;
   }
   function placar() { return B.placar(at, resp, inicios, extra.revelados, parts); }
+  /* quantas pessoas estão mesmo cá: deram sinal no último minuto e pouco, já
+     responderam a alguma coisa ou concluíram. Páginas abertas noutro navegador
+     e esquecidas (o QR lido pela câmara e depois o código escrito no Chrome,
+     por exemplo) deixam de contar sozinhas. */
+  function presentes() {
+    var agora = B.agora(), resp1 = {}, n = 0, sid, p;
+    for (sid in resp) for (p in resp[sid] || {}) resp1[p] = 1;
+    for (p in parts) {
+      var x = parts[p];
+      if (!x) continue;
+      if (x.f || resp1[p] || (!soLeitura && typeof x.t === "number" && agora - x.t < 75000)) n++;
+    }
+    return n;
+  }
   function dados(s) {
     var d = { r: s ? resp[s.id] || {} : {}, todas: resp, oculto: !!estado.oc && !livre(), revelado: livre() ? true : !!estado.rev, estado: estado,
       ocultos: s && extra.ocultos ? extra.ocultos[s.id] || {} : {}, respondidas: s && extra.respondidas ? extra.respondidas[s.id] || {} : {},
-      n: Object.keys(parts).length, parts: parts };
+      n: presentes(), parts: parts };
     if (s && s.tipo === "classificacao") d.placar = placar();
     return d;
   }
@@ -627,7 +642,7 @@
       rodape());
     return {
       el: sec, upd: function (d) {
-        var np = Object.keys(d.parts).length, fim = 0;
+        var np = d.n, fim = 0;
         for (var p in d.parts) if (d.parts[p] && d.parts[p].f) fim++;
         nPart.textContent = String(np); nFim.textContent = String(fim);
         linhas.forEach(function (x) {
@@ -884,6 +899,7 @@
     $("b-tel").hidden = !B.demo || soLeitura;
   }
   setInterval(function () { if (estado.tmp) atualizarControlos(); }, 1000);
+  setInterval(function () { if (vista && !soLeitura) pedir(); }, 15000);   /* quem sai deixa de contar */
 
   $("b-ant").onclick = recuar;
   $("b-seg").onclick = avancar;
@@ -952,7 +968,7 @@
     var link = B.linkEntrar(codPub() || "000000"), art = !!window.BNA_ARTEFACTO;
     var kids = [
       el("h3", null, "Sessão"),
-      el("p", null, "Código ", el("b", null, B.fmtCodigo(codPub())), " · ", String(Object.keys(parts).length), art ? " participantes simulados." : " participantes."),
+      el("p", null, "Código ", el("b", null, B.fmtCodigo(codPub())), " · ", String(presentes()), art ? " participantes simulados." : " participantes."),
       fixo ? el("p", { style: { color: "rgba(19,42,39,.7)", fontSize: "14px" } }, "É o código fixo desta atividade: o mesmo QR serve em todas as sessões.") : null,
       art ? null : el("code", null, link),
       art ? null : el("div", { class: "bts" },
@@ -1032,6 +1048,7 @@
         var v = { t: { ".sv": "timestamp" } };
         if (at.pedirAlcunha) v.n = NOMES[i % NOMES.length];
         db.put(cam.participante(codigo, id), v);
+        SIM.timers.push(setInterval(function () { if (!estado.fim) db.patch(cam.participante(codigo, id), { t: { ".sv": "timestamp" } }); }, 30000));
         if (livre()) simQuestionario(id, i);
       }, 400 + Math.random() * 9000);
     });

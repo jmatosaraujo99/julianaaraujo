@@ -232,7 +232,22 @@
         return B.db.get(B.caminho.participante(codigo, pid) + "/t").then(function (srv) { B.acertarRelogio(t0, t1, srv); render(); });
       }).catch(function () {});
       ouvirEstado();
+      bater(true);   /* acabou de dar sinal: a próxima batida é daqui a 30 s */
     }
+
+    /* «ainda aqui»: de 30 em 30 segundos, só com a página à vista. O ecrã conta
+       como presentes os que deram sinal há pouco ou já responderam, por isso uma
+       página esquecida noutro navegador deixa de contar ao fim de um minuto. */
+    var batida = null;
+    function bater(soAgendar) {
+      clearTimeout(batida);
+      batida = setTimeout(bater, 30000);
+      if (soAgendar === true || !codigo || !ativa || document.visibilityState === "hidden") return;
+      B.db.patch(B.caminho.participante(codigo, pid), { t: { ".sv": "timestamp" } }).catch(function () {});
+    }
+    if (!opts.embutido) document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "visible" && batida) bater();
+    });
 
     function ouvirEstado() {
       render();

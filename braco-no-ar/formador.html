@@ -102,6 +102,10 @@
   .modelos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px;text-align:left}
   .modelo{border:1px solid var(--linha);border-radius:14px;padding:16px;background:#fff;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px}
   .modelo:hover{border-color:var(--teal)}
+  .modelos-tit{margin:26px 0 0;font-size:15px;text-align:left;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+  .modelos-tit span{font-weight:400;font-size:13px;color:var(--tinta-2)}
+  .modelos.quizzes{margin-top:10px}
+  .modelos.quizzes .modelo{border-left:4px solid var(--teal)}
   .modelo b{font-size:16px}.modelo span{font-size:13.5px;color:var(--tinta-2);line-height:1.45}
 
   /* editor */
@@ -308,6 +312,7 @@
 <script src="tela.js"></script>
 <script src="resultados.js"></script>
 <script src="modelos.js"></script>
+<script src="quizzes.js"></script>
 <script src="participante.js"></script>
 <script>
 (function () {
@@ -429,14 +434,20 @@
     return guardarAtividade(aid, at).then(function () { location.hash = "#/editar/" + aid; });
   }
   function botoesModelos(antes) {
-    return el("div", { class: "modelos" }, B.modelos.map(function (m) {
+    var botao = function (m) {
       return el("button", { class: "modelo", type: "button", onclick: function () { if (antes) antes(); criarAtividade(B.deModelo(m.id)); } }, el("b", null, m.nome), el("span", null, m.desc));
-    }));
+    };
+    var quizzes = B.modelos.filter(function (m) { return m.grupo === "quiz"; });
+    return el("div", null,
+      el("div", { class: "modelos" }, B.modelos.filter(function (m) { return m.grupo !== "quiz"; }).map(botao)),
+      quizzes.length ? el("h3", { class: "modelos-tit" }, "Quizzes por tema", el("span", null, "8 perguntas com pontos, pódio a meio e no fim")) : null,
+      quizzes.length ? el("div", { class: "modelos quizzes" }, quizzes.map(botao)) : null);
   }
   function janelaNova() {
     janela("Nova atividade", [
       el("p", { style: { margin: 0, color: "var(--tinta-2)" } }, "Começa numa tela em branco e vai acrescentando perguntas e layouts, ou parte de um modelo. Depois podes mudar tudo."),
       botoesModelos(fecharJanela)]);
+    $("dlg").classList.add("larga");
   }
 
   /* exportar e importar (as imagens vão dentro do ficheiro) */
