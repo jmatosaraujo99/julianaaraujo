@@ -20,7 +20,15 @@ window.BNA_CONFIG = {
   // Se ficar vazio, é calculado automaticamente.
   site: "",
 
-  // Mostrar o botão "Criar conta" na página de entrada do formador?
-  // Recomendado: false (crias as contas na Firebase, em Authentication → Users).
-  permitirRegisto: false
+  // Mostrar o separador "Criar conta" na página de entrada do formador?
+  // true: qualquer formador cria a sua conta. false: só tu crias contas na Firebase.
+  permitirRegisto: true,
+
+  // Autoria: aparece na entrada, na biblioteca, no ecrã e nos telemóveis.
+  autora: {
+    nome: "Juliana Araújo",
+    instagram: "julianaaraujo.pt",
+    site: "https://julianaaraujo.pt",
+    privacidade: "https://julianaaraujo.pt/privacidade.html"
+  }
 };

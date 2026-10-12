@@ -48,6 +48,8 @@
 .contador{display:flex;align-items:baseline;gap:18px;margin-top:34px}
 .contador b{font-family:var(--display);font-weight:400;font-size:100px;line-height:.9;color:var(--tinta);font-variant-numeric:tabular-nums}
 .contador span{font-family:var(--display);font-size:24px;letter-spacing:.06em;text-transform:uppercase;color:var(--suave)}
+.creditos-palco{margin:30px 0 0;font-size:17px;color:var(--suave)}
+.creditos-palco a{color:inherit;font-weight:700;text-decoration:none;border-bottom:2px solid currentColor}
 .alcunhas{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;max-height:96px;overflow:hidden}
 .alcunhas span{font-weight:700;font-size:18px;padding:6px 12px;border-radius:999px;background:var(--cartao);color:var(--tinta);animation:entra .4s ease-out}
 

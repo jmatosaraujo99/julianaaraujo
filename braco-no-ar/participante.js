@@ -18,7 +18,7 @@
     var rodape = el("footer", { class: "ph-rodape" }, "As respostas são anónimas.");
     var marcaEl = el("span", { class: "ph-marca" }, marca || B.nome);
     var pts = pontinhos(t);
-    root.append(el("header", { class: "ph-top" }, marcaEl, pts, net), main, rodape);
+    [el("header", { class: "ph-top" }, marcaEl, pts, net), main, rodape, B.creditos("ph-creditos")].forEach(function (x) { if (x) root.appendChild(x); });
     raiz.appendChild(root);
     return {
       root: root, main: main, rodape: rodape, net: net,
@@ -132,6 +132,14 @@
       if (!opts.embutido) setTimeout(function () { try { inp.focus(); } catch (e) {} }, 50);
     }
 
+    /* no fim: quem fez isto e onde a seguir */
+    function convite() {
+      var a = B.autora;
+      if (!a || !a.instagram || opts.embutido) return null;
+      var ig = String(a.instagram).replace(/^@/, "");
+      return el("a", { class: "ph-convite", href: "https://www.instagram.com/" + ig + "/", target: "_blank", rel: "noopener" },
+        el("span", null, "Gostaste? Há mais ideias para aprender em "), el("b", null, "@" + ig));
+    }
     function aCarregar(txt) { BNA.por(mold.main, M.grande(txt || "A entrar…", "")); }
 
     function entrar(c, viaFixo) {
@@ -151,7 +159,7 @@
         try { at = JSON.parse(conteudo); } catch (e) { ecraEntrar("Esta sessão tem um problema. Pede ao formador para a recomeçar."); return null; }
         return B.db.get(B.caminho.sessao(c) + "/estado").then(function (e) {
           estado = e || {};
-          if (estado.fim) { ativa = false; mold.tema(at.tema); BNA.por(mold.main, M.grande("Esta sessão <em>terminou.</em>", "Obrigado por participares!")); return; }
+          if (estado.fim) { ativa = false; mold.tema(at.tema); BNA.por(mold.main, M.grande("Esta sessão <em>terminou.</em>", "Obrigado por participares!"), convite()); return; }
           cv = estado.cv;
           var t = mold.tema(at.tema);
           corTopo(t.destaque);
@@ -428,7 +436,7 @@
       if (!ativa) {
         clearInterval(tempoTimer);
         mold.sup("destaque");
-        BNA.por(mold.main, M.grande("Obrigado!", "A sessão terminou. Já podes fechar esta página."));
+        BNA.por(mold.main, M.grande("Obrigado!", "A sessão terminou. Já podes fechar esta página."), convite());
         return;
       }
       if (livreAtivo()) return renderLivre();

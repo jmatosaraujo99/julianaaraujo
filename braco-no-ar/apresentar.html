@@ -33,6 +33,20 @@
   #ctl .sep{width:1px;height:22px;background:rgba(255,255,255,.18);margin:0 2px;flex:none}
   #ctl .prim{background:var(--amarelo);color:var(--escuro)}
   #ctl .prim:hover{background:#ffd43a}
+  #ctl .fim{color:#ffb4a2}
+  #ctl .fim:hover{background:rgba(255,120,90,.18)}
+  #ctl .pos:hover{color:#fff;text-decoration:underline}
+  .dlg .escolhas{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+  .dlg .escolhas button{display:block;width:100%;text-align:left;padding:14px 16px;border-radius:12px;font-size:15px;font-weight:400;line-height:1.4}
+  .dlg .escolhas button b{display:block;font-size:17px;font-weight:700;margin-bottom:2px}
+  .dlg .escolhas button.prim b{color:#fff}
+  .dlg .escolhas button.prim{color:rgba(255,255,255,.9)}
+  .cortina .creditos{margin-top:26px;font-size:14px;color:rgba(255,255,255,.6)}
+  .cortina .creditos a{all:unset;cursor:pointer;color:#fff;font-weight:600;text-decoration:underline;text-underline-offset:3px;padding:0;display:inline;background:none;border:0}
+  .cortina .resumo{display:flex;gap:34px;margin:6px 0 24px}
+  .cortina .resumo div{display:flex;flex-direction:column}
+  .cortina .resumo b{font-family:var(--display);font-weight:400;font-size:64px;line-height:1;color:var(--amarelo)}
+  .cortina .resumo span{font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.6)}
   #selo{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:21;font:700 13px/1.2 var(--texto);letter-spacing:.02em;padding:8px 14px;border-radius:999px;display:none;cursor:pointer;max-width:90vw;text-align:center}
   #selo.demo{display:block;background:var(--amarelo);color:var(--escuro)}
   #selo.erro{display:block;background:var(--vermelho);color:#fff}
@@ -97,7 +111,7 @@
   .cortina button,.cortina a{all:unset;cursor:pointer;display:block;padding:16px 18px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-weight:600;font-size:16px;line-height:1.4}
   .cortina button:hover,.cortina a:hover{background:rgba(255,255,255,.14)}
   .cortina button:focus-visible,.cortina a:focus-visible{outline:3px solid var(--amarelo)}
-  .cortina button b{display:block;font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:.04em;text-transform:uppercase;color:var(--amarelo)}
+  .cortina a b,.cortina button b{display:block;font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:.04em;text-transform:uppercase;color:var(--amarelo)}
   .cortina .prim{background:var(--amarelo);color:var(--escuro);border-color:var(--amarelo)}
   .cortina .prim b{color:var(--escuro)}
 </style>
@@ -113,6 +127,8 @@
 <div id="selo" role="status"></div>
 <div id="aviso" role="status" aria-live="polite"></div>
 <nav id="ctl" aria-label="Controlos">
+  <button id="b-sair" title="Voltar à biblioteca">‹ Biblioteca</button>
+  <span class="sep"></span>
   <button id="b-ant" title="Anterior (←)">‹</button>
   <span class="pos" id="b-pos" title="Ir para… (G)">–</span>
   <button id="b-seg" class="prim" title="Seguinte (→ ou espaço)">Seguinte ›</button>
@@ -124,7 +140,8 @@
   <span class="sep"></span>
   <button id="b-tel" title="Telemóvel de teste" hidden>📱</button>
   <button id="b-ecra" title="Ecrã inteiro (F)">⛶</button>
-  <button id="b-defs" title="Sessão, link e atalhos">⚙</button>
+  <button id="b-defs" title="Ligação, moderação e atalhos">⋯ Mais</button>
+  <button id="b-fim" class="fim" title="Terminar a sessão">■ Terminar</button>
 </nav>
 <dialog id="dlg"><div class="dlg" id="dlg-c"></div></dialog>
 
@@ -601,7 +618,8 @@
             curto ? el("li", null, el("b", null, "1"), el("span", null, "Vai a ", el("strong", null, curto))) : el("li", null, el("b", null, "1"), "Aponta a câmara ao código QR"),
             el("li", null, el("b", null, "2"), el("span", null, "Escreve o código ", el("strong", null, B.fmtCodigo(codPub()))))),
           el("div", { class: "contador" }, cont, el("span", null, "já entraram")),
-          at.pedirAlcunha ? chips : null),
+          at.pedirAlcunha ? chips : null,
+          B.creditos("creditos-palco")),
         el("div", { class: "qrg", html: qr() })),
       rodape());
     sec.querySelector(".tit").style.fontSize = (at.titulo || "").length > 40 ? "76px" : "110px";
@@ -738,6 +756,7 @@
     if (livre()) {
       var l = interativosLivres(), k = l.indexOf(livreVer);
       if (k < l.length - 1) ir(l[k + 1]);
+      else if (!soLeitura && !ver) abrirSair("fim");
       return;
     }
     var s = slideAtual();
@@ -745,6 +764,7 @@
     if (s && s.tipo === "roleta" && !soLeitura && vista.temResultado && !vista.temResultado() && !(vista.aGirar && vista.aGirar())) return vista.acao("rodar", { estado: estado });
     if (vista && vista.aGirar && vista.aGirar()) return;
     if (estado.i < at.slides.length - 1) ir(estado.i + 1);
+    else if (!soLeitura && !ver) abrirSair("fim");
   }
   function recuar() {
     if (livre()) {
@@ -904,20 +924,24 @@
     var seg = $("b-seg");
     if (lv) {
       var l = interativosLivres(), k = l.indexOf(livreVer);
-      seg.textContent = livreVer < 0 ? "Ver resultados ›" : k < l.length - 1 ? "Seguinte ›" : "Fim";
-      seg.disabled = livreVer >= 0 && k >= l.length - 1;
+      seg.textContent = livreVer < 0 ? "Ver resultados ›" : k < l.length - 1 ? "Seguinte ›" : "Fim ›";
+      seg.disabled = soLeitura && livreVer >= 0 && k >= l.length - 1;
     } else {
       if (s && s.tipo === "quiz" && !estado.rev) seg.textContent = "Revelar ›";
       else if (s && s.tipo === "roleta" && !soLeitura && vista && vista.temResultado && !vista.temResultado()) seg.textContent = "Rodar ›";
-      else seg.textContent = estado.i >= n - 1 ? "Fim" : estado.i < 0 ? "Começar ›" : "Seguinte ›";
-      seg.disabled = estado.i >= n - 1 && !(s && s.tipo === "quiz" && !estado.rev);
+      else seg.textContent = estado.i >= n - 1 ? "Fim ›" : estado.i < 0 ? "Começar ›" : "Seguinte ›";
+      seg.disabled = soLeitura && estado.i >= n - 1 && !(s && s.tipo === "quiz" && !estado.rev);
     }
     $("b-tel").hidden = !B.demo || soLeitura;
+    $("b-fim").hidden = soLeitura || !!window.BNA_ARTEFACTO;
+    $("b-sair").hidden = !!window.BNA_ARTEFACTO;
   }
   setInterval(function () { if (estado.tmp) atualizarControlos(); }, 1000);
   setInterval(function () { if (vista && !soLeitura) pedir(); }, 15000);   /* quem sai deixa de contar */
 
   $("b-ant").onclick = recuar;
+  $("b-sair").onclick = function () { if (soLeitura) irBiblioteca(); else abrirSair("sair"); };
+  $("b-fim").onclick = function () { abrirSair("terminar"); };
   $("b-seg").onclick = avancar;
   $("b-acao").onclick = acao;
   $("b-tempo").onclick = tempo;
@@ -955,7 +979,7 @@
     document.body.style.cursor = "";
     clearTimeout(timerCtl);
     timerCtl = setTimeout(function () {
-      if ($("ctl").matches(":hover") || $("dlg").open) return mexeu();
+      if ($("ctl").matches(":hover") || $("dlg").open || (estado && estado.i < 0 && !livre())) return mexeu();
       $("ctl").classList.add("escondido");
       document.body.style.cursor = "none";
     }, 3000);
@@ -980,6 +1004,44 @@
     });
     janela(lv ? "Mostrar resultados de…" : "Ir para…", [lista]);
   }
+  /* ---------------- sair, terminar e fim ---------------- */
+  function irBiblioteca() { location.href = "formador.html" + (B.demo ? "?demo" : "") + "#/"; }
+  function totalRespostas() {
+    var n = 0;
+    for (var sid in resp) { var r = resp[sid]; if (r && typeof r === "object") n += Object.keys(r).length; }
+    return n;
+  }
+  function abrirSair(motivo) {
+    var np = presentes();
+    var titulo = motivo === "fim" ? "Chegaste ao fim" : motivo === "terminar" ? "Terminar a sessão?" : "Sair da apresentação";
+    var texto = "Sessão " + B.fmtCodigo(codPub()) + " · " + np + (np === 1 ? " participante" : " participantes") + ".";
+    var bTerminar = el("button", { class: "prim", onclick: terminar }, el("b", null, "Terminar a sessão e ver os resultados"),
+      "Os telemóveis mostram «Obrigado» e os resultados ficam guardados na biblioteca.");
+    var bBiblioteca = el("button", { onclick: irBiblioteca }, el("b", null, "Voltar à biblioteca sem terminar"),
+      "A sessão fica aberta: voltas a ela pelo cartão da atividade (botão «Voltar ao ecrã»).");
+    var bContinuar = el("button", { onclick: function () { $("dlg").close(); } }, el("b", null, "Continuar a apresentar"), null);
+    var l = motivo === "terminar" ? [bTerminar, bContinuar] : motivo === "fim" ? [bTerminar, bContinuar, bBiblioteca] : [bBiblioteca, bTerminar, bContinuar];
+    janela(titulo, [el("p", null, texto), el("div", { class: "escolhas" }, l)]);
+  }
+  var aTerminar = false;
+  function terminar() {
+    if (aTerminar || window.BNA_ARTEFACTO) return;
+    aTerminar = true;
+    if ($("dlg").open) $("dlg").close();
+    var np = presentes(), nr = totalRespostas();
+    estado.fim = true; delete estado.tmp; gravar();
+    B.terminarSessao(uid, codigo, fixo).catch(function () {});
+    var ir1 = el("a", { class: "prim", href: "formador.html" + (B.demo ? "?demo" : "") + "#/resultados/" + codigo }, el("b", null, "Ver os resultados"), "Respostas de cada pergunta, para guardar ou descarregar.");
+    var ir2 = el("a", { href: "formador.html" + (B.demo ? "?demo" : "") + "#/" }, el("b", null, "Voltar à biblioteca"), "As tuas atividades.");
+    var c = cortina("Sessão terminada", "Obrigado! Os telemóveis já mostram o fim da sessão.", [ir1, ir2]);
+    var caixa = c.querySelector(".caixa");
+    caixa.insertBefore(el("div", { class: "resumo" },
+      el("div", null, el("b", null, String(np)), el("span", null, np === 1 ? "participante" : "participantes")),
+      el("div", null, el("b", null, String(nr)), el("span", null, nr === 1 ? "resposta" : "respostas"))), caixa.querySelector(".opcoes"));
+    var cr = B.creditos("creditos");
+    if (cr) caixa.appendChild(cr);
+  }
+
   function abrirDefs() {
     var link = B.linkEntrar(codPub() || "000000"), art = !!window.BNA_ARTEFACTO;
     var kids = [
@@ -1001,13 +1063,7 @@
       el("h3", null, art ? "Recomeçar" : "Terminar"),
       el("p", null, art ? "Isto é uma demonstração. No site a sério, «Terminar a sessão» fecha a sessão nos telemóveis e abre os resultados." : soLeitura ? "Esta sessão já está terminada." : "Os resultados ficam guardados na biblioteca. Terminar fecha a sessão nos telemóveis."),
       el("div", { class: "bts" },
-        soLeitura || art ? null : confirmar("Terminar a sessão", "Clica outra vez para terminar", function () {
-          estado.fim = true; delete estado.tmp; gravar();
-          db.patch(cam.sessao(codigo), { ativa: false }, { auth: true }).catch(function () {});
-          if (fixo) db.patch(cam.fixo(fixo), { s: null }, { auth: true }).catch(function () {});
-          db.patch(cam.indiceSessao(uid, codigo), { fim: { ".sv": "timestamp" } }, { auth: true }).catch(function () {});
-          setTimeout(function () { location.href = "formador.html#/resultados/" + codigo; }, 700);
-        }),
+        soLeitura || art ? null : el("button", { class: "perigo", onclick: function () { abrirSair("terminar"); } }, "Terminar a sessão…"),
         confirmar("Começar sessão nova", "Clica outra vez: código novo, sem respostas", function () {
           if (art) { location.reload(); return; }
           location.href = location.pathname + "?a=" + aid + (B.demo && q.has("demo") ? "&demo" : "") + "&nova=1";

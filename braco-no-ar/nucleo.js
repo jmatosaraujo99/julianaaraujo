@@ -10,6 +10,7 @@
   var F = C.firebase || {};
   var B = (window.BNA = { C: C });
   B.nome = C.nome || "Braço no Ar";
+  B.autora = C.autora || null;
 
   /* ---------------- utilitários ---------------- */
 
@@ -496,6 +497,29 @@
   /* ---------------- código fixo de cada atividade ----------------
      Como no Mentimeter: o código e o QR de uma atividade não mudam de sessão
      para sessão. fixos/<código> diz qual é a sessão aberta nesse momento (s). */
+  /* «Braço no Ar · criado por Juliana Araújo · @julianaaraujo.pt» (as ligações abrem noutro separador) */
+  B.creditos = function (classe) {
+    var a = B.autora, el = B.el;
+    if (!a || !a.nome) return null;
+    var ig = a.instagram ? String(a.instagram).replace(/^@/, "") : "";
+    return el("p", { class: classe || "creditos" },
+      el("span", null, B.nome + " · criado por "),
+      a.site ? el("a", { href: a.site, target: "_blank", rel: "noopener" }, a.nome) : el("b", null, a.nome),
+      ig ? el("span", null, " · ") : null,
+      ig ? el("a", { href: "https://www.instagram.com/" + ig + "/", target: "_blank", rel: "noopener", "aria-label": "Instagram de " + a.nome }, "@" + ig) : null);
+  };
+
+  /* fecha uma sessão: telemóveis veem «terminou», o código fixo fica livre, os resultados ficam guardados */
+  B.terminarSessao = function (uid, codigo, fixo) {
+    var cm = B.caminho, o = { auth: true };
+    return Promise.all([
+      Db.patch(cm.sessao(codigo) + "/estado", { fim: true, tmp: null }, o),
+      Db.patch(cm.sessao(codigo), { ativa: false }, o),
+      fixo ? Db.get(cm.fixo(fixo) + "/s").then(function (s) { if (String(s) === String(codigo)) return Db.patch(cm.fixo(fixo), { s: null }, o); }) : null,
+      Db.patch(cm.indiceSessao(uid, codigo), { fim: { ".sv": "timestamp" } }, o)
+    ]);
+  };
+
   B.codigoFixo = function (uid, aid, titulo) {
     var cm = B.caminho;
     return Db.get(cm.fixoDe(uid, aid), { auth: true }).then(function (f) {

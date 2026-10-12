@@ -97,6 +97,41 @@
   .procura::after{content:"";position:absolute;left:24px;top:50%;width:7px;height:2px;margin-top:4px;background:var(--tinta-2);transform:rotate(45deg)}
   .sem-res{grid-column:1/-1;color:var(--tinta-2);padding:30px 0;text-align:center;margin:0}
   .cartao-at .bts{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+  .cartao-at .info>.bts{display:grid;grid-template-columns:1fr 1fr auto;gap:6px}
+  .cartao-at .info>.bts .bt.am{grid-column:1 / -1;padding:11px 15px;font-size:15px}
+  .cartao-at .info>.bts .bt{padding:8px 10px}
+  .bt.grande{padding:13px 18px;font-size:15px}
+  .seps-ent{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:var(--papel-2);border-radius:12px;margin-bottom:22px}
+  .sep-ent{border:0;background:transparent;padding:10px 12px;border-radius:9px;font:inherit;font-weight:700;font-size:15px;color:var(--tinta-2);cursor:pointer}
+  .sep-ent.ativo{background:#fff;color:var(--tinta);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+  .caixa-entrar{width:100%;max-width:400px}
+  .form-entrar .campo{display:flex;flex-direction:column;gap:4px}
+  .form-entrar .rotulo{display:flex;flex-direction:column;gap:6px}
+  .aceito{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.45;color:var(--tinta-2)}
+  .aceito input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--teal)}
+  .aceito a,.troca-ent a{color:var(--teal);font-weight:600}
+  .troca-ent{margin:4px 0 0;font-size:14px;color:var(--tinta-2);text-align:center}
+  .creditos{margin:0;font-size:13.5px;color:var(--tinta-2)}
+  .creditos a{color:var(--tinta);font-weight:700;text-decoration:none;border-bottom:1.5px solid currentColor}
+  .creditos-escuro{color:rgba(255,255,255,.62);margin-top:18px}
+  .creditos-escuro a{color:#fff}
+  .rodape-pag{max-width:1240px;margin:0 auto;padding:10px 24px 40px;text-align:center}
+  .passos-cf{list-style:none;counter-reset:p;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0 6px;padding:0;text-align:left}
+  .passos-cf li{counter-increment:p;background:var(--papel);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.45;color:var(--tinta-2)}
+  .passos-cf li::before{content:counter(p);font-family:var(--display);font-size:30px;line-height:1;color:var(--teal)}
+  .passos-cf b{color:var(--tinta);font-size:15px}
+  .sub-dlg{margin:18px 0 6px;font-size:15px}
+  .lista-ajuda{margin:0;padding-left:18px;line-height:1.7;font-size:14.5px}
+  .lista-ajuda kbd{font:600 12px/1 inherit;background:#fff;border:1px solid var(--linha);border-bottom-width:2px;border-radius:5px;padding:2px 6px}
+  .ao-vivo{border:1px solid rgba(214,69,40,.35);background:#fff4f0;border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+  .ao-vivo[hidden]{display:none}
+  .ao-vivo p{margin:0;font-size:13.5px}
+  .ao-vivo .ponto{display:inline-block;width:9px;height:9px;border-radius:50%;background:#d64528;margin-right:7px;animation:pulsar 1.6s infinite}
+  .ao-vivo .bts{display:flex;gap:6px;flex-wrap:wrap}
+  .ao-vivo.feito{border-color:var(--linha);background:var(--papel)}
+  .ao-vivo-ok{font-size:13.5px;font-weight:600}
+  .bt.perigo{border-color:#d64528;color:#b8361d}
+  @keyframes pulsar{0%,100%{opacity:1}50%{opacity:.35}}
   .vazio-bib{background:#fff;border:1px dashed rgba(19,42,39,.25);border-radius:16px;padding:40px 30px;text-align:center}
   .vazio-bib h2{font-family:var(--display);font-weight:400;font-size:32px;text-transform:uppercase;margin:0 0 8px}
   .modelos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px;text-align:left}
@@ -377,47 +412,121 @@
   /* ======================================================================
      ENTRAR
      ====================================================================== */
-  function ecraEntrar() {
+  function ecraEntrar(modoInicial) {
     document.title = B.nome + " · entrar";
-    var email = el("input", { class: "inp", type: "email", autocomplete: "username", placeholder: "o.teu@email.pt" });
-    var senha = el("input", { class: "inp", type: "password", autocomplete: "current-password", placeholder: "Palavra-passe" });
-    var erro = el("p", { class: "erro" }), ok = el("p", { class: "ok-msg" });
-    var bt = el("button", { class: "bt prim", type: "submit" }, "Entrar");
+    var podeCriar = !B.demo && B.C.permitirRegisto;
+    var modo = podeCriar && modoInicial === "criar" ? "criar" : "entrar";
+    var caixa = el("div", { class: "caixa-entrar" });
+    function E(r, i, ajuda) { return el("div", { class: "campo" }, el("label", { class: "rotulo" }, r, i), ajuda ? el("p", { class: "ajuda" }, ajuda) : null); }
     function feito() { location.hash = "#/"; navegar(); }
-    var form = el("form", { class: "form-entrar", onsubmit: function (ev) {
-      ev.preventDefault(); erro.textContent = ""; ok.textContent = "";
-      if (B.demo) { B.auth.entrar(email.value || "demo@exemplo.pt", "").then(feito); return; }
-      bt.disabled = true; bt.textContent = "A entrar…";
-      B.auth.entrar(email.value.trim(), senha.value).then(feito).catch(function (e) { erro.textContent = e.message; bt.disabled = false; bt.textContent = "Entrar"; });
-    } },
-      el("h2", null, "Entrar"),
-      B.demo ? el("p", { class: "ajuda", style: { fontSize: "14px" } }, "A Firebase ainda não está ligada (config.js). Podes experimentar tudo em modo de demonstração: fica guardado só neste browser.") : null,
-      B.demo ? null : E("Email", email), B.demo ? null : E("Palavra-passe", senha),
-      erro, ok, B.demo ? el("button", { class: "bt prim", type: "submit" }, "Entrar em modo de demonstração") : bt,
-      B.demo ? null : el("button", { class: "ligacao", type: "button", onclick: function () {
-        erro.textContent = ""; ok.textContent = "";
-        if (!email.value.trim()) { erro.textContent = "Escreve o teu email primeiro."; return; }
-        B.auth.recuperar(email.value.trim()).then(function () { ok.textContent = "Enviámos um email para definires uma palavra-passe nova."; })
-          .catch(function (e) { erro.textContent = e.message; });
-      } }, "Esqueci-me da palavra-passe"),
-      !B.demo && B.C.permitirRegisto ? el("button", { class: "ligacao", type: "button", onclick: function () {
-        erro.textContent = "";
-        B.auth.registar(email.value.trim(), senha.value).then(feito).catch(function (e) { erro.textContent = e.message; });
-      } }, "Criar conta com este email e palavra-passe") : null);
-    function E(r, i) { return el("div", { class: "campo" }, el("label", { class: "rotulo" }, r), i); }
+    function separadores() {
+      if (!podeCriar) return null;
+      function sep(m, t) {
+        return el("button", { type: "button", class: "sep-ent" + (modo === m ? " ativo" : ""), "aria-pressed": modo === m ? "true" : "false",
+          onclick: function () { if (modo !== m) { modo = m; desenhar(); } } }, t);
+      }
+      return el("div", { class: "seps-ent", role: "group", "aria-label": "Entrar ou criar conta" }, sep("entrar", "Entrar"), sep("criar", "Criar conta"));
+    }
+    function formEntrar() {
+      var email = el("input", { class: "inp", type: "email", autocomplete: "username", placeholder: "o.teu@email.pt", required: true });
+      var senha = el("input", { class: "inp", type: "password", autocomplete: "current-password", placeholder: "Palavra-passe", required: true });
+      var erro = el("p", { class: "erro", role: "alert" }), ok = el("p", { class: "ok-msg", role: "status" });
+      var bt = el("button", { class: "bt prim grande", type: "submit" }, B.demo ? "Entrar em modo de demonstração" : "Entrar");
+      var form = el("form", { class: "form-entrar", onsubmit: function (ev) {
+        ev.preventDefault(); erro.textContent = ""; ok.textContent = "";
+        if (B.demo) { B.auth.entrar(email.value || "demo@exemplo.pt", "").then(feito); return; }
+        bt.disabled = true; bt.textContent = "A entrar…";
+        B.auth.entrar(email.value.trim(), senha.value).then(feito).catch(function (e) { erro.textContent = e.message; bt.disabled = false; bt.textContent = "Entrar"; });
+      } },
+        el("h2", null, "Entrar"),
+        B.demo ? el("p", { class: "ajuda", style: { fontSize: "14px" } }, "A Firebase ainda não está ligada (config.js). Podes experimentar tudo em modo de demonstração: fica guardado só neste browser.") : null,
+        B.demo ? null : E("Email", email), B.demo ? null : E("Palavra-passe", senha),
+        erro, ok, bt,
+        B.demo ? null : el("button", { class: "ligacao", type: "button", onclick: function () {
+          erro.textContent = ""; ok.textContent = "";
+          if (!email.value.trim()) { erro.textContent = "Escreve o teu email em cima e carrega outra vez aqui."; email.focus(); return; }
+          B.auth.recuperar(email.value.trim()).then(function () { ok.textContent = "Enviámos-te um email para definires uma palavra-passe nova (vê também o spam)."; })
+            .catch(function (e) { erro.textContent = e.message; });
+        } }, "Esqueci-me da palavra-passe"),
+        podeCriar ? el("p", { class: "troca-ent" }, "Ainda não tens conta? ", el("button", { class: "ligacao", type: "button", onclick: function () { modo = "criar"; desenhar(); } }, "Cria uma, é grátis")) : null);
+      return { form: form, foco: B.demo ? bt : email };
+    }
+    function formCriar() {
+      var a = B.autora || {};
+      var nome = el("input", { class: "inp", type: "text", autocomplete: "name", placeholder: "Ex.: Rita Martins", maxlength: 60 });
+      var email = el("input", { class: "inp", type: "email", autocomplete: "email", placeholder: "o.teu@email.pt", required: true });
+      var senha = el("input", { class: "inp", type: "password", autocomplete: "new-password", placeholder: "Pelo menos 6 caracteres", minlength: 6, required: true });
+      var senha2 = el("input", { class: "inp", type: "password", autocomplete: "new-password", placeholder: "Repete a palavra-passe", required: true });
+      var aceito = el("input", { type: "checkbox", required: true });
+      var erro = el("p", { class: "erro", role: "alert" });
+      var bt = el("button", { class: "bt prim grande", type: "submit" }, "Criar conta");
+      var form = el("form", { class: "form-entrar", onsubmit: function (ev) {
+        ev.preventDefault(); erro.textContent = "";
+        if (senha.value.length < 6) { erro.textContent = "A palavra-passe tem de ter pelo menos 6 caracteres."; senha.focus(); return; }
+        if (senha.value !== senha2.value) { erro.textContent = "As duas palavras-passe não são iguais."; senha2.focus(); return; }
+        if (!aceito.checked) { erro.textContent = "Para criar a conta, aceita a política de privacidade."; return; }
+        bt.disabled = true; bt.textContent = "A criar a conta…";
+        B.auth.registar(email.value.trim(), senha.value).then(function () {
+          var n = nome.value.replace(/\s+/g, " ").trim();
+          return db.put("u/" + B.auth.uid() + "/perfil", { nome: n || null, criado: { ".sv": "timestamp" } }, { auth: true }).catch(function () {});
+        }).then(function () { B.store.set("bna-boas-vindas", "1"); feito(); })
+          .catch(function (e) { erro.textContent = e.message; bt.disabled = false; bt.textContent = "Criar conta"; });
+      } },
+        el("h2", null, "Criar conta"),
+        el("p", { class: "ajuda", style: { fontSize: "14px", margin: "-6px 0 2px" } }, "Para formadores e professores. Os participantes nunca precisam de conta: entram com um código."),
+        E("Nome", nome, "Opcional. Só tu o vês."), E("Email", email), E("Palavra-passe", senha), E("Repetir a palavra-passe", senha2),
+        el("label", { class: "aceito" }, aceito, el("span", null, "Li e aceito a ",
+          a.privacidade ? el("a", { href: a.privacidade, target: "_blank", rel: "noopener" }, "política de privacidade") : "política de privacidade",
+          ". Guardamos o teu email e as atividades que criares; os participantes respondem de forma anónima.")),
+        erro, bt,
+        el("p", { class: "troca-ent" }, "Já tens conta? ", el("button", { class: "ligacao", type: "button", onclick: function () { modo = "entrar"; desenhar(); } }, "Entra aqui")));
+      return { form: form, foco: nome };
+    }
+    function desenhar() {
+      var f = modo === "criar" ? formCriar() : formEntrar();
+      BNA.por(caixa, separadores(), f.form);
+      setTimeout(function () { try { f.foco.focus(); } catch (e) {} }, 30);
+    }
     BNA.por(raiz, el("div", { class: "entrada-f" },
       el("div", { class: "lado-a" },
         el("div", null, logo()),
         el("div", null, el("h1", { html: "Põe a sala <em>a responder.</em>" }),
           el("p", null, "Votações, quizzes, nuvens de palavras, perguntas da sala e questionários para as tuas formações. Os participantes entram com um código, sem apps nem contas.")),
-        el("div", { class: "tipos-mini" }, B.ordemTipos.map(function (k) { return el("span", null, T[k].nome); }))),
-      el("div", { class: "lado-b" }, form)));
-    setTimeout(function () { try { (B.demo ? form.querySelector("button") : email).focus(); } catch (e) {} }, 30);
+        el("div", null,
+          el("div", { class: "tipos-mini" }, B.ordemTipos.map(function (k) { return el("span", null, T[k].nome); })),
+          B.creditos("creditos creditos-escuro"))),
+      el("div", { class: "lado-b" }, caixa)));
+    desenhar();
   }
   function sair() { B.auth.sair(); location.hash = "#/"; navegar(); }
+  var perfilNome = null;
   function contaDir() {
+    var quem = el("span", { class: "quem", title: B.auth.email() }, perfilNome || B.auth.email());
+    if (perfilNome === null && !B.demo) {
+      perfilNome = "";
+      db.get("u/" + B.auth.uid() + "/perfil/nome", { auth: true }).then(function (n) { if (n) { perfilNome = String(n); quem.textContent = perfilNome; } }).catch(function () {});
+    }
     return el("div", { style: { display: "flex", alignItems: "center", gap: "12px", minWidth: "0" } },
-      el("span", { class: "quem" }, B.auth.email()), el("button", { class: "bt fant peq", onclick: sair }, "Sair"));
+      el("button", { class: "bt fant peq", onclick: janelaAjuda }, "Ajuda"),
+      quem, el("button", { class: "bt fant peq", onclick: sair }, "Sair"));
+  }
+  /* como funciona, em três passos, mais o que fazer durante a sessão */
+  function passosComoFunciona() {
+    return el("ol", { class: "passos-cf" },
+      el("li", null, el("b", null, "Cria a atividade"), el("span", null, "Parte de um modelo ou de uma tela em branco e junta perguntas: escolha múltipla, quiz, nuvem de palavras, resposta aberta…")),
+      el("li", null, el("b", null, "Carrega em ▶ Apresentar"), el("span", null, "Projeta o ecrã. Aparece o código e o QR: a turma entra no telemóvel, sem apps nem contas.")),
+      el("li", null, el("b", null, "Avança e vê as respostas"), el("span", null, "Usa «Seguinte ›» ou as setas do teclado. No fim, «Terminar» guarda os resultados aqui na biblioteca.")));
+  }
+  function janelaAjuda() {
+    janela("Como funciona", [
+      passosComoFunciona(),
+      el("h3", { class: "sub-dlg" }, "Durante a apresentação"),
+      el("ul", { class: "lista-ajuda" },
+        el("li", null, el("b", null, "‹ Biblioteca"), " volta para aqui; a sessão continua aberta e retomas no cartão da atividade."),
+        el("li", null, el("b", null, "■ Terminar"), " fecha a sessão nos telemóveis e guarda os resultados."),
+        el("li", null, el("b", null, "QR"), " mostra o código em grande para quem chega atrasado."),
+        el("li", null, "Teclado: ", el("kbd", null, "→"), " seguinte, ", el("kbd", null, "←"), " anterior, ", el("kbd", null, "F"), " ecrã inteiro, ", el("kbd", null, "Q"), " QR.")),
+      B.creditos("creditos")]);
   }
 
   /* ======================================================================
@@ -501,19 +610,22 @@
         el("div", { class: "cab-pag" },
           el("div", null, el("h1", null, "As tuas atividades"), el("p", null, "Cria, edita e apresenta. Os resultados de cada sessão ficam guardados.")),
           bts),
-        grelha));
+        grelha),
+      el("footer", { class: "rodape-pag" }, B.creditos("creditos")));
     db.get(cam.atividades(B.auth.uid()), { auth: true }).then(function (lista) {
       var ids = Object.keys(lista || {}).filter(function (k) { return lista[k] && lista[k].dados; });
       ids.sort(function (a, b) { return (lista[b].alterado || 0) - (lista[a].alterado || 0); });
       if (!ids.length) {
         grelha.replaceWith(el("div", { class: "vazio-bib" },
-          el("h2", null, "Ainda não tens atividades"),
-          el("p", { style: { margin: 0, color: "var(--tinta-2)" } }, "Começa por um modelo. O Raio-X da tenda é a sessão da Feira de Emprego do IPCA, pronta a usar."),
+          el("h2", null, B.store.get("bna-boas-vindas") ? "Bem-vinda, bem-vindo!" : "Ainda não tens atividades"),
+          passosComoFunciona(),
+          el("p", { style: { margin: "6px 0 0", color: "var(--tinta-2)" } }, "Começa por um modelo. Depois podes mudar tudo."),
           botoesModelos()));
+        B.store.del("bna-boas-vindas");
         return;
       }
       BNA.por(grelha);
-      var cartoes = [];
+      var cartoes = [], porAtividade = {};
       ids.forEach(function (aid) {
         var reg = lista[aid], at;
         try { at = JSON.parse(reg.dados); } catch (e) { return; }
@@ -521,15 +633,18 @@
         var mini = B.miniatura(at, at.slides[0], null, { imagem: urlImagem });
         mini.onclick = abrir;
         var n = reg.n || at.slides.length;
+        var aoVivo = el("div", { class: "ao-vivo", hidden: "hidden" });
         var cartao = el("article", { class: "cartao-at" }, mini, el("div", { class: "info" },
           el("h3", null, reg.titulo || "Sem título"),
           el("span", { class: "meta" }, at.ritmo === "livre" ? el("span", { class: "etq" }, "Questionário") : null,
             n + (n === 1 ? " diapositivo" : " diapositivos") + " · alterada " + B.data(reg.alterado)),
+          aoVivo,
           el("div", { class: "bts" },
-            el("button", { class: "bt prim peq", onclick: abrir }, "Editar"),
-            el("a", { class: "bt am peq", href: "apresentar.html?a=" + aid, target: "_blank", rel: "opener" }, "▶ Apresentar"),
-            el("button", { class: "bt peq", onclick: function () { janelaSessoes(aid, reg.titulo); } }, "Resultados"),
-            el("button", { class: "bt peq", "aria-label": "Mais opções", onclick: function () { janelaMais(aid, reg, at); } }, "⋯"))));
+            el("a", { class: "bt am", href: linkApresentar(aid) }, "▶ Apresentar"),
+            el("button", { class: "bt", onclick: abrir }, "Editar"),
+            el("button", { class: "bt", onclick: function () { janelaSessoes(aid, reg.titulo); } }, "Resultados"),
+            el("button", { class: "bt", "aria-label": "Mais opções", title: "Partilhar, duplicar, exportar, apagar", onclick: function () { janelaMais(aid, reg, at); } }, "⋯"))));
+        porAtividade[aid] = aoVivo;
         grelha.appendChild(cartao);
         cartoes.push({ t: B.semAcentos(String(reg.titulo || "").toLowerCase()), el: cartao });
       });
@@ -546,7 +661,36 @@
         bts.prepend(el("div", { class: "procura" }, inp));
       }
       setTimeout(B.limparMinis, 0);
+      sessoesAbertas(porAtividade);
     }).catch(function (e) { BNA.por(grelha, el("p", { class: "erro" }, e.message)); });
+  }
+  function linkApresentar(aid, s) { return "apresentar.html?a=" + aid + (s ? "&s=" + s : "") + (B.demo ? "&demo" : ""); }
+  /* sessões ainda abertas: aparecem no cartão, com «Voltar ao ecrã» e «Terminar» */
+  function sessoesAbertas(porAtividade) {
+    if (B.demo) return;
+    var uid = B.auth.uid();
+    db.get("u/" + uid + "/fixos", { auth: true }).then(function (fx) {
+      Object.keys(fx || {}).forEach(function (aid) {
+        var caixa = porAtividade[aid], f = String(fx[aid]);
+        if (!caixa) return;
+        db.get(cam.fixo(f) + "/s").then(function (s) {
+          if (!s) return;
+          s = String(s);
+          var bTerminar = el("button", { class: "bt peq perigo", onclick: function () {
+            if (!bTerminar.getAttribute("data-ok")) { bTerminar.setAttribute("data-ok", "1"); bTerminar.textContent = "Clica outra vez para terminar"; return; }
+            bTerminar.disabled = true; bTerminar.textContent = "A terminar…";
+            B.terminarSessao(uid, s, f).then(function () {
+              BNA.por(caixa, el("span", { class: "ao-vivo-ok" }, "Sessão terminada. "), el("a", { href: "#/resultados/" + s }, "Ver resultados"));
+              caixa.classList.add("feito");
+            }).catch(function (e) { bTerminar.disabled = false; bTerminar.textContent = "Terminar"; alert(e.message); });
+          } }, "Terminar");
+          BNA.por(caixa,
+            el("p", null, el("i", { class: "ponto", "aria-hidden": "true" }), el("b", null, "Sessão aberta"), " · código " + B.fmtCodigo(f)),
+            el("div", { class: "bts" }, el("a", { class: "bt peq prim", href: linkApresentar(aid, s) }, "Voltar ao ecrã"), bTerminar));
+          caixa.hidden = false;
+        }).catch(function () {});
+      });
+    }).catch(function () {});
   }
   function janelaMais(aid, reg, at) {
     janela(reg.titulo || "Atividade", [
@@ -776,7 +920,10 @@
           el("button", { class: "bt", onclick: fecharJanela }, "Corrigir primeiro"),
           el("button", { class: "bt am", onclick: function () { fecharJanela(); abrirApresentar(); } }, "Apresentar assim mesmo"))]);
     }
-    function abrirApresentar() { window.open("apresentar.html?a=" + aid, "_blank"); }
+    function abrirApresentar() {
+      var ir = function () { location.href = linkApresentar(aid); };
+      guardarAtividade(aid, at).then(ir, ir);
+    }
 
     /* ---------- lista de diapositivos, com miniaturas ---------- */
     var arrastado = null, minis = {};
@@ -1052,7 +1199,7 @@
   function resultados(c) {
     var uid = B.auth.uid();
     var corpo = el("main", { class: "pagina" }, el("p", { class: "carregar" }, "A carregar os resultados…"));
-    BNA.por(raiz, topo(null, contaDir()), faixaDemo(), corpo);
+    BNA.por(raiz, topo(el("div", { style: { flex: "1" } }, el("a", { class: "bt fant peq", href: "#/" }, "‹ Biblioteca")), contaDir()), faixaDemo(), corpo);
     Promise.all([
       db.get(cam.indiceSessao(uid, c), { auth: true }),
       db.get(cam.respostas(c)), db.get(cam.participantes(c)), db.get(cam.sessao(c) + "/x", { auth: true })
