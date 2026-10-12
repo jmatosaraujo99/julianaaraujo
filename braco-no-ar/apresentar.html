@@ -489,7 +489,7 @@
     var d = { r: s ? resp[s.id] || {} : {}, todas: resp, oculto: !!estado.oc && !livre(), revelado: livre() ? true : !!estado.rev, estado: estado,
       ocultos: s && extra.ocultos ? extra.ocultos[s.id] || {} : {}, respondidas: s && extra.respondidas ? extra.respondidas[s.id] || {} : {},
       n: presentes(), parts: parts };
-    if (s && s.tipo === "classificacao") d.placar = placar();
+    if (s && s.tipo === "classificacao") { d.placar = placar(); d.placarEquipas = B.placarEquipas(at, d.placar, parts); }
     return d;
   }
   var raf = false;
@@ -560,6 +560,8 @@
     var m = {};
     pl.forEach(function (x) { m[x.pid] = [delta[x.pid] || 0, x.total, x.pos]; });
     for (var pid in delta) if (!m[pid]) m[pid] = [0, 0, 0];
+    var pe = B.placarEquipas(at, pl, parts);
+    if (pe) { m._eq = {}; pe.forEach(function (x) { m._eq[x.i] = [x.media, x.pos]; }); }
     var pv = Date.now();
     db.put(cam.pontos(codigo), m, { auth: true }).then(function () {
       estado.pv = pv; estado.np = pl.length;
@@ -607,6 +609,11 @@
 
   function vistaEntrada() {
     var cont = el("b", null, "0"), chips = el("div", { class: "alcunhas" });
+    var eqsE = B.equipasDe(at), eqConts = [];
+    var eqEntrada = eqsE ? el("div", { class: "equipas-entrada" }, eqsE.map(function (e) {
+      var b = el("b", null, "0"); eqConts.push(b);
+      return el("span", { style: { "--c": e.cor } }, el("i"), e.nome, b);
+    })) : null;
     var curto = B.siteCurto();
     if (soLeitura) {
       var capa = el("section", { class: "sl sup-destaque" },
@@ -626,7 +633,8 @@
             curto ? el("li", null, el("b", null, "1"), el("span", null, "Vai a ", el("strong", null, curto))) : el("li", null, el("b", null, "1"), "Aponta a câmara ao código QR"),
             el("li", null, el("b", null, "2"), el("span", null, "Escreve o código ", el("strong", null, B.fmtCodigo(codPub()))))),
           el("div", { class: "contador" }, cont, el("span", null, "já entraram")),
-          at.pedirAlcunha ? chips : null,
+          eqEntrada,
+          at.pedirAlcunha && !eqEntrada ? chips : null,
           B.creditos("creditos-palco")),
         el("div", { class: "qrg", html: qr() })),
       rodape());
@@ -635,6 +643,11 @@
     return {
       el: sec, upd: function (d) {
         cont.textContent = String(d.n);
+        if (eqsE) {
+          var ce = eqsE.map(function () { return 0; });
+          for (var pe in d.parts) { var xe = d.parts[pe]; if (xe && typeof xe.eq === "number" && ce[xe.eq] !== undefined) ce[xe.eq]++; }
+          eqConts.forEach(function (b, i) { b.textContent = String(ce[i]); });
+        }
         if (at.pedirAlcunha) {
           Object.keys(d.parts).forEach(function (p) {
             var n = d.parts[p] && d.parts[p].n;
@@ -1205,6 +1218,7 @@
       setTimeout(function () {
         var v = { t: { ".sv": "timestamp" } };
         if (at.pedirAlcunha) v.n = NOMES[i % NOMES.length];
+        if (B.equipasDe(at)) v.eq = i % B.equipasDe(at).length;
         db.put(cam.participante(codigo, id), v);
         SIM.timers.push(setInterval(function () { if (!estado.fim) db.patch(cam.participante(codigo, id), { t: { ".sv": "timestamp" } }); }, 30000));
         if (livre()) simQuestionario(id, i);

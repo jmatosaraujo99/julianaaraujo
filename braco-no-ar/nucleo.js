@@ -15,6 +15,38 @@
   B.reacoesEmojis = ["👍", "❤️", "😂", "😮", "👏"];
   B.reacoesNomes = ["Gosto", "Adoro", "Engraçado", "Uau", "Palmas"];
 
+  /* modo de equipas: at.equipas = { n: 2..6, modo: "escolher" | "sorteio", nomes: [...] } */
+  B.coresEquipas = [
+    { nome: "Equipa Vermelha", cor: "#e5484d" }, { nome: "Equipa Azul", cor: "#2f80ed" }, { nome: "Equipa Verde", cor: "#2fb67c" },
+    { nome: "Equipa Amarela", cor: "#e9b400" }, { nome: "Equipa Roxa", cor: "#8e5bd8" }, { nome: "Equipa Laranja", cor: "#f2780c" }];
+  B.equipasDe = function (at) {
+    var e = at && at.equipas;
+    if (!e || !e.n) return null;
+    var n = Math.max(2, Math.min(6, Number(e.n) || 2)), l = [];
+    for (var i = 0; i < n; i++) {
+      var nm = e.nomes && e.nomes[i] && String(e.nomes[i]).trim();
+      l.push({ i: i, nome: (nm || B.coresEquipas[i].nome).slice(0, 24), cor: B.coresEquipas[i].cor });
+    }
+    return l;
+  };
+  /* classificação das equipas: média de pontos por pessoa (quem não pontuou conta 0) */
+  B.placarEquipas = function (at, placar, participantes) {
+    var eqs = B.equipasDe(at);
+    if (!eqs) return null;
+    var pts = {}, tot = eqs.map(function () { return 0; }), n = eqs.map(function () { return 0; });
+    (placar || []).forEach(function (x) { pts[x.pid] = x.total; });
+    for (var p in participantes || {}) {
+      var x = participantes[p];
+      if (!x || typeof x.eq !== "number" || !eqs[x.eq]) continue;
+      n[x.eq]++; tot[x.eq] += pts[p] || 0;
+    }
+    var l = eqs.map(function (e) { return { i: e.i, nome: e.nome, cor: e.cor, membros: n[e.i], total: tot[e.i], media: n[e.i] ? Math.round(tot[e.i] / n[e.i]) : 0 }; });
+    l.sort(function (a, b) { return b.media - a.media || b.total - a.total || a.i - b.i; });
+    var pos = 0, ult = null;
+    l.forEach(function (x, k) { if (x.media !== ult) { pos = k + 1; ult = x.media; } x.pos = pos; });
+    return l;
+  };
+
   /* ---------------- utilitários ---------------- */
 
   B.el = function (tag, attrs) {

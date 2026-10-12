@@ -489,7 +489,8 @@
         });
         kids.push(el("div", { class: "ph-feedback" + (acertou ? "" : " falhou") },
           el("strong", null, !meu ? "Não respondeste." : acertou ? "Acertaste!" : "Não foi desta."),
-          pts && s.pontos !== false ? el("p", { class: "ph-pts" }, (pts[0] ? "+" + B.milhares(pts[0]) + " pontos · " : "") + "Total: " + B.milhares(pts[1]) + (pts[2] && pts[1] ? " · " + pts[2] + ".º lugar" : "")) : null,
+          pts && s.pontos !== false ? el("p", { class: "ph-pts" }, (pts[0] ? "+" + B.milhares(pts[0]) + " pontos · " : "") + "Total: " + B.milhares(pts[1]) + (pts[2] && pts[1] && !ctx.equipa ? " · " + pts[2] + ".º lugar" : "")) : null,
+          ctx.equipa && ctx.equipa.pos && s.pontos !== false ? el("p", { class: "ph-eq-res", style: { "--c": ctx.equipa.cor } }, el("i"), ctx.equipa.nome + ": " + ctx.equipa.pos + ".º lugar") : null,
           est.qe ? el("p", null, est.qe) : null));
         kids.push(opc);
         return kids;
@@ -1188,6 +1189,12 @@
       return {
         el: sec, upd: function (d) {
           var pl = (d.placar || []).slice(0, q), max = pl.length ? pl[0].total || 1 : 1, vivos = {};
+          /* modo de equipas: uma linha por equipa, pela média de pontos por pessoa */
+          if (d.placarEquipas) {
+            pl = d.placarEquipas.map(function (x) { return { pid: "eq" + x.i, nome: x.nome + " · " + (x.membros === 1 ? "1 pessoa" : x.membros + " pessoas"), total: x.media, pos: x.pos, cor: x.cor }; });
+            max = pl.length && pl[0].total ? pl[0].total : 1;
+            if (!sec.querySelector(".sub-eq")) sec.querySelector(".cabeca").appendChild(el("p", { class: "sub-eq" }, "Média de pontos por pessoa"));
+          }
           vazio.style.display = pl.length ? "none" : "";
           pl.forEach(function (x, i) {
             var no = nos[x.pid];
@@ -1202,6 +1209,7 @@
             B.por(no.pos, ord(x.pos));
             no.nm.textContent = x.nome;
             no.fill.style.width = (x.total / max) * 100 + "%";
+            if (x.cor) { no.fill.style.background = x.cor; no.row.style.setProperty("--eq", x.cor); no.row.classList.add("equipa"); }
             no.v.textContent = B.milhares(x.total);
             vivos[x.pid] = true;
           });
@@ -1211,7 +1219,11 @@
       };
     },
     telemovel: function (s, ctx) {
-      var p = ctx.pontos;
+      var p = ctx.pontos, eq = ctx.equipa;
+      if (eq && eq.pos) return [el("div", { class: "ph-grande" },
+        el("p", { class: "ph-kicker" }, s.titulo || "Classificação"),
+        el("h1", { html: B.esc(eq.nome) + " em <em>" + B.ordHtml(eq.pos) + "</em> lugar" }),
+        el("p", null, B.milhares(eq.media) + " pontos de média por pessoa" + (p && p[1] ? " · tu tens " + B.milhares(p[1]) : "")))];
       if (!p || !p[2] || !p[1]) return [M.grande(B.esc(s.titulo || "Classificação"), p ? "Ainda não tens pontos. Olha para o ecrã." : "Olha para o ecrã.")];
       return [el("div", { class: "ph-grande" },
         el("p", { class: "ph-kicker" }, s.titulo || "Classificação"),

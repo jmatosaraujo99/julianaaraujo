@@ -101,6 +101,11 @@
   .cartao-at .info>.bts .bt.am{grid-column:1 / -1;padding:11px 15px;font-size:15px}
   .cartao-at .info>.bts .bt{padding:8px 10px}
   .bt.grande{padding:13px 18px;font-size:15px}
+  .sub-equipas{display:flex;flex-direction:column;gap:12px;margin:-4px 0 4px 28px}
+  .sub-equipas:empty{display:none}
+  .nomes-eq{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .nome-eq{display:flex;align-items:center;gap:8px}
+  .nome-eq i{width:16px;height:16px;border-radius:50%;background:var(--c);flex:none}
   .seps-ent{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:var(--papel-2);border-radius:12px;margin-bottom:22px}
   .sep-ent{border:0;background:transparent;padding:10px 12px;border-radius:9px;font:inherit;font-weight:700;font-size:15px;color:var(--tinta-2);cursor:pointer}
   .sep-ent.ativo{background:#fff;color:var(--tinta);box-shadow:0 1px 3px rgba(0,0,0,.12)}
@@ -1182,6 +1187,30 @@
       }
       desenharTemas();
       if (at.reacoes === undefined) at.reacoes = true;
+      /* modo de equipas (como no Kahoot): a classificação passa a ser por equipas */
+      function blocoEquipas() {
+        var cfg = at.equipas ? at.equipas : { n: 4, modo: "escolher", nomes: [] };
+        var liga = { on: !!at.equipas }, sub = el("div", { class: "sub-equipas" });
+        function desenharSub() {
+          if (!liga.on) { BNA.por(sub); return; }
+          cfg.nomes = cfg.nomes || [];
+          var nomes = el("div", { class: "nomes-eq" });
+          for (var i = 0; i < cfg.n; i++) (function (i) {
+            var inp = el("input", { class: "inp", maxlength: 24, placeholder: B.coresEquipas[i].nome, value: cfg.nomes[i] || "",
+              oninput: function () { cfg.nomes[i] = inp.value; mudar(); } });
+            nomes.appendChild(el("label", { class: "nome-eq", style: { "--c": B.coresEquipas[i].cor } }, el("i"), inp));
+          })(i);
+          BNA.por(sub,
+            B.ed.select("Quantas equipas", cfg, "n", [[2, "2"], [3, "3"], [4, "4"], [5, "5"], [6, "6"]], function () { mudar(); }, { numero: true, depois: desenharSub }),
+            B.ed.select("Como se formam", cfg, "modo", [["escolher", "Cada um escolhe a sua equipa no telemóvel"], ["sorteio", "Sorteio equilibrado (o telemóvel escolhe)"]], function () { mudar(); }),
+            el("div", { class: "campo" }, el("span", { class: "rotulo" }, "Nomes das equipas (opcional)"), nomes));
+        }
+        desenharSub();
+        return el("div", null,
+          B.ed.inter("Modo de equipas no quiz", liga, "on", function () { at.equipas = liga.on ? cfg : null; mudar(); },
+            "Os pontos de cada pessoa contam para a sua equipa e a Classificação mostra as equipas, pela média de pontos por pessoa (justo para equipas de tamanhos diferentes).", desenharSub),
+          sub);
+      }
       janela("Definições da atividade", [
         B.ed.texto("Título", at, "titulo", function () { tituloEl.value = at.titulo; mudar(); }, { max: 90 }),
         el("div", { class: "campo" }, el("span", { class: "rotulo" }, "Tema de cores"), temas),
@@ -1191,6 +1220,7 @@
         }, { ajuda: "No questionário, cada participante avança sozinho pelas perguntas e o ecrã mostra quantos já responderam. Bom para avaliações e diagnósticos. A roleta e a classificação ficam de fora." }),
         B.ed.inter("Pedir uma alcunha aos participantes", at, "pedirAlcunha", function () { mudar(); }, "Necessário para a classificação mostrar nomes. Sem isto, as respostas são totalmente anónimas."),
         B.ed.inter("Reações ao vivo (👍 ❤️ 😂 😮 👏)", at, "reacoes", function () { mudar(); }, "Os participantes reagem no telemóvel a qualquer momento e os emojis sobem no ecrã. Também as podes desligar durante a apresentação, em «⋯ Mais»."),
+        blocoEquipas(),
         el("div", { class: "bts" }, el("button", { class: "bt prim", onclick: fecharJanela }, "Feito"))]);
     }
   }

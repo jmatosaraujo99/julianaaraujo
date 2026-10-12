@@ -119,7 +119,8 @@
     var ligado = true, ultimoJson = "", relogioTimer = null, tempoTimer = null;
     var pontos = { v: null, d: null }, qa = { id: null, lista: null };
     var res = { id: null, d: null, j: "" }, pararRes = null;
-    var fixo = null, fixoTimer = null;   /* código fixo da atividade (o do QR impresso) */
+    var fixo = null, fixoTimer = null;
+    var minhaEquipa = null, pontosEq = null;   /* modo de equipas */   /* código fixo da atividade (o do QR impresso) */
     var livre = { pos: 0, fim: false };
 
     function chaveLocal() { return "bna-r-" + codigo + "-" + pid; }
@@ -194,7 +195,7 @@
           var guardada = B.store.get("bna-alcunha-" + c + "-" + pid) || (fixo ? B.store.get("bna-alcunha-f-" + fixo + "-" + pid) : null);
           if (guardada) B.store.set("bna-alcunha-" + c + "-" + pid, guardada);
           if (at.pedirAlcunha && !guardada && !opts.alcunha) pedirAlcunha();
-          else registar(opts.alcunha || guardada);
+          else depoisDaAlcunha(opts.alcunha || guardada);
         });
       }).catch(function (e) {
         setLigado(false);
@@ -232,6 +233,7 @@
       pararPerguntas(); pararResultados();
       at = null; estado = null; cv = null; ativa = true; ultimoJson = "";
       meus = {}; edicao = {}; rascunhos = {}; pendentes = {}; gostos = {};
+      minhaEquipa = null; pontosEq = null;
       entrar(s, fixo);
     }
 
@@ -246,16 +248,74 @@
         if (B.improprio(n)) { erro.textContent = "Escolhe outra alcunha."; return; }
         B.store.set("bna-alcunha-" + codigo + "-" + pid, n);
         if (fixo) B.store.set("bna-alcunha-f-" + fixo + "-" + pid, n);   /* a próxima sessão desta atividade já não pergunta */
-        registar(n);
+        depoisDaAlcunha(n);
       } }, el("h1", { html: "Como te <em>chamas?</em>" }), el("p", null, "Esta alcunha aparece na classificação do quiz."), inp, erro,
         el("button", { class: "ph-bt", type: "submit" }, "Continuar")));
       if (!opts.embutido) setTimeout(function () { try { inp.focus(); } catch (e) {} }, 50);
+    }
+
+    /* ---------- modo de equipas ---------- */
+    function guardarEquipa(i) {
+      minhaEquipa = i;
+      B.store.set("bna-eq-" + codigo + "-" + pid, String(i));
+      if (fixo) B.store.set("bna-eq-f-" + fixo + "-" + pid, String(i));
+    }
+    function depoisDaAlcunha(nome) {
+      var eqs = B.equipasDe(at);
+      minhaEquipa = null;
+      if (!eqs) return registar(nome);
+      var g = B.store.get("bna-eq-" + codigo + "-" + pid);
+      if (g === null && fixo) g = B.store.get("bna-eq-f-" + fixo + "-" + pid);
+      if (g !== null && eqs[Number(g)]) { guardarEquipa(Number(g)); return registar(nome); }
+      if (at.equipas.modo === "sorteio" || opts.embutido) {
+        contarEquipas(eqs).then(function (c) {
+          var min = Math.min.apply(null, c), l = [];
+          c.forEach(function (x, i) { if (x === min) l.push(i); });
+          guardarEquipa(l[Math.floor(Math.random() * l.length)]);
+          registar(nome);
+        });
+        return;
+      }
+      escolherEquipa(eqs, nome);
+    }
+    function contarEquipas(eqs) {
+      var c = eqs.map(function () { return 0; });
+      return B.db.get(B.caminho.participantes(codigo)).then(function (ps) {
+        for (var p in ps || {}) if (ps[p] && typeof ps[p].eq === "number" && c[ps[p].eq] !== undefined) c[ps[p].eq]++;
+        return c;
+      }).catch(function () { return c; });
+    }
+    function escolherEquipa(eqs, nome) {
+      mold.sup("destaque");
+      var bts = eqs.map(function (e) {
+        var cont = el("small", null, "");
+        var b = el("button", { type: "button", class: "ph-eq-bt", style: { "--c": e.cor }, onclick: function () { guardarEquipa(e.i); registar(nome); } },
+          el("i", { "aria-hidden": "true" }), el("b", null, e.nome), cont);
+        b._cont = cont;
+        return b;
+      });
+      BNA.por(mold.main, el("div", { class: "ph-entrar" }, el("h1", { html: "Escolhe a tua <em>equipa</em>" }),
+        el("p", null, "Os pontos do quiz contam para a equipa: ganha a que tiver a melhor média."), el("div", { class: "ph-eqs" }, bts)));
+      contarEquipas(eqs).then(function (c) { bts.forEach(function (b, i) { b._cont.textContent = c[i] === 1 ? "1 pessoa" : c[i] + " pessoas"; }); });
+    }
+    function equipaPill() {
+      var eqs = B.equipasDe(at);
+      if (!eqs || minhaEquipa === null || !eqs[minhaEquipa]) return null;
+      var e = eqs[minhaEquipa];
+      return el("p", { class: "ph-equipa", style: { "--c": e.cor } }, el("i", { "aria-hidden": "true" }), e.nome);
+    }
+    function equipaInfo() {
+      var eqs = B.equipasDe(at);
+      if (!eqs || minhaEquipa === null || !eqs[minhaEquipa]) return null;
+      var e = eqs[minhaEquipa], x = pontosEq && estado && pontosEq.v === estado.pv && pontosEq.d ? pontosEq.d[minhaEquipa] : null;
+      return { nome: e.nome, cor: e.cor, media: x ? x[0] : 0, pos: x ? x[1] : 0, n: eqs.length };
     }
 
     /* regista a presença e aproveita para acertar o relógio com o servidor */
     function registar(nome) {
       var v = { t: { ".sv": "timestamp" } };
       if (nome) v.n = String(nome).slice(0, 18);
+      if (minhaEquipa !== null) v.eq = minhaEquipa;
       var t0 = Date.now();
       /* PATCH (e não PUT) para não apagar o «concluído» de quem volta a abrir a página */
       B.db.patch(B.caminho.participante(codigo, pid), v).then(function () {
@@ -312,6 +372,7 @@
           pontos = { v: pv, d: Array.isArray(p) ? p : (p && typeof p === "object" ? [p[0] || 0, p[1] || 0, p[2] || 0] : [0, 0, 0]) };
           render();
         }).catch(function () {});
+        if (B.equipasDe(at)) B.db.get(B.caminho.pontos(codigo) + "/_eq").then(function (q) { pontosEq = { v: pv, d: q || null }; render(); }).catch(function () {});
       }
       /* perguntas da sala: lista publicada pelo formador (só enquanto o diapositivo está no ecrã) */
       var s = slideAtual();
@@ -445,6 +506,7 @@
           return box;
         },
         pontos: pontos.v && pontos.v === estado.pv ? pontos.d : null,
+        equipa: equipaInfo(),
         qa: qa.id === s.id ? qa.lista : null,
         gostos: gostos[s.id] || [],
         gostar: function (k) { gostar(s, k); }
@@ -466,7 +528,7 @@
       if (livreAtivo()) return renderLivre();
       var s = slideAtual();
       var aviso = !ligado && Object.keys(pendentes).length ? el("p", { class: "ph-aviso" }, "Sem rede. A tua resposta segue assim que a ligação voltar.") : null;
-      var topo = [aviso, barraTempo()];
+      var topo = [aviso, equipaPill(), barraTempo()];
       if (!s || !T[s.tipo]) {
         mold.sup("destaque");
         mold._slide = null;
