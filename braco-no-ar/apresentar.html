@@ -38,6 +38,13 @@
   @keyframes subir{0%{transform:translate(0,0) scale(.5);opacity:0}12%{opacity:1;transform:translate(calc(var(--dx) * .2),-10vh) scale(1.15)}100%{transform:translate(var(--dx),-82vh) scale(.95);opacity:0}}
   #ctl .fechada{background:rgba(255,255,255,.14)}
   .pe .fechada-et{color:var(--acento,#fdc200);font-weight:700}
+  #contagem{position:absolute;inset:0;z-index:18;display:grid;place-items:center;background:rgba(8,12,20,.8);pointer-events:none}
+  #contagem[hidden]{display:none}
+  #contagem .cd{display:flex;flex-direction:column;align-items:center;gap:18px;color:#fff;text-align:center}
+  #contagem .cd p{margin:0;font-family:var(--display);font-size:clamp(22px,4vh,46px);letter-spacing:.12em;text-transform:uppercase;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+  #contagem .cd b{display:grid;place-items:center;width:min(36vh,320px);height:min(36vh,320px);border-radius:50%;background:var(--amarelo);color:var(--escuro);font-family:var(--display);font-weight:400;font-size:min(24vh,210px);line-height:1;box-shadow:0 20px 60px rgba(0,0,0,.35);animation:cd-pulso .9s ease-out both}
+  #contagem .cd b.ja{font-size:min(15vh,130px)}
+  @keyframes cd-pulso{0%{transform:scale(1.35);opacity:0}30%{transform:scale(1);opacity:1}100%{transform:scale(.96);opacity:1}}
   #ctl .fim{color:#ffb4a2}
   #ctl .fim:hover{background:rgba(255,120,90,.18)}
   #ctl .pos:hover{color:#fff;text-decoration:underline}
@@ -123,7 +130,7 @@
 </head>
 <body>
 <div id="app">
-  <div id="palco-wrap"><div id="palco" class="palco"></div><div id="reacoes" aria-hidden="true"></div></div>
+  <div id="palco-wrap"><div id="palco" class="palco"></div><div id="reacoes" aria-hidden="true"></div><div id="contagem" hidden></div></div>
   <aside id="tel" hidden aria-label="Telemóvel de teste">
     <div class="moldura"><div id="tel-ecra"></div></div>
     <p>Telemóvel de teste. Responde aqui como se fosses um participante.</p>
@@ -748,16 +755,21 @@
 
   /* ---------------- navegação ---------------- */
   function ir(i) {
+    contagemToken++; if ($("contagem")) $("contagem").hidden = true;
     if (livre()) { livreVer = i; desenhar(); return; }
     irPara(i);
     gravar();
     desenhar();
+    if (estado.cd && estado.cd > B.agora()) mostrarContagem(estado.cd);
   }
   /* prepara o estado de um diapositivo (sem gravar nem desenhar) */
   function irPara(i) {
     i = Math.max(-1, Math.min(at.slides.length - 1, i));
     var s = at.slides[i];
+    var cd = s && querContagem(s) ? B.agora() + CONTAGEM_MS : 0;
+    if (cd) contados[s.id] = true;
     var novo = { i: i, id: s ? s.id : null, cv: estado.cv, rev: false, oc: !!(s && s.esconder), rol: null };
+    if (cd) novo.cd = cd;
     if (estado.tmp) novo.tmp = estado.tmp;
     if (estado.pv) { novo.pv = estado.pv; novo.np = estado.np; }
     /* o que vale para a sessão toda passa de diapositivo para diapositivo */
@@ -768,7 +780,7 @@
     estado = novo;
     if (s && s.tipo === "quiz") {
       if (!inicios[s.id] && !soLeitura) {
-        inicios[s.id] = B.agora();
+        inicios[s.id] = cd || B.agora();
         db.put(cam.sessao(codigo) + "/x/inicios/" + s.id, inicios[s.id], { auth: true }).catch(function () {});
       }
       if (inicios[s.id]) estado.ini = inicios[s.id];
@@ -1039,6 +1051,54 @@
     });
     janela(lv ? "Mostrar resultados de…" : "Ir para…", [lista]);
   }
+  /* ---------------- contagem decrescente antes das perguntas (3, 2, 1) ---------------- */
+  var CONTAGEM_MS = 3000, contados = {}, contagemToken = 0, audio = null;
+  function querContagem(s) {
+    var m = (at && at.contagem) || "quizzes";
+    if (m === "nao" || livre() || soLeitura || ver || !T[s.tipo] || !T[s.tipo].interativo) return false;
+    if (m === "quizzes" && s.tipo !== "quiz") return false;
+    if (contados[s.id] || (resp[s.id] && Object.keys(resp[s.id]).length)) return false;
+    if (s.tipo === "quiz" && (inicios[s.id] || (extra.revelados && extra.revelados[s.id]))) return false;
+    return true;
+  }
+  function somLigado() { return B.store.get("bna-som") !== "0"; }
+  function bip(freq, dur) {
+    if (!somLigado()) return;
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      if (audio.state === "suspended") audio.resume();
+      var t = audio.currentTime, o = audio.createOscillator(), g = audio.createGain();
+      o.type = "sine"; o.frequency.value = freq;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.32, t + 0.015);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(audio.destination);
+      o.start(t); o.stop(t + dur + 0.05);
+    } catch (e) {}
+  }
+  function mostrarContagem(fim) {
+    var caixa = $("contagem"), meu = ++contagemToken, ultimo = null;
+    function passo() {
+      if (meu !== contagemToken) return;
+      var falta = fim - B.agora();
+      if (falta <= 0) {
+        BNA.por(caixa, el("div", { class: "cd" }, el("p", null, "Responde no telemóvel"), el("b", { class: "ja" }, "Já!")));
+        bip(1046, 0.45);
+        setTimeout(function () { if (meu === contagemToken) caixa.hidden = true; }, 650);
+        return;
+      }
+      var n = Math.ceil(falta / 1000);
+      if (n !== ultimo) {
+        ultimo = n;
+        BNA.por(caixa, el("div", { class: "cd" }, el("p", null, "Prepara-te!"), el("b", null, String(n))));
+        bip(660, 0.18);
+      }
+      caixa.hidden = false;
+      setTimeout(passo, Math.min(120, falta));
+    }
+    passo();
+  }
+
   /* ---------------- fechar as respostas de uma pergunta ---------------- */
   function fechada(s) { return !!(s && estado && estado.fch && estado.fch[s.id]); }
   function alternarFechar() {
@@ -1144,6 +1204,11 @@
         if (estado.semReacoes) delete estado.semReacoes; else estado.semReacoes = true;
         gravar(); abrirDefs();
       } }, estado.semReacoes ? "Ligar as reações" : "Desligar as reações")),
+      soLeitura || livre() || (at && at.contagem === "nao") ? null : el("h3", null, "Contagem decrescente"),
+      soLeitura || livre() || (at && at.contagem === "nao") ? null : el("p", null, (at && at.contagem === "todas" ? "Antes de cada pergunta" : "Antes de cada quiz") + " aparece 3, 2, 1 no ecrã e nos telemóveis. Som: " + (somLigado() ? "ligado." : "desligado.")),
+      soLeitura || livre() || (at && at.contagem === "nao") ? null : el("div", { class: "bts" }, el("button", { onclick: function () {
+        B.store.set("bna-som", somLigado() ? "0" : "1"); if (somLigado()) bip(880, 0.2); abrirDefs();
+      } }, somLigado() ? "Desligar o som" : "Ligar o som")),
       soLeitura ? null : el("h3", null, "Moderação"),
       soLeitura ? null : el("p", null, "Na nuvem de palavras e nas perguntas da sala, clica numa palavra ou pergunta para a esconder (nas perguntas, para a marcar como respondida). Nas respostas abertas, clica numa nota para a abrir em grande: as setas passam à seguinte e o botão «Esconder» tira-a do ecrã. As palavras impróprias já ficam escondidas."),
       soLeitura ? null : el("div", { class: "bts" }, el("button", { onclick: function () {

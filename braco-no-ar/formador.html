@@ -1221,6 +1221,8 @@
         B.ed.inter("Pedir uma alcunha aos participantes", at, "pedirAlcunha", function () { mudar(); }, "Necessário para a classificação mostrar nomes. Sem isto, as respostas são totalmente anónimas."),
         B.ed.inter("Reações ao vivo (👍 ❤️ 😂 😮 👏)", at, "reacoes", function () { mudar(); }, "Os participantes reagem no telemóvel a qualquer momento e os emojis sobem no ecrã. Também as podes desligar durante a apresentação, em «⋯ Mais»."),
         blocoEquipas(),
+        B.ed.select("Contagem decrescente (3, 2, 1)", at, "contagem", [["quizzes", "Só antes dos quizzes"], ["todas", "Antes de todas as perguntas"], ["nao", "Sem contagem"]], function () { mudar(); },
+          { ajuda: "Aparece no ecrã, com som, e nos telemóveis, que só mostram a pergunta no fim. O relógio do quiz só começa a contar depois. O som liga-se e desliga-se em «⋯ Mais» durante a apresentação." }),
         el("div", { class: "bts" }, el("button", { class: "bt prim", onclick: fecharJanela }, "Feito"))]);
     }
   }

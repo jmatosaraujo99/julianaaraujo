@@ -446,7 +446,7 @@
           if (!document.body.contains(relogio)) { clearInterval(timer); return; }
           var ini = ctx.inicio && ctx.inicio();
           var resta = limite;
-          if (ini) resta = Math.max(0, limite - (B.agora() - ini) / 1000);
+          if (ini) resta = Math.min(limite, Math.max(0, limite - (B.agora() - ini) / 1000));
           if (ctx.revelado && ctx.revelado()) resta = 0;
           num.textContent = String(Math.ceil(resta));
           circ.setAttribute("stroke-dashoffset", String(C * (1 - resta / limite)));

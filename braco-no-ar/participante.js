@@ -120,7 +120,8 @@
     var pontos = { v: null, d: null }, qa = { id: null, lista: null };
     var res = { id: null, d: null, j: "" }, pararRes = null;
     var fixo = null, fixoTimer = null;
-    var minhaEquipa = null, pontosEq = null;   /* modo de equipas */   /* código fixo da atividade (o do QR impresso) */
+    var minhaEquipa = null, pontosEq = null;   /* modo de equipas */
+    var cdTimer = null;   /* contagem decrescente antes da pergunta */   /* código fixo da atividade (o do QR impresso) */
     var livre = { pos: 0, fim: false };
 
     function chaveLocal() { return "bna-r-" + codigo + "-" + pid; }
@@ -484,7 +485,7 @@
       var chaveVisto = s.id + ":" + (estado.ini || "");
       if (!vistos[chaveVisto]) vistos[chaveVisto] = Date.now();
       function resta(lim) {
-        if (estado.ini && B.relogio.medido) return lim - (B.agora() - estado.ini) / 1000;
+        if (estado.ini && B.relogio.medido) return Math.min(lim, lim - (B.agora() - estado.ini) / 1000);
         return lim - (Date.now() - vistos[chaveVisto]) / 1000;
       }
       return {
@@ -548,6 +549,21 @@
         if (s.tipo !== "perguntas" && !estado.oc && res.d && res.d.id === s.id && (s.tipo !== "quiz" || estado.rev)) kids.push(B.resultadosTel(s, res.d, B.tema(at.tema)));
         kids.push(B.esperaTel("À espera da próxima pergunta"));
         BNA.por(mold.main, kids);
+        return;
+      }
+      /* contagem decrescente: «Prepara-te!» e só depois a pergunta */
+      clearTimeout(cdTimer);
+      var faltaCd = estado.cd ? estado.cd - B.agora() : 0;
+      if (def0.interativo && faltaCd > 0 && faltaCd < 10000) {
+        mold.sup("destaque");
+        mold._slide = null;
+        BNA.por(mold.main, topo, el("div", { class: "ph-contagem", role: "timer" },
+          el("p", null, "Prepara-te!"), el("b", null, String(Math.ceil(faltaCd / 1000))),
+          el("span", null, (def0.texto && def0.texto(s)) || "")));
+        cdTimer = setTimeout(function () {
+          if (estado.cd && estado.cd - B.agora() <= 0) { try { navigator.vibrate && navigator.vibrate(40); } catch (e) {} }
+          render();
+        }, Math.min(200, faltaCd + 20));
         return;
       }
       B.desenharTel(mold, s, ctxPara(s), topo);

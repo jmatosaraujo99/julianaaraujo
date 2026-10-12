@@ -26,6 +26,10 @@
 .ph-eq-bt small{font-size:13px;color:var(--suave)}
 .ph-eq-res{display:flex;align-items:center;gap:8px;margin:10px 0 0;font-weight:700}
 .ph-eq-res i{width:12px;height:12px;border-radius:50%;background:var(--c);flex:none}
+.ph-contagem{display:flex;flex-direction:column;align-items:center;gap:16px;margin:auto 0;padding:30px 0;text-align:center}
+.ph-contagem p{margin:0;font-family:var(--display);font-size:30px;letter-spacing:.08em;text-transform:uppercase}
+.ph-contagem b{display:grid;place-items:center;width:150px;height:150px;border-radius:50%;background:var(--acento,#fdc200);color:var(--escuro,#111);font-family:var(--display);font-weight:400;font-size:96px;line-height:1}
+.ph-contagem span{font-size:17px;line-height:1.4;max-width:30ch;opacity:.85}
 .ph-reacoes{position:relative;display:flex;justify-content:center;gap:6px;padding:8px 14px 4px}
 .ph-reacoes[hidden]{display:none}
 .ph-reacoes button{flex:1;max-width:58px;height:46px;border:0;border-radius:14px;background:var(--cartao);box-shadow:0 2px 0 var(--linha);font-size:24px;line-height:1;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
