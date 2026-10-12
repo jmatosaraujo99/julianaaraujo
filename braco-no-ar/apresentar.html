@@ -747,6 +747,11 @@
     var novo = { i: i, id: s ? s.id : null, cv: estado.cv, rev: false, oc: !!(s && s.esconder), rol: null };
     if (estado.tmp) novo.tmp = estado.tmp;
     if (estado.pv) { novo.pv = estado.pv; novo.np = estado.np; }
+    /* o que vale para a sessão toda passa de diapositivo para diapositivo */
+    if (estado.semReacoes) novo.semReacoes = true;
+    var fch = Object.assign({}, estado.fch || {});
+    for (var kf in (extra && extra.fechadas) || {}) if (at.slides.some(function (x) { return x.id === kf; })) fch[kf] = true;
+    if (Object.keys(fch).length) novo.fch = fch;
     estado = novo;
     if (s && s.tipo === "quiz") {
       if (!inicios[s.id] && !soLeitura) {
@@ -1029,13 +1034,14 @@
     /* as regras do servidor leem x/fechadas; os telemóveis leem o estado */
     var chaves = s.tipo === "perguntas" ? [s.id, s.id + "g"] : [s.id];
     estado.fch = Object.assign({}, estado.fch || {});
+    extra.fechadas = Object.assign({}, extra.fechadas || {});   /* cópia local: o /x só é lido de 3 em 3 s */
     if (estado.fch[s.id]) {
       delete estado.fch[s.id];
       if (!Object.keys(estado.fch).length) delete estado.fch;
-      chaves.forEach(function (k) { db.del(cam.sessao(codigo) + "/x/fechadas/" + k, { auth: true }).catch(function () {}); });
+      chaves.forEach(function (k) { delete extra.fechadas[k]; db.del(cam.sessao(codigo) + "/x/fechadas/" + k, { auth: true }).catch(function () {}); });
     } else {
       estado.fch[s.id] = true;
-      chaves.forEach(function (k) { db.put(cam.sessao(codigo) + "/x/fechadas/" + k, true, { auth: true }).catch(function () {}); });
+      chaves.forEach(function (k) { extra.fechadas[k] = true; db.put(cam.sessao(codigo) + "/x/fechadas/" + k, true, { auth: true }).catch(function () {}); });
     }
     gravar(); atualizarControlos(); pedir();
   }
