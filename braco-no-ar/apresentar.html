@@ -245,13 +245,13 @@
       estado = sess.estado || { i: -1 };
       var cvVer = estado.cv;
       db.ouvir(cam.respostas(codigo), function (d, ok, err) { resp = d || {}; setLigacao(ok, err); pedir(); });
-      db.ouvir(cam.participantes(codigo), function (d) { parts = d || {}; pedir(); });
+      db.ouvir(cam.participantes(codigo), function (d) { parts = d || {}; pedir(); }, { semSse: true, intervalo: 3000 });
       db.ouvir(cam.sessao(codigo) + "/x", function (d) {
         extra = d || {};
         if (extra.inicios) for (var k in extra.inicios) if (typeof extra.inicios[k] === "number") inicios[k] = extra.inicios[k];
         quizVer();
         pedir();
-      });
+      }, { semSse: true, intervalo: 2000 });
       db.ouvir(cam.sessao(codigo) + "/estado", function (e, ok) {
         if (!ok) return;
         var antes = estado.i + "|" + estado.id + "|" + (estado.rev ? 1 : 0) + "|" + (estado.oc ? 1 : 0) + "|" + JSON.stringify(estado.rol || null);
@@ -347,16 +347,19 @@
 
   function comecar() {
     if (!window.BNA_ARTEFACTO) try { history.replaceState(null, "", location.pathname + "?a=" + aid + "&s=" + codigo + (B.demo && q.has("demo") ? "&demo" : "")); } catch (e) {}
+    /* O Chrome só abre 6 ligações de cada vez para a Firebase, somadas em todos os
+       separadores. Por isso só as respostas ficam em tempo real; o resto vai sendo
+       perguntado, para sobrar espaço para gravar e para outro separador aberto. */
     db.ouvir(cam.respostas(codigo), function (d, ok, err) { resp = d || {}; setLigacao(ok, err); pedir(); });
-    db.ouvir(cam.participantes(codigo), function (d) { parts = d || {}; pedir(); });
+    db.ouvir(cam.participantes(codigo), function (d) { parts = d || {}; pedir(); }, { semSse: true, intervalo: 3000 });
     db.ouvir(cam.sessao(codigo) + "/x", function (d) {
       extra = d || {};
       if (extra.inicios) for (var k in extra.inicios) if (typeof extra.inicios[k] === "number") inicios[k] = extra.inicios[k];
       pedir();
-    }, { auth: true });
+    }, { auth: true, semSse: true, intervalo: 3000 });
     if (!soLeitura) {
       /* acompanha as alterações feitas no editor durante a apresentação */
-      db.ouvir(cam.atividade(uid, aid) + "/dados", function (d, ok) { if (ok) aoMudarAtividade(d); }, { auth: true, intervalo: 6000 });
+      db.ouvir(cam.atividade(uid, aid) + "/dados", function (d, ok) { if (ok) aoMudarAtividade(d); }, { auth: true, semSse: true, intervalo: 6000 });
       /* acerta o relógio com o servidor (para o tempo do quiz ser igual em todos os aparelhos) */
       var t0 = Date.now();
       db.put(cam.sessao(codigo) + "/x/hora", { ".sv": "timestamp" }, { auth: true }).then(function () {
@@ -667,10 +670,17 @@
         tema: tema, modo: livre() || soLeitura ? "resultados" : "vivo", atividade: at, canto: soLeitura ? null : canto, rodape: rodape,
         visualizador: !!ver,
         imagem: function (id) { return B.imagens.url(uid, id); },
-        ocultar: soLeitura || ver ? null : function (chave) { db.put(cam.sessao(codigo) + "/x/ocultos/" + s.id + "/" + chave, true, { auth: true }).catch(function () {}); },
+        ocultar: soLeitura || ver ? null : function (chave) {
+          /* muda já no ecrã (o /x só é lido de 3 em 3 s) e grava */
+          extra.ocultos = extra.ocultos || {}; extra.ocultos[s.id] = Object.assign({}, extra.ocultos[s.id] || {}); extra.ocultos[s.id][chave] = true; pedir();
+          db.put(cam.sessao(codigo) + "/x/ocultos/" + s.id + "/" + chave, true, { auth: true }).catch(function () {});
+        },
         responder: soLeitura || ver ? null : function (chave) {
           var feita = extra.respondidas && extra.respondidas[s.id] && extra.respondidas[s.id][chave];
           var caminho = cam.sessao(codigo) + "/x/respondidas/" + s.id + "/" + chave;
+          extra.respondidas = extra.respondidas || {}; extra.respondidas[s.id] = Object.assign({}, extra.respondidas[s.id] || {});
+          if (feita) delete extra.respondidas[s.id][chave]; else extra.respondidas[s.id][chave] = true;
+          pedir();
           (feita ? db.del(caminho, { auth: true }) : db.put(caminho, true, { auth: true })).catch(function () {});
         },
         inicio: function () { return estado.ini || inicios[s.id] || null; },
@@ -976,10 +986,11 @@
         el("button", { onclick: function () { window.open(link, "_blank"); } }, "Abrir como participante")),
       location.protocol === "file:" ? el("p", { style: { color: "#e3562d", fontWeight: "700" } }, "Abriste o ficheiro a partir do computador. Para os telemóveis entrarem, o site tem de estar online.") : null,
       soLeitura ? null : el("h3", null, "Moderação"),
-      soLeitura ? null : el("p", null, "Na nuvem de palavras, nas respostas abertas e nas perguntas da sala, clica numa palavra ou nota para a esconder (nas perguntas, para a marcar como respondida). As palavras impróprias já ficam escondidas."),
+      soLeitura ? null : el("p", null, "Na nuvem de palavras e nas perguntas da sala, clica numa palavra ou pergunta para a esconder (nas perguntas, para a marcar como respondida). Nas respostas abertas, clica numa nota para a abrir em grande: as setas passam à seguinte e o botão «Esconder» tira-a do ecrã. As palavras impróprias já ficam escondidas."),
       soLeitura ? null : el("div", { class: "bts" }, el("button", { onclick: function () {
         var s = slideAtual(); if (!s) return;
-        db.del(cam.sessao(codigo) + "/x/ocultos/" + s.id, { auth: true }).then(function () { $("dlg").close(); });
+        if (extra.ocultos) delete extra.ocultos[s.id];
+        db.del(cam.sessao(codigo) + "/x/ocultos/" + s.id, { auth: true }).then(function () { $("dlg").close(); pedir(); });
       } }, "Mostrar outra vez o que escondi neste diapositivo")),
       el("h3", null, art ? "Recomeçar" : "Terminar"),
       el("p", null, art ? "Isto é uma demonstração. No site a sério, «Terminar a sessão» fecha a sessão nos telemóveis e abre os resultados." : soLeitura ? "Esta sessão já está terminada." : "Os resultados ficam guardados na biblioteca. Terminar fecha a sessão nos telemóveis."),

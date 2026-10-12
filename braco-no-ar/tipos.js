@@ -645,7 +645,7 @@
       return [E.pergunta(s, mudar),
         E.select("Tamanho máximo", s, "limite", [[60, "Curta (60 caracteres)"], [140, "Média (140 caracteres)"], [250, "Longa (250 caracteres)"]], mudar, { numero: true }),
         E.select("Respostas por pessoa", s, "porPessoa", [[1, "1"], [2, "Até 2"], [3, "Até 3"]], mudar, { numero: true }),
-        el("p", { class: "ajuda" }, "Respostas com palavrões ficam escondidas automaticamente. No ecrã, clica numa nota para a esconder.")];
+        el("p", { class: "ajuda" }, "Respostas com palavrões ficam escondidas automaticamente. No ecrã, clica numa nota para a abrir em grande; aí também a podes esconder.")];
     },
     exemplo: function (s, rnd, i) {
       var f = ["Ouvir antes de responder.", "Pedir ajuda quando não sei.", "Chegar a horas, sempre.", "Explicar com exemplos do dia a dia.", "Aceitar que o plano muda.",
@@ -653,29 +653,86 @@
       return i < 10 ? { v: f[i % f.length], t: 1000 + i } : null;
     },
     ecra: function (s, ctx) {
-      var t = ctx.tema, mural = el("div", { class: "mural" + (ctx.ocultar ? " mod" : "") }), vazio = el("div", { class: "vazio" }, "As respostas aparecem aqui");
-      var mais = el("span", { class: "mais" });
-      var sec = P.secao("claro", s, ctx, [P.cabeca(s, s.pergunta, ctx, true), mural, vazio, mais], true);
+      /* 12 notas por página (4 × 3); as compridas ficam cortadas com «…» e abrem-se
+         em grande com um clique, para ler ou projetar. Esconder passa a ser feito aí. */
+      var POR_PAG = 12;
+      var t = ctx.tema, mural = el("div", { class: "mural" }), vazio = el("div", { class: "vazio" }, "As respostas aparecem aqui");
+      var pag = 0, lista = [], cores = {}, nCores = 0, aberta = null;
+      var bAnt = el("button", { type: "button", "aria-label": "Página anterior", onclick: function () { irPag(pag - 1); } }, "‹");
+      var bSeg = el("button", { type: "button", "aria-label": "Página seguinte", onclick: function () { irPag(pag + 1); } }, "›");
+      var nPag = el("span"), pager = el("div", { class: "paginas" }, bAnt, nPag, bSeg);
+      var zoom = el("div", { class: "zoom", hidden: true });
+      var sec = P.secao("claro", s, ctx, [P.cabeca(s, s.pergunta, ctx, true), mural, vazio, pager, zoom], true);
       var nos = {};
+      function cor(k) { if (!(k in cores)) cores[k] = B.cor(t, nCores++); return cores[k]; }
+      function nPaginas() { return Math.max(1, Math.ceil(lista.length / POR_PAG)); }
+      function irPag(n) { pag = Math.max(0, Math.min(nPaginas() - 1, n)); desenhar(); }
+      function desenhar() {
+        pag = Math.min(pag, nPaginas() - 1);
+        vazio.style.display = lista.length ? "none" : "";
+        var vis = lista.slice(pag * POR_PAG, pag * POR_PAG + POR_PAG), vivos = {};
+        vis.forEach(function (x) {
+          var no = nos[x.k];
+          if (!no) {
+            no = el("div", { class: "nota", style: { "--c": cor(x.k) }, title: "Abrir em grande", onclick: function () { abrir(x.k); } }, el("span", null, x.txt));
+            nos[x.k] = no;
+          } else if (no.textContent !== x.txt) no.firstChild.textContent = x.txt;
+          vivos[x.k] = true;
+        });
+        for (var k in nos) if (!vivos[k]) { nos[k].remove(); delete nos[k]; }
+        vis.forEach(function (x) { mural.appendChild(nos[x.k]); });
+        var np = nPaginas();
+        pager.hidden = np < 2;
+        nPag.textContent = (pag + 1) + " / " + np;
+        bAnt.disabled = pag === 0; bSeg.disabled = pag >= np - 1;
+        if (aberta) mostrarZoom();
+      }
+      function posAberta() { for (var i = 0; i < lista.length; i++) if (lista[i].k === aberta) return i; return -1; }
+      function abrir(k) { aberta = k; mostrarZoom(); }
+      function fechar() { aberta = null; zoom.hidden = true; }
+      function passar(d) {
+        var i = posAberta();
+        if (i < 0 || !lista.length) return fechar();
+        aberta = lista[(i + d + lista.length) % lista.length].k;
+        pag = Math.floor(posAberta() / POR_PAG);
+        desenhar();
+      }
+      function mostrarZoom() {
+        var i = posAberta();
+        if (i < 0) return fechar();
+        var x = lista[i], n = x.txt.length;
+        BNA.por(zoom, el("div", { class: "zoom-c", style: { "--c": cor(x.k) } },
+          el("p", { class: "zoom-txt", style: { fontSize: (n <= 60 ? 64 : n <= 140 ? 50 : 40) + "px" } }, x.txt),
+          el("div", { class: "zoom-bts" },
+            el("span", { class: "zoom-n" }, (i + 1) + " de " + lista.length),
+            lista.length > 1 ? el("button", { type: "button", "aria-label": "Resposta anterior", onclick: function () { passar(-1); } }, "‹") : null,
+            lista.length > 1 ? el("button", { type: "button", "aria-label": "Resposta seguinte", onclick: function () { passar(1); } }, "›") : null,
+            ctx.ocultar ? el("button", { type: "button", class: "zoom-esc", onclick: function () {
+              var k = aberta, j = posAberta();
+              ctx.ocultar(B.chave(k));
+              lista = lista.filter(function (y) { return y.k !== k; });
+              aberta = lista.length ? lista[Math.min(j, lista.length - 1)].k : null;
+              if (!aberta) fechar();
+              desenhar();
+            } }, "Esconder") : null,
+            el("button", { type: "button", class: "zoom-fechar", onclick: fechar }, "Fechar ✕"))));
+        zoom.hidden = false;
+      }
+      zoom.addEventListener("click", function (e) { if (e.target === zoom) fechar(); });
+      /* com uma resposta aberta, as setas passam de resposta e o Esc fecha (em vez de mudar de diapositivo) */
+      document.addEventListener("keydown", function (e) {
+        if (!aberta || !sec.isConnected) return;
+        var k = e.key;
+        if (k === "ArrowRight" || k === "ArrowLeft" || k === "Escape" || k === " " || k === "Enter" || k === "PageDown" || k === "PageUp") {
+          e.preventDefault(); e.stopImmediatePropagation();
+          if (k === "Escape") fechar(); else passar(k === "ArrowLeft" || k === "PageUp" ? -1 : 1);
+        }
+      }, true);
       return {
         el: sec, upd: function (d) {
-          var l = abertasDe(d.r, d.ocultos), limite = 24;
-          vazio.style.display = l.length ? "none" : "";
-          var vis = l.slice(0, limite), vivos = {};
-          var frag = [];
-          vis.forEach(function (x, i) {
-            var no = nos[x.k];
-            if (!no) {
-              no = el("div", { class: "nota", style: { "--c": B.cor(t, Object.keys(nos).length) } }, x.txt);
-              if (ctx.ocultar) no.onclick = function () { ctx.ocultar(B.chave(x.k)); };
-              nos[x.k] = no;
-            } else if (no.textContent !== x.txt) no.textContent = x.txt;
-            vivos[x.k] = true; frag.push(no);
-          });
-          for (var k in nos) if (!vivos[k]) { nos[k].remove(); delete nos[k]; }
-          frag.forEach(function (no) { mural.appendChild(no); });
-          mais.textContent = l.length > limite ? "+ " + (l.length - limite) + (l.length - limite === 1 ? " resposta" : " respostas") : "";
-          return l.length;
+          lista = abertasDe(d.r, d.ocultos);
+          desenhar();
+          return lista.length;
         }
       };
     },
