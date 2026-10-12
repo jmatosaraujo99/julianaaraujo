@@ -1181,6 +1181,7 @@
         });
       }
       desenharTemas();
+      if (at.reacoes === undefined) at.reacoes = true;
       janela("Definições da atividade", [
         B.ed.texto("Título", at, "titulo", function () { tituloEl.value = at.titulo; mudar(); }, { max: 90 }),
         el("div", { class: "campo" }, el("span", { class: "rotulo" }, "Tema de cores"), temas),
@@ -1189,6 +1190,7 @@
           desenharLista(); desenharPrevia(); desenharPainel();
         }, { ajuda: "No questionário, cada participante avança sozinho pelas perguntas e o ecrã mostra quantos já responderam. Bom para avaliações e diagnósticos. A roleta e a classificação ficam de fora." }),
         B.ed.inter("Pedir uma alcunha aos participantes", at, "pedirAlcunha", function () { mudar(); }, "Necessário para a classificação mostrar nomes. Sem isto, as respostas são totalmente anónimas."),
+        B.ed.inter("Reações ao vivo (👍 ❤️ 😂 😮 👏)", at, "reacoes", function () { mudar(); }, "Os participantes reagem no telemóvel a qualquer momento e os emojis sobem no ecrã. Também as podes desligar durante a apresentação, em «⋯ Mais»."),
         el("div", { class: "bts" }, el("button", { class: "bt prim", onclick: fecharJanela }, "Feito"))]);
     }
   }
@@ -1248,7 +1250,7 @@
             el("button", { class: "bt", onclick: function () { window.print(); } }, "Imprimir ou PDF"),
             el("a", { class: "bt", href: "apresentar.html?a=" + idx.a + "&s=" + c, target: "_blank" }, "Abrir no ecrã"),
             confirmar("Apagar resultados", "Clica outra vez para apagar de vez", function () {
-              Promise.all([db.del(cam.respostas(c), { auth: true }), db.del(cam.participantes(c), { auth: true })])
+              Promise.all([db.del(cam.respostas(c), { auth: true }), db.del(cam.participantes(c), { auth: true }), db.del(cam.reacoes(c), { auth: true }).catch(function () {})])
                 .then(function () { return db.del(cam.sessao(c), { auth: true }); })
                 .then(function () { return db.del(cam.indiceSessao(uid, c), { auth: true }); })
                 .then(function () { location.hash = "#/"; });

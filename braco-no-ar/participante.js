@@ -91,6 +91,29 @@
     opts = opts || {};
     var pid = opts.pid || B.idAluno();
     var mold = B.molduraTel(raiz, "tenda");
+    /* reações ao vivo: uma barra por baixo das perguntas, sempre à mão */
+    var ultimaReacao = 0;
+    var barraR = el("div", { class: "ph-reacoes", role: "group", "aria-label": "Reagir ao que está no ecrã", hidden: "hidden" },
+      B.reacoesEmojis.map(function (em, i) {
+        return el("button", { type: "button", "aria-label": B.reacoesNomes[i], onclick: function (ev) { reagir(i, ev.currentTarget); } }, em);
+      }));
+    mold.root.insertBefore(barraR, mold.rodape);
+    function reacoesLigadas() {
+      return !!(codigo && at && ativa && !livreAtivo() && at.reacoes !== false && !(estado && (estado.semReacoes || estado.fim)));
+    }
+    function reagir(i, bt) {
+      if (!reacoesLigadas()) return;
+      var agora = Date.now();
+      if (agora - ultimaReacao < 450) return;
+      ultimaReacao = agora;
+      bt.classList.remove("pop"); void bt.offsetWidth; bt.classList.add("pop");
+      var voo = el("span", { class: "ph-reacao-voo", "aria-hidden": "true" }, B.reacoesEmojis[i]);
+      voo.style.left = (bt.offsetLeft + bt.offsetWidth / 2) + "px";
+      barraR.appendChild(voo);
+      setTimeout(function () { voo.remove(); }, 1100);
+      try { navigator.vibrate && navigator.vibrate(8); } catch (e) {}
+      B.db.put(B.caminho.reacao(codigo, pid), { e: i, t: { ".sv": "timestamp" } }).catch(function () {});
+    }
     var codigo = null, at = null, estado = null, cv = null, pararEstado = null, pararQa = null, ativa = true;
     var meus = {}, edicao = {}, rascunhos = {}, vistos = {}, pendentes = {}, gostos = {};
     var ligado = true, ultimoJson = "", relogioTimer = null, tempoTimer = null;
@@ -432,6 +455,7 @@
 
     function render() {
       clearInterval(relogioTimer);
+      barraR.hidden = !reacoesLigadas();
       if (!codigo || !at) return;
       if (!ativa) {
         clearInterval(tempoTimer);

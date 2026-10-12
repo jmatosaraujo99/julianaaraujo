@@ -11,6 +11,9 @@
   var B = (window.BNA = { C: C });
   B.nome = C.nome || "Braço no Ar";
   B.autora = C.autora || null;
+  /* reações ao vivo: a posição é o que fica gravado (0 a 4) */
+  B.reacoesEmojis = ["👍", "❤️", "😂", "😮", "👏"];
+  B.reacoesNomes = ["Gosto", "Adoro", "Engraçado", "Uau", "Palmas"];
 
   /* ---------------- utilitários ---------------- */
 
@@ -489,6 +492,8 @@
     pontos: function (c) { return "sessoes/" + c + "/pts"; },
     perguntas: function (c) { return "sessoes/" + c + "/qa"; },
     resumo: function (c) { return "sessoes/" + c + "/res"; },
+    reacoes: function (c) { return "reacoes/" + c; },
+    reacao: function (c, p) { return "reacoes/" + c + "/" + p; },
     fixo: function (f) { return "fixos/" + f; },
     fixoDe: function (uid, aid) { return "u/" + uid + "/fixos/" + aid; },
     imagem: function (uid, id) { return "u/" + uid + "/imagens/" + id; }
