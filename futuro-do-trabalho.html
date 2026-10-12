@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<script>document.documentElement.classList.add('porta-fechada');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Os empregos de 2030 · Resumo | Juliana Araújo</title>
+<meta name="description" content="O essencial do Future of Jobs Report 2025, em português: que empregos crescem, quais encolhem e que competências vão contar até 2030.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://julianaaraujo.pt/futuro-do-trabalho.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:title" content="Os empregos de 2030 · Resumo em português">
+<meta property="og:description" content="Que empregos crescem, quais encolhem e que competências vão contar até 2030.">
+<meta property="og:url" content="https://julianaaraujo.pt/futuro-do-trabalho.html">
+<meta property="og:image" content="https://julianaaraujo.pt/media/og-cartao.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="favicon.ico?v=2" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css?v=20260915">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+  [hidden] { display: none !important; }
+
+  body {
+    background: var(--creme);
+    color: var(--preto);
+    font-family: var(--fonte-corpo);
+    font-size: 17px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: clamp(40px, calc(6 * var(--fluido)), 72px) 20px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    flex: 1;
+  }
+
+  .topo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+  }
+
+  .etiqueta {
+    font-family: var(--fonte-etiqueta);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: var(--ls-etiqueta);
+    text-transform: uppercase;
+    color: var(--cinza);
+  }
+
+  h1, h2 {
+    font-family: var(--fonte-display);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: var(--ls-display);
+    text-transform: uppercase;
+  }
+
+  h1 { font-size: clamp(34px, calc(5 * var(--fluido)), 44px); }
+
+  .topo p.resumo {
+    color: var(--cinza-forte);
+    max-width: 36ch;
+    text-wrap: balance;
+  }
+
+  .capa {
+    display: block;
+    width: min(100%, 240px);
+    border: 1.5px solid var(--preto);
+    line-height: 0;
+  }
+
+  .capa img { width: 100%; height: auto; }
+
+  .lista {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .botao {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 56px;
+    padding: 14px 20px;
+    border: 1.5px solid var(--preto);
+    border-radius: 999px;
+    color: var(--preto);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.3;
+    transition: background-color .2s, color .2s, border-color .2s;
+  }
+
+  .botao small {
+    display: block;
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--cinza);
+  }
+
+  .botao .seta { font-family: var(--fonte-etiqueta); flex: none; }
+
+  .botao:hover { background: var(--areia); }
+
+  .botao.principal {
+    background: var(--cobalto);
+    border-color: var(--cobalto);
+    color: var(--creme);
+  }
+
+  .botao.principal small { color: var(--creme-suave); }
+
+  .botao.principal:hover { background: var(--preto); border-color: var(--preto); }
+
+  .botao:focus-visible, .sala-sair:focus-visible, .discreto:focus-visible {
+    outline: 3px solid var(--cobalto);
+    outline-offset: 3px;
+  }
+
+  .seguir {
+    width: 100%;
+    background: var(--cobalto);
+    color: var(--creme);
+    border-radius: 24px;
+    padding: 24px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-align: center;
+  }
+
+  .seguir .etiqueta { color: var(--creme-suave); }
+
+  .seguir h2 { font-size: clamp(26px, calc(3.6 * var(--fluido)), 32px); }
+
+  .seguir p { color: var(--creme-suave); text-wrap: balance; }
+
+  .seguir .botao {
+    background: var(--creme);
+    border-color: var(--creme);
+    color: var(--preto);
+  }
+
+  .seguir .botao small { color: var(--cinza-forte); }
+
+  .seguir .botao:hover { background: var(--areia); border-color: var(--areia); }
+
+  .discreto {
+    font-family: var(--fonte-etiqueta);
+    font-size: 12px;
+    letter-spacing: var(--ls-etiqueta);
+    text-transform: uppercase;
+    color: var(--cinza);
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .discreto:hover { color: var(--cobalto); }
+
+  footer {
+    border-top: 1px solid var(--linha-preta);
+    padding: 20px;
+    font-size: 13px;
+    color: var(--cinza);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+
+  footer a { color: var(--cinza); }
+  footer a:hover { color: var(--cobalto); }
+
+  /* Modo sala: os dois QR codes para projetar (toolkit-ia.html#sala) */
+  .sala { display: none; }
+
+  .sala:target {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background: var(--creme);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    justify-content: safe center;
+    gap: clamp(16px, calc(2.4 * var(--fluido)), 40px);
+    padding: 24px;
+    overflow-y: auto;
+    text-align: center;
+  }
+
+  body:has(.sala:target) { overflow: hidden; }
+
+  .sala h2 { font-size: clamp(34px, calc(4.6 * var(--fluido)), 80px); }
+
+  .sala-qrs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(24px, calc(5 * var(--fluido)), 96px);
+  }
+
+  .sala figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sala figure .etiqueta {
+    font-size: clamp(12px, calc(1.2 * var(--fluido)), 20px);
+    color: var(--cobalto);
+  }
+
+  .sala .qr {
+    width: min(34vw, 58vh);
+    min-width: 200px;
+    aspect-ratio: 1;
+    color: var(--preto);
+    background: var(--creme);
+    border: 1.5px solid var(--preto);
+    padding: 4px;
+  }
+
+  .sala .qr svg { display: block; width: 100%; height: 100%; }
+
+  .sala figcaption {
+    font-weight: 600;
+    font-size: clamp(16px, calc(1.8 * var(--fluido)), 30px);
+    line-height: 1.2;
+  }
+
+  .sala-acoes {
+    display: flex;
+    gap: 12px;
+  }
+
+  .sala-sair {
+    font-family: var(--fonte-etiqueta);
+    font-size: 12px;
+    letter-spacing: var(--ls-etiqueta);
+    text-transform: uppercase;
+    color: var(--cinza);
+    background: none;
+    border: 1px solid var(--linha-preta);
+    border-radius: 999px;
+    padding: 0 18px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .sala-sair:hover { color: var(--cobalto); border-color: var(--cobalto); }
+
+  :fullscreen .sala-acoes { opacity: 0; transition: opacity .3s; }
+  :fullscreen .sala-acoes:hover, :fullscreen .sala-acoes:focus-within { opacity: 1; }
+
+
+  /* Pop-up: seguir antes de levar o toolkit */
+  .porta {
+    margin: auto;
+    width: min(100% - 32px, 420px);
+    max-height: calc(100% - 32px);
+    overflow-y: auto;
+    border: none;
+    border-radius: 24px;
+    background: var(--creme);
+    color: var(--preto);
+    padding: 28px 22px 22px;
+    text-align: center;
+  }
+
+  .porta::backdrop {
+    background: rgba(10, 10, 10, 0.6);
+    background: color-mix(in srgb, var(--preto) 60%, transparent);
+  }
+
+  .porta[open] { display: flex; flex-direction: column; gap: 14px; }
+
+  .porta h2 { font-size: clamp(26px, calc(3.6 * var(--fluido)), 32px); }
+
+  .porta p { color: var(--cinza-forte); text-wrap: balance; }
+
+  .porta .passo {
+    font-family: var(--fonte-etiqueta);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: var(--ls-etiqueta);
+    text-transform: uppercase;
+    color: var(--cobalto);
+    margin-top: 6px;
+  }
+
+  .porta .botao[aria-disabled="true"] {
+    background: var(--areia);
+    border-color: var(--areia);
+    color: var(--cinza-forte);
+    cursor: not-allowed;
+  }
+
+  .porta .botao[aria-disabled="true"] small { color: var(--cinza-forte); }
+
+  .porta-fechar {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: none;
+    font-size: 24px;
+    line-height: 1;
+    color: var(--cinza);
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  .porta-fechar:hover { color: var(--preto); background: var(--areia); }
+  .porta-fechar:focus-visible { outline: 3px solid var(--cobalto); outline-offset: 2px; }
+
+
+
+  /* Resumo do relatório */
+  .porta-fechada #resumo { display: none; }
+
+  .relatorio {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scroll-margin-top: 24px;
+  }
+
+  .relatorio > h2 {
+    font-size: clamp(30px, calc(4.2 * var(--fluido)), 38px);
+    text-align: center;
+  }
+
+  .numeros {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .numero {
+    border: 1.5px solid var(--preto);
+    border-radius: 18px;
+    padding: 14px 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .numero strong {
+    font-family: var(--fonte-display);
+    font-weight: 400;
+    font-size: clamp(28px, calc(4 * var(--fluido)), 34px);
+    line-height: 1;
+    letter-spacing: var(--ls-display);
+    color: var(--cobalto);
+  }
+
+  .numero span { font-size: 14px; line-height: 1.4; color: var(--cinza-forte); }
+
+  .bloco {
+    border-top: 1px solid var(--linha-preta);
+    padding-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .bloco h3 {
+    font-family: var(--fonte-etiqueta);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: var(--ls-etiqueta);
+    text-transform: uppercase;
+    color: var(--cobalto);
+  }
+
+  .bloco p, .bloco li { font-size: 16px; line-height: 1.5; }
+
+  .bloco ul { padding-left: 1.1em; display: flex; flex-direction: column; gap: 2px; }
+
+  .bloco .apoio { color: var(--cinza-forte); }
+
+  .pensar {
+    background: var(--areia);
+    border-radius: 18px;
+    padding: 16px 18px;
+    font-weight: 600;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .fonte { font-size: 13px; color: var(--cinza); line-height: 1.5; }
+  .fonte a { color: var(--cinza); }
+  .fonte a:hover { color: var(--cobalto); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .botao, :fullscreen .sala-acoes { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <section class="topo">
+    <p class="etiqueta">Relatório · Futuro do trabalho</p>
+    <h1>Os empregos de 2030</h1>
+    <p class="resumo">O que mais de mil empresas de 55 países esperam até 2030: que empregos crescem, quais encolhem e que competências vão contar. Resumido em português.</p>
+  </section>
+
+  <nav class="lista" aria-label="Relatório">
+    <a class="botao principal" data-porta href="#resumo">
+      <span>Ver o resumo<small>Em português · 2 minutos de leitura</small></span>
+      <span class="seta" aria-hidden="true">↓</span>
+    </a>
+    <a class="botao" data-porta href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/" target="_blank" rel="noopener">
+      <span>Relatório completo<small>Em inglês · 290 páginas · site do Fórum Económico Mundial</small></span>
+      <span class="seta" aria-hidden="true">→</span>
+    </a>
+  </nav>
+
+  <section class="relatorio" id="resumo" aria-labelledby="titulo-resumo">
+    <h2 id="titulo-resumo">O essencial</h2>
+
+    <div class="numeros">
+      <p class="numero"><strong>+78 M</strong><span>empregos a mais em 2030: nascem 170 milhões e desaparecem 92 milhões</span></p>
+      <p class="numero"><strong>39%</strong><span>das competências de cada trabalhador vão mudar ou ficar desatualizadas</span></p>
+      <p class="numero"><strong>59 em 100</strong><span>trabalhadores vão precisar de formação até 2030</span></p>
+      <p class="numero"><strong>86%</strong><span>das empresas esperam que a IA transforme o seu negócio</span></p>
+    </div>
+
+    <div class="bloco">
+      <h3>A competência mais procurada hoje</h3>
+      <p><strong>Pensamento analítico.</strong> <span class="apoio">7 em cada 10 empresas consideram-no essencial.</span></p>
+    </div>
+
+    <div class="bloco">
+      <h3>As competências que mais vão crescer</h3>
+      <ul>
+        <li>IA e big data</li>
+        <li>Redes e cibersegurança</li>
+        <li>Literacia tecnológica</li>
+        <li>Pensamento criativo</li>
+        <li>Resiliência, flexibilidade e agilidade</li>
+        <li>Curiosidade e aprender ao longo da vida</li>
+      </ul>
+    </div>
+
+    <div class="bloco">
+      <h3>As profissões que mais crescem</h3>
+      <p><strong>Mais depressa:</strong> <span class="apoio">especialistas em big data, engenharia fintech, especialistas em IA e machine learning, programação de software e aplicações.</span></p>
+      <p><strong>Mais empregos novos:</strong> <span class="apoio">trabalho agrícola, condução de entregas, construção, vendas, enfermagem e ensino.</span></p>
+    </div>
+
+    <div class="bloco">
+      <h3>As profissões que mais encolhem</h3>
+      <p class="apoio">Caixas e bilheteiras, assistentes administrativos e de secretariado, funcionários dos correios, caixas de banco e introdução de dados.</p>
+    </div>
+
+    <p class="pensar">E tu? Que competência desta lista já estás a treinar, e qual te falta?</p>
+
+    <p class="fonte">Fonte: Fórum Económico Mundial, <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/" target="_blank" rel="noopener"><cite>Future of Jobs Report 2025</cite></a> (janeiro de 2025), inquérito a mais de 1000 empresas que representam 14 milhões de trabalhadores em 55 economias. Resumo e tradução de Juliana Araújo.</p>
+  </section>
+
+  <section class="seguir" aria-labelledby="titulo-seguir">
+    <p class="etiqueta">Gostaste?</p>
+    <h2 id="titulo-seguir">Segue @julianaaraujo.pt</h2>
+    <p>Partilho lá mais ferramentas e conteúdos como este.</p>
+    <a class="botao" data-segue href="https://www.instagram.com/julianaaraujo.pt/" target="_blank" rel="noopener">
+      <span>Seguir no Instagram<small>Abre a app, se a tiveres</small></span>
+      <span class="seta" aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <a class="discreto" href="#sala">Modo sala · projetar os QR codes</a>
+</main>
+
+<footer>
+  <span>© 2026 Juliana Araújo</span>
+  <a href="index.html">julianaaraujo.pt</a>
+  <a href="privacidade.html">Privacidade</a>
+</footer>
+
+<section class="sala" id="sala" aria-labelledby="titulo-sala">
+  <h2 id="titulo-sala">Os empregos de 2030</h2>
+  <div class="sala-qrs">
+    <figure>
+      <p class="etiqueta">1 · Lê o resumo</p>
+      <div class="qr"><svg role="img" aria-label="QR code para julianaaraujo.pt/futuro-do-trabalho" shape-rendering="crispEdges" viewBox="0 0 37 37" class="segno"><path class="qrline" stroke="currentColor" d="M2 2.5h7m1 0h3m1 0h2m1 0h5m1 0h1m1 0h1m2 0h7m-33 1h1m5 0h1m2 0h2m3 0h2m1 0h1m2 0h1m5 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m3 0h1m2 0h2m2 0h5m2 0h1m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m3 0h3m2 0h2m2 0h1m2 0h1m3 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m2 0h1m1 0h2m4 0h1m2 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m1 0h1m3 0h1m1 0h2m1 0h1m4 0h1m1 0h1m1 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-24 1h1m1 0h1m1 0h1m1 0h2m1 0h1m2 0h1m-21 1h7m2 0h4m1 0h3m4 0h1m1 0h1m2 0h2m3 0h1m-30 1h1m1 0h1m1 0h1m5 0h2m1 0h1m2 0h3m1 0h1m2 0h2m1 0h2m1 0h1m-31 1h2m2 0h2m2 0h2m1 0h1m1 0h2m1 0h1m2 0h1m3 0h2m1 0h1m1 0h2m-28 1h2m3 0h2m8 0h1m1 0h2m1 0h3m1 0h5m-33 1h2m2 0h4m1 0h1m2 0h4m2 0h2m2 0h2m3 0h3m1 0h2m-33 1h5m2 0h1m4 0h3m1 0h1m4 0h1m1 0h1m2 0h1m2 0h4m-33 1h1m1 0h1m1 0h1m1 0h1m1 0h6m1 0h3m2 0h2m3 0h4m2 0h1m-31 1h5m1 0h1m2 0h2m2 0h1m3 0h5m2 0h3m1 0h2m-31 1h4m2 0h2m4 0h1m2 0h3m1 0h1m2 0h4m1 0h3m2 0h1m-32 1h1m1 0h1m1 0h1m2 0h4m1 0h9m1 0h1m2 0h2m1 0h2m1 0h1m-32 1h1m4 0h4m1 0h2m1 0h1m1 0h2m2 0h1m3 0h5m1 0h1m-31 1h2m1 0h2m6 0h1m4 0h1m3 0h2m3 0h1m1 0h4m-31 1h2m2 0h3m1 0h4m2 0h1m1 0h1m1 0h1m3 0h4m2 0h2m1 0h1m-32 1h1m7 0h2m1 0h3m1 0h7m1 0h2m1 0h1m2 0h2m1 0h1m-33 1h1m2 0h4m1 0h2m1 0h3m1 0h1m1 0h2m2 0h1m4 0h1m2 0h3m-32 1h1m3 0h1m2 0h5m1 0h2m1 0h1m1 0h1m2 0h3m2 0h1m2 0h4m-33 1h1m3 0h3m2 0h1m2 0h1m6 0h2m1 0h8m2 0h1m-25 1h1m2 0h5m2 0h5m1 0h1m3 0h1m1 0h3m-33 1h7m1 0h4m1 0h2m2 0h1m2 0h2m1 0h2m1 0h1m1 0h1m1 0h2m-32 1h1m5 0h1m1 0h2m1 0h2m1 0h2m1 0h1m3 0h4m3 0h3m-31 1h1m1 0h3m1 0h1m1 0h1m4 0h2m1 0h1m1 0h1m3 0h1m1 0h6m-30 1h1m1 0h3m1 0h1m1 0h1m1 0h2m6 0h4m1 0h3m2 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m2 0h2m1 0h3m6 0h5m2 0h1m-31 1h1m5 0h1m1 0h3m3 0h2m4 0h2m3 0h1m2 0h3m-31 1h7m2 0h1m5 0h5m2 0h3m2 0h1m1 0h1m1 0h1"/></svg></div>
+      <figcaption>julianaaraujo.pt/futuro-do-trabalho</figcaption>
+    </figure>
+    <figure>
+      <p class="etiqueta">2 · Segue</p>
+      <div class="qr"><svg role="img" aria-label="QR code para o Instagram @julianaaraujo.pt" shape-rendering="crispEdges" viewBox="0 0 37 37" class="segno"><path class="qrline" stroke="currentColor" d="M2 2.5h7m1 0h2m1 0h1m1 0h4m1 0h1m1 0h3m3 0h7m-33 1h1m5 0h1m1 0h1m1 0h4m1 0h3m2 0h1m1 0h1m3 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m4 0h2m3 0h3m1 0h3m1 0h1m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m5 0h1m1 0h1m1 0h1m2 0h3m1 0h1m2 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m2 0h6m1 0h3m4 0h1m2 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m2 0h1m1 0h1m1 0h1m1 0h3m3 0h2m3 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-19 1h2m2 0h1m5 0h1m-24 1h1m4 0h4m1 0h3m2 0h2m4 0h1m1 0h2m5 0h2m-31 1h4m4 0h1m1 0h4m2 0h2m1 0h1m1 0h1m4 0h3m-28 1h4m1 0h2m1 0h6m1 0h1m1 0h1m3 0h1m3 0h1m1 0h1m-29 1h1m1 0h1m2 0h1m1 0h2m2 0h1m1 0h2m6 0h1m1 0h1m1 0h5m-31 1h2m3 0h4m3 0h1m1 0h6m3 0h1m1 0h2m-28 1h3m2 0h1m1 0h1m1 0h3m3 0h1m1 0h1m5 0h1m2 0h2m1 0h1m1 0h2m-31 1h1m3 0h1m1 0h1m2 0h1m1 0h2m1 0h1m1 0h1m1 0h1m3 0h3m2 0h1m1 0h1m-28 1h2m1 0h1m1 0h1m1 0h4m1 0h2m1 0h1m3 0h3m3 0h2m1 0h1m-32 1h1m2 0h1m1 0h2m1 0h5m1 0h1m1 0h3m2 0h1m1 0h2m1 0h2m3 0h1m-33 1h2m6 0h1m1 0h1m1 0h3m1 0h2m1 0h8m2 0h2m1 0h1m-33 1h4m2 0h1m1 0h3m1 0h1m1 0h1m1 0h2m1 0h2m2 0h1m3 0h1m1 0h2m1 0h1m-33 1h2m2 0h1m3 0h2m2 0h5m1 0h2m2 0h2m2 0h1m1 0h5m-33 1h2m2 0h5m1 0h1m1 0h2m4 0h1m6 0h1m1 0h3m1 0h2m-33 1h1m1 0h1m1 0h1m2 0h1m3 0h1m1 0h1m1 0h1m1 0h4m1 0h2m3 0h2m-29 1h1m1 0h1m2 0h3m1 0h1m1 0h3m1 0h2m4 0h2m2 0h1m1 0h1m3 0h1m-32 1h1m1 0h1m4 0h1m2 0h1m3 0h2m1 0h1m2 0h1m3 0h9m-33 1h4m1 0h4m3 0h3m1 0h2m1 0h1m3 0h6m2 0h1m-24 1h1m2 0h1m2 0h2m1 0h1m1 0h3m1 0h2m3 0h1m1 0h1m1 0h1m-33 1h7m1 0h1m1 0h4m1 0h2m1 0h1m1 0h1m1 0h3m1 0h1m1 0h1m1 0h2m-32 1h1m5 0h1m2 0h2m1 0h3m4 0h1m2 0h3m3 0h4m-32 1h1m1 0h3m1 0h1m3 0h2m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h6m-30 1h1m1 0h3m1 0h1m2 0h4m2 0h2m1 0h3m1 0h2m1 0h1m1 0h4m1 0h1m-33 1h1m1 0h3m1 0h1m2 0h1m1 0h1m7 0h4m1 0h1m2 0h2m1 0h3m-33 1h1m5 0h1m1 0h2m2 0h1m3 0h3m3 0h1m4 0h4m-31 1h7m3 0h1m3 0h1m2 0h1m4 0h4m1 0h1m3 0h1"/></svg></div>
+      <figcaption>@julianaaraujo.pt</figcaption>
+    </figure>
+  </div>
+  <div class="sala-acoes">
+    <button class="sala-sair" type="button" id="ecra-inteiro">Ecrã inteiro</button>
+    <a class="sala-sair" href="#">Sair</a>
+  </div>
+</section>
+
+<dialog class="porta" id="porta" aria-labelledby="porta-titulo">
+  <button class="porta-fechar" type="button" data-fechar aria-label="Fechar">×</button>
+  <p class="etiqueta">Antes de veres o resumo</p>
+  <h2 id="porta-titulo">Segue @julianaaraujo.pt</h2>
+  <p>É só isto que te peço em troca. Segue a conta e volta aqui: o resumo fica logo disponível.</p>
+  <p class="passo">Passo 1</p>
+  <a class="botao principal" data-segue href="https://www.instagram.com/julianaaraujo.pt/" target="_blank" rel="noopener">
+    <span>Seguir no Instagram<small>Abre a app, se a tiveres</small></span>
+    <span class="seta" aria-hidden="true">→</span>
+  </a>
+  <p class="passo">Passo 2</p>
+  <a class="botao" id="porta-levar" href="#resumo" aria-disabled="true">
+    <span id="porta-levar-texto">Já sigo · ver o resumo<small>Fica disponível depois do passo 1</small></span>
+    <span class="seta" aria-hidden="true">↓</span>
+  </a>
+</dialog>
+
+<script>
+  (function () {
+    var botao = document.getElementById('ecra-inteiro');
+    if (!document.documentElement.requestFullscreen) { botao.hidden = true; return; }
+    botao.addEventListener('click', function () {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    });
+    document.addEventListener('fullscreenchange', function () {
+      botao.textContent = document.fullscreenElement ? 'Sair do ecrã inteiro' : 'Ecrã inteiro';
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && location.hash === '#sala' && !document.fullscreenElement) location.hash = '';
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    var CHAVE = 'segue-julianaaraujo';
+    var raiz = document.documentElement;
+    var porta = document.getElementById('porta');
+    var levar = document.getElementById('porta-levar');
+    var levarTexto = document.getElementById('porta-levar-texto');
+    var carregouSeguir = false;
+
+    function jaSegue() {
+      try { return localStorage.getItem(CHAVE) === '1'; } catch (e) { return false; }
+    }
+
+    function abrirResumo() { raiz.classList.remove('porta-fechada'); }
+
+    function libertar() {
+      levar.removeAttribute('aria-disabled');
+      levar.classList.add('principal');
+      levarTexto.innerHTML = levar.getAttribute('href').charAt(0) === '#'
+        ? 'Ver o resumo<small>Obrigada por seguires!</small>'
+        : 'Abrir o relatório<small>Obrigada por seguires!</small>';
+      abrirResumo();
+      try { localStorage.setItem(CHAVE, '1'); } catch (e) {}
+    }
+
+    // Sem suporte para <dialog>, o resumo fica visível e as ligações funcionam.
+    if (!porta || typeof porta.showModal !== 'function' || jaSegue()) { abrirResumo(); if (!porta || typeof porta.showModal !== 'function') return; }
+
+    document.querySelectorAll('[data-porta]').forEach(function (ligacao) {
+      ligacao.addEventListener('click', function (e) {
+        if (jaSegue()) { abrirResumo(); return; }
+        e.preventDefault();
+        levar.href = ligacao.getAttribute('href');
+        if (ligacao.target) { levar.target = ligacao.target; levar.rel = 'noopener'; }
+        else { levar.removeAttribute('target'); levar.removeAttribute('rel'); }
+        if (!levar.hasAttribute('aria-disabled')) libertar();
+        porta.showModal();
+      });
+    });
+
+    document.querySelectorAll('[data-segue]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        carregouSeguir = true;
+        setTimeout(function () { if (levar.hasAttribute('aria-disabled')) libertar(); }, 4000);
+      });
+    });
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible' && carregouSeguir && levar.hasAttribute('aria-disabled')) libertar();
+    });
+
+    levar.addEventListener('click', function (e) {
+      if (levar.hasAttribute('aria-disabled')) {
+        e.preventDefault();
+        levarTexto.innerHTML = 'Primeiro, o passo 1<small>Carrega em Seguir no Instagram</small>';
+        return;
+      }
+      var destino = levar.getAttribute('href');
+      if (destino.charAt(0) === '#') {
+        e.preventDefault();
+        porta.close();
+        abrirResumo();
+        document.querySelector(destino).scrollIntoView({ behavior: 'smooth' });
+      } else {
+        setTimeout(function () { porta.close(); }, 300);
+      }
+    });
+
+    porta.querySelector('[data-fechar]').addEventListener('click', function () { porta.close(); });
+    porta.addEventListener('click', function (e) { if (e.target === porta) porta.close(); });
+
+    // Quem chega pelo QR code vê o pop-up logo; no modo sala não.
+    if (!jaSegue() && location.hash !== '#sala') {
+      setTimeout(function () { if (!porta.open && location.hash !== '#sala') porta.showModal(); }, 700);
+    }
+  })();
+</script>
+
+</body>
+</html>
