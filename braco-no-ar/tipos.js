@@ -655,7 +655,7 @@
     ecra: function (s, ctx) {
       /* 12 notas por página (4 × 3); as compridas ficam cortadas com «…» e abrem-se
          em grande com um clique, para ler ou projetar. Esconder passa a ser feito aí. */
-      var POR_PAG = 12;
+      var POR_PAG = 12;   /* 4 colunas × as filas que couberem (3 num ecrã 16:9) */
       var t = ctx.tema, mural = el("div", { class: "mural" }), vazio = el("div", { class: "vazio" }, "As respostas aparecem aqui");
       var pag = 0, lista = [], cores = {}, nCores = 0, aberta = null;
       var bAnt = el("button", { type: "button", "aria-label": "Página anterior", onclick: function () { irPag(pag - 1); } }, "‹");
@@ -667,7 +667,15 @@
       function cor(k) { if (!(k in cores)) cores[k] = B.cor(t, nCores++); return cores[k]; }
       function nPaginas() { return Math.max(1, Math.ceil(lista.length / POR_PAG)); }
       function irPag(n) { pag = Math.max(0, Math.min(nPaginas() - 1, n)); desenhar(); }
+      function filas() {
+        /* nota de 4 linhas: 4 × 24px × 1,35 + 36px de margem interna; 18px entre filas */
+        var h = mural.clientHeight;
+        return h > 0 ? Math.max(1, Math.min(4, Math.floor((h + 18) / (165.6 + 18)))) : 3;
+      }
       function desenhar() {
+        var antes = POR_PAG, primeira = pag * POR_PAG;
+        POR_PAG = 4 * filas();
+        if (POR_PAG !== antes) pag = Math.floor(primeira / POR_PAG);
         pag = Math.min(pag, nPaginas() - 1);
         vazio.style.display = lista.length ? "none" : "";
         var vis = lista.slice(pag * POR_PAG, pag * POR_PAG + POR_PAG), vivos = {};
@@ -719,6 +727,7 @@
         zoom.hidden = false;
       }
       zoom.addEventListener("click", function (e) { if (e.target === zoom) fechar(); });
+      window.addEventListener("resize", function () { if (sec.isConnected) desenhar(); });
       /* com uma resposta aberta, as setas passam de resposta e o Esc fecha (em vez de mudar de diapositivo) */
       document.addEventListener("keydown", function (e) {
         if (!aberta || !sec.isConnected) return;
