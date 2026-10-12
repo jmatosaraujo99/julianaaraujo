@@ -332,7 +332,7 @@
         if (res.j === j) return;
         res.d = x; res.j = j;
         var s = slideAtual();
-        if (s && s.id === id && (respondeu(s) || (s.tipo === "quiz" && estado.rev))) render();
+        if (s && s.id === id && (respondeu(s) || (s.tipo === "quiz" && estado.rev) || (estado.fch && estado.fch[id]))) render();
       }, { semSse: true, intervalo: 3000 });
     }
     function pararResultados() { if (pararRes) { pararRes(); pararRes = null; } res = { id: null, d: null, j: "" }; }
@@ -429,7 +429,7 @@
       return {
         tema: B.tema(at.tema), pid: pid, estado: estado, livre: !!livreAtivo(),
         meu: function (suf) { return meus[chaveR(s.id, suf)]; },
-        enviar: function (v, suf) { if (livreAtivo() || (estado && estado.id === s.id)) enviar(s, v, suf); },
+        enviar: function (v, suf) { if (livreAtivo() || (estado && estado.id === s.id && !(estado.fch && estado.fch[s.id]))) enviar(s, v, suf); },
         aEditar: !!edicao[s.id], editar: function (f) { edicao[s.id] = f; render(); },
         rascunho: rascunhos[s.id] || null, rascunhar: function (x) { rascunhos[s.id] = x; render(); },
         tempoRestante: resta,
@@ -473,6 +473,19 @@
         var nome = B.store.get("bna-alcunha-" + codigo + "-" + pid);
         BNA.por(mold.main, topo, M.grande("Estás <em>dentro!</em>", (nome ? nome + ", olha" : "Olha") + " para o ecrã. As perguntas aparecem aqui sozinhas.",
           el("div", { class: "ph-visto-g", "aria-hidden": "true" }, "✓")), B.esperaTel("À espera que a sessão comece"));
+        return;
+      }
+      /* respostas fechadas pela formadora: só a pergunta, o aviso e os resultados */
+      var def0 = T[s.tipo];
+      if (def0.interativo && estado.fch && estado.fch[s.id]) {
+        mold.sup(s.fundo && s.fundo !== "auto" ? s.fundo : def0.sup);
+        mold._slide = null;
+        var kids = [topo, M.cab(s, (def0.texto && def0.texto(s)) || s.pergunta || s.titulo || ""),
+          el("p", { class: "ph-fechada" }, "🔒 Respostas fechadas"),
+          el("p", { class: "ph-res-nota" }, respondeu(s) ? "A tua resposta ficou registada." : "Esta pergunta já não aceita respostas.")];
+        if (s.tipo !== "perguntas" && !estado.oc && res.d && res.d.id === s.id && (s.tipo !== "quiz" || estado.rev)) kids.push(B.resultadosTel(s, res.d, B.tema(at.tema)));
+        kids.push(B.esperaTel("À espera da próxima pergunta"));
+        BNA.por(mold.main, kids);
         return;
       }
       B.desenharTel(mold, s, ctxPara(s), topo);
