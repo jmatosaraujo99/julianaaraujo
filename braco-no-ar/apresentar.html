@@ -472,7 +472,13 @@
   function pedir() {
     if (raf) return;
     raf = true;
-    requestAnimationFrame(function () { raf = false; atualizar(); });
+    /* O Chrome não desenha uma janela tapada por outra (Teams, Canva…) nem minimizada,
+       e aí o requestAnimationFrame nunca chega. O temporizador garante que as respostas
+       continuam a entrar e que os telemóveis recebem os resultados na mesma. */
+    var feito = false;
+    function vai() { if (feito) return; feito = true; raf = false; atualizar(); }
+    requestAnimationFrame(vai);
+    setTimeout(vai, 250);
   }
   function atualizar() {
     if (!vista) return;

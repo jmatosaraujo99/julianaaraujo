@@ -242,6 +242,14 @@
     var e = new Error(msg); e.status = status; e.detalhe = detalhe; return e;
   }
 
+  function iguais(a, b) {
+    if (a === b) return true;
+    if (a === null || b === null || typeof a !== "object" || typeof b !== "object") return a === b;
+    var ka = Object.keys(a), kb = Object.keys(b);
+    if (ka.length !== kb.length) return false;
+    for (var i = 0; i < ka.length; i++) if (!Object.prototype.hasOwnProperty.call(b, ka[i]) || !iguais(a[ka[i]], b[ka[i]])) return false;
+    return true;
+  }
   var Db = (B.db = {
     url: function (path, q, comAuth) {
       var partes = [];
@@ -279,7 +287,7 @@
     ouvir: function (path, cb, o) {
       o = o || {};
       if (B.demo) return Local.ouvir(path, cb);
-      var arvore = null, es = null, parado = false, timer = null, falhas = 0, vigia = null;
+      var arvore = null, es = null, parado = false, timer = null, falhas = 0, vigia = null, ultimoDado = 0;
       var lento = o.intervalo || 2000, intervalo = lento;
       function aplicar(p, data) {
         var partes = String(p || "/").split("/").filter(Boolean);
@@ -299,7 +307,7 @@
         Db.url(path, {}, o.auth).then(function (u) {
           if (parado) return;
           es = new EventSource(u);
-          intervalo = 15000;
+          intervalo = 5000;   /* com tempo real, pergunta na mesma de 5 em 5 s para confirmar */
           /* a Firebase manda logo o primeiro «put» e depois um «keep-alive» de 30 em 30 s.
              Se o primeiro não chega em 6 s, ou se ficam 45 s sem nada, a rede está a reter
              a ligação (há wi-fi de escolas e empresas assim): passa a perguntar de 2 em 2 s
@@ -312,11 +320,11 @@
           }, 3000);
           es.addEventListener("keep-alive", function () { ultimo = Date.now(); });
           es.addEventListener("put", function (ev) {
-            falhas = 0; recebeu = true; ultimo = Date.now();
+            falhas = 0; recebeu = true; ultimo = ultimoDado = Date.now();
             try { var m = JSON.parse(ev.data); aplicar(m.path, m.data); avisar(true); } catch (e) {}
           });
           es.addEventListener("patch", function (ev) {
-            falhas = 0; recebeu = true; ultimo = Date.now();
+            falhas = 0; recebeu = true; ultimo = ultimoDado = Date.now();
             try {
               var m = JSON.parse(ev.data), base = String(m.path || "/").replace(/\/$/, "");
               for (var k in m.data) aplicar(base + "/" + k, m.data[k]);
@@ -332,9 +340,21 @@
         }).catch(function () { intervalo = lento; });
       }
       function fecharSse() { clearInterval(vigia); vigia = null; if (es) { es.close(); es = null; } }
+      /* Há redes (wi-fi de escolas e empresas) que deixam a ligação em tempo real aberta mas
+         retêm o que lá passa. Se uma pergunta trouxer dados que o tempo real não tinha e ele
+         não os entregar logo a seguir, deixa de confiar nele e passa a perguntar de 2 em 2 s. */
       function ciclo() {
         if (parado) return;
-        Db.get(path, { auth: o.auth }).then(function (t) { arvore = t; avisar(true); })
+        Db.get(path, { auth: o.auth }).then(function (t) {
+          if (es && !iguais(t, arvore)) {
+            /* a pergunta trouxe novidades: se o tempo real estiver bom, entrega-as já a seguir */
+            var tPergunta = Date.now(), esta = es;
+            setTimeout(function () {
+              if (es === esta && ultimoDado < tPergunta) { fecharSse(); intervalo = lento; agendar(0); }
+            }, 2500);
+          }
+          arvore = t; avisar(true);
+        })
           .catch(function (e) { avisar(false, e); })
           .then(function () { agendar(document.hidden && o.semSse ? Math.max(intervalo, 5000) : intervalo); });
       }
