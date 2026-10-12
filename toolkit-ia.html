@@ -427,7 +427,7 @@
     <span class="seta" aria-hidden="true">→</span>
   </a>
   <p class="passo">Passo 2</p>
-  <a class="botao" id="porta-levar" href="media/toolkit-pensamento-critico-ia.pdf" aria-disabled="true">
+  <a class="botao" id="porta-levar" href="media/toolkit-pensamento-critico-ia.pdf" download="Toolkit - Pensamento critico na IA.pdf" aria-disabled="true">
     <span id="porta-levar-texto">Já sigo · levar o toolkit<small>Fica disponível depois do passo 1</small></span>
     <span class="seta" aria-hidden="true">↓</span>
   </a>
@@ -510,6 +510,11 @@
 
     porta.querySelector('[data-fechar]').addEventListener('click', function () { porta.close(); });
     porta.addEventListener('click', function (e) { if (e.target === porta) porta.close(); });
+
+    // Quem chega pelo QR code vê o pop-up logo; no modo sala não.
+    if (!jaSegue() && location.hash !== '#sala') {
+      setTimeout(function () { if (!porta.open && location.hash !== '#sala') porta.showModal(); }, 700);
+    }
   })();
 </script>
 
