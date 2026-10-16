@@ -216,7 +216,7 @@
   }
   B.comPrazo = comPrazo;
   function pedirJson(url, body, form) {
-    var prazo = comPrazo(15000);
+    var prazo = comPrazo(8000);
     return fetch(url, {
       method: "POST",
       headers: { "Content-Type": form ? "application/x-www-form-urlencoded" : "application/json" },

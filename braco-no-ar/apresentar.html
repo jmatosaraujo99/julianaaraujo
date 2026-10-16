@@ -544,8 +544,11 @@
      e esquecidas (o QR lido pela câmara e depois o código escrito no Chrome,
      por exemplo) deixam de contar sozinhas. */
   /* os telemóveis dizem em que diapositivo estão (s); conta os que estão ativos */
+  var alvoAnterior = null, alvoDesde = 0;
   function naPergunta() {
     var agora = B.agora(), alvo = livre() ? "livre" : (estado.id || "-"), r = { com: 0, viu: 0 };
+    if (alvo !== alvoAnterior) { alvoAnterior = alvo; alvoDesde = Date.now(); }
+    r.recente = Date.now() - alvoDesde < 4500;   /* os telemóveis ainda estão a confirmar */
     for (var p in parts) {
       var x = parts[p];
       if (!x || typeof x.s !== "string" || typeof x.t !== "number" || agora - x.t > 75000) continue;
@@ -681,8 +684,11 @@
     if (s && fechada(s)) l.push(el("span", { class: "fechada-et" }, "🔒 Respostas fechadas"));
     l.push(el("span", null, el("b", null, String(nPart)), nPart === 1 ? " participante" : " participantes"));
     var np = soLeitura || ver ? null : naPergunta();
-    if (np && np.com) l.push(el("span", { class: np.viu >= np.com ? "vistos-ok" : "vistos-atraso", title: "Telemóveis que já mostram este diapositivo" },
-      "📱 ", el("b", null, np.viu + "/" + np.com), np.viu >= np.com ? " ✓" : ""));
+    if (np && np.com) {
+      if (np.viu < np.com && np.recente) l.push(el("span", { class: "vistos-ok", title: "Os telemóveis estão a receber este diapositivo" }, "📱 a chegar…"));
+      else l.push(el("span", { class: np.viu >= np.com ? "vistos-ok" : "vistos-atraso", title: "Telemóveis que já mostram este diapositivo" },
+        "📱 ", el("b", null, np.viu + "/" + np.com), np.viu >= np.com ? " ✓" : ""));
+    }
     l.push(el("span", null, "Código ", el("b", null, B.fmtCodigo(codPub()))));
     var i = livre() ? livreVer : estado.i;
     if (s && i >= 0) l.push(el("span", null, String(i + 1).padStart(2, "0") + "/" + String(at.slides.length).padStart(2, "0")));
