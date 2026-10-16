@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BRAÇO NO AR · diapositivos (ecrã do formador, pré-visualização e resultados)
+   ZUNZUM · diapositivos (ecrã do formador, pré-visualização e resultados)
    Palco fixo de 1600 × 900, escalado para caber em qualquer ecrã.
    ========================================================================== */
 .palco{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;overflow:hidden;

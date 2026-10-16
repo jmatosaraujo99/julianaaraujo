@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BRAÇO NO AR · resultados nos telemóveis
+   ZUNZUM · resultados nos telemóveis
    O ecrã publica um resumo pequeno da pergunta que está a mostrar
    (sessoes/<código>/res) e os telemóveis vão buscá-lo de 3 em 3 segundos.
    Assim cada telemóvel continua a usar uma só ligação em tempo real.

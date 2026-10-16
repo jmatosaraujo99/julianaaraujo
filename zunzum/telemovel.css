@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BRAÇO NO AR · página do participante (telemóvel)
+   ZUNZUM · página do participante (telemóvel)
    ========================================================================== */
 .ph{--display:'Anton',Impact,'Arial Narrow',sans-serif;--texto:'Archivo',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   --fundo:var(--t-claro,#f3eee5);--tinta:var(--t-tinta,#132a27);--suave:rgba(19,42,39,.64);--linha:rgba(19,42,39,.13);--cartao:#fff;--kicker:var(--t-kicker-claro,#1e7e75);
@@ -190,3 +190,5 @@
 .ph-espera-p i:nth-child(2){animation-delay:.15s}.ph-espera-p i:nth-child(3){animation-delay:.3s}
 @keyframes ph-salta{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-7px);opacity:1}}
 @media (prefers-reduced-motion:reduce){.ph-espera-p i{animation:none;opacity:.8}}
+.ph-formador{margin:22px 0 0;font-size:14px;color:var(--suave)}
+.ph-formador a{color:inherit;font-weight:700}

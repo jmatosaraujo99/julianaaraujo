@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BRAÇO NO AR · lado do participante (telemóvel)
+   ZUNZUM · lado do participante (telemóvel)
    ========================================================================== */
 (function () {
   "use strict";
@@ -152,9 +152,12 @@
         ev.preventDefault();
         var c = inp.value.replace(/\D/g, "");
         if (c.length !== 6) { erro.textContent = "O código tem 6 algarismos."; return; }
+        /* um código escrito à mão procura-se sempre a partir da base da casa (e do índice) */
+        fixo = null; B.usarBase(null);
         entrar(c);
       } }, el("h1", { html: "Entra e <em>responde.</em>" }), el("p", null, "Escreve o código que está no ecrã."), inp, erro,
-        el("button", { class: "ph-bt", type: "submit" }, "Entrar")));
+        el("button", { class: "ph-bt", type: "submit" }, "Entrar"),
+        opts.embutido ? null : el("p", { class: "ph-formador" }, "És formador(a)? ", el("a", { href: "formador.html" }, "Cria as tuas sessões →"))));
       if (!opts.embutido) setTimeout(function () { try { inp.focus(); } catch (e) {} }, 50);
     }
 
@@ -176,7 +179,14 @@
         if (!conteudo && !viaFixo) {
           /* não é uma sessão: talvez seja o código fixo de uma atividade */
           return B.db.get(B.caminho.fixo(c)).then(function (fx) {
-            if (!fx || !fx.dono) { codigo = null; ecraEntrar("Não encontrámos a sessão " + B.fmtCodigo(c) + ". Confirma o código."); return; }
+            if (!fx || !fx.dono) {
+              /* não é desta base: pode ser a sala de outro formador, com a sua própria Firebase */
+              if (!B.base.propria) return B.salaDe(c).then(function (h) {
+                if (h && h !== B.hostCasa && B.usarBase(h)) { entrar(c); return; }
+                codigo = null; ecraEntrar("Não encontrámos a sessão " + B.fmtCodigo(c) + ". Confirma o código.");
+              });
+              codigo = null; ecraEntrar("Não encontrámos a sessão " + B.fmtCodigo(c) + ". Confirma o código."); return;
+            }
             fixo = c;
             if (fx.s) entrar(String(fx.s), c); else esperarFixo(c, fx);
           });
@@ -191,7 +201,7 @@
           corTopo(t.destaque);
           mold.marca(at.titulo || B.nome);
           mold.rodape.textContent = "Sessão " + B.fmtCodigo(c) + " · respostas anónimas";
-          if (!opts.embutido) try { history.replaceState(null, "", location.pathname + "?c=" + (fixo || c) + (B.demo ? "&demo" : "")); } catch (e2) {}
+          if (!opts.embutido) try { history.replaceState(null, "", location.pathname + "?c=" + (fixo || c) + (B.demo ? "&demo" : "") + (B.base.propria ? "&b=" + B.base.host : "")); } catch (e2) {}
           vigiarFixo();
           carregarMeus();
           var guardada = B.store.get("bna-alcunha-" + c + "-" + pid) || (fixo ? B.store.get("bna-alcunha-f-" + fixo + "-" + pid) : null);

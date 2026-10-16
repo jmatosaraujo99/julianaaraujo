@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BRAÇO NO AR · configuração
+   ZUNZUM · configuração
    Este é o único ficheiro que precisas de editar (podes usar o Bloco de Notas).
    ========================================================================== */
 
@@ -14,15 +14,15 @@ window.BNA_CONFIG = {
   },
 
   // Nome que aparece nas páginas.
-  nome: "Braço no Ar",
+  nome: "Zunzum",
 
-  // (Opcional) Endereço público do site, por exemplo "https://braco-no-ar.netlify.app".
+  // (Opcional) Endereço público do site, por exemplo "https://julianaaraujo.pt/zunzum".
   // Se ficar vazio, é calculado automaticamente.
   site: "",
 
-  // Mostrar o separador "Criar conta" na página de entrada do formador?
-  // true: qualquer formador cria a sua conta. false: só tu crias contas na Firebase.
-  permitirRegisto: true,
+  // Criar conta NESTA base de dados (a da autora)? false: só a autora entra aqui.
+  // Os outros formadores ligam a sua própria Firebase no ecrã de entrada e criam lá a conta.
+  permitirRegisto: false,
 
   // Autoria: aparece na entrada, na biblioteca, no ecrã e nos telemóveis.
   autora: {

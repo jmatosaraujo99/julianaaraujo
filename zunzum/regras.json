@@ -1,0 +1,94 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "u": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    },
+    "sessoes": {
+      "$c": {
+        ".read": true,
+        ".write": "auth != null && (!data.exists() || data.child('dono').val() === auth.uid)",
+        ".validate": "newData.child('dono').val() === auth.uid && $c.matches(/^[0-9]{6}$/)"
+      }
+    },
+    "respostas": {
+      "$c": {
+        ".read": true,
+        ".write": "auth != null && root.child('sessoes').child($c).child('dono').val() === auth.uid",
+        "$s": {
+          "$p": {
+            ".write": "root.child('sessoes').child($c).child('ativa').val() === true && $s.length <= 32 && $p.length <= 32 && !data.hasChild('t') && !root.child('sessoes').child($c).child('x').child('revelados').child($s).exists() && !root.child('sessoes').child($c).child('x').child('fechadas').child($s).exists()",
+            ".validate": "newData.isNumber() || (newData.isString() && newData.val().length <= 400) || newData.hasChildren(['v', 't'])",
+            "v": {
+              ".validate": "newData.isNumber() || (newData.isString() && newData.val().length <= 400)"
+            },
+            "t": {
+              ".validate": "newData.isNumber() && newData.val() <= now"
+            },
+            "$x": {
+              ".validate": false
+            }
+          }
+        }
+      }
+    },
+    "participantes": {
+      "$c": {
+        ".read": true,
+        ".write": "auth != null && root.child('sessoes').child($c).child('dono').val() === auth.uid",
+        "$p": {
+          ".write": "root.child('sessoes').child($c).child('ativa').val() === true && $p.length <= 32",
+          ".validate": "newData.hasChildren(['t'])",
+          "t": {
+            ".validate": "newData.isNumber() && newData.val() <= now"
+          },
+          "n": {
+            ".validate": "newData.isString() && newData.val().length <= 24"
+          },
+          "f": {
+            ".validate": "newData.isNumber() && newData.val() <= now"
+          },
+          "$x": {
+            ".validate": false
+          },
+          "eq": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 5"
+          },
+          "s": {
+            ".validate": "newData.isString() && newData.val().length <= 40"
+          }
+        }
+      }
+    },
+    "fixos": {
+      "$f": {
+        ".read": true,
+        ".write": "auth != null && (!data.exists() || data.child('dono').val() === auth.uid)",
+        ".validate": "newData.child('dono').val() === auth.uid && $f.matches(/^[0-9]{6}$/)"
+      }
+    },
+    "reacoes": {
+      "$c": {
+        ".read": true,
+        ".write": "auth != null && root.child('sessoes').child($c).child('dono').val() === auth.uid",
+        "$p": {
+          ".write": "root.child('sessoes').child($c).child('ativa').val() === true && $p.length <= 32 && (!data.exists() || !newData.exists() || now >= data.child('t').val() + 400)",
+          ".validate": "newData.hasChildren(['e', 't'])",
+          "e": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 4"
+          },
+          "t": {
+            ".validate": "newData.isNumber() && newData.val() <= now"
+          },
+          "$x": {
+            ".validate": false
+          }
+        }
+      }
+    }
+  }
+}

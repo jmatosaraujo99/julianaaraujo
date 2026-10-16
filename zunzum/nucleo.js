@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BRAÇO NO AR · núcleo partilhado
+   ZUNZUM · núcleo partilhado
    Ligação à Firebase (sem bibliotecas), login, temas, QR, utilitários.
    Não precisas de editar este ficheiro.
    ========================================================================== */
@@ -9,7 +9,7 @@
   var C = window.BNA_CONFIG || {};
   var F = C.firebase || {};
   var B = (window.BNA = { C: C });
-  B.nome = C.nome || "Braço no Ar";
+  B.nome = C.nome || "Zunzum";
   B.autora = C.autora || null;
   /* reações ao vivo: a posição é o que fica gravado (0 a 4) */
   B.reacoesEmojis = ["👍", "❤️", "😂", "😮", "👏"];
@@ -166,6 +166,52 @@
   B.configurado = !!(B.dbUrl && B.apiKey);
   B.demo = !B.configurado || /[?&]demo\b/.test(location.search);
 
+  /* ---------------- base de dados: a da casa ou a do formador ----------------
+     A base «da casa» é a do config.js (a da autora). Qualquer outro formador liga a sua
+     própria Firebase: conta, atividades e respostas ficam lá, não aqui.
+     - no telemóvel e no visualizador, a base vem no endereço: ?b=<servidor da base>
+     - no computador do formador, fica guardada neste navegador (bna-base)
+     Na base da casa só fica o índice «código da sala → servidor», para os participantes
+     poderem escrever só o código. */
+  B.baseCasa = { dbUrl: B.dbUrl, apiKey: B.apiKey };
+  B.hostDe = function (url) { try { return new URL(normalizarUrl(url)).host.toLowerCase(); } catch (e) { return ""; } };
+  B.hostCasa = B.hostDe(B.dbUrl);
+  B.hostValido = function (h) { return /^[a-z0-9-]+(\.[a-z0-9-]+)*\.(firebasedatabase\.app|firebaseio\.com)$/.test(String(h || "")) && String(h).length <= 120; };
+  B.base = { propria: false, host: B.hostCasa, nome: "" };
+  B.usarBase = function (host, apiKey, nome) {
+    host = String(host || "").toLowerCase();
+    if (!host || host === B.hostCasa) {
+      B.dbUrl = B.baseCasa.dbUrl; B.apiKey = B.baseCasa.apiKey;
+      B.base = { propria: false, host: B.hostCasa, nome: "" };
+      return true;
+    }
+    if (!B.hostValido(host)) return false;
+    B.dbUrl = "https://" + host;
+    if (apiKey) B.apiKey = apiKey;
+    B.base = { propria: true, host: host, nome: nome || host.split(".")[0].replace(/-default-rtdb$/, "") };
+    return true;
+  };
+  B.baseGuardada = function () {
+    var g = B.store.getJSON("bna-base");
+    return g && g.host && B.hostValido(g.host) && g.apiKey ? g : null;
+  };
+  (function escolherBase() {
+    if (B.demo) return;
+    var b = null;
+    try { b = new URLSearchParams(location.search).get("b"); } catch (e) {}
+    if (b && B.hostValido(b.toLowerCase())) {
+      var g0 = B.baseGuardada();
+      /* o formador que abre o seu próprio ecrã com ?b= continua com a sua chave */
+      B.usarBase(b, g0 && g0.host === b.toLowerCase() ? g0.apiKey : null, g0 && g0.host === b.toLowerCase() ? g0.nome : null);
+      return;
+    }
+    if ((window.BNA_PAPEL || "formador") === "formador") {
+      var g = B.baseGuardada();
+      if (g) B.usarBase(g.host, g.apiKey, g.nome);
+    }
+  })();
+  function chaveAuth() { return B.base.propria ? "bna-auth@" + B.base.host : "bna-auth"; }
+
   B.urlSite = function () {
     if (C.site) return normalizarUrl(C.site) + "/";
     if (/^https?:$/.test(location.protocol)) return new URL("./", location.href).href;
@@ -173,7 +219,7 @@
   };
   B.linkEntrar = function (codigo) {
     var u = B.urlSite();
-    return u + (u.indexOf("?") >= 0 ? "&" : "?") + "c=" + codigo + (B.demo ? "&demo" : "");
+    return u + (u.indexOf("?") >= 0 ? "&" : "?") + "c=" + codigo + (B.demo ? "&demo" : "") + (B.base && B.base.propria ? "&b=" + B.base.host : "");
   };
   B.siteCurto = function () {
     if (window.BNA_ARTEFACTO) return ""; /* demonstração publicada: não mostra o endereço da página */
@@ -242,14 +288,14 @@
   }
 
   var Auth = (B.auth = {
-    s: B.store.getJSON("bna-auth"),
+    s: B.store.getJSON(chaveAuth()),
     ouvintes: [],
     ativo: function () { return !!(this.s && this.s.refreshToken); },
     uid: function () { return this.s ? this.s.uid : null; },
     email: function () { return this.s ? this.s.email : ""; },
     _guardar: function (uid, email, id, ref, exp) {
       this.s = { uid: uid, email: email, idToken: id, refreshToken: ref, expira: Date.now() + (Number(exp) || 3600) * 1000 };
-      B.store.setJSON("bna-auth", this.s);
+      B.store.setJSON(chaveAuth(), this.s);
     },
     entrar: function (email, senha) {
       var self = this;
@@ -284,10 +330,10 @@
         .then(function (x) { self._p = null; return x; }, function (e) { self._p = null; throw e; });
       return this._p;
     },
-    sair: function () { this.s = null; B.store.del("bna-auth"); }
+    sair: function () { this.s = null; B.store.del(chaveAuth()); }
   });
   /* uma sessão de demonstração não serve quando já há Firebase ligada (e vice-versa) */
-  if (Auth.s && ((!B.demo && Auth.s.uid === "demo") || (B.demo && Auth.s.uid !== "demo"))) { Auth.s = null; if (!B.demo) B.store.del("bna-auth"); }
+  if (Auth.s && ((!B.demo && Auth.s.uid === "demo") || (B.demo && Auth.s.uid !== "demo"))) { Auth.s = null; if (!B.demo) B.store.del(chaveAuth()); }
 
   /* ---------------- base de dados (Firebase Realtime Database, REST) ---------------- */
 
@@ -601,7 +647,7 @@
   /* ---------------- código fixo de cada atividade ----------------
      Como no Mentimeter: o código e o QR de uma atividade não mudam de sessão
      para sessão. fixos/<código> diz qual é a sessão aberta nesse momento (s). */
-  /* «Braço no Ar · criado por Juliana Araújo · @julianaaraujo.pt» (as ligações abrem noutro separador) */
+  /* «Zunzum · criado por Juliana Araújo · @julianaaraujo.pt» (as ligações abrem noutro separador) */
   B.creditos = function (classe) {
     var a = B.autora, el = B.el;
     if (!a || !a.nome) return null;
@@ -624,23 +670,70 @@
     ]);
   };
 
+  /* pedidos à base da casa (o índice das salas), seja qual for a base em uso */
+  function naCasa(method, path, body) {
+    var prazo = comPrazo(8000);
+    var opt = { method: method, cache: "no-store" };
+    if (prazo.sinal) opt.signal = prazo.sinal;
+    if (body !== undefined) opt.body = JSON.stringify(body);
+    return fetch(B.baseCasa.dbUrl + "/" + path + ".json" + (method === "GET" ? "" : "?print=silent"), opt).then(function (r) {
+      prazo.fim();
+      if (r.status === 204) return null;
+      if (!r.ok) throw erroDb(r.status);
+      return r.json();
+    }, function () { prazo.fim(); throw erroDb(0); });
+  }
+  /* a sala de outro formador: em que base está? (null se não estiver no índice) */
+  B.salaDe = function (codigo) {
+    if (B.demo || !/^\d{6}$/.test(String(codigo))) return Promise.resolve(null);
+    return naCasa("GET", "salas/" + codigo).then(function (x) { return x && B.hostValido(x.b) ? x.b : null; });
+  };
+  /* põe o código no índice, para os participantes o poderem escrever (só bases próprias) */
+  B.registarSala = function (codigo) {
+    if (B.demo || !B.base.propria || !/^\d{6}$/.test(String(codigo))) return Promise.resolve();
+    return naCasa("PUT", "salas/" + codigo, { b: B.base.host, t: { ".sv": "timestamp" } }).catch(function () {});
+  };
+  /* um código novo não pode existir nesta base nem, se a base for própria, na da casa */
+  B.codigoLivre = function (c) {
+    var cm = B.caminho, l = [Db.get(cm.sessao(c) + "/dono"), Db.get(cm.fixo(c) + "/dono")];
+    if (B.base.propria) l.push(naCasa("GET", "sessoes/" + c + "/dono"), naCasa("GET", "fixos/" + c + "/dono"),
+      naCasa("GET", "salas/" + c).then(function (x) { return x && x.b !== B.base.host ? x.b : null; }));
+    return Promise.all(l).then(function (r) { return !r.some(Boolean); });
+  };
+  /* confere uma Firebase acabada de ligar: base de dados, regras e login por email */
+  B.verificarBase = function (dbUrl, apiKey) {
+    var host = B.hostDe(dbUrl), r = { host: host, base: false, regras: false, login: false, erro: "" };
+    if (!B.hostValido(host)) { r.erro = "O endereço da base de dados não parece certo. Deve acabar em firebasedatabase.app ou firebaseio.com."; return Promise.resolve(r); }
+    if (!/^AIza[0-9A-Za-z_-]{20,}$/.test(String(apiKey || ""))) { r.erro = "A chave (apiKey) não parece certa. Começa por «AIza»."; return Promise.resolve(r); }
+    var p1 = comPrazo(10000);
+    var teste1 = fetch("https://" + host + "/sessoes/000000/dono.json", { cache: "no-store", signal: p1.sinal }).then(function (x) {
+      p1.fim(); r.base = x.status !== 404; r.regras = x.status === 200;
+    }, function () { p1.fim(); });
+    /* um login com dados falsos diz se o email/palavra-passe está ligado, sem criar nada */
+    var teste2 = pedirJson(AUTH_URL + "/accounts:signInWithPassword?key=" + encodeURIComponent(apiKey),
+      { email: "verificacao@zunzum.invalid", password: "x-verificacao", returnSecureToken: true })
+      .then(function () { r.login = true; }, function (e) { r.login = !/não está ativo|não é válida/.test(e.message) && !e.rede; if (/não é válida/.test(e.message)) r.chaveMa = true; });
+    return Promise.all([teste1, teste2]).then(function () { return r; });
+  };
+
   B.codigoFixo = function (uid, aid, titulo) {
     var cm = B.caminho;
     return Db.get(cm.fixoDe(uid, aid), { auth: true }).then(function (f) {
       if (f && /^\d{6}$/.test(String(f))) return String(f);
       function tentar(n) {
         var c = B.novoCodigo();
-        return Promise.all([Db.get(cm.sessao(c) + "/dono"), Db.get(cm.fixo(c) + "/dono")]).then(function (r) {
-          if ((r[0] || r[1]) && n < 8) return tentar(n + 1);
+        return B.codigoLivre(c).then(function (livre) {
+          if (!livre && n < 8) return tentar(n + 1);
           return Db.put(cm.fixo(c), { dono: uid, a: aid, t: String(titulo || "").slice(0, 90) }, { auth: true })
             .then(function () { return Db.put(cm.fixoDe(uid, aid), c, { auth: true }); })
+            .then(function () { return B.registarSala(c); })
             .then(function () { return c; });
         });
       }
       return tentar(0);
     });
   };
-  B.linkVer = function (c) { return B.urlSite() + "apresentar.html?ver=" + c; };
+  B.linkVer = function (c) { return B.urlSite() + "apresentar.html?ver=" + c + (B.base.propria ? "&b=" + B.base.host : ""); };
   B.linkEditar = function (aid) { return B.urlSite() + "formador.html#/editar/" + aid; };
 
   /* ---------------- imagens (guardadas à parte, só para o formador) ---------------- */
