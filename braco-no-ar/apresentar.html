@@ -6,8 +6,8 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23132a27'/%3E%3Crect x='7' y='14' width='4' height='11' rx='2' fill='%23e3562d'/%3E%3Crect x='14' y='7' width='4' height='18' rx='2' fill='%23fdc200'/%3E%3Crect x='21' y='11' width='4' height='14' rx='2' fill='%233ea6d5'/%3E%3C/svg%3E">
 <title>Apresentar · Braço no Ar</title>
-<link rel="stylesheet" href="palco.css">
-<link rel="stylesheet" href="telemovel.css">
+<link rel="stylesheet" href="palco.css?v=2026101602">
+<link rel="stylesheet" href="telemovel.css?v=2026101602">
 <style>
   :root{--escuro:#132a27;--amarelo:#fdc200;--creme:#f3eee5;--teal:#1e7e75;--vermelho:#e3562d;--display:'Anton',Impact,sans-serif;--texto:'Archivo',system-ui,sans-serif}
   *{box-sizing:border-box}
@@ -162,15 +162,15 @@
 <dialog id="dlg"><div class="dlg" id="dlg-c"></div></dialog>
 
 <script>window.BNA_PAPEL = "ecra";</script>
-<script src="config.js"></script>
-<script src="qrcode.min.js"></script>
-<script src="nucleo.js"></script>
-<script src="tipos.js"></script>
-<script src="tela.js"></script>
-<script src="resultados.js"></script>
-<script src="modelos.js"></script>
-<script src="quizzes.js"></script>
-<script src="participante.js"></script>
+<script src="config.js?v=2026101602"></script>
+<script src="qrcode.min.js?v=2026101602"></script>
+<script src="nucleo.js?v=2026101602"></script>
+<script src="tipos.js?v=2026101602"></script>
+<script src="tela.js?v=2026101602"></script>
+<script src="resultados.js?v=2026101602"></script>
+<script src="modelos.js?v=2026101602"></script>
+<script src="quizzes.js?v=2026101602"></script>
+<script src="participante.js?v=2026101602"></script>
 <script>
 (function () {
   "use strict";
@@ -588,8 +588,8 @@
   }
   function atualizar() {
     if (!vista) return;
-    var s = slideAtual(), d = dados(s);
-    var n = vista.upd ? vista.upd(d) : 0;
+    var s = slideAtual(), d = dados(s), n = 0;
+    try { n = vista.upd ? vista.upd(d) : 0; } catch (e) { try { console.error(e); } catch (e2) {} }
     atualizarRodape(s, n || 0, d.n);
     atualizarControlos();
     if (s && s.tipo === "perguntas" && !livre()) publicarPerguntas(s);

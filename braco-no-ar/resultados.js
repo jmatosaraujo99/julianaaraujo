@@ -43,6 +43,7 @@
 
   /* desenho do resumo no telemóvel */
   B.resultadosTel = function (s, res, tema) {
+    res = res || {};
     var caixa = el("section", { class: "ph-res", "aria-label": "Resultados até agora" });
     var t = res.t || 0;
     caixa.appendChild(el("p", { class: "ph-res-tit" }, el("b", null, "Resultados até agora"), el("span", null, contagem(t, "resposta"))));
@@ -71,11 +72,12 @@
         return el("li", null, el("b", null, String(k + 1)), el("span", null, (s.itens || [])[i] || "Item " + (i + 1)));
       })));
     } else if (res.k === "n") {
-      var top = (res.l[0] && res.l[0][1]) || 1;
-      caixa.appendChild(el("div", { class: "ph-res-n" }, (res.l || []).map(function (w, i) {
+      var lst = Array.isArray(res.l) ? res.l : [];
+      var top = (lst[0] && lst[0][1]) || 1;
+      caixa.appendChild(el("div", { class: "ph-res-n" }, lst.map(function (w, i) {
         return el("span", { style: { fontSize: (15 + 15 * (w[1] / top)) + "px", color: B.cor(tema, i) } }, w[0]);
       })));
-      if (!(res.l || []).length) caixa.appendChild(el("p", { class: "ph-res-nota" }, "Ainda sem palavras."));
+      if (!lst.length) caixa.appendChild(el("p", { class: "ph-res-nota" }, "Ainda sem palavras."));
     } else if (res.k === "a") {
       caixa.appendChild(el("div", { class: "ph-res-a" }, (res.l || []).map(function (txt, i) {
         return el("p", { style: { borderLeftColor: B.cor(tema, i) } }, txt);

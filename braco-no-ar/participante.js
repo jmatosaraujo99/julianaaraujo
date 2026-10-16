@@ -447,8 +447,9 @@
       if (v === null) delete meus[k]; else meus[k] = local;
       guardarMeus();
       try { navigator.vibrate && navigator.vibrate(12); } catch (e) {}
-      render();
+      /* primeiro a resposta segue; só depois o ecrã do telemóvel é redesenhado */
       mandar(s.id, pid + (suf ? "-" + suf : ""), v, k, 0);
+      render();
     }
     function mandar(slideId, chave, v, k, tent) {
       pendentes[k] = v;
@@ -561,7 +562,18 @@
     }
     function livreAtivo() { return estado && estado.modo === "livre"; }
 
+    /* um erro a desenhar não pode deixar o telemóvel parado: mostra um ecrã simples e
+       continua (as respostas e a ligação não dependem do desenho) */
     function render() {
+      try { renderInterno(); }
+      catch (e) {
+        try { console.error(e); } catch (e2) {}
+        try {
+          BNA.por(mold.main, M.grande("Olha para o <em>ecrã.</em>", "A pergunta seguinte aparece aqui sozinha."), B.esperaTel("A acompanhar"));
+        } catch (e3) {}
+      }
+    }
+    function renderInterno() {
       clearInterval(relogioTimer);
       barraR.hidden = !reacoesLigadas();
       if (!codigo || !at) return;
@@ -618,7 +630,9 @@
       if (s.tipo === "perguntas" || (!respondeu(s) && !quizRevelado)) return;
       if (s.tipo === "quiz" && !estado.rev) { mold.main.appendChild(B.esperaTel("À espera da resposta certa")); return; }
       if (estado.oc) mold.main.appendChild(el("p", { class: "ph-res-nota", style: { marginTop: "16px" } }, "Os resultados aparecem no ecrã quando a formadora os mostrar."));
-      else if (res.d && res.d.id === s.id) mold.main.appendChild(B.resultadosTel(s, res.d, B.tema(at.tema)));
+      else if (res.d && res.d.id === s.id && (res.d.t > 0 || quizRevelado)) mold.main.appendChild(B.resultadosTel(s, res.d, B.tema(at.tema)));
+      /* o resumo ainda não conta com a resposta acabada de enviar: não mostrar «0 respostas» */
+      else mold.main.appendChild(el("p", { class: "ph-res-nota", style: { marginTop: "16px" } }, "Os resultados aparecem aqui daqui a nada."));
       mold.main.appendChild(B.esperaTel("À espera da próxima pergunta"));
     }
 
