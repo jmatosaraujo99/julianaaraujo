@@ -801,7 +801,7 @@
   /* ---------------- temas ---------------- */
 
   B.temas = {
-    tenda: { nome: "Tenda", claro: "#f3eee5", escuro: "#132a27", destaque: "#1e7e75", acento: "#fdc200", tinta: "#132a27", salvia: "#8fb3a8",
+    tenda: { nome: "Petróleo", claro: "#f3eee5", escuro: "#132a27", destaque: "#1e7e75", acento: "#fdc200", tinta: "#132a27", salvia: "#8fb3a8",
       cores: ["#e3562d", "#3ea6d5", "#8d7cbd", "#fea500", "#fdc200", "#3cb38a", "#e26d9a", "#5f7f9a"] },
     ardosia: { nome: "Ardósia", claro: "#eef0f5", escuro: "#191c2b", destaque: "#2e3a8c", acento: "#ff8a5c", tinta: "#191c2b", salvia: "#a3acd6",
       cores: ["#ff8a5c", "#4cc3e8", "#b892f0", "#ffd25a", "#2fd19b", "#f25f8b", "#7f8cff", "#c9cfdf"] },

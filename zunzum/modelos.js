@@ -8,22 +8,61 @@
   var cinco = ["Dares a volta quando o plano muda", "Explicares de forma que toda a gente perceba", "Discordares e continuares na mesma equipa", "Fazeres a pergunta certa antes de começar", "Apareceres"];
   var DZM = ["Só diz", "Quase", "Mostra!"];
 
+  /* grupos da galeria «Nova atividade» (o «em branco» aparece à parte, por cima) */
+  B.gruposModelos = [
+    { id: "sessao", nome: "Abrir e fechar a sessão" },
+    { id: "atividade", nome: "Atividades completas" },
+    { id: "quiz", nome: "Quizzes por tema", desc: "8 perguntas com pontos e pódio" }
+  ];
+
   B.modelos = [
     {
-      id: "branco", nome: "Em branco", desc: "Uma tela vazia. Depois acrescentas o que quiseres: perguntas, layouts, textos, imagens.",
+      id: "branco", grupo: "branco", nome: "Atividade em branco", desc: "Começas com um diapositivo vazio e acrescentas perguntas, textos e imagens.",
       atividade: function () { return { titulo: "Nova atividade", tema: "tenda", pedirAlcunha: false, slides: [B.slideDeLayout("branco")] }; }
     },
     {
-      id: "raiox", nome: "Raio-X da tenda", desc: "Competências transversais: raio-X inicial, o jogo «Contratado!» e perguntas da sala no fim (13 diapositivos).",
+      id: "inicio", grupo: "sessao", nome: "Início da sessão", capa: 1,
+      desc: "Quebra-gelo e expectativas: como chegam, o que já sabem sobre o tema e o que querem levar.",
       atividade: function () {
         return {
-          titulo: "Raio-X da tenda", tema: "tenda", pedirAlcunha: false, slides: [
-            { id: "forte", tipo: "escolha", etiqueta: "Raio-X · 1 de 3", pergunta: "Em qual destas cinco és mais forte?", opcoes: cinco.slice(), multipla: false, esconder: false },
-            { id: "custa", tipo: "escolha", etiqueta: "Raio-X · 2 de 3", pergunta: "E qual é a que te custa mais?", opcoes: cinco.slice(), multipla: false, esconder: false },
-            { id: "tenho", tipo: "escala", etiqueta: "Raio-X · 3 de 3", pergunta: "Quantas destas cinco achas que já tens?", afirmacoes: [""], min: 0, max: 5, rotMin: "Nenhuma", rotMax: "Todas", esconder: false, comparar: "", rotuloA: "Antes", rotuloB: "Agora", frase: "" },
+          titulo: "Início da sessão", tema: "tenda", pedirAlcunha: false, slides: [
+            { id: "i1", tipo: "texto", etiqueta: "Antes de começar", titulo: "Bem-vindos!", texto: "Quatro perguntas rápidas. Responde no telemóvel: ninguém sabe quem respondeu o quê.", tamanho: "normal", telemovel: true, fundo: "escuro" },
+            { id: "i2", tipo: "nuvem", pergunta: "Numa palavra: como chegas hoje?", maxPalavras: 1 },
+            { id: "i3", tipo: "escala", pergunta: "Quanto sabes já sobre o tema de hoje?", afirmacoes: [""], min: 1, max: 5, rotMin: "Nada", rotMax: "Muito", esconder: false, comparar: "", rotuloA: "Antes", rotuloB: "Agora", frase: "" },
+            { id: "i4", tipo: "escolha", pergunta: "O que mais esperas desta sessão?", opcoes: ["Ideias para aplicar já", "Perceber melhor a teoria", "Trocar experiências com o grupo", "Tirar dúvidas concretas"], multipla: false, esconder: false },
+            { id: "i5", tipo: "aberta", pergunta: "Uma pergunta a que gostavas de ver resposta hoje:", limite: 140, porPessoa: 1 },
+            { id: "i6", tipo: "texto", titulo: "O plano de hoje", texto: "- Parte 1 | O tema principal e um exercício prático\n- Pausa | Dez minutos\n- Parte 2 | Aplicar a um caso real e tirar dúvidas", tamanho: "normal", telemovel: true }
+          ]
+        };
+      }
+    },
+    {
+      id: "fecho", grupo: "sessao", nome: "Fecho da sessão",
+      desc: "Balanço rápido no fim: uma palavra, o que ficou claro, o que vão aplicar e as últimas dúvidas.",
+      atividade: function () {
+        return {
+          titulo: "Fecho da sessão", tema: "laranjal", pedirAlcunha: false, slides: [
+            { id: "f1", tipo: "nuvem", pergunta: "Numa palavra: como sais desta sessão?", maxPalavras: 1 },
+            { id: "f2", tipo: "escala", pergunta: "Até que ponto concordas?", afirmacoes: ["Percebi as ideias principais", "Vou conseguir aplicar o que aprendi", "O ritmo foi o certo para mim"], min: 1, max: 5, rotMin: "Nada", rotMax: "Totalmente", esconder: false, comparar: "", rotuloA: "Antes", rotuloB: "Agora", frase: "" },
+            { id: "f3", tipo: "aberta", pergunta: "Uma coisa que vais pôr em prática esta semana:", limite: 140, porPessoa: 1 },
+            { id: "f4", tipo: "perguntas", titulo: "Ficou alguma dúvida?", texto: "Escreve a tua pergunta. Ninguém sabe quem perguntou. Apoia com ♥ as dos colegas.", apoiar: true, maxPorPessoa: 3 },
+            { id: "f5", tipo: "texto", titulo: "Obrigado!", texto: "Até à próxima.", tamanho: "normal", telemovel: true, fundo: "escuro" }
+          ]
+        };
+      }
+    },
+    {
+      id: "raiox", grupo: "atividade", nome: "Competências para a entrevista", capa: 0,
+      desc: "Autodiagnóstico de cinco competências, um jogo para aprender a prová-las com exemplos e perguntas da sala. No fim repetem o autodiagnóstico e comparam.",
+      atividade: function () {
+        return {
+          titulo: "Competências para a entrevista", tema: "tenda", pedirAlcunha: false, slides: [
+            { id: "forte", tipo: "escolha", etiqueta: "Autodiagnóstico · 1 de 3", pergunta: "Em qual destas cinco és mais forte?", opcoes: cinco.slice(), multipla: false, esconder: false },
+            { id: "custa", tipo: "escolha", etiqueta: "Autodiagnóstico · 2 de 3", pergunta: "E qual é a que te custa mais?", opcoes: cinco.slice(), multipla: false, esconder: false },
+            { id: "tenho", tipo: "escala", etiqueta: "Autodiagnóstico · 3 de 3", pergunta: "Quantas destas cinco achas que já tens?", afirmacoes: [""], min: 0, max: 5, rotMin: "Nenhuma", rotMax: "Todas", esconder: false, comparar: "", rotuloA: "Antes", rotuloB: "Agora", frase: "" },
             { id: "pausa", tipo: "texto", etiqueta: "Até já", titulo: "Telemóvel no bolso.", texto: "Não feches a página. No fim voltamos a jogar e vai contar.", tamanho: "gigante", telemovel: true, fundo: "escuro" },
-            { id: "jogo", tipo: "texto", etiqueta: "Últimos 15 minutos", titulo: "Contratado!", tamanho: "gigante", telemovel: true, fundo: "escuro",
-              texto: "- Diz ou mostra? | Quatro frases de candidatos. Prova ou só conversa?\n- Roleta da entrevista | A roleta escolhe a pergunta. Tens 30 segundos.\n- O raio-X outra vez | A mesma lista do início. Uma pergunta diferente." },
+            { id: "jogo", tipo: "texto", etiqueta: "O jogo", titulo: "Contratado!", tamanho: "gigante", telemovel: true, fundo: "escuro",
+              texto: "- Diz ou mostra? | Quatro frases de candidatos. Prova ou só conversa?\n- Roleta da entrevista | A roleta escolhe a pergunta. Tens 30 segundos.\n- Outra vez o autodiagnóstico | A mesma lista do início. Uma pergunta diferente." },
             { id: "dm1", tipo: "quiz", etiqueta: "Ronda 1 · Diz ou mostra?", pergunta: "«Sou uma pessoa muito comunicativa.»", opcoes: DZM.slice(), certa: 0, tempo: 0, pontos: false,
               explicacao: "É um rótulo. Qualquer pessoa o pode escrever, e quase toda a gente escreve." },
             { id: "dm2", tipo: "quiz", etiqueta: "Ronda 1 · Diz ou mostra?", pergunta: "«Expliquei frações ao meu irmão de três maneiras diferentes até ele perceber. Passou no teste.»", opcoes: DZM.slice(), certa: 2, tempo: 0, pontos: false,
@@ -40,7 +79,7 @@
                 { t: "…discordaste de alguém da tua equipa.", d: "Trabalho em equipa" },
                 { t: "…reparaste num problema antes dos outros.", d: "Pensamento crítico" },
                 { t: "…começaste alguma coisa por tua iniciativa.", d: "Responsabilidade" }] },
-            { id: "provo", tipo: "escala", etiqueta: "Ronda 3 · O raio-X outra vez", pergunta: "De quantas destas cinco consegues contar hoje uma história de 30 segundos?", afirmacoes: [""], min: 0, max: 5, rotMin: "Nenhuma", rotMax: "Todas", esconder: false,
+            { id: "provo", tipo: "escala", etiqueta: "Ronda 3 · Outra vez o autodiagnóstico", pergunta: "De quantas destas cinco consegues contar hoje uma história de 30 segundos?", afirmacoes: [""], min: 0, max: 5, rotMin: "Nenhuma", rotMax: "Todas", esconder: false,
               comparar: "tenho", rotuloA: "Achavam que tinham", rotuloB: "Conseguem provar hoje", frase: "A diferença são histórias por escrever. É o trabalho desta semana." },
             { id: "fim", tipo: "texto", etiqueta: "Para levar", titulo: "Sê aquele que mostra.", tamanho: "normal", telemovel: true, fundo: "escuro",
               texto: "- Abre uma nota chamada «histórias» | Três linhas sempre que algo acontecer: um desafio, uma solução.\n- Escreve cinco histórias | Uma para cada número. Ficas preparado para quase todas as entrevistas.\n- Escolhe o número 1 | Cumpre-o duas semanas. Uma coisa pequena, todos os dias." },
@@ -50,7 +89,8 @@
       }
     },
     {
-      id: "todos", nome: "Um de cada tipo", desc: "Uma atividade curta sobre trabalho em equipa para experimentares todos os tipos (11 diapositivos).",
+      id: "todos", grupo: "atividade", nome: "Experimentar todos os tipos",
+      desc: "Uma atividade curta sobre trabalho em equipa, com um diapositivo de cada tipo. Boa para conhecer a app antes da primeira sessão.",
       atividade: function () {
         return {
           titulo: "Trabalho em equipa · aquecimento", tema: "ardosia", pedirAlcunha: true, slides: [
@@ -71,7 +111,8 @@
       }
     },
     {
-      id: "avaliacao", nome: "Avaliação da formação", desc: "Questionário anónimo que cada um responde ao seu ritmo: satisfação, utilidade e sugestões (7 páginas).",
+      id: "avaliacao", grupo: "sessao", nome: "Avaliação da formação", capa: 1,
+      desc: "Questionário anónimo que cada um responde ao seu ritmo, no fim da formação: satisfação, utilidade e sugestões.",
       atividade: function () {
         return {
           titulo: "Avaliação da formação", tema: "papel", ritmo: "livre", pedirAlcunha: false, slides: [

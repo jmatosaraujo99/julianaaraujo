@@ -6,8 +6,8 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23132a27'/%3E%3Crect x='7' y='14' width='4' height='11' rx='2' fill='%23e3562d'/%3E%3Crect x='14' y='7' width='4' height='18' rx='2' fill='%23fdc200'/%3E%3Crect x='21' y='11' width='4' height='14' rx='2' fill='%233ea6d5'/%3E%3C/svg%3E">
 <title>Apresentar · Zunzum</title>
-<link rel="stylesheet" href="palco.css?v=2026101702">
-<link rel="stylesheet" href="telemovel.css?v=2026101702">
+<link rel="stylesheet" href="palco.css?v=2026101703">
+<link rel="stylesheet" href="telemovel.css?v=2026101703">
 <style>
   :root{--escuro:#132a27;--amarelo:#fdc200;--creme:#f3eee5;--teal:#1e7e75;--vermelho:#e3562d;--display:'Anton',Impact,sans-serif;--texto:'Archivo',system-ui,sans-serif}
   *{box-sizing:border-box}
@@ -162,15 +162,15 @@
 <dialog id="dlg"><div class="dlg" id="dlg-c"></div></dialog>
 
 <script>window.BNA_PAPEL = "ecra";</script>
-<script src="config.js?v=2026101702"></script>
-<script src="qrcode.min.js?v=2026101702"></script>
-<script src="nucleo.js?v=2026101702"></script>
-<script src="tipos.js?v=2026101702"></script>
-<script src="tela.js?v=2026101702"></script>
-<script src="resultados.js?v=2026101702"></script>
-<script src="modelos.js?v=2026101702"></script>
-<script src="quizzes.js?v=2026101702"></script>
-<script src="participante.js?v=2026101702"></script>
+<script src="config.js?v=2026101703"></script>
+<script src="qrcode.min.js?v=2026101703"></script>
+<script src="nucleo.js?v=2026101703"></script>
+<script src="tipos.js?v=2026101703"></script>
+<script src="tela.js?v=2026101703"></script>
+<script src="resultados.js?v=2026101703"></script>
+<script src="modelos.js?v=2026101703"></script>
+<script src="quizzes.js?v=2026101703"></script>
+<script src="participante.js?v=2026101703"></script>
 <script>
 (function () {
   "use strict";
@@ -1330,7 +1330,8 @@
         }),
         art ? null : el("a", { href: "formador.html#/editar/" + aid, target: "_blank", style: { alignSelf: "center", marginLeft: "6px", color: "#1e7e75", fontWeight: "600" } }, "Abrir o editor")),
       B.demo && /^demo/.test(aid) ? el("h3", null, "Experimentar outro modelo") : null,
-      B.demo && /^demo/.test(aid) ? el("div", { class: "bts" }, [["todos", "Um de cada tipo"], ["raiox", "Raio-X da tenda"], ["avaliacao", "Avaliação da formação (questionário)"]].map(function (m) {
+      B.demo && /^demo/.test(aid) ? el("div", { class: "bts" }, [["todos"], ["raiox"], ["avaliacao"]].map(function (m) {
+        m[1] = (B.modelos.filter(function (x) { return x.id === m[0]; })[0] || {}).nome || m[0];
         return el("button", { class: aid === "demo" + m[0] ? "prim" : null, onclick: function () {
           B.store.set("bna-demo-modelo", m[0]);
           try { if (art) location.hash = m[0]; else history.replaceState(null, "", location.pathname + "#" + m[0]); } catch (e) {}
