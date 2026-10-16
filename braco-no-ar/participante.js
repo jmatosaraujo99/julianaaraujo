@@ -243,7 +243,7 @@
     function mudarDeSessao(s) {
       if (pararEstado) { pararEstado(); pararEstado = null; }
       pararPerguntas(); pararResultados();
-      at = null; estado = null; cv = null; ativa = true; ultimoJson = ""; vistoId = null;
+      at = null; estado = null; cv = null; ativa = true; ultimoJson = ""; vistoId = null; conferidas = {};
       meus = {}; edicao = {}; rascunhos = {}; pendentes = {}; gostos = {}; pendDesde = {}; recusa = null;
       minhaEquipa = null; pontosEq = null;
       entrar(s, fixo);
@@ -390,8 +390,30 @@
       }, { intervalo: 2000 });
     }
 
+    /* as respostas guardadas neste telemóvel chegaram mesmo à Firebase? Confere uma vez por
+       pergunta e volta a enviar o que faltar (uma resposta pode ter-se perdido: rede, página
+       fechada a meio, ou o erro antigo da nuvem de palavras) */
+    var conferidas = {};
+    function conferirMinhas(s) {
+      if (!s || !T[s.tipo] || !T[s.tipo].interativo || conferidas[s.id] || !codigo) return;
+      if (estado && estado.fch && estado.fch[s.id]) return;
+      if (s.tipo === "quiz" && estado && estado.rev) return;
+      var ks = Object.keys(meus).filter(function (k) { return (k === s.id || k.indexOf(s.id + "-") === 0) && meus[k] !== null && !(k in pendentes); });
+      conferidas[s.id] = true;
+      ks.forEach(function (k) {
+        var suf = k === s.id ? "" : k.slice(s.id.length + 1), chave = pid + (suf ? "-" + suf : "");
+        B.db.get(B.caminho.resposta(codigo, s.id, chave)).then(function (v) {
+          if (v !== null && v !== undefined) return;
+          var m = meus[k];
+          if (m === undefined || m === null) return;
+          var reenviar = m && typeof m === "object" && "v" in m ? { v: m.v, t: { ".sv": "timestamp" } } : m;
+          mandar(s.id, chave, reenviar, k, 0);
+        }).catch(function () { delete conferidas[s.id]; });
+      });
+    }
     function depoisDoEstado() {
       marcarVisto();
+      try { conferirMinhas(slideAtual()); } catch (e) {}
       /* pontos do quiz: só os meus, e só quando o formador os atualiza */
       if (estado.pv && estado.pv !== pontos.v) {
         var pv = estado.pv;
