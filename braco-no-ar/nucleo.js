@@ -203,13 +203,31 @@
     if (/Failed to fetch|NetworkError|Load failed/i.test(m)) return "Sem ligação à internet.";
     return "Não foi possível entrar (" + m + ").";
   }
+  /* Um pedido que a rede «engole» (wifi de eventos, dados móveis) nunca acaba sozinho:
+     fica pendurado sem dar erro e tudo o que espera por ele pára. Por isso cada pedido
+     tem um prazo; passado esse tempo é cancelado e conta como falta de rede. */
+  function comPrazo(ms) {
+    var p = { esgotado: false, sinal: undefined, fim: function () { clearTimeout(p.t); } };
+    if (typeof AbortController === "undefined") return p;
+    var c = new AbortController();
+    p.sinal = c.signal;
+    p.t = setTimeout(function () { p.esgotado = true; try { c.abort(); } catch (e) {} }, ms);
+    return p;
+  }
+  B.comPrazo = comPrazo;
   function pedirJson(url, body, form) {
+    var prazo = comPrazo(15000);
     return fetch(url, {
       method: "POST",
       headers: { "Content-Type": form ? "application/x-www-form-urlencoded" : "application/json" },
-      body: form ? body : JSON.stringify(body)
+      body: form ? body : JSON.stringify(body),
+      signal: prazo.sinal
     }).then(function (r) {
-      return r.json().catch(function () { return {}; }).then(function (j) {
+      return r.json().catch(function () {
+        if (prazo.esgotado) { var e0 = new Error("Sem ligação à internet."); e0.rede = true; throw e0; }
+        return {};
+      }).then(function (j) {
+        prazo.fim();
         if (!r.ok) {
           var e = new Error(traduzirErro(j && j.error && j.error.message));
           e.codigo = j && j.error && j.error.message;
@@ -217,7 +235,10 @@
         }
         return j;
       });
-    }, function (err) { var e = new Error(traduzirErro(err && err.message)); e.rede = true; throw e; });
+    }, function (err) {
+      prazo.fim();
+      var e = new Error(prazo.esgotado ? "Sem ligação à internet." : traduzirErro(err && err.message)); e.rede = true; throw e;
+    });
   }
 
   var Auth = (B.auth = {
@@ -297,21 +318,39 @@
         return base + "?" + partes.join("&");
       });
     },
+    /* o.tempo: prazo em ms (por omissão 10 s a ler, 8 s a gravar).
+       o.tentativas: quantas vezes repete quando falha a rede (por omissão 2 nas gravações,
+       que são todas idempotentes; 0 nas leituras, porque quem lê já volta a perguntar). */
     req: function (method, path, body, o) {
       o = o || {};
       if (B.demo) return Local.req(method, path, body, o);
+      var escrita = method !== "GET";
+      var n = typeof o.tentativas === "number" ? o.tentativas : (escrita ? 2 : 0);
+      return Db._req1(method, path, body, o).catch(function (e) {
+        if (n > 0 && e && e.status === 0) {
+          var espera = o.espera || 700;
+          return new Promise(function (ok) { setTimeout(ok, espera); }).then(function () {
+            return Db.req(method, path, body, Object.assign({}, o, { tentativas: n - 1, espera: Math.min(espera * 2, 4000) }));
+          });
+        }
+        throw e;
+      });
+    },
+    _req1: function (method, path, body, o) {
       var q = {};
       if (method !== "GET" && method !== "DELETE") q.print = "silent";
       if (o.shallow) q.shallow = "true";
+      var prazo = comPrazo(o.tempo || (method === "GET" ? 10000 : 8000));
       return Db.url(path, q, o.auth).then(function (u) {
         var opt = { method: method, cache: "no-store" };
+        if (prazo.sinal) opt.signal = prazo.sinal;
         if (body !== undefined) opt.body = JSON.stringify(body);
-        return fetch(u, opt).catch(function () { throw erroDb(0); });
+        return fetch(u, opt).catch(function () { throw erroDb(0, prazo.esgotado ? "prazo" : ""); });
       }).then(function (r) {
-        if (r.status === 204) return null;
-        if (!r.ok) return r.json().catch(function () { return {}; }).then(function (j) { throw erroDb(r.status, j && j.error); });
-        return r.json();
-      });
+        if (r.status === 204) { prazo.fim(); return null; }
+        if (!r.ok) return r.json().catch(function () { return {}; }).then(function (j) { prazo.fim(); throw erroDb(r.status, j && j.error); });
+        return r.json().then(function (j) { prazo.fim(); return j; }, function () { prazo.fim(); throw erroDb(0, "corpo"); });
+      }, function (e) { prazo.fim(); throw e; });
     },
     get: function (p, o) { return Db.req("GET", p, undefined, o); },
     put: function (p, v, o) { return Db.req("PUT", p, v, o); },
@@ -323,8 +362,10 @@
     ouvir: function (path, cb, o) {
       o = o || {};
       if (B.demo) return Local.ouvir(path, cb);
-      var arvore = null, es = null, parado = false, timer = null, falhas = 0, vigia = null, ultimoDado = 0;
+      var arvore = null, es = null, aAbrir = false, parado = false, timer = null, falhas = 0, vigia = null;
+      var ultimoDado = 0, ultimoSinal = 0, voltarSse = null;
       var lento = o.intervalo || 2000, intervalo = lento;
+      var podeSse = !o.semSse && !!window.EventSource;
       function aplicar(p, data) {
         var partes = String(p || "/").split("/").filter(Boolean);
         if (!partes.length) { arvore = data; return; }
@@ -338,29 +379,43 @@
         if (data === null) delete x[ult]; else x[ult] = data;
       }
       function avisar(ok, err) { if (!parado) cb(arvore, ok, err); }
+      /* o tempo real falhou ou está a reter dados: pergunta de x em x segundos e,
+         passado um minuto, volta a tentar o tempo real (a rede pode ter recuperado) */
+      function passarASondagem() {
+        fecharSse();
+        intervalo = lento;
+        agendar(0);
+        if (podeSse) {
+          clearTimeout(voltarSse);
+          voltarSse = setTimeout(function () { if (!parado && !es && !document.hidden) abrirSse(); }, 60000);
+        }
+      }
       function abrirSse() {
-        if (parado) return;
+        if (parado || es || aAbrir) return;
+        aAbrir = true;
         Db.url(path, {}, o.auth).then(function (u) {
-          if (parado) return;
+          aAbrir = false;
+          if (parado || es) return;
           es = new EventSource(u);
           intervalo = 5000;   /* com tempo real, pergunta na mesma de 5 em 5 s para confirmar */
           /* a Firebase manda logo o primeiro «put» e depois um «keep-alive» de 30 em 30 s.
              Se o primeiro não chega em 6 s, ou se ficam 45 s sem nada, a rede está a reter
              a ligação (há wi-fi de escolas e empresas assim): passa a perguntar de 2 em 2 s
              em vez de ficar 15 s atrasado */
-          var recebeu = false, ultimo = Date.now(), esta = es;
+          var recebeu = false, esta = es;
+          ultimoSinal = Date.now();
           vigia = setInterval(function () {
             if (es !== esta) return;
-            var calado = Date.now() - ultimo;
-            if ((!recebeu && calado > 6000) || calado > 45000) { fecharSse(); intervalo = lento; agendar(0); }
+            var calado = Date.now() - ultimoSinal;
+            if ((!recebeu && calado > 6000) || calado > 45000) passarASondagem();
           }, 3000);
-          es.addEventListener("keep-alive", function () { ultimo = Date.now(); });
+          es.addEventListener("keep-alive", function () { ultimoSinal = Date.now(); });
           es.addEventListener("put", function (ev) {
-            falhas = 0; recebeu = true; ultimo = ultimoDado = Date.now();
+            falhas = 0; recebeu = true; ultimoSinal = ultimoDado = Date.now();
             try { var m = JSON.parse(ev.data); aplicar(m.path, m.data); avisar(true); } catch (e) {}
           });
           es.addEventListener("patch", function (ev) {
-            falhas = 0; recebeu = true; ultimo = ultimoDado = Date.now();
+            falhas = 0; recebeu = true; ultimoSinal = ultimoDado = Date.now();
             try {
               var m = JSON.parse(ev.data), base = String(m.path || "/").replace(/\/$/, "");
               for (var k in m.data) aplicar(base + "/" + k, m.data[k]);
@@ -368,12 +423,12 @@
             } catch (e) {}
           });
           es.addEventListener("auth_revoked", function () { fecharSse(); abrirSse(); });
-          es.addEventListener("cancel", function () { fecharSse(); intervalo = lento; agendar(0); });
+          es.addEventListener("cancel", function () { passarASondagem(); });
           es.onerror = function () {
             falhas++;
-            if (es && (falhas >= 3 || es.readyState === 2)) { fecharSse(); intervalo = lento; agendar(0); }
+            if (es && (falhas >= 3 || es.readyState === 2)) passarASondagem();
           };
-        }).catch(function () { intervalo = lento; });
+        }).catch(function () { aAbrir = false; intervalo = lento; });
       }
       function fecharSse() { clearInterval(vigia); vigia = null; if (es) { es.close(); es = null; } }
       /* Há redes (wi-fi de escolas e empresas) que deixam a ligação em tempo real aberta mas
@@ -386,7 +441,7 @@
             /* a pergunta trouxe novidades: se o tempo real estiver bom, entrega-as já a seguir */
             var tPergunta = Date.now(), esta = es;
             setTimeout(function () {
-              if (es === esta && ultimoDado < tPergunta) { fecharSse(); intervalo = lento; agendar(0); }
+              if (es === esta && ultimoDado < tPergunta) passarASondagem();
             }, 2500);
           }
           arvore = t; avisar(true);
@@ -395,11 +450,23 @@
           .then(function () { agendar(document.hidden && o.semSse ? Math.max(intervalo, 5000) : intervalo); });
       }
       function agendar(ms) { clearTimeout(timer); if (!parado) timer = setTimeout(ciclo, ms); }
-      if (!o.semSse && window.EventSource) abrirSse();
+      if (podeSse) abrirSse();
       ciclo();
-      function acordar() { if (!document.hidden && !parado) { agendar(0); } }
+      /* ao voltar a este separador ou à rede: pergunta já e refaz o tempo real se adormeceu
+         (um telemóvel bloqueado mata as ligações sem avisar) */
+      function acordar() {
+        if (document.hidden || parado) return;
+        if (es && Date.now() - ultimoSinal > 35000) passarASondagem();
+        else if (!es && podeSse) abrirSse();
+        agendar(0);
+      }
       document.addEventListener("visibilitychange", acordar);
-      return function () { parado = true; clearTimeout(timer); fecharSse(); document.removeEventListener("visibilitychange", acordar); };
+      window.addEventListener("online", acordar);
+      return function () {
+        parado = true; clearTimeout(timer); clearTimeout(voltarSse); fecharSse();
+        document.removeEventListener("visibilitychange", acordar);
+        window.removeEventListener("online", acordar);
+      };
     }
   });
 

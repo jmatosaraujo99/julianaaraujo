@@ -62,6 +62,9 @@
   #selo{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:21;font:700 13px/1.2 var(--texto);letter-spacing:.02em;padding:8px 14px;border-radius:999px;display:none;cursor:pointer;max-width:90vw;text-align:center}
   #selo.demo{display:block;background:var(--amarelo);color:var(--escuro)}
   #selo.erro{display:block;background:var(--vermelho);color:#fff}
+  #selo.aviso{display:block;background:var(--amarelo);color:var(--escuro)}
+  .pe .vistos-ok{color:inherit}
+  .pe .vistos-atraso b{color:var(--acento,#fdc200)}
   #selo.leitura{display:block;background:#fff;color:var(--escuro)}
   #aviso{position:fixed;top:54px;left:50%;transform:translate(-50%,-8px);z-index:21;font:700 14px/1.2 var(--texto);padding:10px 16px;border-radius:12px;background:var(--teal);color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
   #aviso.on{opacity:1;transform:translate(-50%,0)}
@@ -180,6 +183,9 @@
   var resp = {}, parts = {}, extra = {};
   var inicios = {};               /* início de cada quiz (hora do servidor) */
   var vista = null, ligacao = { ok: true, msg: "" };
+  /* cada separador «Apresentar» tem a sua identidade: o estado gravado leva-a, com um
+     número de versão, para se confirmar que a Firebase tem mesmo o que está no ecrã */
+  var ECRA = Math.random().toString(36).slice(2, 10);
   var soLeitura = false;          /* sessão terminada aberta só para mostrar resultados */
   var livreVer = -1;              /* questionário: -1 = painel; senão, o diapositivo cujos resultados se mostram */
   var juntarAberto = false;
@@ -312,7 +318,7 @@
   }
 
   function estadoInicial() {
-    var e = { i: -1, cv: Date.now() };
+    var e = { i: -1, cv: Date.now(), v: ++versao, ecra: ECRA };
     if (livre()) e.modo = "livre";
     return e;
   }
@@ -365,6 +371,8 @@
       }
       if (livre()) estado.modo = "livre"; else delete estado.modo;
       estado.cv = Date.now();
+      versao = (typeof estado.v === "number" ? estado.v : 0) + 1;
+      estado.v = versao; estado.ecra = ECRA;
       var upd = { conteudo: JSON.stringify(B.conteudoPublico(at)), ativa: true, titulo: at.titulo || "", estado: estado };
       return db.patch(cam.sessao(c), upd, { auth: true }).then(function () {
         return db.patch(cam.indiceSessao(uid, c), { conteudo: JSON.stringify(at), fim: null }, { auth: true });
@@ -388,6 +396,9 @@
       pedir();
     }, { auth: true, semSse: true, intervalo: 3000 });
     if (!soLeitura) {
+      /* confere de 3 em 3 s que a Firebase tem o estado deste ecrã (e repara se não tiver) */
+      setInterval(conferirAgora, 3000);
+      document.addEventListener("visibilitychange", function () { if (!document.hidden) conferirAgora(); });
       /* acompanha as alterações feitas no editor durante a apresentação */
       db.ouvir(cam.atividade(uid, aid) + "/dados", function (d, ok) { if (ok) aoMudarAtividade(d); }, { auth: true, semSse: true, intervalo: 6000 });
       /* acerta o relógio com o servidor (para o tempo do quiz ser igual em todos os aparelhos) */
@@ -440,14 +451,58 @@
   }
 
   /* ---------------- estado ---------------- */
-  var aGravar = false, deNovo = false;
+  /* O estado (diapositivo, revelar, esconder, tempo…) é o que os telemóveis seguem.
+     - cada gravação leva versão (v) e a identidade deste ecrã (ecra);
+     - um pedido que fique pendurado é cancelado ao fim de 6 s e repetido (antes ficava
+       à espera para sempre e nenhum avanço seguinte chegava aos telemóveis);
+     - de 3 em 3 s o ecrã confere a Firebase e volta a gravar se ela não tiver a última versão. */
+  var aGravar = false, deNovo = false, versao = 0, envioDesde = 0, envioFim = 0, ultimaDemora = 0, reparacoes = 0;
   function gravar() {
     if (!codigo || soLeitura || ver) return;
+    versao = Math.max(versao, typeof estado.v === "number" ? estado.v : 0) + 1;
+    estado.v = versao; estado.ecra = ECRA;
+    enviarEstado();
+  }
+  function enviarEstado() {
+    if (!codigo || soLeitura || ver) return;
     if (aGravar) { deNovo = true; return; }
-    aGravar = true;
-    db.put(cam.sessao(codigo) + "/estado", estado, { auth: true }).then(function () { setLigacao(true); })
-      .catch(function (e) { setLigacao(false, e); deNovo = true; })
-      .then(function () { aGravar = false; if (deNovo) { deNovo = false; setTimeout(gravar, ligacao.ok ? 0 : 2500); } });
+    if (typeof estado.v !== "number" || estado.ecra !== ECRA) { versao++; estado.v = versao; estado.ecra = ECRA; }
+    aGravar = true; envioDesde = Date.now();
+    db.put(cam.sessao(codigo) + "/estado", estado, { auth: true, tempo: 6000, tentativas: 0 }).then(function () {
+      ultimaDemora = Date.now() - envioDesde;
+      setLigacao(true);
+    }).catch(function (e) { setLigacao(false, e); deNovo = true; })
+      .then(function () {
+        aGravar = false; envioFim = Date.now(); atualizarSelo();
+        if (deNovo) { deNovo = false; setTimeout(enviarEstado, ligacao.ok ? 0 : 1200); }
+      });
+  }
+  var outroEcra = "", aConferir = false;
+  function conferirAgora() {
+    if (aConferir || soLeitura || ver || !codigo) return;
+    aConferir = true;
+    db.get(cam.sessao(codigo) + "/estado", { auth: true, tempo: 6000 })
+      .then(function (srv) { conferirEstado(srv, true); }, function () {})
+      .then(function () { aConferir = false; });
+  }
+  function conferirEstado(srv, ok) {
+    if (!ok || soLeitura || ver || aTerminar || !codigo) return;
+    if (!srv) return;
+    if (srv.fim && !estado.fim) { terminadaNoutroLado(); return; }
+    if (srv.ecra && srv.ecra !== ECRA) {
+      /* outro separador (ou outro aparelho) está a conduzir esta sessão: este acompanha */
+      var chave = srv.ecra + ":" + srv.v;
+      if (chave === outroEcra) return;
+      outroEcra = chave;
+      var mudou = srv.i !== estado.i || srv.id !== estado.id;
+      estado = srv;
+      if (typeof srv.v === "number") versao = Math.max(versao, srv.v);
+      if (mudou) desenhar(); else atualizar();
+      avisar("Esta sessão também está aberta noutro ecrã: este acompanha-o.");
+      return;
+    }
+    if (aGravar || Date.now() - envioFim < 1500 || typeof estado.v !== "number") return;
+    if (srv.v !== estado.v) { reparacoes++; enviarEstado(); }
   }
   function setLigacao(ok, err) {
     var msg = ok ? "" : (err && err.message) || "Sem ligação à internet. A tentar outra vez…";
@@ -455,10 +510,16 @@
     ligacao = { ok: ok, msg: msg };
     atualizarSelo();
   }
+  var seloChave = "";
   function atualizarSelo() {
     var s = $("selo");
+    var lento = aGravar && Date.now() - envioDesde > 2500;
+    var chave = [ligacao.ok, ligacao.msg, lento, soLeitura, B.demo].join("|");
+    if (chave === seloChave) return;
+    seloChave = chave;
     s.className = "";
-    if (!ligacao.ok) { s.className = "erro"; s.textContent = ligacao.msg; }
+    if (!ligacao.ok) { s.className = "erro"; s.textContent = "⚠ " + (ligacao.msg || "Sem ligação") + " A tentar outra vez sozinho…"; }
+    else if (lento) { s.className = "aviso"; s.textContent = "A enviar para os telemóveis… a rede está lenta"; }
     else if (soLeitura) { s.className = "leitura"; s.textContent = "SESSÃO TERMINADA · só a mostrar resultados"; }
     else if (B.demo) { s.className = "demo"; s.textContent = "MODO DEMONSTRAÇÃO · participantes simulados neste computador"; }
     else s.textContent = "";
@@ -482,6 +543,17 @@
      responderam a alguma coisa ou concluíram. Páginas abertas noutro navegador
      e esquecidas (o QR lido pela câmara e depois o código escrito no Chrome,
      por exemplo) deixam de contar sozinhas. */
+  /* os telemóveis dizem em que diapositivo estão (s); conta os que estão ativos */
+  function naPergunta() {
+    var agora = B.agora(), alvo = livre() ? "livre" : (estado.id || "-"), r = { com: 0, viu: 0 };
+    for (var p in parts) {
+      var x = parts[p];
+      if (!x || typeof x.s !== "string" || typeof x.t !== "number" || agora - x.t > 75000) continue;
+      r.com++;
+      if (x.s === alvo) r.viu++;
+    }
+    return r;
+  }
   function presentes() {
     var agora = B.agora(), resp1 = {}, n = 0, sid, p;
     for (sid in resp) for (p in resp[sid] || {}) resp1[p] = 1;
@@ -608,6 +680,9 @@
     }
     if (s && fechada(s)) l.push(el("span", { class: "fechada-et" }, "🔒 Respostas fechadas"));
     l.push(el("span", null, el("b", null, String(nPart)), nPart === 1 ? " participante" : " participantes"));
+    var np = soLeitura || ver ? null : naPergunta();
+    if (np && np.com) l.push(el("span", { class: np.viu >= np.com ? "vistos-ok" : "vistos-atraso", title: "Telemóveis que já mostram este diapositivo" },
+      "📱 ", el("b", null, np.viu + "/" + np.com), np.viu >= np.com ? " ✓" : ""));
     l.push(el("span", null, "Código ", el("b", null, B.fmtCodigo(codPub()))));
     var i = livre() ? livreVer : estado.i;
     if (s && i >= 0) l.push(el("span", null, String(i + 1).padStart(2, "0") + "/" + String(at.slides.length).padStart(2, "0")));
@@ -854,6 +929,7 @@
     return { el: e, b: b, span: span, arco: svg.querySelector(".a"), C: C, tocou: null };
   })();
   function tickCrono() {
+    atualizarSelo();
     var tm = estado.tmp;
     if (!tm || !tm.fim) { crono.el.hidden = true; return; }
     var resta = tm.fim - B.agora();
@@ -1176,9 +1252,20 @@
     var np = presentes(), nr = totalRespostas();
     estado.fim = true; delete estado.tmp; gravar();
     B.terminarSessao(uid, codigo, fixo).catch(function () {});
+    ecraDoFim(np, nr, "Obrigado! Os telemóveis já mostram o fim da sessão.");
+  }
+  /* a sessão foi terminada na biblioteca ou noutro ecrã */
+  function terminadaNoutroLado() {
+    if (aTerminar) return;
+    aTerminar = true;
+    if ($("dlg").open) $("dlg").close();
+    estado.fim = true;
+    ecraDoFim(presentes(), totalRespostas(), "A sessão foi terminada noutro lado (na biblioteca ou noutro ecrã).");
+  }
+  function ecraDoFim(np, nr, txt) {
     var ir1 = el("a", { class: "prim", href: "formador.html" + (B.demo ? "?demo" : "") + "#/resultados/" + codigo }, el("b", null, "Ver os resultados"), "Respostas de cada pergunta, para guardar ou descarregar.");
     var ir2 = el("a", { href: "formador.html" + (B.demo ? "?demo" : "") + "#/" }, el("b", null, "Voltar à biblioteca"), "As tuas atividades.");
-    var c = cortina("Sessão terminada", "Obrigado! Os telemóveis já mostram o fim da sessão.", [ir1, ir2]);
+    var c = cortina("Sessão terminada", txt, [ir1, ir2]);
     var caixa = c.querySelector(".caixa");
     caixa.insertBefore(el("div", { class: "resumo" },
       el("div", null, el("b", null, String(np)), el("span", null, np === 1 ? "participante" : "participantes")),
@@ -1187,6 +1274,14 @@
     if (cr) caixa.appendChild(cr);
   }
 
+  function textoLigacao() {
+    if (!ligacao.ok) return "⚠ Sem ligação neste momento. O ecrã está a tentar outra vez sozinho; os telemóveis apanham o ponto certo assim que a rede voltar.";
+    var np = naPergunta(), l = [];
+    l.push(ultimaDemora ? "✓ O último avanço chegou à Firebase em " + (ultimaDemora / 1000).toFixed(1).replace(".", ",") + " s." : "✓ Ligado.");
+    if (np.com) l.push(np.viu + " de " + np.com + " telemóveis ativos já mostram este diapositivo.");
+    if (reparacoes) l.push("O ecrã corrigiu sozinho " + reparacoes + (reparacoes === 1 ? " envio que falhou." : " envios que falharam."));
+    return l.join(" ");
+  }
   function abrirDefs() {
     var link = B.linkEntrar(codPub() || "000000"), art = !!window.BNA_ARTEFACTO;
     var kids = [
@@ -1198,6 +1293,8 @@
         el("button", { onclick: function (ev) { var b = ev.currentTarget; try { navigator.clipboard.writeText(link).then(function () { b.textContent = "Copiado ✓"; }, function () {}); } catch (e) {} } }, "Copiar link"),
         el("button", { onclick: function () { window.open(link, "_blank"); } }, "Abrir como participante")),
       location.protocol === "file:" ? el("p", { style: { color: "#e3562d", fontWeight: "700" } }, "Abriste o ficheiro a partir do computador. Para os telemóveis entrarem, o site tem de estar online.") : null,
+      soLeitura || art ? null : el("h3", null, "Ligação aos telemóveis"),
+      soLeitura || art ? null : el("p", null, textoLigacao()),
       soLeitura || livre() || (at && at.reacoes === false) ? null : el("h3", null, "Reações ao vivo"),
       soLeitura || livre() || (at && at.reacoes === false) ? null : el("p", null, estado.semReacoes ? "Desligadas: a barra 👍 ❤️ 😂 😮 👏 não aparece nos telemóveis." : "Ligadas: quem está no telemóvel pode reagir a qualquer momento e os emojis sobem no ecrã."),
       soLeitura || livre() || (at && at.reacoes === false) ? null : el("div", { class: "bts" }, el("button", { onclick: function () {

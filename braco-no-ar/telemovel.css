@@ -130,6 +130,7 @@
 .ph-entrar p{margin:0;font-size:17px;line-height:1.45;color:var(--suave)}
 .ph-codigo{font-family:var(--display);font-size:44px;letter-spacing:.18em;text-align:center;padding:12px 10px}
 .ph-aviso{margin:0 0 12px;padding:10px 12px;border-radius:10px;background:#e3562d;color:#fff;font-size:14px;font-weight:600}
+.ph-aviso-lento{background:var(--cartao);color:var(--tinta);box-shadow:0 2px 0 var(--linha)}
 @media (prefers-reduced-motion:reduce){.ph *{transition:none!important}}
 
 .ord{font-family:var(--texto);font-weight:800;font-size:.5em;vertical-align:.75em;margin-left:.05em;letter-spacing:0}

@@ -116,6 +116,7 @@
     }
     var codigo = null, at = null, estado = null, cv = null, pararEstado = null, pararQa = null, ativa = true;
     var meus = {}, edicao = {}, rascunhos = {}, vistos = {}, pendentes = {}, gostos = {};
+    var pendDesde = {}, recusa = null;   /* desde quando cada resposta espera; a última recusada */
     var ligado = true, ultimoJson = "", relogioTimer = null, tempoTimer = null;
     var pontos = { v: null, d: null }, qa = { id: null, lista: null };
     var res = { id: null, d: null, j: "" }, pararRes = null;
@@ -201,8 +202,18 @@
       }).catch(function (e) {
         setLigado(false);
         codigo = null;
-        ecraEntrar(e && e.status === 401 ? "A sessão não está disponível." : "Sem ligação. Confirma a internet e tenta outra vez.");
+        if (e && (e.status === 401 || e.status === 403)) { ecraEntrar("A sessão não está disponível."); return; }
+        semRedeAEntrar(c, viaFixo);
       });
+    }
+    /* a rede falhou a meio da entrada: fica a tentar sozinho, de 3 em 3 segundos */
+    var entrarTimer = null;
+    function semRedeAEntrar(c, viaFixo) {
+      clearTimeout(entrarTimer);
+      BNA.por(mold.main, M.grande("Sem <em>ligação.</em>", "A tentar outra vez sozinho… Confirma o wi-fi ou os dados móveis."),
+        B.esperaTel("A ligar"),
+        el("button", { class: "ph-bt sec", type: "button", onclick: function () { clearTimeout(entrarTimer); ecraEntrar(); } }, "Escrever outro código"));
+      entrarTimer = setTimeout(function () { entrar(c, viaFixo); }, 3000);
     }
 
     /* código fixo sem sessão aberta: espera aqui e entra sozinho quando começar */
@@ -232,8 +243,8 @@
     function mudarDeSessao(s) {
       if (pararEstado) { pararEstado(); pararEstado = null; }
       pararPerguntas(); pararResultados();
-      at = null; estado = null; cv = null; ativa = true; ultimoJson = "";
-      meus = {}; edicao = {}; rascunhos = {}; pendentes = {}; gostos = {};
+      at = null; estado = null; cv = null; ativa = true; ultimoJson = ""; vistoId = null;
+      meus = {}; edicao = {}; rascunhos = {}; pendentes = {}; gostos = {}; pendDesde = {}; recusa = null;
       minhaEquipa = null; pontosEq = null;
       entrar(s, fixo);
     }
@@ -330,12 +341,25 @@
     /* «ainda aqui»: de 30 em 30 segundos, só com a página à vista. O ecrã conta
        como presentes os que deram sinal há pouco ou já responderam, por isso uma
        página esquecida noutro navegador deixa de contar ao fim de um minuto. */
-    var batida = null;
+    var batida = null, vistoId = null;
+    function ondeEstou() {
+      if (!estado || estado.fim) return null;
+      return estado.modo === "livre" ? "livre" : (estado.id || "-");
+    }
     function bater(soAgendar) {
       clearTimeout(batida);
       batida = setTimeout(bater, 30000);
       if (soAgendar === true || !codigo || !ativa || document.visibilityState === "hidden") return;
-      B.db.patch(B.caminho.participante(codigo, pid), { t: { ".sv": "timestamp" } }).catch(function () {});
+      var v = { t: { ".sv": "timestamp" } }, o = ondeEstou();
+      if (o) v.s = o;
+      B.db.patch(B.caminho.participante(codigo, pid), v, { tentativas: 0 }).catch(function () {});
+    }
+    /* mal o diapositivo muda, avisa logo (não espera pela batida dos 30 s) */
+    function marcarVisto() {
+      var o = ondeEstou();
+      if (!o || o === vistoId || !codigo || !ativa) return;
+      vistoId = o;
+      B.db.patch(B.caminho.participante(codigo, pid), { t: { ".sv": "timestamp" }, s: o }).catch(function () { if (vistoId === o) vistoId = null; });
     }
     if (!opts.embutido) document.addEventListener("visibilitychange", function () {
       if (document.visibilityState === "visible" && batida) bater();
@@ -353,11 +377,12 @@
         if (estado.fim) { ativa = false; render(); return; }
         ativa = true;
         if (estado.cv && cv && estado.cv !== cv) {
-          cv = estado.cv;
+          var cvNovo = estado.cv;
           B.db.get(B.caminho.sessao(codigo) + "/conteudo").then(function (c) {
             try { at = JSON.parse(c); mold.tema(at.tema); mold.marca(at.titulo || B.nome); } catch (er) {}
+            cv = cvNovo;
             depoisDoEstado();
-          });
+          }).catch(function () { ultimoJson = ""; });
           return;
         }
         cv = estado.cv || cv;
@@ -366,6 +391,7 @@
     }
 
     function depoisDoEstado() {
+      marcarVisto();
       /* pontos do quiz: só os meus, e só quando o formador os atualiza */
       if (estado.pv && estado.pv !== pontos.v) {
         var pv = estado.pv;
@@ -426,12 +452,22 @@
     }
     function mandar(slideId, chave, v, k, tent) {
       pendentes[k] = v;
-      B.db.put(B.caminho.resposta(codigo, slideId, chave), v).then(function () {
-        if (pendentes[k] === v) delete pendentes[k];
+      if (!pendDesde[k]) {
+        pendDesde[k] = Date.now();
+        /* se demorar, a pessoa fica a saber que ainda está a seguir */
+        setTimeout(function () { if (pendentes[k] === v) render(); }, 2600);
+      }
+      B.db.put(B.caminho.resposta(codigo, slideId, chave), v, { tentativas: 0 }).then(function () {
+        if (pendentes[k] === v) { delete pendentes[k]; delete pendDesde[k]; }
         setLigado(true);
         render();
       }).catch(function (e) {
-        if (e && (e.status === 401 || e.status === 403)) { delete pendentes[k]; render(); return; }
+        if (e && (e.status === 401 || e.status === 403)) {
+          /* a pergunta fechou (ou o quiz foi revelado) antes de a resposta chegar: não fingir que contou */
+          delete pendentes[k]; delete pendDesde[k];
+          if (v !== null && Object.prototype.hasOwnProperty.call(meus, k)) { delete meus[k]; guardarMeus(); recusa = { k: k, ate: Date.now() + 8000 }; }
+          render(); return;
+        }
         setLigado(false);
         render();
         setTimeout(function () { if (pendentes[k] === v) mandar(slideId, chave, v, k, tent + 1); }, Math.min(1500 * Math.pow(1.6, tent), 9000));
@@ -514,6 +550,15 @@
       };
     }
 
+    /* o que a pessoa precisa de saber sobre as respostas que ainda não chegaram */
+    function avisoEnvio(qual) {
+      var ks = Object.keys(pendentes), agora = Date.now();
+      if (recusa && recusa.ate > agora) return el("p", { class: "ph-aviso" }, "Esta pergunta já tinha fechado: a tua resposta não chegou a contar.");
+      if (!ks.length) return null;
+      if (!ligado) return el("p", { class: "ph-aviso" }, "Sem rede. " + qual + (qual.slice(-1) === "s" ? " seguem" : " segue") + " assim que a ligação voltar.");
+      if (ks.some(function (k) { return agora - (pendDesde[k] || agora) > 2500; })) return el("p", { class: "ph-aviso ph-aviso-lento" }, "A enviar… a rede está lenta, não feches a página.");
+      return null;
+    }
     function livreAtivo() { return estado && estado.modo === "livre"; }
 
     function render() {
@@ -528,7 +573,7 @@
       }
       if (livreAtivo()) return renderLivre();
       var s = slideAtual();
-      var aviso = !ligado && Object.keys(pendentes).length ? el("p", { class: "ph-aviso" }, "Sem rede. A tua resposta segue assim que a ligação voltar.") : null;
+      var aviso = avisoEnvio("A tua resposta");
       var topo = [aviso, equipaPill(), barraTempo()];
       if (!s || !T[s.tipo]) {
         mold.sup("destaque");
@@ -602,7 +647,7 @@
           } else { livre.pos++; guardarLivre(); render(); }
           window.scrollTo(0, 0);
         } }, ultima ? "Concluir" : respondida ? "Seguinte ›" : "Saltar ›"));
-      var aviso = !ligado && Object.keys(pendentes).length ? el("p", { class: "ph-aviso" }, "Sem rede. As tuas respostas seguem assim que a ligação voltar.") : null;
+      var aviso = avisoEnvio("As tuas respostas");
       B.desenharTel(mold, s, ctxPara(s), [aviso, barraTempo(), prog]);
       mold.main.appendChild(nav);
     }
