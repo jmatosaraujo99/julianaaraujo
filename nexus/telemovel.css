@@ -10,6 +10,7 @@
 .ph[data-sup=destaque]{--fundo:var(--t-destaque,#1e7e75);--tinta:var(--t-destaque-tinta,#fff);--suave:color-mix(in srgb,var(--t-destaque-tinta,#fff) 78%,transparent);--linha:color-mix(in srgb,var(--t-destaque-tinta,#fff) 22%,transparent);--cartao:color-mix(in srgb,var(--t-destaque-tinta,#fff) 10%,transparent);--kicker:var(--t-acento,#fdc200)}
 .ph-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px 6px}
 .ph-marca{font-family:var(--display);font-size:13px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph-marca.e-nome{text-transform:none}
 .ph-pontos{display:flex;gap:4px;flex:none}.ph-pontos i{width:13px;height:4px;border-radius:2px;display:block}
 .ph-net{font-size:12px;font-weight:600;color:var(--suave);display:flex;align-items:center;gap:6px;flex:none}
 .ph-net::before{content:'';width:8px;height:8px;border-radius:50%;background:#3cc28a}

@@ -16,7 +16,9 @@
     var net = el("span", { class: "ph-net", "data-ok": "1" }, "ligado");
     var main = el("main", { class: "ph-main", "aria-live": "polite" });
     var rodape = el("footer", { class: "ph-rodape" }, "As respostas são anónimas.");
-    var marcaEl = el("span", { class: "ph-marca" }, marca || B.nome);
+    var marcaEl = el("span", { class: "ph-marca" });
+    function porMarca(m) { marcaEl.textContent = m; marcaEl.classList.toggle("e-nome", m === B.nome); }
+    porMarca(marca || B.nome);
     var pts = pontinhos(t);
     [el("header", { class: "ph-top" }, marcaEl, pts, net), main, rodape, B.creditos("ph-creditos")].forEach(function (x) { if (x) root.appendChild(x); });
     raiz.appendChild(root);
@@ -24,7 +26,7 @@
       root: root, main: main, rodape: rodape, net: net,
       tema: function (id) { t = B.aplicarTema(root, id); pts.replaceWith(pts = pontinhos(t)); return t; },
       sup: function (s) { root.setAttribute("data-sup", s); },
-      marca: function (m) { marcaEl.textContent = m; },
+      marca: porMarca,
       ligado: function (ok) { net.setAttribute("data-ok", ok ? "1" : "0"); net.textContent = ok ? "ligado" : "sem rede"; }
     };
   };
