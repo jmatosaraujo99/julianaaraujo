@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ZUNZUM · modelos de atividades (pontos de partida)
+   NEXUS · modelos de atividades (pontos de partida)
    ========================================================================== */
 (function () {
   "use strict";

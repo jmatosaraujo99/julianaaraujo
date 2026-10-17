@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ZUNZUM · quizzes prontos por tema (soft skills)
+   NEXUS · quizzes prontos por tema (soft skills)
    Cada modelo: abertura, 8 perguntas com pontos, pódio a meio e no fim,
    e três ideias para levar. Em cada pergunta a resposta certa vem escrita
    primeiro e muda de lugar quando o quiz é criado.

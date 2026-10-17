@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ZUNZUM · tela livre e layouts
+   NEXUS · tela livre e layouts
    Um diapositivo sem forma fixa: caixas de texto, imagens e formas postas
    onde se quiser, num palco de 1600 × 900. Os layouts são telas já
    arrumadas — depois de escolhidos, mexe-se em tudo.

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ZUNZUM · tipos de diapositivo
+   NEXUS · tipos de diapositivo
    Cada tipo sabe: criar-se, editar-se, aparecer no telemóvel, aparecer no ecrã,
    inventar dados de exemplo e exportar respostas.
    ========================================================================== */

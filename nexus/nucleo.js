@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ZUNZUM · núcleo partilhado
+   NEXUS · núcleo partilhado
    Ligação à Firebase (sem bibliotecas), login, temas, QR, utilitários.
    Não precisas de editar este ficheiro.
    ========================================================================== */
@@ -9,7 +9,7 @@
   var C = window.BNA_CONFIG || {};
   var F = C.firebase || {};
   var B = (window.BNA = { C: C });
-  B.nome = C.nome || "Zunzum";
+  B.nome = C.nome || "NEXus";
   B.autora = C.autora || null;
   /* reações ao vivo: a posição é o que fica gravado (0 a 4) */
   B.reacoesEmojis = ["👍", "❤️", "😂", "😮", "👏"];
@@ -647,7 +647,7 @@
   /* ---------------- código fixo de cada atividade ----------------
      Como no Mentimeter: o código e o QR de uma atividade não mudam de sessão
      para sessão. fixos/<código> diz qual é a sessão aberta nesse momento (s). */
-  /* «Zunzum · criado por Juliana Araújo · @julianaaraujo.pt» (as ligações abrem noutro separador) */
+  /* «NEXus · criado por Juliana Araújo · @julianaaraujo.pt» (as ligações abrem noutro separador) */
   B.creditos = function (classe) {
     var a = B.autora, el = B.el;
     if (!a || !a.nome) return null;
@@ -711,7 +711,7 @@
     }, function () { p1.fim(); });
     /* um login com dados falsos diz se o email/palavra-passe está ligado, sem criar nada */
     var teste2 = pedirJson(AUTH_URL + "/accounts:signInWithPassword?key=" + encodeURIComponent(apiKey),
-      { email: "verificacao@zunzum.invalid", password: "x-verificacao", returnSecureToken: true })
+      { email: "verificacao@nexus.invalid", password: "x-verificacao", returnSecureToken: true })
       .then(function () { r.login = true; }, function (e) { r.login = !/não está ativo|não é válida/.test(e.message) && !e.rede; if (/não é válida/.test(e.message)) r.chaveMa = true; });
     return Promise.all([teste1, teste2]).then(function () { return r; });
   };

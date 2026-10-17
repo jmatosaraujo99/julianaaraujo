@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ZUNZUM · configuração
+   NEXUS · configuração
    Este é o único ficheiro que precisas de editar (podes usar o Bloco de Notas).
    ========================================================================== */
 
@@ -14,9 +14,9 @@ window.BNA_CONFIG = {
   },
 
   // Nome que aparece nas páginas.
-  nome: "Zunzum",
+  nome: "NEXus",
 
-  // (Opcional) Endereço público do site, por exemplo "https://julianaaraujo.pt/zunzum".
+  // (Opcional) Endereço público do site, por exemplo "https://julianaaraujo.pt/nexus".
   // Se ficar vazio, é calculado automaticamente.
   site: "",
 

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ZUNZUM · lado do participante (telemóvel)
+   NEXUS · lado do participante (telemóvel)
    ========================================================================== */
 (function () {
   "use strict";
