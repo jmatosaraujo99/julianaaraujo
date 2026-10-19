@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<!--
+  Bolinho da Sorte — julianaaraujo.pt
+  Ferramenta de Juliana Araújo. Copyright (c) 2026. Todos os direitos reservados.
+  Uso livre em sessões de formação e aulas. Não é permitido copiar, republicar
+  ou redistribuir este código sem autorização escrita.
+-->
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Bolinho da Sorte — Quebra-gelo com Perguntas para a Sala | Juliana Araújo</title>
+<meta name="description" content="Dinâmica de quebra-gelo para a formação: cada pessoa abre um bolinho da sorte e responde à pergunta que vem lá dentro. 314 perguntas, gratuito e sem registo.">
+<link rel="canonical" href="https://julianaaraujo.pt/bolinho-da-sorte.html">
+<meta property="og:title" content="Bolinho da Sorte — Quebra-gelo com Perguntas para a Sala | Juliana Araújo">
+<meta property="og:description" content="Dinâmica de quebra-gelo para a formação: cada pessoa abre um bolinho da sorte e responde à pergunta que vem lá dentro. 314 perguntas, gratuito e sem registo.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://julianaaraujo.pt/bolinho-da-sorte.html">
+<meta property="og:site_name" content="Juliana Araújo">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:image" content="https://julianaaraujo.pt/media/og-cartao.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bolinho da Sorte — Quebra-gelo com Perguntas para a Sala | Juliana Araújo">
+<meta name="twitter:description" content="Dinâmica de quebra-gelo para a formação: cada pessoa abre um bolinho da sorte e responde à pergunta que vem lá dentro. 314 perguntas, gratuito e sem registo.">
+<meta name="twitter:image" content="https://julianaaraujo.pt/media/og-cartao.jpg">
+<meta name="twitter:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Bolinho da Sorte","applicationCategory":"EducationalApplication","operatingSystem":"Browser","description":"Dinâmica de quebra-gelo para a sala de formação: cada pessoa abre um bolinho da sorte e responde à pergunta que vem lá dentro, com 314 perguntas em 13 conjuntos, surpresas e modo de ecrã inteiro.","url":"https://julianaaraujo.pt/bolinho-da-sorte.html","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"copyrightHolder":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/"},"copyrightYear":2026,"creator":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/","address":{"@type":"PostalAddress","addressLocality":"Barcelos","addressRegion":"Braga","addressCountry":"PT"}},"inLanguage":"pt-PT"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://julianaaraujo.pt/"},{"@type":"ListItem","position":2,"name":"Bolinho da Sorte","item":"https://julianaaraujo.pt/bolinho-da-sorte.html"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"É preciso criar conta ou instalar alguma coisa?","acceptedAnswer":{"@type":"Answer","text":"Não. Abres a página e projetas. Ninguém precisa de telemóvel: a sala responde em voz alta."}},{"@type":"Question","name":"Dá para uma turma grande?","acceptedAnswer":{"@type":"Answer","text":"Dá. O prato leva de 3 a 40 bolinhos e o tamanho ajusta-se ao ecrã. Em Definições podes pôr um bolinho por pessoa e escrever os nomes: o papel diz quem responde."}},{"@type":"Question","name":"As perguntas que escrevo ficam guardadas?","acceptedAnswer":{"@type":"Answer","text":"Ficam no navegador do computador onde as escreveste e não vão para nenhum servidor. Noutro computador, ou noutro navegador, começas sem elas."}},{"@type":"Question","name":"Porque é que a música não começa logo?","acceptedAnswer":{"@type":"Answer","text":"Os navegadores só deixam tocar som depois de alguém tocar na página. Abre o primeiro bolinho e a música entra. M liga e desliga."}}]}</script>
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="favicon.ico?v=2" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="tokens.css?v=20260915">
+
+<style>
+/* Marca, fontes e espaçamento vêm do tokens.css.
+   O Bolinho da Sorte tem o seu próprio mundo (o prato de noite e os bolinhos
+   ilustrados) e vive num ficheiro à parte, bolinho-da-sorte-app.html, que esta
+   página mostra num palco. À volta fica o cromo das outras ferramentas. */
+:root{
+  --ground:var(--creme);
+  --ink:var(--preto);
+  --ink-2:var(--cinza-forte);
+  --ink-3:var(--cinza);
+  --line:var(--linha-preta);
+  --line-forte:rgba(10,10,10,.28);
+  --acc:var(--cobalto);
+  --acc-suave:rgba(31,46,214,.10);
+  --sombra:0 24px 50px -28px rgba(10,10,10,.55);
+  --noite:#082730;
+  --s1:6px; --s2:10px; --s3:16px; --s4:24px; --s5:36px; --s6:56px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:var(--preto);
+    --ink:var(--creme); --ink-2:#A8A29A; --ink-3:var(--cinza-sobre-preto);
+    --line:rgba(242,239,234,.16); --line-forte:rgba(242,239,234,.32);
+    --acc:#8791FF; --acc-suave:rgba(135,145,255,.14);
+    --sombra:0 24px 54px -26px rgba(0,0,0,.95);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:var(--preto);
+  --ink:var(--creme); --ink-2:#A8A29A; --ink-3:var(--cinza-sobre-preto);
+  --line:rgba(242,239,234,.16); --line-forte:rgba(242,239,234,.32);
+  --acc:#8791FF; --acc-suave:rgba(135,145,255,.14);
+  --sombra:0 24px 54px -26px rgba(0,0,0,.95);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--fonte-corpo);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+
+/* --- Cromo do site (igual ao das outras ferramentas) --------------------- */
+.cabeca-site{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+  padding:20px clamp(18px,calc(6 * var(--fluido)),96px);
+  border-bottom:1px solid var(--line);
+}
+.cabeca-site .logo{
+  font-family:var(--fonte-display);font-size:20px;line-height:1;
+  letter-spacing:var(--ls-display);text-transform:uppercase;
+  color:var(--ink);text-decoration:none;
+}
+.cabeca-site nav{display:flex;gap:clamp(14px,calc(2.4 * var(--fluido)),28px);flex-wrap:wrap}
+.cabeca-site nav a{
+  color:var(--ink);text-decoration:none;
+  font-family:var(--fonte-etiqueta);font-size:12px;
+  text-transform:uppercase;letter-spacing:var(--ls-etiqueta);
+  padding:6px 0;
+}
+.cabeca-site nav a:hover{color:var(--acc)}
+.rodape-site{
+  padding:clamp(40px,calc(5 * var(--fluido)),64px) clamp(18px,calc(6 * var(--fluido)),96px);
+  border-top:1px solid var(--line);
+}
+.rodape-site .rodape-wrap{
+  max-width:1440px;margin:0 auto;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;
+  font-family:var(--fonte-etiqueta);font-size:11px;
+  letter-spacing:var(--ls-etiqueta);text-transform:uppercase;
+  color:var(--ink-3);
+}
+.rodape-site a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line-forte)}
+.rodape-site a:hover{color:var(--acc);border-bottom-color:var(--acc)}
+
+/* --- A ferramenta -------------------------------------------------------- */
+.app{max-width:1240px;margin:0 auto;padding:var(--s4) var(--s4) var(--s5);display:flex;flex-direction:column;gap:var(--s3)}
+.topo{display:flex;flex-direction:column;gap:2px}
+.sobrancelha{font-family:var(--fonte-etiqueta);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--ink-3);margin:0}
+h1{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:clamp(28px,calc(4.4 * var(--fluido)),44px);line-height:.98;margin:0}
+.tagline{font-family:var(--fonte-corpo);font-size:clamp(13px,calc(1.1 * var(--fluido)),15px);line-height:1.45;color:var(--ink-3);margin:8px 0 0;max-width:60ch}
+/* o palco ocupa o resto do ecrã, para a projeção caber sem rolar */
+.palco-bolinho{position:relative;overflow:hidden;border-radius:20px;background:var(--noite);border:1px solid var(--line);box-shadow:var(--sombra);
+  height:clamp(460px,calc(100vh - 225px),860px);height:clamp(460px,calc(100svh - 225px),860px)}
+.palco-bolinho iframe{display:block;width:100%;height:100%;border:0}
+.rodape{display:flex;justify-content:space-between;gap:var(--s3);flex-wrap:wrap;
+  font-family:var(--fonte-etiqueta);font-size:11px;letter-spacing:var(--ls-etiqueta);text-transform:uppercase;color:var(--ink-3)}
+.rodape a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-forte)}
+@media (max-width:640px){
+  .app{padding:var(--s3) 0 var(--s4);gap:var(--s2)}
+  .app > .topo,.app > .rodape{padding:0 var(--s3)}
+  .palco-bolinho{border-radius:0;border-left:0;border-right:0;
+    height:max(540px,calc(100vh - 150px));height:max(540px,calc(100svh - 150px))}
+  .dica{display:none}
+}
+
+/* --- Texto de apoio, por baixo da ferramenta ----------------------------- */
+.apoio{border-top:1px solid var(--line);background:var(--ground);
+  padding:clamp(48px,calc(7 * var(--fluido)),88px) clamp(18px,calc(5 * var(--fluido)),64px) clamp(56px,calc(8 * var(--fluido)),104px)}
+.apoio-wrap{max-width:70ch;margin:0 auto}
+.apoio h2{font-family:var(--fonte-display);font-weight:400;font-size:clamp(20px,calc(2.4 * var(--fluido)),28px);line-height:1.15;
+  letter-spacing:var(--ls-display);text-transform:uppercase;color:var(--ink);
+  margin:clamp(34px,calc(4 * var(--fluido)),52px) 0 14px}
+.apoio h2:first-child{margin-top:0}
+.apoio p,.apoio li{font-family:var(--fonte-corpo);font-size:16.5px;line-height:1.72;color:var(--ink-2)}
+.apoio p{margin:0 0 14px}
+.apoio ol,.apoio ul{margin:0 0 16px;padding-left:1.35em}
+.apoio li{margin-bottom:9px}
+.apoio b{color:var(--ink);font-weight:600}
+.apoio kbd{font:600 12.5px/1 var(--fonte-etiqueta);border:1px solid var(--line-forte);border-bottom-width:2px;border-radius:5px;padding:2px 6px;color:var(--ink)}
+.apoio a{color:var(--acc);text-decoration:none;border-bottom:1px solid var(--acc-suave)}
+.apoio a:hover{border-bottom-color:var(--acc)}
+.apoio .faq{margin-top:6px}
+.apoio .faq details{border-top:1px solid var(--line)}
+.apoio .faq details:last-of-type{border-bottom:1px solid var(--line)}
+.apoio .faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;
+  justify-content:space-between;gap:18px;min-height:44px;padding:15px 0;
+  font-family:var(--fonte-etiqueta);font-size:15px;font-weight:600;line-height:1.45;color:var(--ink)}
+.apoio .faq summary::-webkit-details-marker{display:none}
+.apoio .faq summary h3{display:inline;font:inherit;color:inherit;margin:0;text-transform:none;letter-spacing:normal}
+.apoio .faq summary::after{content:"+";font-family:var(--fonte-corpo);font-size:24px;line-height:1;
+  color:var(--acc);flex:none;transition:transform .25s ease}
+.apoio .faq details[open] summary::after{transform:rotate(45deg)}
+.apoio .faq summary:hover{color:var(--acc)}
+.apoio .faq details p{margin:0 0 18px;padding-right:42px}
+.apoio .nota{font-size:14px;color:var(--ink-3)}
+.apoio-cta{margin-top:clamp(40px,calc(5 * var(--fluido)),64px);padding-top:clamp(26px,calc(3 * var(--fluido)),36px);
+  border-top:1px solid var(--line)}
+@media (prefers-reduced-motion: reduce){*{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<header class="cabeca-site">
+  <a class="logo" href="index.html">Juliana Araújo</a>
+  <nav>
+    <a href="index.html#sobre">Sobre mim</a>
+    <a href="index.html#formacoes">Formações</a>
+    <a href="recursos.html">Recursos</a>
+    <a href="index.html#contactos">Contactos</a>
+  </nav>
+</header>
+
+<main class="app">
+  <div class="topo">
+    <p class="sobrancelha">Juliana Araújo &middot; Recurso pedagógico</p>
+    <h1>Bolinho da Sorte</h1>
+    <p class="tagline">Cada pessoa abre um bolinho e responde à pergunta que vem lá dentro. Serve para as apresentações, para acordar a sala e para fechar uma sessão.</p>
+  </div>
+
+  <div class="palco-bolinho">
+    <iframe src="bolinho-da-sorte-app.html?embutido" title="Bolinho da Sorte: escolhe um bolinho" allow="autoplay; fullscreen" allowfullscreen></iframe>
+  </div>
+
+  <footer class="rodape">
+    <span class="dica">Clica num bolinho para começar &middot; F põe em ecrã inteiro</span>
+    <span>Feita por <a href="https://julianaaraujo.pt" target="_blank" rel="noopener">julianaaraujo.pt</a></span>
+  </footer>
+</main>
+
+<section class="apoio" id="apoio-bolinho">
+  <div class="apoio-wrap">
+
+    <h2>Como se usa</h2>
+    <ol>
+      <li><b>Projeta esta página e escolhe um bolinho.</b> Ele treme, parte-se e sai o papel com a pergunta e três números da sorte.</li>
+      <li><b>A pessoa responde.</b> Depois, <b>Próximo bolinho</b> tira-o do prato. Quando o prato fica vazio, volta a encher.</li>
+      <li><b>Se a pergunta não servir,</b> <b>Trocar pergunta</b> mostra outra no mesmo papel.</li>
+    </ol>
+    <p>Com o teclado ou um comando de apresentações: a barra de espaços ou a seta para a direita abrem um bolinho ao calhas, a seta para a esquerda troca a pergunta, <kbd>M</kbd> liga e desliga a música e <kbd>F</kbd> põe em ecrã inteiro.</p>
+
+    <h2>As perguntas</h2>
+    <p>São 314, em 13 conjuntos: Apresentação, Quebra-gelo divertido, Coisas de Portugal, Isto ou aquilo, E se…?, Gostos e manias, Memórias e histórias, Sonhos e futuro, Criatividade, Equipa e trabalho, Reflexão e valores, Início de formação e Fecho e reflexão.</p>
+    <p>Em <b>Perguntas</b>, no canto de cima, escolhes os conjuntos que entram no prato. Também podes escrever os teus, uma pergunta por linha, copiar e mudar os que já existem, ou partir de um modelo: escreves o tema e as perguntas adaptam-se a ele.</p>
+
+    <h2>As surpresas</h2>
+    <p>Os bolinhos dourados trazem sempre uma surpresa, e os outros, de vez em quando, também. Salta lá de dentro uma personagem com um grito e um desafio: o Galo de Barcelos, a sardinha assada (que só dá 15 segundos para responder), o pastel de nata, o elétrico 28, a andorinha, o manjerico, o fado, o bacalhau e o azulejo. Em <b>Definições</b> escolhes se há muitas, só de vez em quando ou nenhuma.</p>
+
+    <h2>Perguntas frequentes</h2>
+    <div class="faq">
+      <details>
+        <summary><h3>É preciso criar conta ou instalar alguma coisa?</h3></summary>
+        <p>Não. Abres a página e projetas. Ninguém precisa de telemóvel: a sala responde em voz alta.</p>
+      </details>
+      <details>
+        <summary><h3>Dá para uma turma grande?</h3></summary>
+        <p>Dá. O prato leva de 3 a 40 bolinhos e o tamanho ajusta-se ao ecrã. Em Definições podes pôr um bolinho por pessoa e escrever os nomes: o papel diz quem responde.</p>
+      </details>
+      <details>
+        <summary><h3>As perguntas que escrevo ficam guardadas?</h3></summary>
+        <p>Ficam no navegador do computador onde as escreveste e não vão para nenhum servidor. Noutro computador, ou noutro navegador, começas sem elas.</p>
+      </details>
+      <details>
+        <summary><h3>Porque é que a música não começa logo?</h3></summary>
+        <p>Os navegadores só deixam tocar som depois de alguém tocar na página. Abre o primeiro bolinho e a música entra. <kbd>M</kbd> liga e desliga.</p>
+      </details>
+    </div>
+
+    <h2>Direitos de autor</h2>
+    <p>Esta ferramenta é uma criação original de Juliana Araújo. &copy; 2026, todos os direitos reservados.</p>
+    <p>Podes usá-la à vontade nas tuas sessões e aulas, e partilhar a ligação. Não é permitido copiar o código nem alojar cópias noutro endereço. Para qualquer outro uso, <a href="index.html#contactos">fala comigo</a>.</p>
+    <p class="nota">Os tipos de letra do Bolinho (Bagel Fat One, Young Serif e Hanken Grotesk) têm a licença SIL Open Font License.</p>
+
+    <div class="apoio-cta">
+      <p>Se estiveres a preparar formação para a tua equipa ou organização, vê a <a href="index.html#formacoes">oferta formativa</a> ou os <a href="recursos.html">recursos pedagógicos</a> que desenho à medida. Há também uma <a href="roleta.html">roleta para sortear nomes</a>, uns <a href="dados-storytelling.html">dados de storytelling</a> e o <a href="desenha-e-adivinha.html">Desenha e Adivinha</a>.</p>
+    </div>
+
+  </div>
+</section>
+
+<footer class="rodape-site">
+  <div class="rodape-wrap">
+    <span>© 2026 Juliana Araújo</span>
+    <a href="index.html">Voltar ao site</a>
+  </div>
+</footer>
+
+</body>
+</html>
