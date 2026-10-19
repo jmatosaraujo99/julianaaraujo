@@ -126,11 +126,19 @@ h1{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;let
 .rodape{display:flex;justify-content:space-between;gap:var(--s3);flex-wrap:wrap;
   font-family:var(--fonte-etiqueta);font-size:11px;letter-spacing:var(--ls-etiqueta);text-transform:uppercase;color:var(--ink-3)}
 .rodape a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--line-forte)}
+/* No telemóvel o Bolinho não cabe bem dentro da página (o cabeçalho e o título levam meio ecrã):
+   em vez da moldura aparece um cartão que o abre em ecrã inteiro, com uma seta para voltar. */
+.abrir-tel{display:none}
 @media (max-width:640px){
-  .app{padding:var(--s3) 0 var(--s4);gap:var(--s2)}
-  .app > .topo,.app > .rodape{padding:0 var(--s3)}
-  .palco-bolinho{border-radius:0;border-left:0;border-right:0;
-    height:max(540px,calc(100vh - 150px));height:max(540px,calc(100svh - 150px))}
+  .app{padding:var(--s3) var(--s3) var(--s4);gap:var(--s3)}
+  .palco-bolinho{height:auto;border-radius:18px}
+  .palco-bolinho iframe{display:none}
+  .abrir-tel{display:flex;flex-direction:column;align-items:center;gap:14px;padding:0 0 22px;text-decoration:none;text-align:center}
+  .abrir-tel img{display:block;width:100%;height:auto}
+  .abrir-tel-bt{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 26px;border-radius:999px;
+    background:#F7CE7A;color:#2A211B;font-family:var(--fonte-etiqueta);font-weight:600;font-size:13px;
+    text-transform:uppercase;letter-spacing:var(--ls-etiqueta);box-shadow:0 10px 24px -12px rgba(0,0,0,.7)}
+  .abrir-tel-nota{font-size:13px;line-height:1.45;color:#A9C3C4;margin:0 22px}
   .dica{display:none}
 }
 
@@ -189,8 +197,22 @@ h1{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;let
   </div>
 
   <div class="palco-bolinho">
-    <iframe src="bolinho-da-sorte-app.html?embutido" title="Bolinho da Sorte: escolhe um bolinho" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    <iframe data-src="bolinho-da-sorte-app.html?embutido" title="Bolinho da Sorte: escolhe um bolinho" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    <a class="abrir-tel" href="bolinho-da-sorte-app.html?site">
+      <img src="media/bolinho-previa.jpg" width="720" height="278" alt="Prato com bolinhos da sorte de vários sabores, dois deles dourados.">
+      <span class="abrir-tel-bt">Abrir o Bolinho <span aria-hidden="true">&rarr;</span></span>
+      <span class="abrir-tel-nota">Abre em ecrã inteiro. A seta no canto de cima traz-te de volta.</span>
+    </a>
   </div>
+  <script>
+  /* o Bolinho só carrega na moldura em ecrãs maiores; no telemóvel abre-se pelo cartão, em ecrã inteiro */
+  (function () {
+    var f = document.querySelector('.palco-bolinho iframe'), mq = matchMedia('(max-width:640px)');
+    function carregar() { if (!mq.matches && !f.getAttribute('src')) f.setAttribute('src', f.getAttribute('data-src')); }
+    carregar();
+    if (mq.addEventListener) mq.addEventListener('change', carregar); else if (mq.addListener) mq.addListener(carregar);
+  })();
+  </script>
 
   <footer class="rodape">
     <span class="dica">Clica num bolinho para começar &middot; F põe em ecrã inteiro</span>
