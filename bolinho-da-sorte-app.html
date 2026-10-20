@@ -59,6 +59,7 @@ button{font:inherit;color:inherit}
 .btn-topo{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border-radius:999px;border:1px solid var(--noite-borda);background:var(--noite-clara);color:var(--texto);font-weight:600;font-size:15px;cursor:pointer;white-space:nowrap}
 .btn-topo:hover{border-color:var(--massa-clara)}
 .btn-topo.so-icone{width:42px;padding:0;justify-content:center}
+.btn-idioma{font-weight:800;font-size:13px;letter-spacing:.06em}
 .btn-topo[aria-pressed="false"]{color:var(--texto-suave)}
 .chip-conj{max-width:min(46vw,340px)}
 .chip-conj span{overflow:hidden;text-overflow:ellipsis}
@@ -261,22 +262,23 @@ button{font:inherit;color:inherit}
 <div class="app" id="app">
   <canvas id="ambiente" aria-hidden="true"></canvas>
   <header class="topo">
-    <a class="btn-topo so-icone voltar" href="bolinho-da-sorte.html" aria-label="Voltar à página do Bolinho da Sorte">
+    <a class="btn-topo so-icone voltar" href="bolinho-da-sorte.html" aria-label="Voltar à página do Bolinho da Sorte" data-en-aria="Back to the Fortune Cookie page">
       <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
     </a>
-    <h1 class="marca"><svg viewBox="0 0 240 170" aria-hidden="true"><use href="#bolinho"/></svg>Bolinho da Sorte</h1>
+    <h1 class="marca"><svg viewBox="0 0 240 170" aria-hidden="true"><use href="#bolinho"/></svg><span data-en="Fortune Cookie">Bolinho da Sorte</span></h1>
     <div class="topo-acoes">
       <button class="btn-topo chip-conj" id="btn-perguntas" type="button" aria-haspopup="dialog">
         <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>
-        <span><span class="rot-longo">Perguntas: </span><span id="conj-resumo">Apresentação</span></span>
+        <span><span class="rot-longo" data-en="Questions: ">Perguntas: </span><span id="conj-resumo">Apresentação</span></span>
       </button>
-      <button class="btn-topo so-icone" id="btn-musica" type="button" aria-pressed="true" aria-label="Música de fundo">
+      <button class="btn-topo so-icone btn-idioma" id="btn-idioma" type="button" aria-label="Mudar para inglês (English)" data-en-aria="Switch to Portuguese (Português)" data-en="PT">EN</button>
+      <button class="btn-topo so-icone" id="btn-musica" type="button" aria-pressed="true" aria-label="Música de fundo" data-en-aria="Background music">
         <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/><path class="corte" d="M3 3l18 18" hidden/></svg>
       </button>
-      <button class="btn-topo so-icone" id="btn-ecra" type="button" aria-label="Ecrã inteiro">
+      <button class="btn-topo so-icone" id="btn-ecra" type="button" aria-label="Ecrã inteiro" data-en-aria="Full screen">
         <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
       </button>
-      <button class="btn-topo so-icone" id="btn-definicoes" type="button" aria-haspopup="dialog" aria-label="Definições">
+      <button class="btn-topo so-icone" id="btn-definicoes" type="button" aria-haspopup="dialog" aria-label="Definições" data-en-aria="Settings">
         <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
       </button>
     </div>
@@ -284,12 +286,12 @@ button{font:inherit;color:inherit}
 
   <main class="palco" id="palco">
     <section class="prato-area" id="prato-area" aria-labelledby="titulo">
-      <h2 class="titulo" id="titulo">Escolhe um bolinho</h2>
-      <p class="subtitulo" id="subtitulo">Cada bolinho tem uma pergunta escondida lá dentro.</p>
-      <div class="prato" id="prato" role="group" aria-label="Bolinhos da sorte"></div>
+      <h2 class="titulo" id="titulo" data-en="Pick a cookie">Escolhe um bolinho</h2>
+      <p class="subtitulo" id="subtitulo" data-en="Each cookie has a question hidden inside.">Cada bolinho tem uma pergunta escondida lá dentro.</p>
+      <div class="prato" id="prato" role="group" aria-label="Bolinhos da sorte" data-en-aria="Fortune cookies"></div>
       <div class="vazio-prato" id="vazio" hidden></div>
       <p class="contador" id="contador" aria-live="polite"></p>
-      <p class="dica-teclado">Barra de espaços ou comando de apresentações: abre um bolinho ao calhas e passa ao seguinte.</p>
+      <p class="dica-teclado" data-en="Space bar or presentation clicker: opens a random cookie and moves on to the next.">Barra de espaços ou comando de apresentações: abre um bolinho ao calhas e passa ao seguinte.</p>
     </section>
 
     <section class="revelar" id="revelar" hidden aria-live="polite">
@@ -308,17 +310,17 @@ button{font:inherit;color:inherit}
               <p class="papel-surpresa" id="papel-surpresa" hidden></p>
               <p class="papel-vez" id="papel-vez" hidden></p>
               <p class="papel-pergunta" id="papel-pergunta"></p>
-              <p class="papel-sorte" id="papel-sorte"><span>Números da sorte</span><b>7</b><b>21</b><b>38</b></p>
+              <p class="papel-sorte" id="papel-sorte"><span data-en="Lucky numbers">Números da sorte</span><b>7</b><b>21</b><b>38</b></p>
             </div>
-            <button class="tempo" id="tempo" type="button" hidden aria-label="Pausar ou retomar o tempo">
+            <button class="tempo" id="tempo" type="button" hidden aria-label="Pausar ou retomar o tempo" data-en-aria="Pause or resume the timer">
               <svg viewBox="0 0 72 72" aria-hidden="true"><circle class="anel-fundo" cx="36" cy="36" r="31" fill="none" stroke-width="6"/><circle class="anel" id="anel" cx="36" cy="36" r="31" fill="none" stroke-width="6" stroke-linecap="round"/></svg>
               <span class="tempo-num" id="tempo-num">60</span>
             </button>
           </div>
         </div>
         <div class="acoes" id="acoes">
-          <button class="btn btn-linha" id="btn-trocar" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>Trocar pergunta</button>
-          <button class="btn btn-massa" id="btn-proximo" type="button">Próximo bolinho<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <button class="btn btn-linha" id="btn-trocar" type="button"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg><span data-en="Another question">Trocar pergunta</span></button>
+          <button class="btn btn-massa" id="btn-proximo" type="button"><span data-en="Next cookie">Próximo bolinho</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
         </div>
       </div>
     </section>
@@ -329,10 +331,10 @@ button{font:inherit;color:inherit}
 <dialog class="painel" id="painel" aria-labelledby="painel-titulo">
   <div class="painel-cab">
     <div class="abas" role="tablist" id="abas">
-      <button role="tab" id="aba-perguntas" aria-selected="true" data-aba="perguntas">Perguntas</button>
-      <button role="tab" id="aba-definicoes" aria-selected="false" data-aba="definicoes">Definições</button>
+      <button role="tab" id="aba-perguntas" aria-selected="true" data-aba="perguntas" data-en="Questions">Perguntas</button>
+      <button role="tab" id="aba-definicoes" aria-selected="false" data-aba="definicoes" data-en="Settings">Definições</button>
     </div>
-    <button class="fechar" type="button" id="fechar-painel" aria-label="Fechar"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <button class="fechar" type="button" id="fechar-painel" aria-label="Fechar" data-en-aria="Close"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   </div>
   <div class="painel-corpo" id="painel-corpo"></div>
 </dialog>
@@ -340,7 +342,6 @@ button{font:inherit;color:inherit}
 
 <script>
 'use strict';
-document.documentElement.lang = 'pt-PT';
 /* =========================================================
    PERGUNTAS PRÉ-DEFINIDAS E MODELOS
    Para mudar as perguntas de origem, edita só esta parte.
@@ -938,6 +939,446 @@ const PERSONAGENS = [
   }
 ];
 
+/* =========================================================
+   VERSÃO INGLESA (quando se escolhe English)
+   Os conjuntos, os modelos e as surpresas têm os mesmos id da versão portuguesa;
+   aqui só mudam os textos. Cada conjunto tem o mesmo número de perguntas.
+   ========================================================= */
+const CONJUNTOS_EN = {
+  apresentacao: {
+    nome: 'Introductions', descricao: 'For the group to get to know each other',
+    perguntas: [
+      'What\'s your name and what brought you here?',
+      'Tell us something about you that isn\'t on your CV.',
+      'What do you do, and what do you like most about your work?',
+      'If you had to describe yourself in three words, which would you choose?',
+      'What hidden talent do you have?',
+      'What\'s your favourite place in the world, and why?',
+      'What fills your weekends?',
+      'Is there a story behind your name?',
+      'Coffee, tea or something else: how do you start your day?',
+      'Which book, film or series do you recommend to everyone?',
+      'What would your friends say you do better than anyone?',
+      'What was your first job?',
+      'Which song instantly changes your day?',
+      'If you could learn anything in a single day, what would you pick?',
+      'What\'s the best thing that has happened to you this year?',
+      'What question do you wish people asked you more often?',
+      'Where did you grow up, and what do you remember most about it?',
+      'What\'s your first memory of school?',
+      'What job did you dream of as a child?',
+      'What makes you lose track of time?',
+      'What\'s your favourite dish, and who makes it best?',
+      'Which word do you use most?',
+      'Which trip left the biggest mark on you?',
+      'Cats, dogs or neither?',
+      'What simple thing makes you happy?',
+      'If you had a free day tomorrow, what would you do?',
+      'What\'s your favourite season, and why?',
+      'What sport do you play, or wish you played?',
+      'What always makes you laugh?',
+      'What\'s your favourite corner of your home?',
+      'What habit would you like to pick up this year?',
+      'What piece of family advice do you still keep?',
+      'Which app do you use most on your phone?',
+      'Which of your achievements are you proud of?',
+      'What smell reminds you of your childhood?',
+      'What\'s your perfect Friday night?',
+      'Which language would you love to speak fluently?',
+      'If you gave a talk on any subject, what would it be?',
+      'What object do you always carry with you?',
+      'What\'s the bravest thing you\'ve ever done?'
+    ]
+  },
+  'quebra-gelo': {
+    nome: 'Fun icebreakers', descricao: 'To relax and laugh',
+    perguntas: [
+      'If you were an animal, which would you be, and why?',
+      'If you could have dinner with anyone from history, who would you choose?',
+      'What superpower would you like to have?',
+      'If you won the lottery tomorrow, what\'s the first thing you\'d do?',
+      'What food can you never say no to?',
+      'Beach or mountains? Defend your choice in 30 seconds.',
+      'If your life were a film, what would it be called?',
+      'What\'s the strangest thing you\'ve ever eaten?',
+      'What object would you take to a desert island?',
+      'If you could live in another era, which would you choose?',
+      'What\'s the best present you\'ve ever received?',
+      'If you were an ice-cream flavour, which would you be?',
+      'What\'s your funniest quirk?',
+      'If you could teleport right now, where would you go?',
+      'What song do you sing when nobody\'s listening?',
+      'If you could swap jobs for a week, which job would you pick?',
+      'What\'s the worst fashion trend you\'ve ever followed?',
+      'If you could have an impossible pet, what would it be?',
+      'What invention does the world need?',
+      'What\'s the most creative excuse you\'ve ever given?',
+      'If you were a song, which one would you be?',
+      'What useless talent do you have?',
+      'What\'s your emergency snack?',
+      'If you had a robot for just one task, what would it be?',
+      'What would you call your band?',
+      'What rule would you make if you ran the country for a day?',
+      'If you were a household appliance, which would you be?',
+      'What was the last thing that made you laugh out loud?',
+      'Which historical figure would you take to a village festival?',
+      'If your home had a secret room, what would it be for?',
+      'Bifana or prego, the pork or the steak sandwich? Defend your choice.',
+      'Francesinha, cozido or bacalhau: which do you pick, and why?',
+      'Which Portuguese sweet would you take to a desert island?',
+      'If you were an emoji, which one would you be?',
+      'What\'s the most beautiful word in your language?',
+      'What expression from your home town does nobody else understand?',
+      'If you could be any age again for one day, which would you choose?',
+      'If Portugal had its own superhero, what would their power be?',
+      'What\'s the most useless thing you\'ve ever bought?',
+      'If you were a snack, which one would you be?'
+    ]
+  },
+  portugal: {
+    nome: 'All about Portugal', descricao: 'Food, festivals and traditions',
+    perguntas: [
+      'Which June saints\' festival is your favourite, and why?',
+      'Which Portuguese beach do you recommend to everyone?',
+      'What\'s the best village festival you\'ve ever been to?',
+      'Which Portuguese dish would you explain first to a visitor?',
+      'Fado, pimba or Portuguese rock?',
+      'What\'s your favourite Portuguese word that has no translation?',
+      'North or South? Defend your region in 30 seconds.',
+      'What\'s the best tasca, the little neighbourhood tavern, that you know?',
+      'Which Portuguese tradition do you never miss?',
+      'If you were a Portuguese monument, which would you be?',
+      'Barcelos Rooster or swallow? Why?',
+      'What\'s your funniest summer memory in Portugal?',
+      'Which of your grandmother\'s sayings do you still use?',
+      'Which Portuguese song do you know by heart?',
+      'Sardine on bread or on a plate?',
+      'Which Portuguese city do you still want to visit?',
+      'Café, bica, cimbalino or something else?',
+      'What\'s the best convent sweet?',
+      'What street game did you play as a child?',
+      'Which local character from your home town will you never forget?'
+    ]
+  },
+  escolhe: {
+    nome: 'This or that', descricao: 'Quick choices, great for big groups',
+    perguntas: [
+      'Countryside or city? Why?',
+      'Read the book or watch the film?',
+      'Sunrise or sunset?',
+      'Sweet or savoury?',
+      'Travel by train or by plane?',
+      'Holidays planned to the minute, or an adventure?',
+      'Work in silence or with music?',
+      'Text or call?',
+      'A blanket on the sofa with rain outside, or sun on a café terrace?',
+      'Cook or do the dishes?',
+      'Winter or summer?',
+      'Speak in public or write a report?',
+      'Always early or always just in time?',
+      'Books on paper or on a screen?',
+      'Comedy or drama?',
+      'To-do list on paper or on your phone?',
+      'Early riser or night owl?',
+      'Sea or swimming pool?',
+      'Dinner at home or out?',
+      'Coffee with sugar or without?',
+      'Tidy up now or leave it for tomorrow?',
+      'Know the future or change the past?',
+      'More time or more energy?',
+      'A big party or dinner with a few friends?',
+      'Photos on your phone or printed albums?'
+    ]
+  },
+  'e-se': {
+    nome: 'What if…?', descricao: 'Questions to imagine',
+    perguntas: [
+      'What if you could talk to animals for a day: which one would you talk to first?',
+      'What if you woke up tomorrow aged ten: what would you do first?',
+      'What if you could relive one day of your life: which would you pick?',
+      'What if you were mayor of your town for a week: what would you change first?',
+      'What if you could be invisible for an hour: where would you go?',
+      'What if you had to live inside a film: which one would you choose?',
+      'What if you could only eat one meal forever: what would it be?',
+      'What if you could suddenly play an instrument perfectly: which would you choose?',
+      'What if you had a time machine with only one trip: past or future?',
+      'What if you opened a business tomorrow: what would you sell?',
+      'What if your life had a soundtrack: what song would be playing right now?',
+      'What if you could change one rule at your old school: which would it be?',
+      'What if you wrote a book: what would it be about?',
+      'What if you could live in another country for a year: which would you choose?',
+      'What if you had to choose a new name for yourself: what would it be?',
+      'What if you could talk to yourself ten years ago: what would you say?',
+      'What if you could create a new public holiday: what would it celebrate?',
+      'What if you were the chef of a restaurant: what would the house special be?',
+      'What if you could swap lives with someone for a day: who would it be?',
+      'What if you won an award tomorrow: what would it be for?',
+      'What if you could only say three words for a whole day: which would you choose?',
+      'What if your pet could talk: what would it say about you?',
+      'What if any animal could be your co-worker: which would you choose?',
+      'What if you could leave a recorded message on the Moon: what would it say?',
+      'What if your home town had a superhero: what would they be like, and what power would they have?'
+    ]
+  },
+  gostos: {
+    nome: 'Likes and quirks', descricao: 'Preferences, little quirks and pleasures',
+    perguntas: [
+      'What\'s your everyday little pleasure?',
+      'What quirk do you have that hardly anyone knows about?',
+      'What\'s your favourite smell?',
+      'Which word annoys you for no reason at all?',
+      'What film do you watch again and again?',
+      'How do you like to spend a rainy Sunday?',
+      'What food did you hate as a child and love now?',
+      'Do you have any superstitions?',
+      'What\'s your favourite sound?',
+      'What object at home would you never throw away?',
+      'What\'s your morning ritual like?',
+      'What series did you binge in a single weekend?',
+      'What\'s your favourite fruit?',
+      'What do you collect, or what did you once collect?',
+      'Which singer or band has been with you forever?',
+      'Which expression do you say far too often?',
+      'What\'s your favourite way to rest?',
+      'Which household chore do you actually enjoy?',
+      'Where do you like to read or think in peace?',
+      'Which colour rules your wardrobe?'
+    ]
+  },
+  memorias: {
+    nome: 'Memories and stories', descricao: 'Life stories, light and good to tell',
+    perguntas: [
+      'What\'s your happiest childhood memory?',
+      'Which toy have you never forgotten?',
+      'What\'s the first trip you remember?',
+      'What mischief did you get up to as a child that still makes you laugh?',
+      'Who was your first idol?',
+      'Which school snack do you miss?',
+      'What was the first concert or show you went to?',
+      'Which cartoon did you never miss?',
+      'What was the first thing you bought with your own money?',
+      'Which teacher left a mark on you, and why?',
+      'What was the best summer of your life?',
+      'What flavour takes you straight back to childhood?',
+      'What did you get up to with your best friend at primary school?',
+      'What was your first mobile phone like?',
+      'Which family story gets told at every dinner?',
+      'What\'s the greatest adventure you\'ve ever had?',
+      'Which day of your life would you like to live again?',
+      'What was the first dish you learned to cook?',
+      'Which song takes you back to a special moment?',
+      'What\'s the best surprise anyone has ever given you?'
+    ]
+  },
+  futuro: {
+    nome: 'Dreams and the future', descricao: 'Goals, wishes and plans',
+    perguntas: [
+      'Which childhood dream do you still want to fulfil?',
+      'Where do you see yourself in five years?',
+      'Which book do you really want to read this year?',
+      'Which skill do you want to master by the end of the year?',
+      'What would you do with a sabbatical year?',
+      'What personal project have you got tucked away in a drawer?',
+      'What do you want to learn just for the joy of it?',
+      'Which habit do you want to leave behind?',
+      'Who would you love to meet one day?',
+      'If you could invent your dream job, what would it be?',
+      'What challenge do you want to take on this year?',
+      'What would you like people to say about you in twenty years?',
+      'What small change would make a big difference to your week?',
+      'What experience do you want to have at least once?',
+      'Which cause would you like to support more?',
+      'Which achievement do you want to celebrate next year?',
+      'What would you like to teach other people?',
+      'Which trip have you been planning for years and still haven\'t taken?',
+      'How do you picture a perfect Sunday ten years from now?',
+      'What goal makes you want to get out of bed?'
+    ]
+  },
+  criatividade: {
+    nome: 'Creativity', descricao: 'Small challenges to get your brain going',
+    perguntas: [
+      'Invent a name for a new colour and describe it.',
+      'Describe your job as if it were an action film.',
+      'Invent a slightly useless superpower.',
+      'Create a slogan for your home town.',
+      'Which everyday object would you reinvent, and how?',
+      'Invent a dish with three things you have in your fridge.',
+      'Describe yesterday with three emojis and explain them.',
+      'If this group were a band, what would it be called and what would it play?',
+      'Invent a new word and say what it means.',
+      'Tell a three-sentence story that begins "Once upon a time there was a fortune cookie…"',
+      'What title would you give your autobiography?',
+      'Draw your favourite animal in the air and let the group guess.',
+      'Invent a rule to make meetings more fun.',
+      'If this room were a theme park, what would the main ride be?',
+      'What invention should Portugal be famous for?',
+      'Describe your favourite drink like a food critic.',
+      'Give this group an original name.',
+      'Invent a new sport and explain the rules in 20 seconds.',
+      'If your phone had a personality, what would it be like?',
+      'Write a sentence to cheer up anyone starting their Monday.'
+    ]
+  },
+  equipa: {
+    nome: 'Team and work', descricao: 'For teams and colleagues',
+    perguntas: [
+      'What was the best team you ever worked in, and what made it special?',
+      'What does a good colleague do that makes all the difference?',
+      'What advice would you give someone starting out in your field today?',
+      'What gives you energy on a tough day at work?',
+      'What would your perfect working day look like?',
+      'What\'s the biggest professional challenge you\'ve overcome?',
+      'What quality do you most admire in a manager?',
+      'What small gesture from a colleague once saved your day?',
+      'If you could change one thing about your workplace, what would it be?',
+      'Which skill would you like to develop this year?',
+      'What\'s the best feedback you\'ve ever received?',
+      'Do you work better in the morning or at night?',
+      'What doesn\'t your team know about you yet?',
+      'Which team achievement are you proudest of?',
+      'Which work tool can\'t you do without?',
+      'What\'s the funniest moment you\'ve had at work?',
+      'How do you celebrate a team win?',
+      'Which task would you delegate right now if you could?',
+      'What did you learn from a mistake at work?',
+      'What\'s your trick for staying focused?',
+      'Which meeting would you change, and how?',
+      'Which colleague would you like to swap roles with for a day?',
+      'What word describes your team?',
+      'What does a good day of teamwork mean to you?'
+    ]
+  },
+  reflexao: {
+    nome: 'Reflection and values', descricao: 'For groups who already know each other a little',
+    perguntas: [
+      'Which of your qualities would you like others to see more?',
+      'Which value do you never set aside?',
+      'What did you learn from the person you know who is most different from you?',
+      'What\'s the best decision you\'ve ever made?',
+      'What advice would you give someone starting something difficult?',
+      'What does success mean to you?',
+      'Who inspires you day to day, and why?',
+      'Which act of kindness from a stranger have you never forgotten?',
+      'What drives you up the wall, and how do you deal with it?',
+      'When did you feel you grew a lot?',
+      'What do you need to give your best?',
+      'Which of your opinions has changed over the years?',
+      'Which question would you like to know how to answer?',
+      'Who taught you the most about working with other people?',
+      'Which habit has made you a better person?',
+      'What are you grateful for today?',
+      'What lesson did you learn the hard way?',
+      'How do you recharge on a hard day?',
+      'What does the world need most right now?',
+      'What mark do you want to leave on the people you work with?'
+    ]
+  },
+  formacao: {
+    nome: 'Start of a training session', descricao: 'Expectations and starting point',
+    perguntas: [
+      'What do you hope to take away from this training?',
+      'Which question would you like answered by the end of the day?',
+      'Who was the best teacher or trainer you ever had, and why?',
+      'How do you learn best: by watching, listening or doing?',
+      'What do you already know about today\'s topic?',
+      'What would make you say, at the end, that it was worth it?',
+      'What\'s the last thing you learned on your own?',
+      'From 1 to 10, how much energy have you brought today? What would raise it by one point?',
+      'What ground rule would you suggest for this session?',
+      'Which mistake taught you more than any lesson?',
+      'In what situation will you use what you learn today?',
+      'If today\'s topic were a colour, which would it be?',
+      'What experience do you have with the topic of this training?',
+      'Which part of this topic makes you most curious?',
+      'How do you like breaks to be during a training session?',
+      'Your expectation for today, in one word?',
+      'What would you change at work if you had more time to learn?',
+      'What question have you brought with you today?',
+      'What\'s the most useful training you\'ve ever done?',
+      'Which skill do you want to practise today?'
+    ]
+  },
+  fecho: {
+    nome: 'Closing and reflection', descricao: 'To wrap up a session',
+    perguntas: [
+      'What idea are you taking away from this session?',
+      'What will you put into practice tomorrow?',
+      'Which moment from today stuck in your memory?',
+      'In one word, how do you feel right now?',
+      'What surprised you today?',
+      'Who in the group would you like to thank, and why?',
+      'What question are you still taking with you?',
+      'What advice would you give the next people to take this training?',
+      'Finish the sentence: "Today I realised that…"',
+      'From 1 to 10, how much is what you learned today worth?',
+      'What commitment are you making to yourself from today?',
+      'What will you tell someone about today?',
+      'What was the most striking sentence you heard today?',
+      'Which doubt was cleared up?',
+      'What will you do differently from now on?',
+      'How would you rate your participation today, and why?',
+      'Which idea from a colleague inspired you?',
+      'If you summed up the day in a title, what would it be?',
+      'What do you want to explore further after this session?',
+      'How do you feel compared with the start of the day?'
+    ]
+  }
+};
+
+const MODELOS_EN = {
+  tema: {
+    nome: 'About a topic', descricao: 'To open a topic and see what the group already knows',
+    campo: 'Topic', exemplo: 'leadership', nomeConjunto: 'About {tema}',
+    perguntas: [
+      'What do you already know about {tema}?',
+      'What word do you associate with {tema}?',
+      'What was your last experience with {tema}?',
+      'What question about {tema} would you like answered today?',
+      'What myth about {tema} would you like to bust?',
+      'From 1 to 10, how well do you know {tema}? What would raise it by one point?',
+      'Who do you know that is a good example of {tema}?',
+      'How does {tema} show up in your daily life?'
+    ]
+  },
+  inicio: {
+    nome: 'Start of a training course', descricao: 'Expectations about a named training course',
+    campo: 'Name of the training', exemplo: 'Assertive communication', nomeConjunto: 'Start: {tema}',
+    perguntas: [
+      'What do you expect from "{tema}"?',
+      'Why did you come to "{tema}"?',
+      'What situation at work would you like to solve with "{tema}"?',
+      'What have you already tried that relates to "{tema}"?',
+      'What would make "{tema}" an unforgettable training?',
+      'If "{tema}" were a dish, what would it be?'
+    ]
+  },
+  'fecho-tema': {
+    nome: 'Wrapping up a topic', descricao: 'To consolidate what was learned',
+    campo: 'Topic', exemplo: 'time management', nomeConjunto: 'Wrap-up: {tema}',
+    perguntas: [
+      'What did you learn today about {tema}?',
+      'How will you use {tema} next week?',
+      'What do you still want to know about {tema}?',
+      'Explain {tema} to an 8-year-old in 20 seconds.',
+      'Which example of {tema} stood out to you today?',
+      'From 1 to 10, how do you feel now about {tema}?'
+    ]
+  }
+};
+
+const PERSONAGENS_EN = {
+  galo: { nome: 'Barcelos Rooster', grito: 'Cock-a-doodle-doo!', regra: 'You answer, then choose who answers next.' },
+  sardinha: { nome: 'Grilled sardine', grito: 'Fresh off the grill!', regra: 'Jumpy sardine: you only have 15 seconds to answer!' },
+  nata: { nome: 'Pastel de nata', grito: 'Fresh out of the oven!', regra: 'Before you answer, name your favourite sweet treat.' },
+  eletrico: { nome: 'Tram 28', grito: 'Ding-ding!', regra: 'Next stop: choose someone to answer this question instead of you.' },
+  andorinha: { nome: 'Swallow', grito: 'Tweet-tweet!', regra: 'Before you answer, say something kind to someone in the group.' },
+  manjerico: { nome: 'Manjerico', grito: 'Long live Saint Anthony!', regra: 'Answer in a rhyming verse. Anything goes!' },
+  fado: { nome: 'Fado time', grito: 'Ah, saudade…', regra: 'Answer with all the drama of a fado, eyes closed.' },
+  bacalhau: { nome: 'Bacalhau', grito: 'Our faithful friend!', regra: 'There are a thousand ways to cook salt cod: give three different answers!' },
+  azulejo: { nome: 'Azulejo', grito: 'What a pattern!', regra: 'Answer, then ask this question to anyone you like.' }
+};
+
 
 /* =========================================================
    ESTADO E MEMÓRIA (só neste navegador)
@@ -946,7 +1387,7 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const CHAVE = 'bolinho-da-sorte:v1';
 const PADRAO = { ativos: ['apresentacao', 'quebra-gelo'], nBolinhos: 12, surpresas: 'algumas', naoRepetir: true, numerosSorte: true, tempo: 0,
-  participantes: [], sortearPessoa: false, musica: true, efeitos: true, volume: 0.7 };
+  participantes: [], sortearPessoa: false, musica: true, efeitos: true, volume: 0.7, idioma: 'pt' };
 let cfg = { ...PADRAO }, proprios = [];
 try {
   const g = JSON.parse(localStorage.getItem(CHAVE) || 'null');
@@ -956,6 +1397,38 @@ try {
   }
 } catch (e) { /* sem memória: começa com os valores por defeito */ }
 function gravar() { try { localStorage.setItem(CHAVE, JSON.stringify({ cfg, proprios })); } catch (e) { /* ignorar */ } }
+
+/* Idioma: português por omissão; inglês por escolha (botão EN ou Definições) ou com ?lang=en no endereço */
+const EN = (new URLSearchParams(location.search).get('lang') || cfg.idioma) === 'en';
+const tr = (pt, en) => EN ? en : pt;
+document.documentElement.lang = EN ? 'en' : 'pt-PT';
+if (EN) {
+  CONJUNTOS_BASE.forEach(c => Object.assign(c, CONJUNTOS_EN[c.id] || {}));
+  MODELOS.forEach(m => Object.assign(m, MODELOS_EN[m.id] || {}));
+  PERSONAGENS.forEach(p => Object.assign(p, PERSONAGENS_EN[p.id] || {}));
+  document.title = 'Fortune Cookie';
+  document.querySelectorAll('[data-en]').forEach(e => { e.textContent = e.dataset.en; });
+  document.querySelectorAll('[data-en-aria]').forEach(e => e.setAttribute('aria-label', e.dataset.enAria));
+}
+function mudarIdioma(novo) {
+  cfg.idioma = novo; gravar();
+  const u = new URL(location.href); u.searchParams.delete('lang');
+  location.replace(u.href);
+}
+
+/* Perguntas que já saíram, guardadas neste navegador: nenhuma das últimas 30 volta a sair,
+   mesmo depois de fechar a página ou noutro dia. Com muitas perguntas no prato, a margem cresce
+   para metade delas. */
+const CHAVE_HIST = 'bolinho-da-sorte:historico';
+const JANELA_MIN = 30, HIST_MAX = 400;
+let historico = [];
+try { const h = JSON.parse(localStorage.getItem(CHAVE_HIST) || '[]'); if (Array.isArray(h)) historico = h.filter(x => typeof x === 'string').slice(-HIST_MAX); } catch (e) { /* começa vazio */ }
+function registarPergunta(p) {
+  usadas.add(p);
+  historico.push(p);
+  if (historico.length > HIST_MAX) historico = historico.slice(-HIST_MAX);
+  try { localStorage.setItem(CHAVE_HIST, JSON.stringify(historico)); } catch (e) { /* ignorar */ }
+}
 
 const conjuntos = () => [...CONJUNTOS_BASE, ...proprios];
 const conj = id => conjuntos().find(c => c.id === id);
@@ -990,6 +1463,7 @@ const SABORES = {
     deco: lado => `<path d="${lado === 'esq' ? 'M10,96 C30,104 60,104 120,96 L120,170 L10,170 Z' : 'M120,96 C150,104 190,104 230,96 L230,170 L120,170 Z'}" fill="#F27BA6"/><path d="${lado === 'esq' ? 'M10,96 C30,104 60,104 120,96' : 'M120,96 C150,104 190,104 230,96'}" stroke="#FFC2D9" stroke-width="3" fill="none"/>` },
   dourado:   { nome: 'dourado', peso: 0, esq: ['#FFF5BF', '#F9D354', '#C99520'], dir: ['#FFE98F', '#EFBE38', '#B88214'], borda: '#9A6E10', luz: '#FFFFFF', pinta: '#B88214', migalhas: ['#FFE14D', '#FFF5BF', '#EFBE38'] }
 };
+const SABOR_EN = { classico: 'classic', chocolate: 'chocolate', granulado: 'with sprinkles', morango: 'strawberry', dourado: 'golden' };
 function gerarDefs() {
   let d = DEFS_PERSONAGENS;
   d += `<clipPath id="clip-esq"><path d="${CONTORNO.esq}"/></clipPath><clipPath id="clip-dir"><path d="${CONTORNO.dir}"/></clipPath>`;
@@ -1024,8 +1498,15 @@ function perguntasAtivas() {
 }
 const porSair = () => perguntasAtivas().filter(p => !cfg.naoRepetir || !usadas.has(p));
 function sortearPergunta(excluir) {
-  const lista = porSair().filter(p => p !== excluir);
-  return lista.length ? lista[Math.floor(Math.random() * lista.length)] : null;
+  const ativas = perguntasAtivas();
+  const lista = ativas.filter(p => p !== excluir && (!cfg.naoRepetir || !usadas.has(p)));
+  if (!lista.length) return null;
+  const janela = Math.max(JANELA_MIN, Math.floor(ativas.length / 2));
+  const recentes = historico.slice(-janela);
+  const frescas = lista.filter(p => !recentes.includes(p));
+  if (frescas.length) return frescas[Math.floor(Math.random() * frescas.length)];
+  // poucas perguntas no prato: sai a que saiu há mais tempo
+  return lista.reduce((a, b) => recentes.lastIndexOf(b) < recentes.lastIndexOf(a) ? b : a);
 }
 function sortearPessoa() {
   const nomes = cfg.participantes.filter(Boolean);
@@ -1305,7 +1786,7 @@ function encherPrato() {
 }
 function desenharPrato(entrar = false) {
   const el = $('#prato'), passo = Math.min(70, Math.round(1500 / Math.max(1, prato.length)));
-  el.innerHTML = prato.map((b, i) => `<button class="bolinho${b.especial ? ' especial' : ''}${entrar ? ' entrar' : ''}" type="button" data-id="${b.id}" style="--rot:${b.rot}deg;--atraso:${b.atraso}s;--dx:${b.dx}px;--dy:${b.dy}px;--i:${i};--passo:${passo}ms" aria-label="Abrir o bolinho ${i + 1}${b.especial ? ', dourado' : `, ${SABORES[b.sabor].nome}`}"><svg viewBox="0 0 240 170" aria-hidden="true"><use href="#bolinho-${b.sabor}"/></svg></button>`).join('');
+  el.innerHTML = prato.map((b, i) => `<button class="bolinho${b.especial ? ' especial' : ''}${entrar ? ' entrar' : ''}" type="button" data-id="${b.id}" style="--rot:${b.rot}deg;--atraso:${b.atraso}s;--dx:${b.dx}px;--dy:${b.dy}px;--i:${i};--passo:${passo}ms" aria-label="${tr('Abrir o bolinho', 'Open cookie')} ${i + 1}${b.especial ? tr(', dourado', ', golden') : `, ${tr(SABORES[b.sabor].nome, SABOR_EN[b.sabor])}`}"><svg viewBox="0 0 240 170" aria-hidden="true"><use href="#bolinho-${b.sabor}"/></svg></button>`).join('');
   atualizarContador();
 }
 // Escolhe o tamanho dos bolinhos para caberem todos no ecrã (até 40)
@@ -1334,17 +1815,21 @@ function atualizarContador() {
   const vazio = $('#vazio');
   let msg = '';
   if (!cfg.ativos.length || !total) {
-    msg = `<h2>Não há perguntas escolhidas</h2><p>Marca pelo menos um conjunto de perguntas para encher o prato.</p><div class="botoes"><button class="btn btn-massa btn-peq" type="button" data-acao="abrirPerguntas">Escolher perguntas</button></div>`;
+    msg = tr(`<h2>Não há perguntas escolhidas</h2><p>Marca pelo menos um conjunto de perguntas para encher o prato.</p><div class="botoes"><button class="btn btn-massa btn-peq" type="button" data-acao="abrirPerguntas">Escolher perguntas</button></div>`,
+      `<h2>No questions selected</h2><p>Tick at least one set of questions to fill the plate.</p><div class="botoes"><button class="btn btn-massa btn-peq" type="button" data-acao="abrirPerguntas">Choose questions</button></div>`);
   } else if (!resto) {
-    msg = `<h2>Já saíram todas as perguntas</h2><p>Recomeça com as mesmas perguntas ou junta outros conjuntos.</p><div class="botoes"><button class="btn btn-massa btn-peq" type="button" data-acao="recomecar">Recomeçar com as mesmas</button><button class="btn btn-linha btn-peq" type="button" data-acao="abrirPerguntas">Escolher outras</button></div>`;
+    msg = tr(`<h2>Já saíram todas as perguntas</h2><p>Recomeça com as mesmas perguntas ou junta outros conjuntos.</p><div class="botoes"><button class="btn btn-massa btn-peq" type="button" data-acao="recomecar">Recomeçar com as mesmas</button><button class="btn btn-linha btn-peq" type="button" data-acao="abrirPerguntas">Escolher outras</button></div>`,
+      `<h2>All the questions are out</h2><p>Start again with the same questions or add other sets.</p><div class="botoes"><button class="btn btn-massa btn-peq" type="button" data-acao="recomecar">Start again with the same</button><button class="btn btn-linha btn-peq" type="button" data-acao="abrirPerguntas">Choose others</button></div>`);
   }
   vazio.innerHTML = msg; vazio.hidden = !msg;
   $('#prato').hidden = !!msg; $('#titulo').hidden = !!msg; $('#subtitulo').hidden = !!msg;
   const dourados = prato.filter(b => b.especial).length;
-  $('#contador').textContent = msg ? '' : `${n} ${n === 1 ? 'bolinho' : 'bolinhos'} no prato${dourados ? ` (${dourados} ${dourados === 1 ? 'dourado' : 'dourados'}, com surpresa)` : ''}${cfg.naoRepetir ? `, ${resto} ${resto === 1 ? 'pergunta' : 'perguntas'} por sair` : ''}`;
+  $('#contador').textContent = msg ? '' : EN
+    ? `${n} ${n === 1 ? 'cookie' : 'cookies'} on the plate${dourados ? ` (${dourados} golden, with a surprise)` : ''}${cfg.naoRepetir ? `, ${resto} ${resto === 1 ? 'question' : 'questions'} left` : ''}`
+    : `${n} ${n === 1 ? 'bolinho' : 'bolinhos'} no prato${dourados ? ` (${dourados} ${dourados === 1 ? 'dourado' : 'dourados'}, com surpresa)` : ''}${cfg.naoRepetir ? `, ${resto} ${resto === 1 ? 'pergunta' : 'perguntas'} por sair` : ''}`;
   requestAnimationFrame(ajustarPrato);
   const nomes = cfg.ativos.map(id => conj(id)?.nome).filter(Boolean);
-  $('#conj-resumo').textContent = nomes.length === 0 ? 'nenhuma' : nomes.length === 1 ? nomes[0] : `${nomes.length} conjuntos`;
+  $('#conj-resumo').textContent = nomes.length === 0 ? tr('nenhuma', 'none') : nomes.length === 1 ? nomes[0] : `${nomes.length} ${tr('conjuntos', 'sets')}`;
 }
 
 /* =========================================================
@@ -1366,7 +1851,7 @@ function escreverPapel() {
   const sp = atual.surpresa, faixa = $('#papel-surpresa'), boneco = $('#papel-personagem');
   faixa.hidden = !sp; boneco.hidden = !sp;
   if (sp) { faixa.innerHTML = `<b>${esc(sp.nome)}!</b> ${esc(sp.regra)}`; boneco.innerHTML = sp.svg; }
-  const vez = $('#papel-vez'); vez.hidden = !atual.pessoa; vez.textContent = atual.pessoa ? `Responde: ${atual.pessoa}` : '';
+  const vez = $('#papel-vez'); vez.hidden = !atual.pessoa; vez.textContent = atual.pessoa ? `${tr('Responde', 'Your turn')}: ${atual.pessoa}` : '';
   const sorte = $('#papel-sorte'); sorte.hidden = !cfg.numerosSorte;
   sorte.querySelectorAll('b').forEach((b, i) => { b.textContent = atual.numeros[i]; });
 }
@@ -1399,7 +1884,7 @@ async function abrir(id) {
   Som.iniciar();
   const bolinho = prato.find(b => b.id === id) || { sabor: 'classico' };
   atual = { id, pergunta, pessoa: sortearPessoa(), numeros: numerosSorte(), sabor: bolinho.sabor, surpresa: escolherSurpresa(bolinho) };
-  usadas.add(pergunta);
+  registarPergunta(pergunta);
   const rOrigem = btn.getBoundingClientRect(), rotOrigem = parseFloat(btn.style.getPropertyValue('--rot')) || 0;
   btn.classList.add('aberto');
   limparAnimacoes(); pararTempo();
@@ -1464,12 +1949,12 @@ async function abrir(id) {
 async function trocar() {
   if (estado !== 'revelado') return;
   const nova = sortearPergunta(atual.pergunta);
-  if (!nova) { aviso('Já não há mais perguntas por sair nestes conjuntos.'); return; }
+  if (!nova) { aviso(tr('Já não há mais perguntas por sair nestes conjuntos.', 'There are no more questions left in these sets.')); return; }
   estado = 'a_trocar'; pararTempo();
   Som.swish();
   const c = $('#papel-conteudo');
   await anim(c, [{ transform: 'none', opacity: 1 }, { transform: 'rotateX(88deg)', opacity: 0.3 }], { duration: 220, easing: 'ease-in' });
-  atual.pergunta = nova; atual.numeros = numerosSorte(); usadas.add(nova);
+  atual.pergunta = nova; atual.numeros = numerosSorte(); registarPergunta(nova);
   escreverPapel();
   await anim(c, [{ transform: 'rotateX(-88deg)', opacity: 0.3 }, { transform: 'none', opacity: 1 }], { duration: 280, easing: 'cubic-bezier(.2,.8,.3,1.2)', manter: true });
   rolarNumeros(); Som.pop();
@@ -1494,7 +1979,7 @@ async function proximo() {
   const novo = !prato.length;
   if (novo) { encherPrato(); Som.encher(prato.length); }
   desenharPrato(novo);
-  if (novo && porSair().length) aviso('Prato cheio outra vez!');
+  if (novo && porSair().length) aviso(tr('Prato cheio outra vez!', 'The plate is full again!'));
   estado = 'prato';
   const alvo = document.querySelectorAll('.bolinho')[Math.min(Math.max(indice, 0), prato.length - 1)];
   if (alvo && document.activeElement !== document.body) alvo.focus({ preventScroll: true });
@@ -1528,7 +2013,7 @@ function iniciarTempo() {
     restante--;
     desenharTempo();
     if (restante <= 5 && restante > 0) Som.tique();
-    if (restante <= 0) { pararTempo(); el.classList.add('fim'); Som.fimTempo(); aviso('Tempo!'); }
+    if (restante <= 0) { pararTempo(); el.classList.add('fim'); Som.fimTempo(); aviso(tr('Tempo!', 'Time\'s up!')); }
   }, 1000);
 }
 function desenharTempo() {
@@ -1536,7 +2021,7 @@ function desenharTempo() {
   $('#tempo-num').textContent = Math.max(0, restante);
   $('#anel').style.strokeDashoffset = PERIMETRO * (1 - Math.max(0, restante) / tempoTotal);
   el.classList.toggle('pouco', restante <= 10);
-  el.setAttribute('aria-label', `${Math.max(0, restante)} segundos. Carrega para ${emPausa ? 'retomar' : 'pausar'}.`);
+  el.setAttribute('aria-label', EN ? `${Math.max(0, restante)} seconds. Press to ${emPausa ? 'resume' : 'pause'}.` : `${Math.max(0, restante)} segundos. Carrega para ${emPausa ? 'retomar' : 'pausar'}.`);
 }
 function pararTempo() { if (tTempo) { clearInterval(tTempo); tTempo = null; } }
 
@@ -1567,77 +2052,82 @@ function vistaLista() {
   const item = c => {
     const ativo = cfg.ativos.includes(c.id), proprio = !CONJUNTOS_BASE.includes(c);
     const acoes = ui.apagar === c.id
-      ? `<button class="lig lig-perigo" type="button" data-acao="confirmarApagar" data-id="${c.id}">Apagar mesmo</button><button class="lig" type="button" data-acao="naoApagar">Não</button>`
-      : `<button class="lig" type="button" data-acao="ver" data-id="${c.id}" aria-expanded="${ui.aberto.has(c.id)}">${ui.aberto.has(c.id) ? 'Esconder' : 'Ver'}</button>
-         <button class="lig" type="button" data-acao="editar" data-id="${c.id}">${proprio ? 'Editar' : 'Copiar e editar'}</button>
-         ${proprio ? `<button class="lig lig-perigo" type="button" data-acao="apagar" data-id="${c.id}">Apagar</button>` : ''}`;
+      ? `<button class="lig lig-perigo" type="button" data-acao="confirmarApagar" data-id="${c.id}">${tr('Apagar mesmo', 'Delete for good')}</button><button class="lig" type="button" data-acao="naoApagar">${tr('Não', 'No')}</button>`
+      : `<button class="lig" type="button" data-acao="ver" data-id="${c.id}" aria-expanded="${ui.aberto.has(c.id)}">${ui.aberto.has(c.id) ? tr('Esconder', 'Hide') : tr('Ver', 'View')}</button>
+         <button class="lig" type="button" data-acao="editar" data-id="${c.id}">${proprio ? tr('Editar', 'Edit') : tr('Copiar e editar', 'Copy and edit')}</button>
+         ${proprio ? `<button class="lig lig-perigo" type="button" data-acao="apagar" data-id="${c.id}">${tr('Apagar', 'Delete')}</button>` : ''}`;
     return `<li class="conj${ativo ? ' ativo' : ''}">
       <div class="conj-linha">
         <label class="conj-escolha"><input type="checkbox" data-ativo="${c.id}" ${ativo ? 'checked' : ''}>
-          <span class="conj-txt"><span class="conj-nome">${esc(c.nome)}</span><span class="conj-meta">${pl(c.perguntas.length, 'pergunta', 'perguntas')}${c.descricao ? `, ${esc(c.descricao).toLowerCase()}` : proprio ? ', criado por ti' : ''}</span></span></label>
+          <span class="conj-txt"><span class="conj-nome">${esc(c.nome)}</span><span class="conj-meta">${pl(c.perguntas.length, tr('pergunta', 'question'), tr('perguntas', 'questions'))}${c.descricao ? `, ${esc(c.descricao).toLowerCase()}` : proprio ? tr(', criado por ti', ', created by you') : ''}</span></span></label>
         <div class="conj-acoes">${acoes}</div>
       </div>
       ${ui.aberto.has(c.id) ? `<ol class="conj-lista">${c.perguntas.map(p => `<li>${esc(p)}</li>`).join('')}</ol>` : ''}
     </li>`;
   };
   const total = perguntasAtivas().length;
-  return `<h2 id="painel-titulo">Perguntas</h2>
-    <p class="ajuda">Marca os conjuntos que entram no prato. ${total ? `Estão escolhidas ${pl(total, 'pergunta', 'perguntas')}.` : 'Ainda não há nenhum escolhido.'}</p>
-    <div class="botoes-painel"><button class="bp bp-linha bp-peq" type="button" data-acao="todos">Marcar todos</button><button class="bp bp-linha bp-peq" type="button" data-acao="nenhum">Desmarcar todos</button></div>
+  const resumo = EN ? (total ? `${pl(total, 'question', 'questions')} selected.` : 'None selected yet.') : (total ? `Estão escolhidas ${pl(total, 'pergunta', 'perguntas')}.` : 'Ainda não há nenhum escolhido.');
+  return `<h2 id="painel-titulo">${tr('Perguntas', 'Questions')}</h2>
+    <p class="ajuda">${tr('Marca os conjuntos que entram no prato.', 'Tick the sets that go on the plate.')} ${resumo}</p>
+    <div class="botoes-painel"><button class="bp bp-linha bp-peq" type="button" data-acao="todos">${tr('Marcar todos', 'Select all')}</button><button class="bp bp-linha bp-peq" type="button" data-acao="nenhum">${tr('Desmarcar todos', 'Deselect all')}</button></div>
     <ul class="conjuntos">${conjuntos().map(item).join('')}</ul>
     <div class="botoes-painel">
-      <button class="bp bp-cheio" type="button" data-acao="novo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Novo conjunto</button>
-      <button class="bp bp-linha" type="button" data-acao="modelo">Criar a partir de um modelo</button>
+      <button class="bp bp-cheio" type="button" data-acao="novo"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>${tr('Novo conjunto', 'New set')}</button>
+      <button class="bp bp-linha" type="button" data-acao="modelo">${tr('Criar a partir de um modelo', 'Create from a template')}</button>
     </div>`;
 }
 function vistaEditar() {
   const c = ui.editar;
-  return `<h2 id="painel-titulo">${c.id ? 'Editar conjunto' : 'Novo conjunto'}</h2>
-    <div class="campo"><label for="ed-nome">Nome do conjunto</label><input type="text" id="ed-nome" value="${esc(c.nome)}" placeholder="ex.: Equipa de vendas" maxlength="60"></div>
-    <div class="campo"><label for="ed-perguntas">Perguntas</label>
-      <textarea id="ed-perguntas" rows="12" placeholder="Uma pergunta por linha">${esc(c.perguntas.join('\n'))}</textarea>
-      <p class="ajuda">Uma pergunta por linha. Podes colar uma lista inteira. <span id="ed-contagem">${pl(contarLinhas(c.perguntas.join('\n')), 'pergunta', 'perguntas')}</span></p></div>
+  return `<h2 id="painel-titulo">${c.id ? tr('Editar conjunto', 'Edit set') : tr('Novo conjunto', 'New set')}</h2>
+    <div class="campo"><label for="ed-nome">${tr('Nome do conjunto', 'Set name')}</label><input type="text" id="ed-nome" value="${esc(c.nome)}" placeholder="${tr('ex.: Equipa de vendas', 'e.g. Sales team')}" maxlength="60"></div>
+    <div class="campo"><label for="ed-perguntas">${tr('Perguntas', 'Questions')}</label>
+      <textarea id="ed-perguntas" rows="12" placeholder="${tr('Uma pergunta por linha', 'One question per line')}">${esc(c.perguntas.join('\n'))}</textarea>
+      <p class="ajuda">${tr('Uma pergunta por linha. Podes colar uma lista inteira.', 'One question per line. You can paste a whole list.')} <span id="ed-contagem">${pl(contarLinhas(c.perguntas.join('\n')), tr('pergunta', 'question'), tr('perguntas', 'questions'))}</span></p></div>
     <p class="erro" id="ed-erro" role="alert" hidden></p>
-    <div class="botoes-painel"><button class="bp bp-cheio" type="button" data-acao="guardar">Guardar conjunto</button><button class="bp bp-linha" type="button" data-acao="voltar">Cancelar</button></div>`;
+    <div class="botoes-painel"><button class="bp bp-cheio" type="button" data-acao="guardar">${tr('Guardar conjunto', 'Save set')}</button><button class="bp bp-linha" type="button" data-acao="voltar">${tr('Cancelar', 'Cancel')}</button></div>`;
 }
 function perguntasModelo(m, tema) { return m.perguntas.map(p => p.replaceAll('{tema}', tema)); }
 function vistaModelo() {
   const m = MODELOS.find(x => x.id === ui.modelo) || MODELOS[0];
   const valor = ui.modeloValor || '';
   const tema = valor.trim() || m.exemplo;
-  return `<h2 id="painel-titulo">Criar a partir de um modelo</h2>
-    <p class="ajuda">Escolhe um modelo e escreve o tema. As perguntas adaptam-se e depois podes editá-las.</p>
-    <fieldset class="modelos"><legend class="sr-only">Modelo</legend>
+  return `<h2 id="painel-titulo">${tr('Criar a partir de um modelo', 'Create from a template')}</h2>
+    <p class="ajuda">${tr('Escolhe um modelo e escreve o tema. As perguntas adaptam-se e depois podes editá-las.', 'Choose a template and type the topic. The questions adapt, and you can edit them afterwards.')}</p>
+    <fieldset class="modelos"><legend class="sr-only">${tr('Modelo', 'Template')}</legend>
       ${MODELOS.map(x => `<label class="modelo"><input type="radio" name="modelo" value="${x.id}" ${x.id === m.id ? 'checked' : ''}><span><b>${esc(x.nome)}</b><span>${esc(x.descricao)}</span></span></label>`).join('')}
     </fieldset>
-    <div class="campo"><label for="mod-valor">${esc(m.campo)}</label><input type="text" id="mod-valor" value="${esc(valor)}" placeholder="ex.: ${esc(m.exemplo)}" maxlength="60"></div>
-    <div class="campo"><h3 id="mod-previa-tit">Pré-visualização${valor.trim() ? '' : ' (com o exemplo)'}</h3>
+    <div class="campo"><label for="mod-valor">${esc(m.campo)}</label><input type="text" id="mod-valor" value="${esc(valor)}" placeholder="${tr('ex.:', 'e.g.')} ${esc(m.exemplo)}" maxlength="60"></div>
+    <div class="campo"><h3 id="mod-previa-tit">${tr('Pré-visualização', 'Preview')}${valor.trim() ? '' : tr(' (com o exemplo)', ' (with the example)')}</h3>
       <ol class="previa" id="mod-previa">${perguntasModelo(m, tema).map(p => `<li>${esc(p)}</li>`).join('')}</ol></div>
     <p class="erro" id="mod-erro" role="alert" hidden></p>
-    <div class="botoes-painel"><button class="bp bp-cheio" type="button" data-acao="criarModelo">Criar conjunto</button><button class="bp bp-linha" type="button" data-acao="voltar">Cancelar</button></div>`;
+    <div class="botoes-painel"><button class="bp bp-cheio" type="button" data-acao="criarModelo">${tr('Criar conjunto', 'Create set')}</button><button class="bp bp-linha" type="button" data-acao="voltar">${tr('Cancelar', 'Cancel')}</button></div>`;
 }
 function vistaDefinicoes() {
-  const tempos = [[0, 'Sem tempo'], [30, '30 segundos'], [60, '1 minuto'], [90, '1 minuto e meio'], [120, '2 minutos']];
-  return `<h2 id="painel-titulo">Definições</h2>
-    <div class="campo"><label for="d-n">Bolinhos no prato</label><div class="linha-range"><input type="range" id="d-n" min="3" max="${MAX_BOLINHOS}" step="1" value="${cfg.nBolinhos}" data-def="nBolinhos"><output id="d-n-v">${cfg.nBolinhos}</output></div>
-      ${cfg.participantes.length ? `<div><button class="bp bp-linha" type="button" data-acao="porParticipante">Um bolinho por participante (${Math.min(MAX_BOLINHOS, cfg.participantes.length)})</button></div>` : '<p class="ajuda">Até 40. Com a lista de participantes preenchida, podes pôr um bolinho por pessoa.</p>'}</div>
-    <div class="campo"><label for="d-surpresas">Surpresas portuguesas</label><select id="d-surpresas" data-def="surpresas">${[['nenhuma', 'Sem surpresas'], ['algumas', 'De vez em quando'], ['muitas', 'Muitas']].map(([v, t]) => `<option value="${v}" ${cfg.surpresas === v ? 'selected' : ''}>${t}</option>`).join('')}</select>
-      <p class="ajuda">Galo de Barcelos, sardinha, pastel de nata e outras personagens saltam de alguns bolinhos com um desafio. Os bolinhos dourados têm sempre surpresa.</p></div>
-    <label class="chk"><input type="checkbox" data-def="naoRepetir" ${cfg.naoRepetir ? 'checked' : ''}> Não repetir perguntas na mesma ronda</label>
-    <label class="chk"><input type="checkbox" data-def="numerosSorte" ${cfg.numerosSorte ? 'checked' : ''}> Mostrar números da sorte no papel</label>
-    <div class="campo"><label for="d-tempo">Tempo para responder</label><select id="d-tempo" data-def="tempo">${tempos.map(([v, t]) => `<option value="${v}" ${cfg.tempo === v ? 'selected' : ''}>${t}</option>`).join('')}</select></div>
+  const tempos = EN ? [[0, 'No timer'], [30, '30 seconds'], [60, '1 minute'], [90, '1 and a half minutes'], [120, '2 minutes']]
+    : [[0, 'Sem tempo'], [30, '30 segundos'], [60, '1 minuto'], [90, '1 minuto e meio'], [120, '2 minutos']];
+  return `<h2 id="painel-titulo">${tr('Definições', 'Settings')}</h2>
+    <div class="campo"><label for="d-idioma">${tr('Idioma', 'Language')} · ${tr('Language', 'Idioma')}</label><select id="d-idioma" data-def="idioma"><option value="pt" ${EN ? '' : 'selected'}>Português</option><option value="en" ${EN ? 'selected' : ''}>English</option></select>
+      <p class="ajuda">${tr('Muda os botões e as perguntas de origem. Os conjuntos que escreveste ficam como estão.', 'Changes the buttons and the built-in questions. Sets you wrote stay as they are.')}</p></div>
+    <div class="campo"><label for="d-n">${tr('Bolinhos no prato', 'Cookies on the plate')}</label><div class="linha-range"><input type="range" id="d-n" min="3" max="${MAX_BOLINHOS}" step="1" value="${cfg.nBolinhos}" data-def="nBolinhos"><output id="d-n-v">${cfg.nBolinhos}</output></div>
+      ${cfg.participantes.length ? `<div><button class="bp bp-linha" type="button" data-acao="porParticipante">${tr('Um bolinho por participante', 'One cookie per participant')} (${Math.min(MAX_BOLINHOS, cfg.participantes.length)})</button></div>` : `<p class="ajuda">${tr('Até 40. Com a lista de participantes preenchida, podes pôr um bolinho por pessoa.', 'Up to 40. Once the participant list is filled in, you can have one cookie per person.')}</p>`}</div>
+    <div class="campo"><label for="d-surpresas">${tr('Surpresas portuguesas', 'Portuguese surprises')}</label><select id="d-surpresas" data-def="surpresas">${(EN ? [['nenhuma', 'No surprises'], ['algumas', 'Now and then'], ['muitas', 'Lots']] : [['nenhuma', 'Sem surpresas'], ['algumas', 'De vez em quando'], ['muitas', 'Muitas']]).map(([v, t]) => `<option value="${v}" ${cfg.surpresas === v ? 'selected' : ''}>${t}</option>`).join('')}</select>
+      <p class="ajuda">${tr('Galo de Barcelos, sardinha, pastel de nata e outras personagens saltam de alguns bolinhos com um desafio. Os bolinhos dourados têm sempre surpresa.', 'The Barcelos Rooster, a grilled sardine, a pastel de nata and other characters jump out of some cookies with a challenge. Golden cookies always have a surprise.')}</p></div>
+    <label class="chk"><input type="checkbox" data-def="naoRepetir" ${cfg.naoRepetir ? 'checked' : ''}> ${tr('Não repetir perguntas na mesma ronda', 'Don\'t repeat questions in the same round')}</label>
+    <p class="ajuda">${tr('Seja como for, nenhuma das últimas 30 perguntas que saíram volta a sair, mesmo que feches a página.', 'Either way, none of the last 30 questions comes out again, even if you close the page.')}</p>
+    <label class="chk"><input type="checkbox" data-def="numerosSorte" ${cfg.numerosSorte ? 'checked' : ''}> ${tr('Mostrar números da sorte no papel', 'Show lucky numbers on the paper')}</label>
+    <div class="campo"><label for="d-tempo">${tr('Tempo para responder', 'Time to answer')}</label><select id="d-tempo" data-def="tempo">${tempos.map(([v, t]) => `<option value="${v}" ${cfg.tempo === v ? 'selected' : ''}>${t}</option>`).join('')}</select></div>
     <hr class="separador">
-    <div class="campo"><label for="d-part">Participantes</label><textarea id="d-part" rows="5" placeholder="Um nome por linha" data-def="participantes">${esc(cfg.participantes.join('\n'))}</textarea>
-      <p class="ajuda">Opcional. Com nomes, o papel diz quem responde e ninguém repete até todos terem respondido.</p></div>
-    <label class="chk"><input type="checkbox" data-def="sortearPessoa" ${cfg.sortearPessoa ? 'checked' : ''}> Sortear quem responde</label>
+    <div class="campo"><label for="d-part">${tr('Participantes', 'Participants')}</label><textarea id="d-part" rows="5" placeholder="${tr('Um nome por linha', 'One name per line')}" data-def="participantes">${esc(cfg.participantes.join('\n'))}</textarea>
+      <p class="ajuda">${tr('Opcional. Com nomes, o papel diz quem responde e ninguém repete até todos terem respondido.', 'Optional. With names, the paper says who answers, and nobody repeats until everyone has had a turn.')}</p></div>
+    <label class="chk"><input type="checkbox" data-def="sortearPessoa" ${cfg.sortearPessoa ? 'checked' : ''}> ${tr('Sortear quem responde', 'Pick who answers at random')}</label>
     <hr class="separador">
-    <h3>Som</h3>
-    <label class="chk"><input type="checkbox" data-def="musica" ${cfg.musica ? 'checked' : ''}> Música de fundo</label>
-    <label class="chk"><input type="checkbox" data-def="efeitos" ${cfg.efeitos ? 'checked' : ''}> Efeitos sonoros</label>
-    <div class="campo"><label for="d-vol">Volume</label><div class="linha-range"><input type="range" id="d-vol" min="0" max="1" step="0.05" value="${cfg.volume}" data-def="volume"><output id="d-vol-v">${Math.round(cfg.volume * 100)}</output></div></div>
+    <h3>${tr('Som', 'Sound')}</h3>
+    <label class="chk"><input type="checkbox" data-def="musica" ${cfg.musica ? 'checked' : ''}> ${tr('Música de fundo', 'Background music')}</label>
+    <label class="chk"><input type="checkbox" data-def="efeitos" ${cfg.efeitos ? 'checked' : ''}> ${tr('Efeitos sonoros', 'Sound effects')}</label>
+    <div class="campo"><label for="d-vol">${tr('Volume', 'Volume')}</label><div class="linha-range"><input type="range" id="d-vol" min="0" max="1" step="0.05" value="${cfg.volume}" data-def="volume"><output id="d-vol-v">${Math.round(cfg.volume * 100)}</output></div></div>
     <hr class="separador">
-    <div class="botoes-painel"><button class="bp bp-cheio" type="button" data-acao="recomecar">Recomeçar a ronda</button></div>
-    <p class="ajuda">Recomeçar põe todas as perguntas de volta e enche o prato. As tuas perguntas e definições ficam guardadas neste navegador.</p>`;
+    <div class="botoes-painel"><button class="bp bp-cheio" type="button" data-acao="recomecar">${tr('Recomeçar a ronda', 'Start the round again')}</button></div>
+    <p class="ajuda">${tr('Recomeçar põe todas as perguntas de volta e enche o prato. As tuas perguntas e definições ficam guardadas neste navegador.', 'Starting again puts every question back and fills the plate. Your questions and settings are saved in this browser.')}</p>`;
 }
 
 painel.addEventListener('click', e => {
@@ -1649,14 +2139,14 @@ painel.addEventListener('click', e => {
   else if (a === 'novo') { ui.editar = { id: null, nome: '', perguntas: [] }; ui.vista = 'editar'; desenharPainel(); $('#ed-nome').focus(); }
   else if (a === 'editar') {
     const c = conj(id), proprio = !CONJUNTOS_BASE.includes(c);
-    ui.editar = proprio ? { id: c.id, nome: c.nome, perguntas: [...c.perguntas] } : { id: null, nome: `${c.nome} (a minha versão)`, perguntas: [...c.perguntas], substitui: c.id };
+    ui.editar = proprio ? { id: c.id, nome: c.nome, perguntas: [...c.perguntas] } : { id: null, nome: `${c.nome} ${tr('(a minha versão)', '(my version)')}`, perguntas: [...c.perguntas], substitui: c.id };
     ui.vista = 'editar'; desenharPainel(); $('#ed-perguntas').focus();
   }
   else if (a === 'apagar') { ui.apagar = id; desenharPainel(); painel.querySelector('[data-acao="confirmarApagar"]').focus(); }
   else if (a === 'naoApagar') { ui.apagar = null; desenharPainel(); }
   else if (a === 'confirmarApagar') {
     const c = conj(id); proprios = proprios.filter(x => x.id !== id); cfg.ativos = cfg.ativos.filter(x => x !== id);
-    ui.apagar = null; gravar(); desenharPainel(); atualizarContador(); aviso(`Conjunto «${c.nome}» apagado.`);
+    ui.apagar = null; gravar(); desenharPainel(); atualizarContador(); aviso(tr(`Conjunto «${c.nome}» apagado.`, `Set "${c.nome}" deleted.`));
   }
   else if (a === 'voltar') { ui.vista = 'lista'; desenharPainel(); }
   else if (a === 'modelo') { ui.vista = 'modelo'; ui.modeloValor = ''; desenharPainel(); $('#mod-valor').focus(); }
@@ -1666,12 +2156,12 @@ painel.addEventListener('click', e => {
   else if (a === 'todos' || a === 'nenhum') {
     cfg.ativos = a === 'todos' ? conjuntos().map(c => c.id) : [];
     gravar(); desenharPainel(); atualizarContador();
-    aviso(a === 'todos' ? `Todos os conjuntos no prato: ${perguntasAtivas().length} perguntas.` : 'Nenhum conjunto escolhido.');
+    aviso(a === 'todos' ? tr(`Todos os conjuntos no prato: ${perguntasAtivas().length} perguntas.`, `All sets on the plate: ${perguntasAtivas().length} questions.`) : tr('Nenhum conjunto escolhido.', 'No set selected.'));
   }
   else if (a === 'porParticipante') {
     cfg.nBolinhos = Math.min(MAX_BOLINHOS, Math.max(3, cfg.participantes.length)); gravar();
     if (estado === 'prato') { encherPrato(); desenharPrato(true); }
-    desenharPainel(); aviso(`Prato com ${cfg.nBolinhos} bolinhos, um por participante.`);
+    desenharPainel(); aviso(tr(`Prato com ${cfg.nBolinhos} bolinhos, um por participante.`, `Plate with ${cfg.nBolinhos} cookies, one per participant.`));
   }
 });
 painel.addEventListener('change', e => {
@@ -1687,12 +2177,12 @@ painel.addEventListener('change', e => {
 });
 painel.addEventListener('input', e => {
   const t = e.target;
-  if (t.id === 'ed-perguntas') $('#ed-contagem').textContent = pl(contarLinhas(t.value), 'pergunta', 'perguntas');
+  if (t.id === 'ed-perguntas') $('#ed-contagem').textContent = pl(contarLinhas(t.value), tr('pergunta', 'question'), tr('perguntas', 'questions'));
   if (t.id === 'mod-valor') {
     ui.modeloValor = t.value;
     const m = MODELOS.find(x => x.id === ui.modelo);
     $('#mod-previa').innerHTML = perguntasModelo(m, t.value.trim() || m.exemplo).map(p => `<li>${esc(p)}</li>`).join('');
-    $('#mod-previa-tit').textContent = 'Pré-visualização' + (t.value.trim() ? '' : ' (com o exemplo)');
+    $('#mod-previa-tit').textContent = tr('Pré-visualização', 'Preview') + (t.value.trim() ? '' : tr(' (com o exemplo)', ' (with the example)'));
   }
   if (t.type === 'range' && t.dataset.def) { const o = $(`#${t.id}-v`); if (o) o.textContent = t.dataset.def === 'volume' ? Math.round(t.value * 100) : t.value; if (t.dataset.def === 'volume') { cfg.volume = Number(t.value); Som.volume(cfg.volume); } }
 });
@@ -1701,10 +2191,10 @@ $('#fechar-painel').addEventListener('click', () => painel.close());
 painel.addEventListener('close', () => { if (estado === 'prato') atualizarContador(); });
 
 function guardarConjunto() {
-  const nome = $('#ed-nome').value.trim() || 'As minhas perguntas';
+  const nome = $('#ed-nome').value.trim() || tr('As minhas perguntas', 'My questions');
   const perguntas = $('#ed-perguntas').value.split('\n').map(x => x.trim()).filter(Boolean);
   const erro = $('#ed-erro');
-  if (!perguntas.length) { erro.textContent = 'Escreve pelo menos uma pergunta.'; erro.hidden = false; $('#ed-perguntas').focus(); return; }
+  if (!perguntas.length) { erro.textContent = tr('Escreve pelo menos uma pergunta.', 'Write at least one question.'); erro.hidden = false; $('#ed-perguntas').focus(); return; }
   const e = ui.editar;
   if (e.id) { const c = proprios.find(x => x.id === e.id); c.nome = nome; c.perguntas = perguntas; }
   else {
@@ -1713,15 +2203,15 @@ function guardarConjunto() {
     cfg.ativos = [...cfg.ativos.filter(x => x !== e.substitui), novo.id];
   }
   gravar(); ui.vista = 'lista'; desenharPainel(); atualizarContador();
-  aviso(`Conjunto «${nome}» guardado${e.id ? '' : ' e escolhido para o prato'}.`);
+  aviso(EN ? `Set "${nome}" saved${e.id ? '' : ' and selected for the plate'}.` : `Conjunto «${nome}» guardado${e.id ? '' : ' e escolhido para o prato'}.`);
 }
 function criarDeModelo() {
   const m = MODELOS.find(x => x.id === ui.modelo), tema = $('#mod-valor').value.trim();
-  if (!tema) { const er = $('#mod-erro'); er.textContent = `Escreve ${m.campo.toLowerCase() === 'tema' ? 'o tema' : 'o nome da formação'} para criar o conjunto.`; er.hidden = false; $('#mod-valor').focus(); return; }
+  if (!tema) { const er = $('#mod-erro'); er.textContent = EN ? `Type the ${m.campo.toLowerCase()} to create the set.` : `Escreve ${m.campo.toLowerCase() === 'tema' ? 'o tema' : 'o nome da formação'} para criar o conjunto.`; er.hidden = false; $('#mod-valor').focus(); return; }
   const novo = { id: 'p_' + Date.now().toString(36), nome: m.nomeConjunto.replace('{tema}', tema), perguntas: perguntasModelo(m, tema) };
   proprios.push(novo); cfg.ativos = [...new Set([...cfg.ativos, novo.id])];
   gravar(); ui.vista = 'lista'; desenharPainel(); atualizarContador();
-  aviso(`Conjunto «${novo.nome}» criado e escolhido para o prato.`);
+  aviso(tr(`Conjunto «${novo.nome}» criado e escolhido para o prato.`, `Set "${novo.nome}" created and selected for the plate.`));
 }
 function mudarDefinicao(t) {
   const k = t.dataset.def;
@@ -1732,6 +2222,7 @@ function mudarDefinicao(t) {
   else if (k === 'volume') { cfg.volume = Number(t.value); Som.volume(cfg.volume); }
   else if (k === 'musica') { cfg.musica = t.checked; atualizarBotaoMusica(); if (cfg.musica) { Som.iniciar(); Som.tocarMusica(); } else Som.pararMusica(); }
   else if (k === 'efeitos') { cfg.efeitos = t.checked; Som.efeitos(cfg.efeitos); }
+  else if (k === 'idioma') { mudarIdioma(t.value); return; }
   else cfg[k] = t.checked;
   gravar(); atualizarContador();
 }
@@ -1739,7 +2230,7 @@ function recomecar() {
   usadas.clear(); jaRespondeu.clear();
   if (estado === 'prato') { encherPrato(); desenharPrato(true); Som.encher(prato.length); }
   if (painel.open) painel.close();
-  aviso('Ronda recomeçada: todas as perguntas voltaram ao prato.');
+  aviso(tr('Ronda recomeçada: todas as perguntas voltaram ao prato.', 'Round restarted: all the questions are back on the plate.'));
 }
 
 /* =========================================================
@@ -1750,22 +2241,23 @@ function aviso(msg) { const el = $('#aviso'); el.textContent = msg; el.classList
 function atualizarBotaoMusica() {
   const b = $('#btn-musica'); b.setAttribute('aria-pressed', String(cfg.musica));
   b.querySelector('.corte').hidden = cfg.musica;
-  b.title = cfg.musica ? 'Desligar a música' : 'Ligar a música';
+  b.title = cfg.musica ? tr('Desligar a música', 'Turn the music off') : tr('Ligar a música', 'Turn the music on');
 }
 $('#btn-musica').addEventListener('click', () => {
   cfg.musica = !cfg.musica; gravar(); atualizarBotaoMusica();
   if (cfg.musica) { Som.iniciar(); Som.tocarMusica(); } else Som.pararMusica();
-  aviso(cfg.musica ? 'Música ligada' : 'Música desligada');
+  aviso(cfg.musica ? tr('Música ligada', 'Music on') : tr('Música desligada', 'Music off'));
 });
 $('#btn-perguntas').addEventListener('click', () => abrirPainel('perguntas'));
+$('#btn-idioma').addEventListener('click', () => mudarIdioma(EN ? 'pt' : 'en'));
 $('#btn-definicoes').addEventListener('click', () => abrirPainel('definicoes'));
 const btnEcra = $('#btn-ecra');
 if (!document.fullscreenEnabled) btnEcra.hidden = true;
 btnEcra.addEventListener('click', () => {
   if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
-  else document.documentElement.requestFullscreen().catch(() => aviso('Este navegador não deixa pôr em ecrã inteiro aqui.'));
+  else document.documentElement.requestFullscreen().catch(() => aviso(tr('Este navegador não deixa pôr em ecrã inteiro aqui.', 'This browser won\'t go full screen here.')));
 });
-document.addEventListener('fullscreenchange', () => btnEcra.setAttribute('aria-label', document.fullscreenElement ? 'Sair do ecrã inteiro' : 'Ecrã inteiro'));
+document.addEventListener('fullscreenchange', () => btnEcra.setAttribute('aria-label', document.fullscreenElement ? tr('Sair do ecrã inteiro', 'Exit full screen') : tr('Ecrã inteiro', 'Full screen')));
 
 $('#prato').addEventListener('click', e => { const b = e.target.closest('.bolinho'); if (b) abrir(Number(b.dataset.id)); });
 $('#vazio').addEventListener('click', e => {
