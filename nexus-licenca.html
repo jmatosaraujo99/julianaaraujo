@@ -74,6 +74,8 @@ img{max-width:100%;height:auto;display:block}
 .bt.contorno{border:1.5px solid rgba(244,241,234,.45);color:var(--nx-texto)}
 .bt.contorno:hover{border-color:var(--nx-amarelo);color:var(--nx-amarelo)}
 .cartaz-nota{margin:0;font-size:13.5px;color:var(--nx-texto-2)}
+.cartaz-nota + .cartaz-nota{margin-top:8px}
+.cartaz-nota a{color:var(--nx-amarelo);text-decoration:underline;text-underline-offset:3px}
 .cartaz-img{margin:0;padding:0 clamp(18px,calc(3 * var(--fluido)),40px) clamp(18px,calc(3 * var(--fluido)),40px)}
 .cartaz-img img{border-radius:14px;box-shadow:0 20px 40px -20px rgba(0,0,0,.7)}
 @media (max-width:900px){ .cartaz-texto{grid-template-columns:1fr} }
@@ -113,6 +115,22 @@ img{max-width:100%;height:auto;display:block}
 .fecho{margin-top:clamp(40px,calc(5 * var(--fluido)),64px);border-radius:22px;background:var(--nx-fundo);color:var(--nx-texto);padding:clamp(26px,calc(4 * var(--fluido)),44px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
 .fecho p{margin:0;color:var(--nx-texto);font-size:18px}
 .fecho .preco b{font-size:44px}
+/* ---- comprar ---- */
+.comprar{margin:22px 0 0;border:2px solid var(--ink);border-radius:22px;padding:clamp(22px,calc(3 * var(--fluido)),34px)}
+.comprar h2{margin:0 0 16px;font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:clamp(24px,calc(2.6 * var(--fluido)),32px);line-height:1.1}
+.comprar-passos{counter-reset:c;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 28px}
+.comprar-passos li{counter-increment:c;position:relative;padding-left:52px;font-size:16.5px;line-height:1.6;color:var(--ink-2);display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.comprar-passos li::before{content:counter(c);position:absolute;left:0;top:0;width:38px;height:38px;border-radius:50%;background:var(--nx-amarelo);color:var(--nx-amarelo-tinta);display:flex;align-items:center;justify-content:center;font-family:var(--fonte-display);font-size:20px}
+.comprar-passos p{margin:0}
+.comprar-passos b{color:var(--ink)}
+.comprar-passos .num{font-size:20px;letter-spacing:.02em}
+.comprar-passos span{font-size:14.5px;color:var(--ink-3)}
+.copiar{font:600 12px var(--fonte-etiqueta);text-transform:uppercase;letter-spacing:var(--ls-etiqueta);padding:8px 14px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;min-height:38px}
+.copiar:hover{background:var(--ink);color:var(--ground)}
+.bt.wa{background:#1FA855;color:#fff;text-align:center;padding-block:10px}
+.comprar-nota{margin:18px 0 0;font-size:14.5px;color:var(--ink-3)}
+.comprar-nota a{color:var(--acc);text-decoration:none;border-bottom:1px solid var(--acc-suave)}
+@media (max-width:760px){ .comprar-passos{grid-template-columns:1fr} .bt.wa{width:100%} }
 @media (prefers-reduced-motion: reduce){*{transition-duration:.01ms!important}}
 </style>
 </head>
@@ -137,15 +155,32 @@ img{max-width:100%;height:auto;display:block}
       <div class="compra">
       <div class="preco"><b>29,99 €</b><span>pagas uma vez · sem mensalidades</span></div>
       <div class="bts">
-        <a class="bt cheio" href="mailto:jmatosaraujo99@gmail.com?subject=Comprar%20uma%20licen%C3%A7a%20do%20NEXus&amp;body=Ol%C3%A1%2C%20Juliana%21%0A%0AQuero%20comprar%20uma%20licen%C3%A7a%20do%20NEXus.%0A%0ANome%3A%0ANIF%20(para%20a%20fatura)%3A%0AEmail%20onde%20quero%20receber%20a%20chave%3A%0A">Comprar licença <span aria-hidden="true">&rarr;</span></a>
+        <a class="bt cheio" href="#comprar">Comprar licença <span aria-hidden="true">&rarr;</span></a>
         <a class="bt contorno" href="https://nexus.jmatosaraujo99.workers.dev/formador?demo">Experimentar grátis</a>
       </div>
       <p class="cartaz-nota">A experiência corre no teu computador, com participantes simulados. Não pede conta nem dados.</p>
+      <p class="cartaz-nota">Já tens licença? <a href="https://nexus.jmatosaraujo99.workers.dev/formador.html">Entra no NEXus</a>.</p>
       </div>
     </div>
     <figure class="cartaz-img">
       <img src="media/nexus-revelacao.jpg" width="1458" height="604" alt="O NEXus no ecrã: as três frases de uma pessoa, uma delas carimbada como mentira, e um telemóvel ao lado com a mesma revelação.">
     </figure>
+  </section>
+
+  <section class="comprar" id="comprar" aria-labelledby="t-comprar">
+    <h2 id="t-comprar">Comprar em dois passos</h2>
+    <ol class="comprar-passos">
+      <li>
+        <p><b>Paga 29,99 € por MB WAY</b> para o <b class="num">961 955 373</b></p>
+        <button type="button" class="copiar" data-copiar="961955373">Copiar número</button>
+        <span>Na descrição, escreve «NEXus».</span>
+      </li>
+      <li>
+        <p><b>Avisa-me no WhatsApp</b> com o teu nome, email e NIF. A mensagem já vai escrita.</p>
+        <a class="bt wa" href="https://wa.me/351961955373?text=Ol%C3%A1%2C%20Juliana%21%20J%C3%A1%20paguei%20a%20licen%C3%A7a%20do%20NEXus%20%2829%2C99%20%E2%82%AC%20por%20MB%20WAY%29.%0A%0ANome%3A%0AEmail%3A%0ANIF%20%28para%20a%20fatura%29%3A">Já paguei: enviar no WhatsApp</a>
+      </li>
+    </ol>
+    <p class="comprar-nota">Recebes a chave de licença e a fatura-recibo no WhatsApp até ao dia útil seguinte. Tens dúvidas antes de comprar? <a href="https://wa.me/351961955373?text=Ol%C3%A1%2C%20Juliana%21%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20NEXus%3A%20">Pergunta-me no WhatsApp</a>.</p>
   </section>
 </main>
 
@@ -172,7 +207,7 @@ img{max-width:100%;height:auto;display:block}
 
     <h2>Como funciona</h2>
     <ol class="passos">
-      <li><b>Compras e recebes a chave.</b> Pagas por MB WAY e recebes por email a tua chave de licença, com fatura-recibo.</li>
+      <li><b>Compras e recebes a chave.</b> Pagas por MB WAY, avisas-me no WhatsApp e recebes lá a tua chave de licença, com a fatura-recibo.</li>
       <li><b>Ligas a tua base de dados.</b> O NEXus guarda tudo numa base de dados Firebase, gratuita e na tua conta Google. Um assistente leva-te passo a passo. Demora uns 10 minutos e só se faz uma vez.</li>
       <li><b>Crias e apresentas.</b> Projetas o ecrã, a sala lê o código QR e responde. Usas em todas as tuas turmas, sem limite de atividades nem de sessões.</li>
     </ol>
@@ -197,16 +232,16 @@ img{max-width:100%;height:auto;display:block}
       <details><summary><h3>Quantas pessoas podem responder ao mesmo tempo?</h3></summary><p>Até 100 ligadas em simultâneo, que é o limite do plano gratuito da Firebase. Para turmas de formação, sobra.</p></details>
       <details><summary><h3>Preciso de conta Google?</h3></summary><p>Precisas, para criar a base de dados gratuita onde ficam as tuas sessões. É a única coisa que te pede o assistente, além da chave.</p></details>
       <details><summary><h3>Posso usar em vários computadores e turmas?</h3></summary><p>Podes. A licença é para uma pessoa e uma base de dados; entras com a tua conta em qualquer computador e usas com todas as turmas.</p></details>
-      <details><summary><h3>Como pago e recebo a fatura?</h3></summary><p>Carregas em «Comprar licença» e abre-se um email já escrito com o teu nome, o NIF e o email para a chave. Respondo com os dados para pagar por MB WAY e, quando o pagamento chega, envio a chave e a fatura-recibo.</p></details>
+      <details><summary><h3>Como pago e recebo a fatura?</h3></summary><p>Pagas 29,99 € por MB WAY para o 961 955 373 e avisas-me no WhatsApp, com o botão «Já paguei». Envio-te a chave e a fatura-recibo até ao dia útil seguinte.</p></details>
       <details><summary><h3>E os dados dos participantes?</h3></summary><p>Respondem de forma anónima, e as respostas ficam na tua base de dados. Eu só guardo o teu nome, o teu email e o endereço da base a que a licença está ligada.</p></details>
-      <details><summary><h3>E se precisar de ajuda?</h3></summary><p>Escreves-me para o email da compra. Respondo em três dias úteis, no máximo.</p></details>
+      <details><summary><h3>E se precisar de ajuda?</h3></summary><p>Escreves-me pelo WhatsApp ou por email. Respondo em três dias úteis, no máximo.</p></details>
     </div>
     <p style="margin-top:18px;font-size:14px">Antes de comprar, lê os <a href="nexus-termos.html">termos da licença</a>.</p>
 
     <div class="fecho">
       <div class="preco"><b>29,99 €</b><span style="color:var(--nx-texto-2)">pagas uma vez</span></div>
       <div class="bts">
-        <a class="bt cheio" href="mailto:jmatosaraujo99@gmail.com?subject=Comprar%20uma%20licen%C3%A7a%20do%20NEXus&amp;body=Ol%C3%A1%2C%20Juliana%21%0A%0AQuero%20comprar%20uma%20licen%C3%A7a%20do%20NEXus.%0A%0ANome%3A%0ANIF%20(para%20a%20fatura)%3A%0AEmail%20onde%20quero%20receber%20a%20chave%3A%0A">Comprar licença <span aria-hidden="true">&rarr;</span></a>
+        <a class="bt cheio" href="#comprar">Comprar licença <span aria-hidden="true">&rarr;</span></a>
         <a class="bt contorno" href="https://nexus.jmatosaraujo99.workers.dev/formador?demo">Experimentar grátis</a>
       </div>
     </div>
@@ -222,5 +257,14 @@ img{max-width:100%;height:auto;display:block}
   </div>
 </footer>
 
+<script>
+document.querySelectorAll('[data-copiar]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var t = b.getAttribute('data-copiar'), antes = b.textContent;
+    function feito() { b.textContent = 'Copiado ✓'; setTimeout(function () { b.textContent = antes; }, 2000); }
+    try { navigator.clipboard.writeText(t).then(feito, function () { prompt('Copia o número:', t); }); } catch (e) { prompt('Copia o número:', t); }
+  });
+});
+</script>
 </body>
 </html>
