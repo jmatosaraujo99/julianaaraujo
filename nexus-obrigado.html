@@ -97,7 +97,7 @@ h1{margin:0;font-family:var(--fonte-display);font-weight:400;text-transform:uppe
       <span>Abre já com a chave preenchida.</span>
     </div>
     <ul class="lista">
-      <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FDC200" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>A chave fica guardada no teu email</li>
+      <li id="lista-email"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FDC200" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>A chave fica guardada no teu email</li>
       <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FDC200" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>A fatura-recibo chega noutro email, com o NIF que indicaste</li>
     </ul>
     <p class="seguinte">A seguir: ligar a tua base de dados. Uns 10 minutos, só uma vez.</p>
@@ -149,7 +149,11 @@ var NEXUS_API = "https://nexus.jmatosaraujo99.workers.dev";
   function pago(d) {
     $("chave").textContent = d.chave;
     if (d.ativar) $("ativar").href = d.ativar;
-    if (d.email) $("pago-email").textContent = "Também te enviei tudo para " + d.email + ", para não perderes nada.";
+    if (d.comEmail === false) {
+      /* ainda sem email automático: a chave só fica aqui */
+      $("pago-email").textContent = "Guarda já a tua chave: copia-a ou tira uma fotografia. Se a perderes, escreve-me.";
+      $("lista-email").hidden = true;
+    } else if (d.email) $("pago-email").textContent = "Também te enviei tudo para " + d.email + ", para não perderes nada.";
     zap("Olá, Juliana! Comprei o NEXus (chave a acabar em " + d.chave.slice(-4) + ") e preciso de ajuda.");
     ver("pago");
   }
