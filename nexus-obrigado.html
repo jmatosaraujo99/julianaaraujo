@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Obrigada pela compra · NEXus | Juliana Araújo</title>
+<meta name="robots" content="noindex, nofollow">
+<!-- o endereço traz o id da compra: não o passar a outros sites -->
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="favicon.ico?v=2" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="tokens.css?v=20260915">
+<style>
+:root{
+  --ground:var(--creme); --ink:var(--preto); --ink-2:var(--cinza-forte); --ink-3:var(--cinza);
+  --line:var(--linha-preta); --acc:var(--cobalto); --acc-suave:rgba(31,46,214,.10);
+  --sombra:0 24px 50px -28px rgba(10,10,10,.55);
+  --nx-fundo:#12302B; --nx-fundo-2:#1A3D37; --nx-texto:#F4F1EA; --nx-texto-2:#B9CBC5; --nx-amarelo:#FDC200; --nx-amarelo-tinta:#1B1A12;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --ground:var(--preto); --ink:var(--creme); --ink-2:#A8A29A; --ink-3:var(--cinza-sobre-preto);
+    --line:rgba(242,239,234,.16); --acc:#8791FF; --acc-suave:rgba(135,145,255,.14); --sombra:0 24px 54px -26px rgba(0,0,0,.95); }
+}
+:root[data-theme="dark"]{ --ground:var(--preto); --ink:var(--creme); --ink-2:#A8A29A; --ink-3:var(--cinza-sobre-preto);
+  --line:rgba(242,239,234,.16); --acc:#8791FF; --acc-suave:rgba(135,145,255,.14); --sombra:0 24px 54px -26px rgba(0,0,0,.95); }
+*,*::before,*::after{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:var(--ground);color:var(--ink);font-family:var(--fonte-corpo);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--nx-amarelo);outline-offset:3px;border-radius:4px}
+[hidden]{display:none!important}
+.cabeca-site{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px clamp(18px,calc(6 * var(--fluido)),96px);border-bottom:1px solid var(--line)}
+.cabeca-site .logo{font-family:var(--fonte-display);font-size:20px;line-height:1;letter-spacing:var(--ls-display);text-transform:uppercase;color:var(--ink);text-decoration:none}
+main{flex:1;display:flex;justify-content:center;padding:clamp(24px,calc(5 * var(--fluido)),64px) 16px}
+.cartao{width:100%;max-width:560px;align-self:flex-start;border-radius:22px;background:var(--nx-fundo);color:var(--nx-texto);box-shadow:var(--sombra);padding:clamp(26px,calc(4 * var(--fluido)),44px);display:flex;flex-direction:column;gap:18px}
+.etq{margin:0;font-family:var(--fonte-etiqueta);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--nx-amarelo)}
+h1{margin:0;font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:clamp(34px,calc(4.4 * var(--fluido)),48px);line-height:1}
+.cartao p{margin:0;font-size:16px;line-height:1.6;color:var(--nx-texto-2)}
+.cartao a:not(.bt){color:var(--nx-amarelo);text-decoration:underline;text-underline-offset:3px}
+.espera{display:flex;align-items:center;gap:14px}
+.roda{width:30px;height:30px;flex:none;border-radius:50%;border:3px solid rgba(244,241,234,.2);border-top-color:var(--nx-amarelo);animation:roda 1s linear infinite}
+@keyframes roda{to{transform:rotate(360deg)}}
+.chave{border-radius:16px;background:rgba(10,10,10,.42);padding:18px;display:flex;flex-direction:column;gap:12px}
+.chave .rot{font-family:var(--fonte-etiqueta);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--nx-texto-2)}
+.chave-linha{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.chave code{font:600 clamp(17px,calc(2.2 * var(--fluido)),23px)/1.2 ui-monospace,Consolas,Menlo,monospace;letter-spacing:.06em;color:var(--nx-amarelo);overflow-wrap:anywhere}
+@media (max-width:420px){ .chave code{letter-spacing:.01em} }
+.bt{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 24px;border-radius:999px;border:0;cursor:pointer;text-decoration:none;
+  font-family:var(--fonte-etiqueta);font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);transition:transform .2s ease}
+.bt:hover{transform:translateY(-1px)}
+.bt.cheio{background:var(--nx-amarelo);color:var(--nx-amarelo-tinta)}
+.bt.contorno{background:transparent;border:1.5px solid rgba(244,241,234,.45);color:var(--nx-texto);min-height:42px;padding:0 18px}
+.bt.contorno:hover{border-color:var(--nx-amarelo);color:var(--nx-amarelo)}
+.ativar{display:flex;flex-direction:column;gap:8px}
+.ativar .bt{align-self:flex-start}
+.ativar span{font-size:14px;color:var(--nx-texto-2)}
+.lista{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.lista li{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--nx-texto)}
+.lista svg{flex:none;margin-top:3px}
+.seguinte{border-top:1px solid rgba(244,241,234,.16);padding-top:16px}
+.erro h1{color:var(--nx-texto)}
+@media (max-width:560px){ .ativar .bt{align-self:stretch} }
+@media (prefers-reduced-motion: reduce){*{transition-duration:.01ms!important;animation-duration:3s!important}}
+</style>
+</head>
+<body>
+
+<header class="cabeca-site">
+  <a class="logo" href="index.html">Juliana Araújo</a>
+</header>
+
+<main>
+  <!-- 1. a confirmar -->
+  <section class="cartao" id="a-confirmar" aria-live="polite">
+    <p class="etq">NEXus · licença</p>
+    <div class="espera"><span class="roda" aria-hidden="true"></span><h1>A confirmar o pagamento…</h1></div>
+    <p id="espera-txt">Costuma demorar uns segundos. Não feches esta página.</p>
+  </section>
+
+  <!-- 2. pago -->
+  <section class="cartao" id="pago" hidden>
+    <p class="etq">Pagamento confirmado</p>
+    <h1 tabindex="-1">O NEXus já é teu.</h1>
+    <p id="pago-email">Também te enviei tudo por email, para não perderes nada.</p>
+    <div class="chave">
+      <span class="rot">A tua chave de licença</span>
+      <div class="chave-linha">
+        <code id="chave">NX00-0000-0000-0000-0000</code>
+        <button type="button" class="bt contorno" id="copiar">Copiar</button>
+      </div>
+    </div>
+    <div class="ativar">
+      <a class="bt cheio" id="ativar" href="https://nexus.jmatosaraujo99.workers.dev/formador">Ativar o NEXus <span aria-hidden="true">&rarr;</span></a>
+      <span>Abre já com a chave preenchida.</span>
+    </div>
+    <ul class="lista">
+      <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FDC200" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>A chave fica guardada no teu email</li>
+      <li><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FDC200" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>A fatura-recibo chega noutro email, com o NIF que indicaste</li>
+    </ul>
+    <p class="seguinte">A seguir: ligar a tua base de dados. Uns 10 minutos, só uma vez.</p>
+    <p>Algo não bate certo? <a class="wa" href="https://wa.me/351961955373">Fala comigo no WhatsApp</a>.</p>
+  </section>
+
+  <!-- 3. erro -->
+  <section class="cartao erro" id="erro" hidden>
+    <p class="etq">NEXus · licença</p>
+    <h1 tabindex="-1" id="erro-titulo">Não consegui confirmar a compra.</h1>
+    <p id="erro-txt">Se pagaste, o dinheiro não se perde. Escreve-me e envio-te a chave.</p>
+    <a class="bt cheio wa" href="https://wa.me/351961955373" style="align-self:flex-start">Falar no WhatsApp</a>
+  </section>
+</main>
+
+<script>
+/* Endereço do Worker do NEXus, que confirma a compra na Stripe e devolve a chave. */
+var NEXUS_API = "https://nexus.jmatosaraujo99.workers.dev";
+
+(function () {
+  var p = new URLSearchParams(location.search), sid = p.get("session_id") || "";
+  /* para testes no computador: ?api=http://localhost:8787 (só em localhost) */
+  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) && p.get("api")) NEXUS_API = p.get("api");
+  var $ = function (id) { return document.getElementById(id); };
+  var ZAP = "https://wa.me/351961955373?text=";
+
+  function ver(id) {
+    ["a-confirmar", "pago", "erro"].forEach(function (x) { $(x).hidden = x !== id; });
+    var h = $(id).querySelector("h1[tabindex]");
+    if (h) h.focus();
+  }
+  function zap(texto) {
+    document.querySelectorAll("a.wa").forEach(function (a) { a.href = ZAP + encodeURIComponent(texto); });
+  }
+  zap("Olá, Juliana! Comprei o NEXus e preciso de ajuda. Referência da compra: " + (sid || "(sem referência)"));
+
+  function erro(motivo) {
+    var t = {
+      sessao: ["Não encontrei esta compra.", "O endereço desta página parece incompleto. Se pagaste, escreve-me com o email que usaste e envio-te a chave."],
+      expirada: ["O pagamento não chegou a ser feito.", "A página de pagamento expirou antes de o pagamento entrar. Não te foi cobrado nada. Podes voltar a comprar quando quiseres."],
+      revogada: ["Esta licença foi desativada.", "Acontece quando há uma devolução do dinheiro. Se achas que é engano, escreve-me."],
+      rede: ["Sem ligação.", "Não deu para confirmar a compra. Confirma a internet e recarrega a página. Se pagaste, o dinheiro não se perde."]
+    }[motivo] || ["Não consegui confirmar a compra.", "Se pagaste, o dinheiro não se perde. Escreve-me e envio-te a chave."];
+    $("erro-titulo").textContent = t[0];
+    $("erro-txt").textContent = t[1];
+    ver("erro");
+  }
+
+  function pago(d) {
+    $("chave").textContent = d.chave;
+    if (d.ativar) $("ativar").href = d.ativar;
+    if (d.email) $("pago-email").textContent = "Também te enviei tudo para " + d.email + ", para não perderes nada.";
+    zap("Olá, Juliana! Comprei o NEXus (chave a acabar em " + d.chave.slice(-4) + ") e preciso de ajuda.");
+    ver("pago");
+  }
+
+  $("copiar").addEventListener("click", function () {
+    var b = this, c = $("chave").textContent;
+    function feito() { b.textContent = "Copiada ✓"; setTimeout(function () { b.textContent = "Copiar"; }, 2000); }
+    try { navigator.clipboard.writeText(c).then(feito, function () { prompt("Copia a chave:", c); }); }
+    catch (e) { prompt("Copia a chave:", c); }
+  });
+
+  if (!/^cs_(test|live)_[A-Za-z0-9]{10,200}$/.test(sid)) return erro("sessao");
+
+  /* pergunta ao Worker até o pagamento estar confirmado: de 2,5 em 2,5 s no primeiro minuto e meio,
+     depois de 10 em 10 s até 10 minutos (há pagamentos que demoram a entrar) */
+  var inicio = Date.now(), falhasRede = 0;
+  function perguntar() {
+    fetch(NEXUS_API + "/licenca?session_id=" + encodeURIComponent(sid), { cache: "no-store" })
+      .then(function (r) { return r.json().then(function (d) { return { s: r.status, d: d }; }); })
+      .then(function (x) {
+        falhasRede = 0;
+        if (x.d.estado === "pago" && x.d.chave) return pago(x.d);
+        if (x.d.estado === "pendente") return depois();
+        erro(x.d.motivo);
+      })
+      .catch(function () { if (++falhasRede >= 4) erro("rede"); else depois(); });
+  }
+  function depois() {
+    var t = Date.now() - inicio;
+    if (t > 90000) $("espera-txt").textContent = "O pagamento ainda está a ser confirmado. Quando entrar, envio-te a chave por email: podes fechar esta página.";
+    if (t > 600000) return;
+    setTimeout(perguntar, t < 90000 ? 2500 : 10000);
+  }
+  perguntar();
+})();
+</script>
+</body>
+</html>
