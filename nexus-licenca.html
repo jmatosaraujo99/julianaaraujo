@@ -24,151 +24,343 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600&display=swap">
 <link rel="stylesheet" href="tokens.css?v=20260915">
 <style>
-/* Marca e letras do site (tokens.css); o cartaz usa as cores do próprio NEXus: petróleo e amarelo. */
+/* NEXus — página do produto. Organização de página de produto: barra própria, faixa do código
+   para quem vai participar, título ao centro, montra com o ecrã e o telemóvel, secções.
+   Letras e tokens do site (tokens.css); cores do próprio NEXus: petróleo e amarelo. */
 :root{
   --ground:var(--creme); --ink:var(--preto); --ink-2:var(--cinza-forte); --ink-3:var(--cinza);
-  --line:var(--linha-preta); --line-forte:rgba(10,10,10,.28); --acc:var(--cobalto); --acc-suave:rgba(31,46,214,.10);
-  --sombra:0 24px 50px -28px rgba(10,10,10,.55);
-  --nx-fundo:#12302B; --nx-fundo-2:#1A3D37; --nx-texto:#F4F1EA; --nx-texto-2:#B9CBC5; --nx-amarelo:#FDC200; --nx-amarelo-tinta:#1B1A12;
+  --line:var(--linha-preta); --line-forte:rgba(10,10,10,.28); --acc:var(--cobalto);
+  --cartao:#FBFAF7; --cartao-2:#EFEBE4;
+  --sombra:0 24px 50px -28px rgba(10,10,10,.45);
+  --nx:#12302B; --nx-2:#1A3D37; --nx-texto:#F4F1EA; --nx-texto-2:#B9CBC5; --nx-am:#FDC200; --nx-am-tinta:#1B1A12;
+  --nx-suave:rgba(18,48,43,.08);
+  --largura:1180px;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){ --ground:var(--preto); --ink:var(--creme); --ink-2:#A8A29A; --ink-3:var(--cinza-sobre-preto);
-    --line:rgba(242,239,234,.16); --line-forte:rgba(242,239,234,.32); --acc:#8791FF; --acc-suave:rgba(135,145,255,.14); --sombra:0 24px 54px -26px rgba(0,0,0,.95); }
+    --line:rgba(242,239,234,.16); --line-forte:rgba(242,239,234,.32); --acc:#8791FF; --cartao:#151514; --cartao-2:#1E1E1C;
+    --sombra:0 24px 54px -26px rgba(0,0,0,.95); --nx-suave:rgba(253,194,0,.08); }
 }
 :root[data-theme="dark"]{ --ground:var(--preto); --ink:var(--creme); --ink-2:#A8A29A; --ink-3:var(--cinza-sobre-preto);
-  --line:rgba(242,239,234,.16); --line-forte:rgba(242,239,234,.32); --acc:#8791FF; --acc-suave:rgba(135,145,255,.14); --sombra:0 24px 54px -26px rgba(0,0,0,.95); }
+  --line:rgba(242,239,234,.16); --line-forte:rgba(242,239,234,.32); --acc:#8791FF; --cartao:#151514; --cartao-2:#1E1E1C;
+  --sombra:0 24px 54px -26px rgba(0,0,0,.95); --nx-suave:rgba(253,194,0,.08); }
 *,*::before,*::after{box-sizing:border-box}
-html{color-scheme:light dark}
-body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--fonte-corpo);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
-:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+html{color-scheme:light dark;scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--fonte-corpo);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:3px solid var(--nx-am);outline-offset:3px;border-radius:6px}
 img{max-width:100%;height:auto;display:block}
+.dentro{max-width:var(--largura);margin:0 auto;padding:0 clamp(16px,calc(4 * var(--fluido)),40px)}
 
-.cabeca-site{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:20px clamp(18px,calc(6 * var(--fluido)),96px);border-bottom:1px solid var(--line)}
-.cabeca-site .logo{font-family:var(--fonte-display);font-size:20px;line-height:1;letter-spacing:var(--ls-display);text-transform:uppercase;color:var(--ink);text-decoration:none}
-.cabeca-site nav{display:flex;gap:clamp(14px,calc(2.4 * var(--fluido)),28px);flex-wrap:wrap}
-.cabeca-site nav a{color:var(--ink);text-decoration:none;font-family:var(--fonte-etiqueta);font-size:12px;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);padding:6px 0}
-.cabeca-site nav a:hover{color:var(--acc)}
-.rodape-site{padding:clamp(40px,calc(5 * var(--fluido)),64px) clamp(18px,calc(6 * var(--fluido)),96px);border-top:1px solid var(--line)}
-.rodape-site .rodape-wrap{max-width:1440px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;font-family:var(--fonte-etiqueta);font-size:11px;letter-spacing:var(--ls-etiqueta);text-transform:uppercase;color:var(--ink-3)}
-.rodape-site a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line-forte)}
-.rodape-site a:hover{color:var(--acc);border-bottom-color:var(--acc)}
-
-/* ---- cartaz ---- */
-.app{max-width:1240px;margin:0 auto;padding:var(--s4,24px) var(--s4,24px) 36px}
-.cartaz{border-radius:22px;background:var(--nx-fundo);color:var(--nx-texto);box-shadow:var(--sombra);overflow:hidden}
-.cartaz-texto{padding:clamp(28px,calc(4 * var(--fluido)),56px) clamp(28px,calc(4 * var(--fluido)),56px) 26px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px 48px;align-items:end}
-.cartaz-texto .etq,.cartaz-texto h1{grid-column:1/-1}
-.compra{display:flex;flex-direction:column;gap:14px}
-.etq{margin:0;font-family:var(--fonte-etiqueta);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--nx-amarelo)}
-.cartaz h1{margin:0;font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:clamp(42px,calc(5.4 * var(--fluido)),76px);line-height:.98}
-.cartaz h1 em{font-style:normal;color:var(--nx-amarelo)}
-.cartaz-sub{margin:0;font-size:17px;line-height:1.55;color:var(--nx-texto-2);max-width:42ch}
-.preco{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.preco b{font-family:var(--fonte-display);font-weight:400;font-size:clamp(46px,calc(4.6 * var(--fluido)),64px);line-height:1;color:var(--nx-texto)}
-.preco span{font-size:15px;color:var(--nx-texto-2)}
-.bts{display:flex;gap:12px;flex-wrap:wrap}
-.bt{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 24px;border-radius:999px;text-decoration:none;
-  font-family:var(--fonte-etiqueta);font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);transition:transform .2s ease}
+/* ---- botões ---- */
+.bt{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:46px;padding:0 22px;border-radius:999px;text-decoration:none;cursor:pointer;
+  font-family:var(--fonte-etiqueta);font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);border:1.5px solid transparent;
+  transition:transform .2s ease,background .2s ease,border-color .2s ease;white-space:nowrap}
 .bt:hover{transform:translateY(-1px)}
-.bt.cheio{background:var(--nx-amarelo);color:var(--nx-amarelo-tinta)}
-.bt.contorno{border:1.5px solid rgba(244,241,234,.45);color:var(--nx-texto)}
-.bt.contorno:hover{border-color:var(--nx-amarelo);color:var(--nx-amarelo)}
-.cartaz-nota{margin:0;font-size:13.5px;color:var(--nx-texto-2)}
-.cartaz-nota + .cartaz-nota{margin-top:8px}
-.cartaz-nota a{color:var(--nx-amarelo);text-decoration:underline;text-underline-offset:3px}
-.cartaz-img{margin:0;padding:0 clamp(18px,calc(3 * var(--fluido)),40px) clamp(18px,calc(3 * var(--fluido)),40px)}
-.cartaz-img img{border-radius:14px;box-shadow:0 20px 40px -20px rgba(0,0,0,.7)}
-@media (max-width:900px){ .cartaz-texto{grid-template-columns:1fr} }
-@media (max-width:560px){ .bt{flex:1 1 100%} .app{padding:16px 16px 28px} }
+.bt.cheio{background:var(--nx-am);color:var(--nx-am-tinta)}
+.bt.cheio:hover{background:#ffd23a}
+.bt.escuro{background:var(--nx);color:var(--nx-texto)}
+.bt.contorno{border-color:var(--line-forte);color:var(--ink)}
+.bt.contorno:hover{border-color:var(--ink)}
+.bt.grande{min-height:56px;padding:0 30px;font-size:14px}
 
-/* ---- conteúdo ---- */
-.apoio{border-top:1px solid var(--line);padding:clamp(48px,calc(7 * var(--fluido)),88px) clamp(18px,calc(5 * var(--fluido)),64px) clamp(56px,calc(8 * var(--fluido)),104px)}
-.apoio-wrap{max-width:74ch;margin:0 auto}
-.apoio h2{font-family:var(--fonte-display);font-weight:400;font-size:clamp(22px,calc(2.6 * var(--fluido)),32px);line-height:1.12;letter-spacing:var(--ls-display);text-transform:uppercase;color:var(--ink);margin:clamp(40px,calc(5 * var(--fluido)),60px) 0 14px}
-.apoio h2:first-child{margin-top:0}
-.apoio p,.apoio li{font-size:16.5px;line-height:1.72;color:var(--ink-2)}
-.apoio p{margin:0 0 14px}
-.apoio ol,.apoio ul{margin:0 0 16px;padding-left:1.35em}
-.apoio li{margin-bottom:9px}
-.apoio b{color:var(--ink);font-weight:600}
-.apoio a{color:var(--acc);text-decoration:none;border-bottom:1px solid var(--acc-suave)}
-.apoio a:hover{border-bottom-color:var(--acc)}
-.tipos{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 18px;padding:0;list-style:none}
-.tipos li{margin:0;padding:6px 14px;border-radius:999px;border:1px solid var(--line-forte);font-family:var(--fonte-etiqueta);font-size:13px;font-weight:500;color:var(--ink)}
-.tipos li.novo{border-color:var(--acc);color:var(--acc)}
-.figura{margin:22px 0 26px}
-.figura img{border-radius:14px;box-shadow:var(--sombra)}
-.figura figcaption{margin-top:10px;font-family:var(--fonte-etiqueta);font-size:12px;letter-spacing:var(--ls-etiqueta);text-transform:uppercase;color:var(--ink-3)}
-.passos{counter-reset:p;list-style:none;padding:0}
-.passos li{counter-increment:p;position:relative;padding-left:52px;margin-bottom:18px}
-.passos li::before{content:counter(p);position:absolute;left:0;top:2px;width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--ground);display:flex;align-items:center;justify-content:center;font-family:var(--fonte-display);font-size:18px}
-.garantia{border:1.5px solid var(--ink);border-radius:18px;padding:20px 24px;margin:8px 0 18px}
-.garantia p{margin:0}
+/* ---- barra do NEXus ---- */
+.topo{position:sticky;top:0;z-index:20;background:var(--ground);background:color-mix(in srgb,var(--ground) 88%,transparent);
+  -webkit-backdrop-filter:blur(12px) saturate(160%);backdrop-filter:blur(12px) saturate(160%);border-bottom:1px solid var(--line)}
+.topo .dentro{display:flex;align-items:center;gap:22px;min-height:68px}
+.marca{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--ink);flex:none}
+.marca b{font-family:var(--fonte-display);font-weight:400;font-size:28px;line-height:1;letter-spacing:var(--ls-display)}
+.marca b i{font-style:normal;color:var(--nx)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .marca b i{color:var(--nx-am)} }
+:root[data-theme="dark"] .marca b i{color:var(--nx-am)}
+.marca small{font-family:var(--fonte-etiqueta);font-size:11px;letter-spacing:var(--ls-etiqueta);text-transform:uppercase;color:var(--ink-3)}
+.menu{display:flex;gap:clamp(14px,calc(2 * var(--fluido)),26px);margin-left:12px}
+.menu a{color:var(--ink);text-decoration:none;font-size:14.5px;font-weight:500;padding:6px 0;border-bottom:2px solid transparent}
+.menu a:hover{border-bottom-color:var(--nx-am)}
+.topo-acoes{margin-left:auto;display:flex;align-items:center;gap:10px}
+.topo-acoes .bt{min-height:42px;padding:0 18px;font-size:12px}
+
+/* ---- faixa do código (quem vai participar) ---- */
+.codigo{background:var(--nx);color:var(--nx-texto)}
+.codigo form{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;min-height:56px;padding:8px 0}
+.codigo label{font-size:14.5px;color:var(--nx-texto-2)}
+.codigo label b{color:var(--nx-texto);font-weight:600}
+.codigo input{width:140px;min-height:38px;border-radius:999px;border:1.5px solid rgba(244,241,234,.35);background:rgba(255,255,255,.06);color:var(--nx-texto);
+  font-family:var(--fonte-etiqueta);font-size:16px;font-weight:600;letter-spacing:var(--ls-etiqueta);text-align:center;padding:0 12px}
+.codigo input::placeholder{color:rgba(244,241,234,.45)}
+.codigo input:focus{outline:none;border-color:var(--nx-am)}
+.codigo button{min-height:38px;padding:0 18px;border-radius:999px;border:0;background:var(--nx-texto);color:var(--nx);cursor:pointer;
+  font-family:var(--fonte-etiqueta);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:var(--ls-etiqueta)}
+.codigo button:hover{background:var(--nx-am);color:var(--nx-am-tinta)}
+.codigo .erro{flex-basis:100%;text-align:center;margin:-4px 0 4px;font-size:13px;color:#ffb3ad}
+
+/* ---- título ---- */
+.heroi{text-align:center;padding:clamp(48px,calc(7 * var(--fluido)),96px) 0 clamp(28px,calc(4 * var(--fluido)),48px)}
+.etq{margin:0 0 14px;font-family:var(--fonte-etiqueta);font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--ink-3)}
+.heroi h1{margin:0;font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);
+  font-size:clamp(46px,calc(7.4 * var(--fluido)),104px);line-height:.95}
+.heroi h1 span{display:inline-block;background:var(--nx-am);color:var(--nx-am-tinta);padding:0 .14em .02em;border-radius:.12em;transform:rotate(-1.2deg)}
+.heroi .sub{margin:22px auto 0;max-width:640px;font-size:clamp(17px,calc(1.45 * var(--fluido)),20px);line-height:1.5;color:var(--ink-2)}
+.heroi .bts{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:30px}
+.heroi .nota{margin:16px 0 0;font-size:14px;color:var(--ink-3)}
+.heroi .nota a{color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-color:var(--nx-am);text-decoration-thickness:3px;text-underline-offset:4px}
+
+/* ---- montra: lista de tipos + ecrã ---- */
+.montra{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.5fr);gap:clamp(18px,calc(3 * var(--fluido)),36px);align-items:center;padding-bottom:clamp(40px,calc(6 * var(--fluido)),80px)}
+.lista-tipos{display:flex;flex-direction:column;gap:10px}
+.tipo{display:flex;gap:14px;align-items:flex-start;text-align:left;width:100%;padding:16px 18px;border-radius:16px;cursor:pointer;
+  background:var(--cartao);border:1.5px solid var(--line);color:var(--ink);font:inherit;transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+.tipo:hover{border-color:var(--line-forte);transform:translateY(-1px)}
+.tipo[aria-selected="true"]{border-color:var(--nx);box-shadow:0 0 0 1.5px var(--nx),var(--sombra)}
+.tipo .ic{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--nx-suave);color:var(--nx)}
+.tipo[aria-selected="true"] .ic{background:var(--nx);color:var(--nx-am)}
+.tipo .ic svg{width:22px;height:22px}
+.tipo b{display:block;font-size:16px;font-weight:600;line-height:1.3}
+.tipo small{display:block;margin-top:3px;font-size:14px;line-height:1.45;color:var(--ink-2)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .tipo .ic{color:var(--nx-am)} :root:not([data-theme="light"]) .tipo[aria-selected="true"]{border-color:var(--nx-am);box-shadow:0 0 0 1.5px var(--nx-am)} }
+.ecra{margin:0;border-radius:22px;background:var(--nx);padding:clamp(10px,calc(1.4 * var(--fluido)),18px);box-shadow:var(--sombra)}
+.ecra img{border-radius:14px;width:100%;aspect-ratio:1458/604;object-fit:cover;transition:opacity .25s ease}
+.ecra figcaption{margin:12px 6px 2px;font-size:13.5px;color:var(--nx-texto-2)}
+
+/* ---- secções ---- */
+.secao{padding:clamp(56px,calc(8 * var(--fluido)),104px) 0;border-top:1px solid var(--line)}
+.secao h2{margin:0;font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);
+  font-size:clamp(32px,calc(4.2 * var(--fluido)),56px);line-height:1}
+.secao h2 em{font-style:normal;color:var(--nx);background:linear-gradient(transparent 62%,var(--nx-am) 62%)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .secao h2 em{color:var(--nx-am);background:none} }
+.secao .intro{margin:16px 0 0;max-width:620px;font-size:18px;color:var(--ink-2)}
+.cab-secao{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(26px,calc(3.4 * var(--fluido)),44px)}
+
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0;list-style:none}
+.chips li{padding:10px 18px;border-radius:999px;background:var(--cartao);border:1px solid var(--line);font-size:15px;font-weight:500}
+.chips li.novo::after{content:"novo";margin-left:8px;padding:2px 8px;border-radius:999px;background:var(--nx-am);color:var(--nx-am-tinta);
+  font-family:var(--fonte-etiqueta);font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);vertical-align:2px}
+
+.passos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:0;padding:0;list-style:none;counter-reset:p}
+.passos li{counter-increment:p;padding:28px 26px;border-radius:20px;background:var(--cartao);border:1px solid var(--line)}
+.passos li::before{content:counter(p);display:grid;place-items:center;width:46px;height:46px;border-radius:50%;margin-bottom:18px;
+  background:var(--nx);color:var(--nx-am);font-family:var(--fonte-display);font-size:22px}
+.passos b{display:block;font-size:19px;font-weight:600;margin-bottom:6px}
+.passos p{margin:0;color:var(--ink-2)}
+
+.vantagens{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.vant{padding:26px;border-radius:20px;background:var(--cartao);border:1px solid var(--line)}
+.vant .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--nx-suave);color:var(--nx);margin-bottom:16px}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .vant .ic{color:var(--nx-am)} }
+.vant .ic svg{width:22px;height:22px}
+.vant b{display:block;font-size:18px;font-weight:600;margin-bottom:6px}
+.vant p{margin:0;color:var(--ink-2);font-size:15px}
+
+/* ---- preço e compra ---- */
+.preco-grelha{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:22px;align-items:stretch}
+.cartao-preco{padding:clamp(26px,calc(3.4 * var(--fluido)),40px);border-radius:24px;background:var(--nx);color:var(--nx-texto);box-shadow:var(--sombra);display:flex;flex-direction:column}
+.cartao-preco .etq{color:var(--nx-am)}
+.cartao-preco .valor{font-family:var(--fonte-display);font-weight:400;font-size:clamp(64px,calc(7 * var(--fluido)),92px);line-height:1;margin:6px 0 2px}
+.cartao-preco .valor-nota{color:var(--nx-texto-2);margin:0 0 20px}
+.cartao-preco ul{list-style:none;margin:0 0 24px;padding:0;display:flex;flex-direction:column;gap:9px}
+.cartao-preco li{display:flex;gap:10px;align-items:flex-start}
+.cartao-preco li::before{content:"✓";flex:none;width:22px;height:22px;border-radius:50%;background:var(--nx-am);color:var(--nx-am-tinta);display:grid;place-items:center;font-size:12px;font-weight:800;margin-top:2px}
+.cartao-preco .garantia{margin-top:auto;padding-top:18px;border-top:1px solid rgba(244,241,234,.18);font-size:14px;color:var(--nx-texto-2)}
+.cartao-preco .garantia b{color:var(--nx-texto)}
+.comprar{padding:clamp(26px,calc(3.4 * var(--fluido)),40px);border-radius:24px;background:var(--cartao);border:1.5px solid var(--line)}
+.comprar h3{margin:0 0 6px;font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:30px;line-height:1.05}
+.comprar > p{margin:0 0 20px;color:var(--ink-2)}
+.comprar-passos{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;counter-reset:c}
+.comprar-passos li{counter-increment:c;position:relative;padding:18px 18px 18px 64px;border-radius:16px;background:var(--cartao-2)}
+.comprar-passos li::before{content:counter(c);position:absolute;left:16px;top:16px;width:34px;height:34px;border-radius:50%;background:var(--nx-am);color:var(--nx-am-tinta);
+  display:grid;place-items:center;font-family:var(--fonte-display);font-size:17px}
+.comprar-passos p{margin:0 0 10px}
+.comprar-passos .num{font-family:var(--fonte-etiqueta);letter-spacing:var(--ls-etiqueta)}
+.comprar-passos span{display:block;margin-top:8px;font-size:13.5px;color:var(--ink-3)}
+.copiar{min-height:40px;padding:0 16px;border-radius:999px;border:1.5px solid var(--line-forte);background:transparent;color:var(--ink);cursor:pointer;
+  font-family:var(--fonte-etiqueta);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:var(--ls-etiqueta)}
+.copiar:hover{border-color:var(--ink)}
+.bt.wa{background:#1FA855;color:#fff;white-space:normal;text-align:center;padding-block:10px}
+.comprar-nota{margin:16px 0 0;font-size:14px;color:var(--ink-2)}
+.comprar-nota a,.termos a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--nx-am);text-decoration-thickness:2px;text-underline-offset:3px}
+.termos{margin:14px 0 0;font-size:14px;color:var(--ink-3)}
+
+/* ---- perguntas ---- */
+.faq{max-width:820px}
 .faq details{border-top:1px solid var(--line)}
 .faq details:last-of-type{border-bottom:1px solid var(--line)}
-.faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:44px;padding:15px 0;font-family:var(--fonte-etiqueta);font-size:15px;font-weight:600;line-height:1.45;color:var(--ink)}
+.faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:56px;padding:16px 0;font-size:17px;font-weight:600}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary h3{display:inline;font:inherit;color:inherit;margin:0}
-.faq summary::after{content:"+";font-size:24px;line-height:1;color:var(--acc);flex:none;transition:transform .25s ease}
+.faq summary h3{margin:0;font:inherit}
+.faq summary::after{content:"+";flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--nx-suave);font-size:20px;transition:transform .2s ease}
 .faq details[open] summary::after{transform:rotate(45deg)}
-.faq details p{margin:0 0 18px;padding-right:42px}
-.fecho{margin-top:clamp(40px,calc(5 * var(--fluido)),64px);border-radius:22px;background:var(--nx-fundo);color:var(--nx-texto);padding:clamp(26px,calc(4 * var(--fluido)),44px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
-.fecho p{margin:0;color:var(--nx-texto);font-size:18px}
-.fecho .preco b{font-size:44px}
-/* ---- comprar ---- */
-.comprar{margin:22px 0 0;border:2px solid var(--ink);border-radius:22px;padding:clamp(22px,calc(3 * var(--fluido)),34px)}
-.comprar h2{margin:0 0 16px;font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:clamp(24px,calc(2.6 * var(--fluido)),32px);line-height:1.1}
-.comprar-passos{counter-reset:c;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 28px}
-.comprar-passos li{counter-increment:c;position:relative;padding-left:52px;font-size:16.5px;line-height:1.6;color:var(--ink-2);display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-.comprar-passos li::before{content:counter(c);position:absolute;left:0;top:0;width:38px;height:38px;border-radius:50%;background:var(--nx-amarelo);color:var(--nx-amarelo-tinta);display:flex;align-items:center;justify-content:center;font-family:var(--fonte-display);font-size:20px}
-.comprar-passos p{margin:0}
-.comprar-passos b{color:var(--ink)}
-.comprar-passos .num{font-size:20px;letter-spacing:.02em}
-.comprar-passos span{font-size:14.5px;color:var(--ink-3)}
-.copiar{font:600 12px var(--fonte-etiqueta);text-transform:uppercase;letter-spacing:var(--ls-etiqueta);padding:8px 14px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;min-height:38px}
-.copiar:hover{background:var(--ink);color:var(--ground)}
-.bt.wa{background:#1FA855;color:#fff;text-align:center;padding-block:10px}
-.comprar-nota{margin:18px 0 0;font-size:14.5px;color:var(--ink-3)}
-.comprar-nota a{color:var(--acc);text-decoration:none;border-bottom:1px solid var(--acc-suave)}
-@media (max-width:760px){ .comprar-passos{grid-template-columns:1fr} .bt.wa{width:100%} }
-@media (prefers-reduced-motion: reduce){*{transition-duration:.01ms!important}}
+.faq details p{margin:0 0 18px;color:var(--ink-2);max-width:70ch}
+
+/* ---- fecho ---- */
+.fecho{background:var(--nx);color:var(--nx-texto);text-align:center;padding:clamp(56px,calc(8 * var(--fluido)),96px) 0}
+.fecho h2{margin:0;font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);font-size:clamp(34px,calc(4.6 * var(--fluido)),60px);line-height:1}
+.fecho h2 em{font-style:normal;color:var(--nx-am)}
+.fecho p{margin:14px auto 0;max-width:540px;color:var(--nx-texto-2);font-size:17px}
+.fecho .bts{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:28px}
+.fecho .bt.contorno{border-color:rgba(244,241,234,.45);color:var(--nx-texto)}
+.fecho .bt.contorno:hover{border-color:var(--nx-am);color:var(--nx-am)}
+
+.rodape-site{padding:clamp(36px,calc(5 * var(--fluido)),56px) 0;border-top:1px solid var(--line)}
+.rodape-site .dentro{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;font-family:var(--fonte-etiqueta);font-size:11px;letter-spacing:var(--ls-etiqueta);text-transform:uppercase;color:var(--ink-3)}
+.rodape-site a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line-forte)}
+.rodape-site a:hover{color:var(--ink)}
+
+/* ---- ecrãs mais pequenos ---- */
+@media (max-width:1020px){ .menu{display:none} }
+@media (max-width:900px){
+  .montra{grid-template-columns:1fr}
+  .lista-tipos{flex-direction:row;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;order:2}
+  .tipo{flex:0 0 78%;scroll-snap-align:start}
+  .passos,.vantagens{grid-template-columns:1fr}
+  .preco-grelha{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .marca small{display:none}
+  .topo-acoes .bt.contorno{display:none}
+  .heroi{text-align:left}
+  .heroi .bts{justify-content:flex-start}
+  .heroi .bts .bt{flex:1 1 100%}
+  .codigo form{justify-content:flex-start}
+  .codigo label{flex-basis:100%}
+  .codigo input{flex:1}
+}
+@media (prefers-reduced-motion: reduce){ *{transition-duration:.01ms!important;scroll-behavior:auto!important} }
 </style>
 </head>
 <body>
 
-<header class="cabeca-site">
-  <a class="logo" href="index.html">Juliana Araújo</a>
-  <nav>
-    <a href="index.html#sobre">Sobre mim</a>
-    <a href="index.html#formacoes">Formações</a>
-    <a href="recursos.html">Recursos</a>
-    <a href="index.html#contactos">Contactos</a>
-  </nav>
+<header class="topo">
+  <div class="dentro">
+    <a class="marca" href="#inicio" aria-label="NEXus, início"><b>NEX<i>us</i></b><small>por Juliana Araújo</small></a>
+    <nav class="menu" aria-label="Nesta página">
+      <a href="#tipos">O que tem</a>
+      <a href="#como">Como funciona</a>
+      <a href="#preco">Preço</a>
+      <a href="#perguntas">Perguntas</a>
+    </nav>
+    <div class="topo-acoes">
+      <a class="bt contorno" href="https://nexus.jmatosaraujo99.workers.dev/formador?demo">Experimentar grátis</a>
+      <a class="bt cheio" href="https://nexus.jmatosaraujo99.workers.dev/formador">Entrar no NEXus</a>
+    </div>
+  </div>
 </header>
 
-<main class="app">
-  <section class="cartaz" aria-label="NEXus">
-    <div class="cartaz-texto">
+<div class="codigo">
+  <div class="dentro">
+    <form id="form-codigo" action="https://nexus.jmatosaraujo99.workers.dev/" method="get" novalidate>
+      <label for="cod"><b>Vais responder numa sessão?</b> Escreve o código que está no ecrã</label>
+      <input id="cod" name="c" type="text" inputmode="numeric" autocomplete="off" maxlength="7" placeholder="123 456" aria-describedby="cod-erro">
+      <button type="submit">Participar</button>
+      <p class="erro" id="cod-erro" hidden>O código tem 6 números.</p>
+    </form>
+  </div>
+</div>
+
+<main id="inicio">
+  <section class="heroi">
+    <div class="dentro">
       <p class="etq">NEXus · para quem dá formação</p>
-      <h1>Põe a sala <em>a responder.</em></h1>
-      <p class="cartaz-sub">Votações, quizzes, nuvens de palavras, perguntas da sala e o jogo «Duas verdades e uma mentira». Os participantes entram com um código e respondem no telemóvel, sem apps nem contas.</p>
-      <div class="compra">
-      <div class="preco"><b>29,99 €</b><span>pagas uma vez · sem mensalidades</span></div>
+      <h1>Põe a sala<br><span>a responder.</span></h1>
+      <p class="sub">Votações, quizzes, nuvens de palavras e jogos ao vivo. A sala entra com um código e responde no telemóvel, sem apps nem contas, e tu vês as respostas a chegar ao ecrã.</p>
       <div class="bts">
-        <a class="bt cheio" href="#comprar">Comprar licença <span aria-hidden="true">&rarr;</span></a>
-        <a class="bt contorno" href="https://nexus.jmatosaraujo99.workers.dev/formador?demo">Experimentar grátis</a>
+        <a class="bt cheio grande" href="https://nexus.jmatosaraujo99.workers.dev/formador">Entrar no NEXus <span aria-hidden="true">&rarr;</span></a>
+        <a class="bt contorno grande" href="https://nexus.jmatosaraujo99.workers.dev/formador?demo">Experimentar grátis</a>
       </div>
-      <p class="cartaz-nota">A experiência corre no teu computador, com participantes simulados. Não pede conta nem dados.</p>
-      <p class="cartaz-nota">Já tens licença? <a href="https://nexus.jmatosaraujo99.workers.dev/formador.html">Entra no NEXus</a>.</p>
-      </div>
+      <p class="nota">Ainda não tens licença? <a href="#preco">29,99 €, pagos uma vez</a>.</p>
     </div>
-    <figure class="cartaz-img">
-      <img src="media/nexus-revelacao.jpg" width="1458" height="604" alt="O NEXus no ecrã: as três frases de uma pessoa, uma delas carimbada como mentira, e um telemóvel ao lado com a mesma revelação.">
+  </section>
+
+  <section class="dentro montra" aria-label="Como fica no ecrã">
+    <div class="lista-tipos" role="tablist" aria-label="Vê como fica">
+      <button class="tipo" type="button" role="tab" aria-selected="true" aria-controls="ecra" data-img="media/nexus-nuvem.jpg"
+        data-alt="Uma nuvem de palavras no ecrã do NEXus, com as palavras maiores para as respostas mais repetidas." data-legenda="A nuvem cresce à medida que as respostas chegam.">
+        <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 18a4.5 4.5 0 0 1-.5-8.97A6 6 0 0 1 17.6 8.1 4.5 4.5 0 0 1 17.5 18h-11z"/></svg></span>
+        <span><b>Nuvem de palavras</b><small>Cada pessoa escreve uma palavra e a nuvem cresce no ecrã.</small></span>
+      </button>
+      <button class="tipo" type="button" role="tab" aria-selected="false" aria-controls="ecra" data-img="media/nexus-revelacao.jpg"
+        data-alt="O NEXus no ecrã: as três frases de uma pessoa, uma delas carimbada como mentira, e um telemóvel ao lado com a mesma revelação." data-legenda="A sala vota no telemóvel e o ecrã revela a mentira.">
+        <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a7 7 0 0 0-7 7c0 2.4 1.2 4.5 3 5.7V19a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-3.3c1.8-1.2 3-3.3 3-5.7a7 7 0 0 0-7-7z"/><path d="M10 17h4"/></svg></span>
+        <span><b>Duas verdades e uma mentira</b><small>Um quebra-gelo com votação, detetor de mentiras e pódio.</small></span>
+      </button>
+      <button class="tipo" type="button" role="tab" aria-selected="false" aria-controls="ecra" data-img="media/nexus-registo.jpg"
+        data-alt="O ecrã do NEXus com quem já escreveu as frases do jogo, e um telemóvel ao lado com o formulário." data-legenda="Cada pessoa responde no seu telemóvel e o ecrã mostra quem já entrou.">
+        <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18h2"/></svg></span>
+        <span><b>No telemóvel</b><small>Sem apps nem contas: leem o QR e respondem no navegador.</small></span>
+      </button>
+    </div>
+    <figure class="ecra" id="ecra" role="tabpanel">
+      <img id="ecra-img" src="media/nexus-nuvem.jpg" width="1458" height="604" alt="Uma nuvem de palavras no ecrã do NEXus, com as palavras maiores para as respostas mais repetidas.">
+      <figcaption id="ecra-leg">A nuvem cresce à medida que as respostas chegam.</figcaption>
     </figure>
   </section>
 
-  <section class="comprar" id="comprar" aria-labelledby="t-comprar">
-    <h2 id="t-comprar">Comprar em dois passos</h2>
+  <section class="secao" id="tipos">
+    <div class="dentro">
+      <div class="cab-secao">
+        <div>
+          <h2>Tudo o que <em>precisas</em> numa sessão</h2>
+          <p class="intro">Fi-lo para as minhas sessões de formação. Usas o que quiseres, em todas as tuas turmas, sem limite de atividades.</p>
+        </div>
+      </div>
+      <ul class="chips">
+        <li>Escolha múltipla</li><li>Quiz com pontos</li><li class="novo">Teste com nota</li><li>Nuvem de palavras</li>
+        <li>Resposta aberta</li><li>Escala</li><li>Ordenar</li><li>Perguntas da sala</li><li>Roleta</li>
+        <li>Classificação e pódio</li><li>Modo de equipas</li><li>Questionário ao ritmo de cada um</li>
+        <li>Duas verdades e uma mentira</li><li>Tela livre e textos</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="secao" id="como">
+    <div class="dentro">
+      <div class="cab-secao"><div><h2>Como <em>funciona</em></h2></div></div>
+      <ol class="passos">
+        <li><b>Compras e recebes a chave</b><p>Pagas por MB WAY, avisas-me no WhatsApp e recebes lá a tua chave de licença, com a fatura-recibo.</p></li>
+        <li><b>Ligas a tua base de dados</b><p>O NEXus guarda tudo numa base de dados Firebase, gratuita e na tua conta Google. Um assistente leva-te passo a passo. Demora uns 10 minutos e só se faz uma vez.</p></li>
+        <li><b>Crias e apresentas</b><p>Projetas o ecrã, a sala lê o código QR e responde. Usas em todas as tuas turmas, sem limite de sessões.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="secao">
+    <div class="dentro">
+      <div class="cab-secao"><div><h2>Feito para a <em>sala de formação</em></h2></div></div>
+      <div class="vantagens">
+        <div class="vant"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/></svg></span>
+          <b>Modelos prontos</b><p>Para abrir e fechar sessões, quizzes por tema e atividades completas. Mudas o texto e apresentas.</p></div>
+        <div class="vant"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></span>
+          <b>Testes com nota</b><p>Cada pessoa vê só a sua nota no telemóvel. Tu ficas com a lista de todos, pronta para o Excel.</p></div>
+        <div class="vant"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
+          <b>Resultados guardados</b><p>Revês cada sessão, imprimes em PDF ou exportas para Excel.</p></div>
+        <div class="vant"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></span>
+          <b>A tua base de dados</b><p>As respostas ficam na tua conta Google, não na minha. O plano gratuito da Firebase aguenta até 100 pessoas ligadas ao mesmo tempo.</p></div>
+        <div class="vant"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg></span>
+          <b>Sem mensalidades</b><p>Pagas uma vez. As atualizações estão incluídas e aparecem-te sozinhas.</p></div>
+        <div class="vant"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></span>
+          <b>Garantia de 14 dias</b><p>Se o NEXus não funcionar como esperavas, escreve-me nos 14 dias seguintes à compra e devolvo-te o dinheiro.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" id="preco">
+    <div class="dentro">
+      <div class="cab-secao"><div><h2>Um preço, <em>pago uma vez</em></h2></div></div>
+      <div class="preco-grelha">
+        <div class="cartao-preco">
+          <p class="etq">Licença NEXus</p>
+          <p class="valor">29,99 €</p>
+          <p class="valor-nota">pagos uma vez · sem mensalidades</p>
+          <ul>
+            <li>Todos os tipos de pergunta, jogos e testes com nota</li>
+            <li>Atividades e sessões sem limite, em todas as turmas</li>
+            <li>Resultados guardados e exportação para Excel</li>
+            <li>Atualizações incluídas</li>
+          </ul>
+          <a class="bt cheio grande" href="https://nexus.jmatosaraujo99.workers.dev/formador?demo">Experimentar antes de comprar</a>
+          <p class="garantia"><b>Garantia de 14 dias.</b> Se não funcionar como esperavas, devolvo-te o dinheiro.</p>
+        </div>
+        <div class="comprar" id="comprar">
+    <h3>Comprar em dois passos</h3>
+    <p>Sem cartão nem formulários: MB WAY e uma mensagem.</p>
     <ol class="comprar-passos">
       <li>
         <p><b>Paga 29,99 € por MB WAY</b> para o <b class="num">961 955 373</b></p>
@@ -181,76 +373,43 @@ img{max-width:100%;height:auto;display:block}
       </li>
     </ol>
     <p class="comprar-nota">Recebes a chave de licença e a fatura-recibo no WhatsApp até ao dia útil seguinte. Tens dúvidas antes de comprar? <a href="https://wa.me/351961955373?text=Ol%C3%A1%2C%20Juliana%21%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20NEXus%3A%20">Pergunta-me no WhatsApp</a>.</p>
+  </div>
+      </div>
+      <p class="termos">Antes de comprar, lê os <a href="nexus-termos.html">termos da licença</a>.</p>
+    </div>
+  </section>
+
+  <section class="secao" id="perguntas">
+    <div class="dentro">
+      <div class="cab-secao"><div><h2>Perguntas <em>frequentes</em></h2></div></div>
+      <div class="faq">
+        <details><summary><h3>É mesmo pagamento único?</h3></summary><p>É. Pagas 29,99 € uma vez e a licença é tua. Não há mensalidades nem renovações, e as atualizações estão incluídas.</p></details>
+        <details><summary><h3>Posso experimentar antes de comprar?</h3></summary><p>Podes. Em «Experimentar grátis» abres o NEXus em modo de demonstração, com participantes simulados e um telemóvel de teste no próprio ecrã. Não pede conta nem dados.</p></details>
+        <details><summary><h3>Os participantes precisam de instalar alguma coisa?</h3></summary><p>Não. Leem o código QR ou escrevem o código no telemóvel, num navegador qualquer. Não precisam de conta nem de app.</p></details>
+        <details><summary><h3>Quantas pessoas podem responder ao mesmo tempo?</h3></summary><p>Até 100 ligadas em simultâneo, que é o limite do plano gratuito da Firebase. Para turmas de formação, sobra.</p></details>
+        <details><summary><h3>Preciso de conta Google?</h3></summary><p>Precisas, para criar a base de dados gratuita onde ficam as tuas sessões. É a única coisa que te pede o assistente, além da chave.</p></details>
+        <details><summary><h3>Posso usar em vários computadores e turmas?</h3></summary><p>Podes. A licença é para uma pessoa e uma base de dados; entras com a tua conta em qualquer computador e usas com todas as turmas.</p></details>
+        <details><summary><h3>Como pago e recebo a fatura?</h3></summary><p>Pagas 29,99 € por MB WAY para o 961 955 373 e avisas-me no WhatsApp, com o botão «Já paguei». Envio-te a chave e a fatura-recibo até ao dia útil seguinte.</p></details>
+        <details><summary><h3>E os dados dos participantes?</h3></summary><p>Respondem de forma anónima, a não ser nos testes com nota, em que escrevem o nome. As respostas ficam na tua base de dados. Eu só guardo o teu nome, o teu email e o endereço da base a que a licença está ligada.</p></details>
+        <details><summary><h3>E se precisar de ajuda?</h3></summary><p>Escreves-me pelo WhatsApp ou por email. Respondo em três dias úteis, no máximo.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="fecho">
+    <div class="dentro">
+      <h2>A próxima sessão <em>começa aqui.</em></h2>
+      <p>Experimenta hoje, sem conta. Quando quiseres usar com a tua turma, a licença custa 29,99 €, pagos uma vez.</p>
+      <div class="bts">
+        <a class="bt cheio grande" href="https://nexus.jmatosaraujo99.workers.dev/formador">Entrar no NEXus <span aria-hidden="true">&rarr;</span></a>
+        <a class="bt contorno grande" href="https://nexus.jmatosaraujo99.workers.dev/formador?demo">Experimentar grátis</a>
+      </div>
+    </div>
   </section>
 </main>
 
-<section class="apoio">
-  <div class="apoio-wrap">
-
-    <h2>O que tem</h2>
-    <p>Fi-lo para as minhas sessões de formação. É isto que tem, sem mensalidades:</p>
-    <ul class="tipos">
-      <li>Escolha múltipla</li><li>Quiz com pontos</li><li>Nuvem de palavras</li><li>Resposta aberta</li><li>Escala</li><li>Ordenar</li>
-      <li>Perguntas da sala</li><li>Roleta</li><li>Classificação e pódio</li><li>Modo de equipas</li><li>Tela livre e textos</li>
-      <li class="novo">Duas verdades e uma mentira</li>
-    </ul>
-    <ul>
-      <li><b>Modelos prontos</b> para abrir e fechar sessões, quizzes por tema e atividades completas. Mudas o texto e apresentas.</li>
-      <li><b>Questionário ao ritmo de cada um</b>, para avaliações e diagnósticos.</li>
-      <li><b>Resultados guardados</b> de cada sessão, para rever, imprimir em PDF ou exportar para Excel.</li>
-      <li><b>As atualizações estão incluídas.</b> Quando sai uma novidade, aparece-te sozinha.</li>
-    </ul>
-    <figure class="figura">
-      <img src="media/nexus-nuvem.jpg" width="1458" height="604" loading="lazy" alt="Uma nuvem de palavras no ecrã e, ao lado, o telemóvel de um participante com a palavra que enviou.">
-      <figcaption>A nuvem de palavras cresce no ecrã à medida que as respostas chegam</figcaption>
-    </figure>
-
-    <h2>Como funciona</h2>
-    <ol class="passos">
-      <li><b>Compras e recebes a chave.</b> Pagas por MB WAY, avisas-me no WhatsApp e recebes lá a tua chave de licença, com a fatura-recibo.</li>
-      <li><b>Ligas a tua base de dados.</b> O NEXus guarda tudo numa base de dados Firebase, gratuita e na tua conta Google. Um assistente leva-te passo a passo. Demora uns 10 minutos e só se faz uma vez.</li>
-      <li><b>Crias e apresentas.</b> Projetas o ecrã, a sala lê o código QR e responde. Usas em todas as tuas turmas, sem limite de atividades nem de sessões.</li>
-    </ol>
-    <figure class="figura">
-      <img src="media/nexus-registo.jpg" width="1458" height="604" loading="lazy" alt="O ecrã do jogo Duas verdades e uma mentira com os nomes de quem já escreveu, e um telemóvel com o formulário das frases.">
-      <figcaption>No «Duas verdades e uma mentira», cada pessoa escreve as frases no telemóvel</figcaption>
-    </figure>
-
-    <h2>Porquê uma base de dados tua</h2>
-    <p>As respostas das tuas sessões ficam na tua conta, à tua responsabilidade, e não as partilhas com ninguém, nem comigo. O plano gratuito da Firebase aguenta até <b>100 pessoas ligadas ao mesmo tempo</b>, o que chega para uma sala de formação, e não tens de pôr cartão.</p>
-
-    <h2>Garantia de 14 dias</h2>
-    <div class="garantia">
-      <p>Se o NEXus não funcionar como esperavas, escreve-me nos 14 dias seguintes à compra e devolvo-te o dinheiro. A licença fica desligada.</p>
-    </div>
-
-    <h2>Perguntas frequentes</h2>
-    <div class="faq">
-      <details><summary><h3>É mesmo pagamento único?</h3></summary><p>É. Pagas 29,99 € uma vez e a licença é tua. Não há mensalidades nem renovações, e as atualizações estão incluídas.</p></details>
-      <details><summary><h3>Posso experimentar antes de comprar?</h3></summary><p>Podes. Em «Experimentar grátis» abres o NEXus em modo de demonstração, com participantes simulados e um telemóvel de teste no próprio ecrã. Não pede conta nem dados.</p></details>
-      <details><summary><h3>Os participantes precisam de instalar alguma coisa?</h3></summary><p>Não. Leem o código QR ou escrevem o código no telemóvel, num navegador qualquer. Não precisam de conta nem de app.</p></details>
-      <details><summary><h3>Quantas pessoas podem responder ao mesmo tempo?</h3></summary><p>Até 100 ligadas em simultâneo, que é o limite do plano gratuito da Firebase. Para turmas de formação, sobra.</p></details>
-      <details><summary><h3>Preciso de conta Google?</h3></summary><p>Precisas, para criar a base de dados gratuita onde ficam as tuas sessões. É a única coisa que te pede o assistente, além da chave.</p></details>
-      <details><summary><h3>Posso usar em vários computadores e turmas?</h3></summary><p>Podes. A licença é para uma pessoa e uma base de dados; entras com a tua conta em qualquer computador e usas com todas as turmas.</p></details>
-      <details><summary><h3>Como pago e recebo a fatura?</h3></summary><p>Pagas 29,99 € por MB WAY para o 961 955 373 e avisas-me no WhatsApp, com o botão «Já paguei». Envio-te a chave e a fatura-recibo até ao dia útil seguinte.</p></details>
-      <details><summary><h3>E os dados dos participantes?</h3></summary><p>Respondem de forma anónima, e as respostas ficam na tua base de dados. Eu só guardo o teu nome, o teu email e o endereço da base a que a licença está ligada.</p></details>
-      <details><summary><h3>E se precisar de ajuda?</h3></summary><p>Escreves-me pelo WhatsApp ou por email. Respondo em três dias úteis, no máximo.</p></details>
-    </div>
-    <p style="margin-top:18px;font-size:14px">Antes de comprar, lê os <a href="nexus-termos.html">termos da licença</a>.</p>
-
-    <div class="fecho">
-      <div class="preco"><b>29,99 €</b><span style="color:var(--nx-texto-2)">pagas uma vez</span></div>
-      <div class="bts">
-        <a class="bt cheio" href="#comprar">Comprar licença <span aria-hidden="true">&rarr;</span></a>
-        <a class="bt contorno" href="https://nexus.jmatosaraujo99.workers.dev/formador?demo">Experimentar grátis</a>
-      </div>
-    </div>
-
-  </div>
-</section>
-
 <footer class="rodape-site">
-  <div class="rodape-wrap">
+  <div class="dentro">
     <span>© 2026 Juliana Araújo</span>
     <span><a href="nexus-termos.html">Termos da licença</a> · <a href="privacidade.html">Privacidade</a> · <a href="https://www.livroreclamacoes.pt" rel="noopener">Livro de Reclamações</a></span>
     <a href="index.html">Voltar ao site</a>
@@ -258,6 +417,41 @@ img{max-width:100%;height:auto;display:block}
 </footer>
 
 <script>
+/* montra: cada tipo mostra a sua imagem do NEXus */
+(function () {
+  var img = document.getElementById('ecra-img'), leg = document.getElementById('ecra-leg');
+  var tipos = Array.prototype.slice.call(document.querySelectorAll('.tipo'));
+  tipos.forEach(function (t, i) {
+    t.addEventListener('click', function () {
+      tipos.forEach(function (o) { o.setAttribute('aria-selected', String(o === t)); o.tabIndex = o === t ? 0 : -1; });
+      img.style.opacity = '0';
+      setTimeout(function () { img.src = t.getAttribute('data-img'); img.alt = t.getAttribute('data-alt'); leg.textContent = t.getAttribute('data-legenda'); img.style.opacity = '1'; }, 160);
+    });
+    t.addEventListener('keydown', function (ev) {
+      var k = ev.key === 'ArrowDown' || ev.key === 'ArrowRight' ? 1 : ev.key === 'ArrowUp' || ev.key === 'ArrowLeft' ? -1 : 0;
+      if (!k) return;
+      ev.preventDefault();
+      var n = tipos[(i + k + tipos.length) % tipos.length]; n.focus(); n.click();
+    });
+    if (i) t.tabIndex = -1;
+  });
+  /* as imagens das outras abas vêm já, para trocar sem esperar */
+  tipos.slice(1).forEach(function (t) { var p = new Image(); p.src = t.getAttribute('data-img'); });
+})();
+
+/* faixa do código: leva quem vai participar para a sessão */
+(function () {
+  var f = document.getElementById('form-codigo'), inp = document.getElementById('cod'), erro = document.getElementById('cod-erro');
+  f.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var c = inp.value.replace(/\D/g, '');
+    if (c.length !== 6) { erro.hidden = false; inp.focus(); return; }
+    erro.hidden = true;
+    location.href = f.action + '?c=' + c;
+  });
+  inp.addEventListener('input', function () { if (!erro.hidden && inp.value.replace(/\D/g, '').length === 6) erro.hidden = true; });
+})();
+
 document.querySelectorAll('[data-copiar]').forEach(function (b) {
   b.addEventListener('click', function () {
     var t = b.getAttribute('data-copiar'), antes = b.textContent;
