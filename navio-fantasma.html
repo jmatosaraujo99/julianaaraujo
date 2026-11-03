@@ -145,6 +145,11 @@ h1{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;let
   box-shadow:0 10px 28px -12px rgba(98,227,185,.55)}
 .cartaz-botao:hover{transform:translateY(-1px);box-shadow:0 14px 32px -12px rgba(98,227,185,.75)}
 .cartaz-botao:focus-visible{outline-color:var(--luz)}
+.entrar-conta{margin:20px 0 0;font-family:var(--fonte-etiqueta);font-size:12px;letter-spacing:var(--ls-etiqueta);text-transform:uppercase}
+.entrar-conta a{display:inline-flex;align-items:center;min-height:44px;color:var(--mar-texto-2);text-decoration:none}
+.entrar-conta a span{border-bottom:1px solid var(--mar-linha)}
+.entrar-conta a:hover{color:var(--luz)}
+.entrar-conta a:hover span{border-bottom-color:var(--luz)}
 .cartaz-imagem{position:relative;margin:0}
 .cartaz-imagem img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 50%}
 /* a imagem funde-se no mar, do lado do texto */
@@ -233,6 +238,7 @@ h1{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;let
         <div><dt>Traidor</dt><dd>opcional, com cartões secretos</dd></div>
       </dl>
       <a class="cartaz-botao" href="index.html#contactos">Levar à minha equipa <span aria-hidden="true">&rarr;</span></a>
+      <p class="entrar-conta"><a href="https://area-reservada.jmatosaraujo99.workers.dev/"><span>Já tenho acesso · Entrar</span>&nbsp;&rarr;</a></p>
     </div>
     <figure class="cartaz-imagem">
       <img src="media/navio-fantasma-navio.jpg" width="600" height="337" alt="Um galeão de velas rasgadas no meio de uma tempestade, com uma luz verde a sair do casco.">
