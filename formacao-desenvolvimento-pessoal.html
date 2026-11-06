@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Formação em Gestão do Tempo, Stress e Inteligência Emocional | Juliana Araújo</title>
-<meta name="description" content="Formação à medida em gestão do tempo, inteligência emocional, gestão de stress e criatividade, para profissionais em funções exigentes.">
+<title>Formação em Gestão do Tempo e Stress | Juliana Araújo</title>
+<meta name="description" content="Formação à medida em gestão do tempo, inteligência emocional, gestão de stress e criatividade, para funções exigentes. Presencial e online em todo o país.">
 <link rel="canonical" href="https://julianaaraujo.pt/formacao-desenvolvimento-pessoal.html">
 <meta property="og:title" content="Formação em Gestão do Tempo, Stress e Inteligência Emocional | Juliana Araújo">
 <meta property="og:description" content="Formação à medida em gestão do tempo, inteligência emocional, gestão de stress e criatividade, para profissionais em funções exigentes.">
@@ -227,6 +227,23 @@
 
   footer a { color: var(--cinza); }
   footer a:hover { color: var(--cobalto); }
+  /* botão da Área reservada, no canto do cabeçalho */
+  header .area-bt { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; margin-left: clamp(14px, calc(2 * var(--fluido)), 28px); border: 1px solid currentColor; color: inherit; font-family: var(--fonte-etiqueta); font-size: 12px; letter-spacing: var(--ls-etiqueta-16); text-transform: uppercase; text-decoration: none; white-space: nowrap; transition: background .2s ease, color .2s ease, border-color .2s ease; }
+  header .area-bt:hover { background: var(--cobalto); border-color: var(--cobalto); color: var(--creme); }
+  header .area-bt svg { flex: none; }
+  header nav { margin-left: auto; }
+  /* tablet e ecrãs muito estreitos: só o cadeado (o texto continua lá para os leitores de ecrã) */
+  @media (min-width: 641px) and (max-width: 900px) {
+    header .area-bt { font-size: 0; gap: 0; min-width: 44px; justify-content: center; padding: 0; }
+  }
+  @media (max-width: 640px) {
+    header .area-bt { order: 1; margin-left: 0; padding: 0 10px; gap: 6px; font-size: 10px; letter-spacing: var(--ls-etiqueta-14); }
+    header nav, header.cabeca-site nav { order: 2; margin-left: 0; width: 100%; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 11px; }
+    header nav a, header.cabeca-site nav a { font-size: 11px; }
+  }
+  @media (max-width: 340px) {
+    header .area-bt { font-size: 0; gap: 0; min-width: 44px; justify-content: center; padding: 0; }
+  }
 </style>
 <style>
   .migalhas { font-family:var(--fonte-etiqueta); font-size:11px; letter-spacing: var(--ls-etiqueta-16); text-transform:uppercase; color:var(--cinza); margin-bottom:clamp(20px,calc(3 * var(--fluido)),30px); }
@@ -241,22 +258,33 @@
   a.rel:hover { background:rgba(10,10,10,.05); border-color:var(--preto); }
   .cta { display:inline-flex; align-items:center; gap:14px; background:var(--cobalto); color:var(--creme); padding:19px 30px; margin-top:clamp(28px,calc(4 * var(--fluido)),40px); font-family:var(--fonte-etiqueta); font-size:12px; font-weight:500; letter-spacing: var(--ls-etiqueta-20); text-transform:uppercase; text-decoration:none; transition:background-color .25s ease,color .25s ease; }
   .cta:hover { background:var(--preto); color:var(--creme); }
+  .bloco { margin-top:clamp(48px,calc(6 * var(--fluido)),80px); padding-top:clamp(28px,calc(4 * var(--fluido)),40px); border-top:1px solid rgba(10,10,10,.16); }
+  .bloco h2 { font-family:var(--fonte-display); font-weight:400; font-size:clamp(24px,calc(2.6 * var(--fluido)),36px); line-height:1.1; letter-spacing:var(--ls-display); text-transform:uppercase; margin:0 0 clamp(18px,calc(2.4 * var(--fluido)),28px); }
+  .pilares { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:clamp(20px,calc(3 * var(--fluido)),40px); }
+  .unidades { list-style:none; margin:0; padding:0; border-top:1px solid rgba(10,10,10,.16); }
+  .unidades li { display:grid; grid-template-columns:96px minmax(0,1fr); gap:16px; align-items:baseline; padding:12px 0; border-bottom:1px solid rgba(10,10,10,.16); font-family:var(--fonte-corpo); font-size:16px; line-height:1.35; }
+  .unidades b { font-family:var(--fonte-etiqueta); font-size:12px; font-weight:500; letter-spacing:var(--ls-etiqueta-16); color:var(--cinza); }
+  .nota { margin:clamp(14px,calc(2 * var(--fluido)),20px) 0 0; max-width:62ch; font-family:var(--fonte-corpo); font-size:16px; line-height:1.55; color:var(--cinza); }
+  .caso { max-width:68ch; font-family:var(--fonte-corpo); font-size:17px; line-height:1.6; }
+  .caso p { margin:0 0 12px; }
+  .caso .quem { font-family:var(--fonte-etiqueta); font-size:12px; letter-spacing:var(--ls-etiqueta-16); text-transform:uppercase; color:var(--cinza); }
 </style>
 </head>
 <body>
 
 <header>
-  <a class="logo" href="index.html">Juliana Araújo</a>
+  <a class="logo" href="/">Juliana Araújo</a>
   <nav>
-    <a href="index.html#sobre">Sobre mim</a>
-    <a href="index.html#formacoes">Formações</a>
+    <a href="/#sobre">Sobre mim</a>
+    <a href="/#formacoes">Formações</a>
     <a href="recursos.html">Recursos</a>
-    <a href="index.html#contactos">Contactos</a>
+    <a href="/#contactos">Contactos</a>
   </nav>
+  <a class="area-bt" href="https://area-reservada.jmatosaraujo99.workers.dev/" rel="nofollow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Área reservada</a>
 </header>
 
 <main>
-  <p class="migalhas"><a href="index.html">Início</a> / <a href="index.html#formacoes">Portefólio de Formação</a> / Desenvolvimento Pessoal e Criatividade</p>
+  <p class="migalhas"><a href="/">Início</a> / <a href="/#formacoes">Portefólio de Formação</a> / Desenvolvimento Pessoal e Criatividade</p>
   <span class="chapa">02</span>
   <h1>Desenvolvimento Pessoal e Criatividade</h1>
   <p class="intro">Ganhar clareza sobre os próprios recursos e lidar com o tempo, as emoções e a pressão com mais consciência.</p>
@@ -270,11 +298,6 @@
     <span>Criatividade e resolução de problemas</span>
   </div>
 
-  <!-- FALTA: um ou dois parágrafos sobre como decorre uma sessão desta área —
-       um exemplo de atividade concreta e, se possível, um caso real (sem
-       identificar o cliente, se preferires). É o conteúdo que distingue esta
-       página de um catálogo e o que mais pesa para aparecer em pesquisas. -->
-
   <div class="cartoes">
     <div>
       <p class="meta-label">Quem participa</p>
@@ -287,12 +310,10 @@
     <div>
       <p class="meta-label">Duração</p>
       <p class="meta-value">De sessões pontuais a percursos de várias semanas.</p>
-      <!-- FALTA: duração típica desta área em concreto (ex.: "7 horas" ou
-           "dois módulos de 3,5 horas"), se quiseres ser mais específica. -->
     </div>
     <div>
       <p class="meta-label">Modalidade</p>
-      <p class="meta-value">Presencial ou online.</p>
+      <p class="meta-value">Presencial e online em todo o país.</p>
     </div>
     <div>
       <p class="meta-label">Desenho à medida</p>
@@ -300,8 +321,43 @@
     </div>
   </div>
 
-  <a class="cta" href="index.html#contactos">Pedir uma proposta<span aria-hidden="true" style="display:block;width:22px;height:8px;background:currentColor;clip-path:polygon(0 3px,14px 3px,14px 0,22px 4px,14px 8px,14px 5px,0 5px)"></span></a>
+  <section class="bloco">
+    <h2>Como decorre uma sessão</h2>
+    <div class="pilares">
+      <div>
+        <p class="meta-label">Experimentar</p>
+        <p class="meta-value">A sessão começa com um desafio, um caso ou uma decisão para tomar em grupo.</p>
+      </div>
+      <div>
+        <p class="meta-label">Analisar</p>
+        <p class="meta-value">O que aconteceu na atividade é analisado e conceptualizado. É aqui que o conteúdo ganha significado.</p>
+      </div>
+      <div>
+        <p class="meta-label">Aplicar</p>
+        <p class="meta-value">Cada participante define como transferir o que trabalhou para o seu contexto profissional.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloco">
+    <h2>Unidades de formação</h2>
+    <ul class="unidades">
+      <li><b>0404</b><span>Organização Pessoal e Gestão do Tempo</span></li>
+      <li><b>4651</b><span>Gestão do Stress e Gestão dos Conflitos</span></li>
+    </ul>
+    <p class="nota">Podem ser realizadas de forma independente ou integradas num percurso formativo à medida da organização.</p>
+  </section>
+
+  <a class="cta" href="/#contactos">Pedir uma proposta<span aria-hidden="true" style="display:block;width:22px;height:8px;background:currentColor;clip-path:polygon(0 3px,14px 3px,14px 0,22px 4px,14px 8px,14px 5px,0 5px)"></span></a>
   <p class="intro">Indique os objetivos e o perfil dos participantes. A proposta é construída a partir dessa informação.</p>
+
+  <div style="margin-top:clamp(48px,calc(6 * var(--fluido)),80px);padding-top:clamp(28px,calc(4 * var(--fluido)),40px);border-top:1px solid rgba(10,10,10,.16)">
+    <p class="meta-label">Atividades que levo às sessões</p>
+    <div class="relacionadas">
+      <a class="rel" href="dados-storytelling.html">Dados de Storytelling</a>
+      <a class="rel" href="bolinho-da-sorte.html">Bolinho da Sorte</a>
+    </div>
+  </div>
 
   <div style="margin-top:clamp(48px,calc(6 * var(--fluido)),80px);padding-top:clamp(28px,calc(4 * var(--fluido)),40px);border-top:1px solid rgba(10,10,10,.16)">
     <p class="meta-label">Outras áreas de formação</p>
@@ -316,7 +372,7 @@
 <footer>
   <div class="rodape-wrap">
     <span>© 2026 Juliana Araújo</span>
-    <span><a href="https://area-reservada.jmatosaraujo99.workers.dev/">Área reservada</a> &middot; <a href="index.html">Voltar ao site</a></span>
+    <span><a href="https://area-reservada.jmatosaraujo99.workers.dev/">Área reservada</a> &middot; <a href="/">Voltar ao site</a></span>
   </div>
 </footer>
 

@@ -153,18 +153,36 @@
 
   footer a { color: var(--cinza); }
   footer a:hover { color: var(--cobalto); }
+  /* botão da Área reservada, no canto do cabeçalho */
+  header .area-bt { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; margin-left: clamp(14px, calc(2 * var(--fluido)), 28px); border: 1px solid currentColor; color: inherit; font-family: var(--fonte-etiqueta); font-size: 12px; letter-spacing: var(--ls-etiqueta-16); text-transform: uppercase; text-decoration: none; white-space: nowrap; transition: background .2s ease, color .2s ease, border-color .2s ease; }
+  header .area-bt:hover { background: var(--cobalto); border-color: var(--cobalto); color: var(--creme); }
+  header .area-bt svg { flex: none; }
+  header nav { margin-left: auto; }
+  /* tablet e ecrãs muito estreitos: só o cadeado (o texto continua lá para os leitores de ecrã) */
+  @media (min-width: 641px) and (max-width: 900px) {
+    header .area-bt { font-size: 0; gap: 0; min-width: 44px; justify-content: center; padding: 0; }
+  }
+  @media (max-width: 640px) {
+    header .area-bt { order: 1; margin-left: 0; padding: 0 10px; gap: 6px; font-size: 10px; letter-spacing: var(--ls-etiqueta-14); }
+    header nav, header.cabeca-site nav { order: 2; margin-left: 0; width: 100%; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 11px; }
+    header nav a, header.cabeca-site nav a { font-size: 11px; }
+  }
+  @media (max-width: 340px) {
+    header .area-bt { font-size: 0; gap: 0; min-width: 44px; justify-content: center; padding: 0; }
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <a class="logo" href="index.html">Juliana Araújo</a>
+  <a class="logo" href="/">Juliana Araújo</a>
   <nav>
-    <a href="index.html#sobre">Sobre mim</a>
-    <a href="index.html#formacoes">Formações</a>
+    <a href="/#sobre">Sobre mim</a>
+    <a href="/#formacoes">Formações</a>
     <a href="recursos.html">Recursos</a>
-    <a href="index.html#contactos">Contactos</a>
+    <a href="/#contactos">Contactos</a>
   </nav>
+  <a class="area-bt" href="https://area-reservada.jmatosaraujo99.workers.dev/" rel="nofollow"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Área reservada</a>
 </header>
 
 <main>
@@ -321,7 +339,7 @@
 <footer>
   <div class="rodape-wrap">
     <span>© 2026 Juliana Araújo</span>
-    <span><a href="https://area-reservada.jmatosaraujo99.workers.dev/">Área reservada</a> &middot; <a href="index.html">Voltar ao site</a></span>
+    <span><a href="https://area-reservada.jmatosaraujo99.workers.dev/">Área reservada</a> &middot; <a href="/">Voltar ao site</a></span>
   </div>
 </footer>
 
