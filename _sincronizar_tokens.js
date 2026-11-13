@@ -35,7 +35,7 @@ function relatorioDeriva() {
     'formacao-desenvolvimento-pessoal.html', 'formacao-lideranca-equipas.html',
     'formacao-inteligencia-artificial.html', 'formacao-mediacao-intercultural.html',
     'formacao-digital-redes-sociais.html', 'roleta.html',
-    'dados-storytelling.html', 'reaction.html', 'desenha-e-adivinha.html', 'bolinho-da-sorte.html', 'navio-fantasma.html', 'nexus-licenca.html', 'nexus-termos.html', 'nexus-obrigado.html', 'links.html', 'toolkit-ia.html', 'futuro-do-trabalho.html', 'palavras-em-forma.html'];
+    'dados-storytelling.html', 'reaction.html', 'desenha-e-adivinha.html', 'bolinho-da-sorte.html', 'navio-fantasma.html', 'nexus-licenca.html', 'nexus-termos.html', 'nexus-obrigado.html', 'links.html', 'toolkit-ia.html', 'futuro-do-trabalho.html', 'palavras-em-forma.html', 'positive-switch.html'];
   const RE = /(#(?:1F2ED6|F2EFEA|0A0A0A|D9D2C5|6B665D|57524B|8C877F|1DB954|7B2FF7|FF6B35|00B4D8|FFC400|00BFA6|FF4D8D|FF5747)\b)|(letter-spacing:\s*-?\.?[0-9][^;}"']*)|(font-family:\s*(?:Anton|Archivo)[^;}"']*)/gi;
   // Um Nvw dentro de clamp() cresce só com a largura e volta a ampliar o site
   // nos quadros interativos. Deve ser calc(N * var(--fluido)).
