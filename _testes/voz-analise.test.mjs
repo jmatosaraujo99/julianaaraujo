@@ -213,6 +213,89 @@ caso("desafio: as duas iguais → pede para exagerar", () => {
   assert.equal(c.certas, 0); assert.match(c.veredicto, /Exagera/);
 });
 
+console.log("Voz de base e pormenores");
+caso("seno de 200 Hz com base de 180 Hz → +1,8 meios-tons", () => {
+  const r = V.reduzir(seno(0.2, 200), SR), f = V.tom(r.y, 200, r.sr);
+  const st = V.semitons(f, 180);
+  assert.ok(Math.abs(st - 1.82) < 0.1, `deu ${st.toFixed(2)}`);
+});
+caso("200 Hz com base de 180 Hz, para acalmar → o tom médio pede mais grave", () => {
+  const m = base(); m.tom.mediana = 200;
+  const it = V.detalhar(m, "acalmar", "Percebo. Vamos ver isso juntos.", 180).find((x) => x.nome === "O tom médio");
+  assert.equal(it.ok, false); assert.match(it.valor, /1,8 meios-tons acima/); assert.match(it.conselho, /grave/);
+});
+caso("sem base → o tom médio só sugere afinar, e vai para o fim da lista", () => {
+  const it = V.detalhar(base(), "acalmar", "", null);
+  assert.ok(it.length <= 4);
+  assert.ok(!it.some((x) => x.nome === "O tom médio" && x.ok === false));
+});
+caso("fim a subir numa frase firme → o primeiro pormenor é o final, com um exercício", () => {
+  const m = base(); m.tom.fim = "sobe"; m.tom.delta = 3;
+  const it = V.detalhar(m, "limite", "Isto não depende só de mim.", 180);
+  assert.equal(it[0].nome, "O final"); assert.equal(it[0].ok, false); assert.match(it[0].conselho, /ponto final/);
+});
+caso("o sítio da pausa sai do texto", () => {
+  assert.match(V.sitioPausa("Em saldos não fazemos devoluções; o que posso fazer é trocar.").frase, /o que posso/);
+  assert.match(V.sitioPausa("Percebo a desilusão. Esse desconto já não consigo.").frase, /a desilusão/);
+  assert.equal(V.sitioPausa(""), null);
+});
+caso("sem pausa numa frase de empatia → exercício com o sítio concreto", () => {
+  const m = base(); m.pausas = [];
+  const it = V.detalhar(m, "empatia", "Percebo a desilusão. Esse desconto já não consigo.", 180).find((x) => x.nome === "As pausas");
+  assert.equal(it.ok, false); assert.match(it.conselho, /depois de «a desilusão»/);
+});
+caso("faixa: duas frases com uma pausa → 2 trechos e a pausa a meio", () => {
+  const m = V.analisar(juntar(fundo(1), silabas(4, 1.5), fundo(0.6), silabas(4, 1.5), fundo(0.5)), SR, { calib: 1 });
+  assert.equal(m.trechos.length, 2);
+  assert.ok(m.pausas[0].pos > 0.4 && m.pausas[0].pos < 0.6, `pos ${m.pausas[0].pos}`);
+});
+caso("tom fixo → um trecho plano marcado; melodia viva → nenhum", () => {
+  const plana = V.analisar(juntar(fundo(1), silabas(4, 3, 150), fundo(0.5)), SR, { calib: 1 });
+  assert.ok(plana.planos.length >= 1 && plana.planos[0][1] - plana.planos[0][0] > 1.5, JSON.stringify(plana.planos));
+  const viva = V.analisar(juntar(fundo(1), silabas(4, 3, (t) => 160 * Math.pow(2, 4 * Math.sin(2 * Math.PI * 1.2 * t) / 12)), fundo(0.5)), SR, { calib: 1 });
+  assert.equal(viva.planos.length, 0, JSON.stringify(viva.planos));
+});
+caso("primeira sílaba 12 dB abaixo → arranque hesitante", () => {
+  const x = juntar(fundo(1), silabas(4, 3), fundo(0.5));
+  for(let i = SR; i < SR * 1.25; i++) x[i] *= 0.25;
+  const m = V.analisar(x, SR, { calib: 1 });
+  assert.ok(m.arranque < -6, `deu ${m.arranque}`);
+});
+caso("progresso: o final passou a descer → «o final agora desce»", () => {
+  const a = base(); a.tom.fim = "sobe"; a.tom.delta = 3;
+  const ra = V.avaliar(a, "limite", "Não."), rb = V.avaliar(base(), "limite", "Não.");
+  assert.match(V.progresso(ra, rb)[0], /o final agora desce/);
+  assert.equal(V.progresso(null, rb).length, 0);
+});
+
+console.log("Baralhos");
+caso("seis baralhos de 40 frases completas, com técnicas e cenas que existem", () => {
+  const B = Function(`return (${pagina.match(/const BARALHO = (\{[\s\S]*?\n\});/)[1]})`)();
+  const T = Function(`return (${pagina.match(/const TECNICAS = (\{[\s\S]*?\n\});/)[1]})`)();
+  const cenas = new Set([...pagina.match(/const CENAS = \{([\s\S]*?)\n\};/)[1].matchAll(/^\s{2}(\w+):/gm)].map((m) => m[1]));
+  assert.equal(cenas.size, 16);
+  assert.deepEqual(Object.keys(B), ["atendimento", "formacao", "lideranca", "familia", "conflitos", "reclamacoes"]);
+  const vistas = new Set();
+  for(const [a, linhas] of Object.entries(B)){
+    assert.equal(linhas.length, 40, a);
+    for(const l of linhas){
+      const p = l.split("|");
+      assert.equal(p.length, 8, l);
+      assert.ok(p[0] && p[1] && p[2] && p[3] && p[4] && p[6], l);
+      p[6].split(",").forEach((t) => assert.ok(T[t], `técnica ${t} em ${p[0]}`));
+      assert.ok(cenas.has(p[7]), `cena ${p[7]} em ${p[0]}`);
+      const chave = p[0].toLowerCase().replace(/[^a-zà-ú]/g, "");
+      assert.ok(!vistas.has(chave), `frase repetida: ${p[0]}`); vistas.add(chave);
+    }
+  }
+  // nas cobranças a técnica «cobrar» põe a voz em «pôr um limite»
+  const cobr = B.reclamacoes.filter((l) => l.split("|")[6].includes("cobrar"));
+  assert.equal(cobr.length, 15);
+  cobr.forEach((l) => assert.equal(V.intencaoDe("reclamacoes", l.split("|")[6].split(",")), "limite"));
+  assert.equal(V.intencaoDe("reclamacoes", ["posso"]), "acalmar");
+  assert.equal(V.intencaoDe("reclamacoes", ["emocao", "posso"]), "empatia");
+});
+
 console.log("Rapidez");
 caso("10 s de gravação analisados em menos de 1,5 s", () => {
   const x = juntar(fundo(1), silabas(5, 9, (t) => 150 + 30 * Math.sin(t)), fundo(0.5));
