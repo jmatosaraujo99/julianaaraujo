@@ -30,7 +30,7 @@
 <meta name="twitter:image:alt" content="Juliana Araújo, formadora certificada e Learning Designer — cartão com fundo cobalto e o endereço julianaaraujo.pt.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Positive Switch","applicationCategory":"EducationalApplication","operatingSystem":"Browser","inLanguage":"pt-PT","url":"https://julianaaraujo.pt/positive-switch.html","description":"Exercício de comunicação positiva para a formação e a sala de aula: 200 frases que fecham a conversa, em cinco baralhos (atendimento e reclamações, sala de formação, liderança e equipas, família e crianças, conflitos), com a situação, três pistas, versões sugeridas e a técnica em jogo.","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Person","name":"Juliana Araújo","url":"https://julianaaraujo.pt/"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://julianaaraujo.pt/"},{"@type":"ListItem","position":2,"name":"Recursos","item":"https://julianaaraujo.pt/recursos.html"},{"@type":"ListItem","position":3,"name":"Positive Switch","item":"https://julianaaraujo.pt/positive-switch.html"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"É preciso criar conta ou instalar alguma coisa?","acceptedAnswer":{"@type":"Answer","text":"Não. Abres a página e começas."}},{"@type":"Question","name":"Quantas frases há?","acceptedAnswer":{"@type":"Answer","text":"200, quarenta em cada baralho. Cada uma traz a situação, três pistas, uma ou duas versões possíveis e a técnica em jogo."}},{"@type":"Question","name":"As frases repetem-se?","acceptedAnswer":{"@type":"Answer","text":"Não, enquanto houver frases por sair nos baralhos escolhidos. O navegador lembra-se das que já saíram, mesmo que feches a página. Em Personalizar podes baralhar de novo."}},{"@type":"Question","name":"Funciona com um comando de apresentações?","acceptedAnswer":{"@type":"Answer","text":"Funciona. Avançar revela as versões e, a seguir, passa à frase seguinte. Recuar volta atrás. As pistas ficam no botão Pista e na seta para baixo do teclado."}},{"@type":"Question","name":"E se a sala não souber o que dizer?","acceptedAnswer":{"@type":"Answer","text":"Cada frase tem três pistas: o que a outra pessoa sente ou precisa, a técnica que ajuda e um começo de frase. Aparecem uma de cada vez, no botão Pista, ao lado do Revelar."}},{"@type":"Question","name":"As versões sugeridas são a resposta certa?","acceptedAnswer":{"@type":"Answer","text":"Não. Há muitas formas boas de dizer o mesmo. As versões servem para comparar e para dar nome à técnica."}},{"@type":"Question","name":"Fica guardado algum dado?","acceptedAnswer":{"@type":"Answer","text":"Só no teu navegador: as preferências e as frases que já saíram. Nada vai para nenhum servidor."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"É preciso criar conta ou instalar alguma coisa?","acceptedAnswer":{"@type":"Answer","text":"Não. Abres a página e começas."}},{"@type":"Question","name":"Quantas frases há?","acceptedAnswer":{"@type":"Answer","text":"200, quarenta em cada baralho. Cada uma traz a situação, três pistas, uma ou duas versões possíveis e a técnica em jogo."}},{"@type":"Question","name":"As frases repetem-se?","acceptedAnswer":{"@type":"Answer","text":"Não, enquanto houver frases por sair nos baralhos escolhidos. O navegador lembra-se das que já saíram, mesmo que feches a página. Em Personalizar podes baralhar de novo."}},{"@type":"Question","name":"Funciona com um comando de apresentações?","acceptedAnswer":{"@type":"Answer","text":"Funciona. Avançar revela as versões e, a seguir, passa à frase seguinte. Recuar volta atrás. As pistas ficam no botão Pista e na seta para baixo do teclado."}},{"@type":"Question","name":"E se a sala não souber o que dizer?","acceptedAnswer":{"@type":"Answer","text":"Cada frase tem três pistas: o que a outra pessoa sente ou precisa, a técnica que ajuda e um começo de frase. Aparecem uma de cada vez, no botão Pista, ao lado do Revelar."}},{"@type":"Question","name":"As versões sugeridas são a resposta certa?","acceptedAnswer":{"@type":"Answer","text":"Não. Há muitas formas boas de dizer o mesmo. As versões servem para comparar e para dar nome à técnica."}},{"@type":"Question","name":"O microfone grava a minha voz?","acceptedAnswer":{"@type":"Answer","text":"Só enquanto treinas, e só neste aparelho. O tom, o ritmo, o volume e as pausas são medidos no navegador; nada é enviado. A gravação apaga-se quando fechas a janela da voz. Se não deres licença ao microfone, o exercício funciona como sempre."}},{"@type":"Question","name":"Fica guardado algum dado?","acceptedAnswer":{"@type":"Answer","text":"Só no teu navegador: as preferências e as frases que já saíram. Nada vai para nenhum servidor."}}]}</script>
 <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
 <link rel="icon" href="favicon.ico?v=2" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
@@ -339,7 +339,7 @@ kbd{font-family:var(--fonte-etiqueta);font-size:10px;letter-spacing:var(--ls-dis
 @keyframes pulsar{50%{transform:scale(1.07)}}
 
 /* ---------- botões do exercício ---------- */
-.acoes{display:grid;grid-template-columns:1fr 1.1fr 1.7fr;gap:clamp(8px,calc(1.2 * var(--u)),14px);width:min(100%,clamp(300px,calc(76 * var(--u)),900px))}
+.acoes{display:grid;grid-template-columns:1fr 1.1fr 1fr 1.7fr;gap:clamp(8px,calc(1.2 * var(--u)),14px);width:min(100%,clamp(300px,calc(88 * var(--u)),1040px))}
 .acao{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:clamp(50px,calc(6.6 * var(--u)),80px);
   border-radius:14px;border:1px solid var(--line-forte);background:var(--vidro);
   backdrop-filter:var(--vidro-desfoque);-webkit-backdrop-filter:var(--vidro-desfoque);cursor:pointer;
@@ -354,6 +354,93 @@ kbd{font-family:var(--fonte-etiqueta);font-size:10px;letter-spacing:var(--ls-dis
 /* acabou o tempo: o botão de revelar chama a atenção, sem revelar sozinho */
 .acao-principal.chama{animation:chamar 1.3s ease-in-out infinite}
 @keyframes chamar{50%{box-shadow:0 0 0 7px var(--acc-suave)}}
+
+/* ---------- Diz em voz alta ---------- */
+/* Um cartão por cima do exercício: a frase, a intenção, a linha do tom e
+   quatro medidores com a zona certa. Em projeção tem de caber em 1280×720. */
+.voz{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;padding:16px;
+  background:rgba(10,10,10,.5);--u:min(var(--fluido), 1.45vh)}
+.voz-cartao{width:min(1240px,100%);max-height:100%;overflow-y:auto;display:flex;flex-direction:column;gap:clamp(8px,calc(1.1 * var(--u)),16px);
+  background:var(--surface);border:1px solid var(--line);border-radius:clamp(16px,calc(2.4 * var(--u)),26px);box-shadow:var(--sombra);
+  padding:clamp(14px,calc(2.4 * var(--u)),34px) clamp(16px,calc(3 * var(--u)),42px)}
+.voz-topo{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.voz-topo .rotulo{color:var(--acc)}
+.voz-texto{margin:0;padding-left:clamp(10px,calc(1.4 * var(--u)),20px);border-left:3px solid var(--cobalto);
+  font-family:var(--fonte-corpo);font-weight:500;font-size:calc(clamp(17px,calc(2.6 * var(--u)),40px) * var(--v, 1));line-height:1.3;color:var(--ink);text-wrap:balance}
+.voz-texto.livre{color:var(--ink-2)}
+.voz-escolhas{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between}
+.voz-escolhas .seg button{font-size:clamp(10.5px,calc(1.2 * var(--u)),14px);padding:clamp(5px,calc(.7 * var(--u)),9px) clamp(9px,calc(1.2 * var(--u)),14px);min-height:32px}
+.voz-ints{display:flex;flex-wrap:wrap;gap:6px}
+.voz-ints button{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 14px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--line-forte);background:var(--surface);color:var(--ink-2);
+  font-family:var(--fonte-etiqueta);font-weight:500;font-size:clamp(12px,calc(1.4 * var(--u)),17px);text-transform:uppercase;letter-spacing:var(--ls-etiqueta)}
+.voz-ints button:hover{background:var(--surface-2)}
+.voz-ints button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--ground)}
+.voz-ints small{font-size:.72em;opacity:.75;text-transform:none;letter-spacing:0}
+.voz-alvo{margin:0;font-size:clamp(13px,calc(1.65 * var(--u)),22px);line-height:1.4;color:var(--ink-2)}
+.voz-alvo b{font-family:var(--fonte-etiqueta);font-weight:600;color:var(--ink)}
+.voz-meio{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(10px,calc(2 * var(--u)),28px);align-items:start}
+.voz-esq{display:flex;flex-direction:column;gap:clamp(8px,calc(1.2 * var(--u)),16px);min-width:0}
+.voz-grafico{display:flex;flex-direction:column;gap:6px;justify-content:center;border:1px solid var(--line);border-radius:14px;
+  background:var(--ground);padding:clamp(8px,calc(1.2 * var(--u)),14px)}
+#vozTela{display:block;width:100%;height:calc(clamp(80px,calc(11 * var(--u)),200px) * var(--v, 1))}
+.voz-estado{margin:0;text-align:center;font-family:var(--fonte-etiqueta);font-weight:600;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);
+  font-size:clamp(12px,calc(1.6 * var(--u)),21px);color:var(--ink-2)}
+.voz-estado.fala{color:var(--fechado)}
+.voz-estado:empty{display:none}
+.voz-acoes .acao{min-height:clamp(44px,calc(5.4 * var(--u)),72px)}
+.voz-res:empty{display:none}
+.voz-res{display:flex;flex-direction:column;gap:4px}
+.voz-estrelas{margin:0;display:flex;align-items:baseline;gap:10px;line-height:1}
+.voz-estrelas span{font-size:clamp(24px,calc(3.6 * var(--u)),48px);letter-spacing:.06em;color:var(--acc)}
+.voz-estrelas span i{font-style:normal;color:var(--line-forte)}
+.voz-estrelas b{font-family:var(--fonte-display);font-weight:400;text-transform:uppercase;letter-spacing:var(--ls-display);
+  font-size:clamp(17px,calc(2.4 * var(--u)),32px);line-height:1.1;color:var(--ink)}
+.voz-dica{margin:0;font-size:clamp(14px,calc(1.75 * var(--u)),23px);line-height:1.35;color:var(--ink)}
+.voz-dica b{font-family:var(--fonte-etiqueta);font-weight:600;color:var(--acc)}
+.voz-comp{margin:4px 0 0;padding:8px 12px;border-radius:10px;background:var(--acc-suave);font-size:clamp(13px,calc(1.5 * var(--u)),19px);line-height:1.4;color:var(--ink)}
+.voz-linhas{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:clamp(6px,calc(1.2 * var(--u)),16px)}
+.voz-linha{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:5px 10px;align-items:baseline}
+.vl-nome{font-family:var(--fonte-etiqueta);font-weight:600;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);font-size:clamp(12px,calc(1.45 * var(--u)),18px);color:var(--ink)}
+.vl-valor{font-family:var(--fonte-etiqueta);font-size:clamp(12px,calc(1.4 * var(--u)),17px);color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vl-selo{font-family:var(--fonte-etiqueta);font-weight:600;font-size:clamp(10px,calc(1.15 * var(--u)),14px);text-transform:uppercase;letter-spacing:var(--ls-etiqueta);
+  padding:2px 8px;border-radius:999px;border:1px solid var(--line-forte);color:var(--ink-2)}
+.vl-selo:empty{display:none}
+.vl-selo[data-n="1"]{background:var(--acc);border-color:var(--acc);color:var(--ground)}
+.vl-selo[data-n="0"]{border-color:var(--fechado-linha);color:var(--fechado);background:var(--fechado-fundo)}
+/* a zona certa a verde (turquesa da marca) e a agulha a mostrar onde a voz está */
+.medidor{grid-column:1 / -1;position:relative;height:clamp(10px,calc(1.3 * var(--u)),16px);border-radius:999px;background:var(--surface-2);border:1px solid var(--line)}
+.medidor .zona{position:absolute;top:-1px;bottom:-1px;border-radius:999px;background:color-mix(in srgb, var(--acento-turquesa) 55%, transparent);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--acento-turquesa) 80%, var(--ink))}
+.medidor .agulha{position:absolute;top:-5px;bottom:-5px;width:5px;margin-left:-2.5px;border-radius:3px;background:var(--ink);transition:left .18s linear}
+.medidor .agulha[hidden]{display:none}
+.vl-msg{grid-column:1 / -1;margin:0;font-size:calc(clamp(13px,calc(1.55 * var(--u)),20px) * max(var(--v, 1), .8));line-height:1.35;color:var(--ink-2)}
+.voz-sem{margin:0;padding:clamp(12px,calc(2 * var(--u)),24px);border-radius:14px;background:var(--acc-suave);border:1px solid var(--acc-linha);
+  font-size:clamp(15px,calc(1.9 * var(--u)),24px);line-height:1.45;color:var(--ink)}
+/* os botões ficam sempre à vista, mesmo quando o cartão tem de rolar */
+.voz-acoes{position:sticky;bottom:0;z-index:2;display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:clamp(8px,calc(1.2 * var(--u)),14px);
+  padding:clamp(6px,calc(.8 * var(--u)),10px) 0;background:var(--surface)}
+html:has(.voz:not([hidden])){overflow:hidden}
+#vozGravar.a-gravar{background:var(--fechado);border-color:var(--fechado);animation:chamar 1.3s ease-in-out infinite}
+#vozOuvir.chama:not(:disabled){border-color:var(--acc);color:var(--acc);animation:chamar 1.3s ease-in-out infinite}
+.voz-priv{margin:0;display:flex;gap:8px;align-items:center;justify-content:center;text-align:left;
+  font-size:clamp(11.5px,calc(1.25 * var(--u)),15px);line-height:1.4;color:var(--ink-3)}
+.voz-priv svg{flex:none;width:1.3em;height:1.3em}
+.so-leitor{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:860px){ .voz-meio{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:560px){
+  .voz{padding:0;align-items:stretch}
+  .voz-cartao{border-radius:0;max-height:none;height:100%;border:0;padding:14px 14px 0}
+  .voz-escolhas{flex-direction:column;align-items:flex-start}
+  .voz-acoes{padding:10px 0 12px;margin-top:auto;grid-template-columns:1fr 1.3fr 1fr;gap:6px}
+  .voz-acoes .acao{font-size:16px;padding:0 4px}
+  .voz-acoes .acao svg{display:none}
+  .voz-priv{padding-bottom:12px}
+}
+@media (max-height:600px) and (min-width:640px){
+  .voz-cartao{gap:8px;padding-top:12px;padding-bottom:12px}
+  .vl-msg{font-size:13px}
+}
 
 /* ---------- painel ---------- */
 .painel{
@@ -425,10 +512,10 @@ body.personalizar .painel{transform:none;visibility:visible;transition:transform
   .verso.com-pistas small{display:none}
   .pistas p{font-size:calc(clamp(14px,calc(1.9 * var(--u)),34px) * var(--p))}
   .versao{font-size:calc(clamp(15px,calc(2.2 * var(--u)),44px) * var(--k))}
-  .acoes{gap:6px;grid-template-columns:1fr 1fr 1.45fr}
+  .acoes{gap:6px;grid-template-columns:1fr 1fr .8fr 1.45fr}
   .acao{font-size:16px;gap:.35em;padding:0 4px}
-  /* três botões numa linha: nos dois de fora do principal sai o ícone e o contador */
-  #btnVoltar svg,#btnPista svg,#btnPista small{display:none}
+  /* quatro botões numa linha: nos de fora do principal sai o ícone e o contador */
+  #btnVoltar svg,#btnPista svg,#btnPista small,#btnVoz svg{display:none}
   .resposta-palco{--rel:62px}
   .relogio b{font-size:15px}
 }
@@ -602,7 +689,7 @@ body.a-jogar .credito-proj{display:none!important}
         </div>
         <div class="regra">
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"/><path d="M13.5 6.5l4 4"/></svg></span>
-          <span><b>Diz a tua versão pela positiva.</b><small>Em voz alta ou no caderno. Se encalharem, há três pistas.</small></span>
+          <span><b>Diz a tua versão pela positiva.</b><small>Em voz alta (o botão Voz ouve o tom) ou no caderno. Se encalharem, há três pistas.</small></span>
         </div>
         <div class="regra">
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/></svg></span>
@@ -668,9 +755,10 @@ body.a-jogar .credito-proj{display:none!important}
       <div class="acoes">
         <button class="acao" id="btnVoltar" title="Voltar atrás (seta para a esquerda)"></button>
         <button class="acao" id="btnPista" title="Mostrar mais uma pista (seta para baixo)"></button>
+        <button class="acao" id="btnVoz" title="Dizer em voz alta: o microfone ouve o tom, o ritmo e as pausas (tecla V)"></button>
         <button class="acao acao-principal" id="btnAvancar" title="Revelar e avançar (seta para a direita)"></button>
       </div>
-      <p class="legenda"><kbd>→</kbd> revela e avança &nbsp;·&nbsp; <kbd>↓</kbd> pista &nbsp;·&nbsp; <kbd>←</kbd> volta atrás &nbsp;·&nbsp; <kbd>P</kbd> ou carregar no relógio pausa</p>
+      <p class="legenda"><kbd>→</kbd> revela e avança &nbsp;·&nbsp; <kbd>↓</kbd> pista &nbsp;·&nbsp; <kbd>V</kbd> voz &nbsp;·&nbsp; <kbd>←</kbd> volta atrás &nbsp;·&nbsp; <kbd>P</kbd> ou carregar no relógio pausa</p>
     </section>
   </main>
 
@@ -715,6 +803,40 @@ body.a-jogar .credito-proj{display:none!important}
   <div class="veu-painel" id="veuPainel" hidden></div>
 </div>
 
+<!-- Diz em voz alta: abre por cima do exercício. O som é analisado aqui e
+     apaga-se quando se fecha. -->
+<section class="voz" id="voz" role="dialog" aria-modal="true" aria-labelledby="vozTitulo" hidden>
+  <div class="voz-cartao">
+    <div class="voz-topo">
+      <h2 class="rotulo" id="vozTitulo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5a3 3 0 0 1 6 0v5a3 3 0 0 1 -6 0z"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>Diz em voz alta</h2>
+      <button class="btn btn-mini" id="vozFechar">Fechar</button>
+    </div>
+    <p class="voz-texto" id="vozTexto"></p>
+    <div class="voz-escolhas">
+      <div class="seg" id="vozFrase" role="group" aria-label="O que vais dizer"></div>
+      <div class="voz-ints" id="vozInts" role="group" aria-label="Com que intenção"></div>
+    </div>
+    <p class="voz-alvo" id="vozAlvo"></p>
+    <div class="voz-meio" id="vozMeio">
+      <div class="voz-esq">
+        <div class="voz-grafico">
+          <canvas id="vozTela" aria-hidden="true"></canvas>
+          <p class="voz-estado" id="vozEstado" aria-live="polite"></p>
+        </div>
+        <div class="voz-res" id="vozRes" aria-live="polite"></div>
+      </div>
+      <ul class="voz-linhas" id="vozLinhas"></ul>
+    </div>
+    <p class="voz-sem" id="vozSem" hidden></p>
+    <div class="voz-acoes">
+      <button class="acao" id="vozOuvir" disabled title="Ouvir a gravação (tecla O)"></button>
+      <button class="acao acao-principal" id="vozGravar"></button>
+      <button class="acao" id="vozDesafio" disabled title="Dizer a mesma frase com outra intenção"></button>
+    </div>
+    <p class="voz-priv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"/><path d="M8 11v-4a4 4 0 1 1 8 0v4"/></svg>Fica tudo neste aparelho: nada é enviado nem guardado. A gravação apaga-se quando fechas.</p>
+  </div>
+</section>
+
 <section class="sobre" id="sobre-jogo">
   <div class="sobre-wrap">
 
@@ -731,6 +853,8 @@ body.a-jogar .credito-proj{display:none!important}
     <p>Projetas, lês a frase em voz alta e deixas correr o tempo. Quem quiser diz a sua versão, e só depois revelas. Com um comando de apresentações fazes tudo à distância: o primeiro clique revela, o segundo passa à frase seguinte, e recuar volta atrás. As pistas ficam no botão Pista, ao lado do Revelar, ou na seta para baixo do teclado.</p>
     <h3 class="uso">Em grupos, com caderno</h3>
     <p>Cada grupo escreve a sua versão e lê-a antes de revelares. Ficam três ou quatro formas de dizer a mesma coisa lado a lado, e a conversa sobre qual soa melhor vale tanto como a resposta.</p>
+    <h3 class="uso">Em voz alta, com o microfone</h3>
+    <p>O botão Voz abre o «Diz em voz alta». A pessoa diz a frase e vê, logo a seguir, se a voz combina com a intenção: acalmar, mostrar empatia, pôr um limite ou animar. A ferramenta ouve quatro coisas: a melodia e o fim da frase (a descer soa seguro, a subir soa a pergunta), o ritmo, o volume e as pausas. Dá de uma a cinco estrelas e um próximo passo. Depois, a pessoa ouve-se a si própria. No Desafio diz a mesma frase com a intenção contrária, e a sala ouve a diferença. Na sala, as pessoas vão à vez ao portátil; quem treina sozinho usa o telemóvel.</p>
     <h3 class="uso">A pares</h3>
     <p>Uma pessoa diz a frase fechada no tom em que costuma ouvi-la. A outra responde como o cliente, o formando ou a criança se sentiria. Depois experimentam a versão positiva e trocam de papel.</p>
 
@@ -775,6 +899,10 @@ body.a-jogar .credito-proj{display:none!important}
         <p>Não. Há muitas formas boas de dizer o mesmo. As versões servem para comparar e para dar nome à técnica.</p>
       </details>
       <details>
+        <summary><h3>O microfone grava a minha voz?</h3></summary>
+        <p>Só enquanto treinas, e só neste aparelho. O tom, o ritmo, o volume e as pausas são medidos no navegador; nada é enviado. A gravação apaga-se quando fechas a janela da voz. Se não deres licença ao microfone, o exercício funciona como sempre.</p>
+      </details>
+      <details>
         <summary><h3>Fica guardado algum dado?</h3></summary>
         <p>Só no teu navegador: as preferências e as frases que já saíram. Nada vai para nenhum servidor.</p>
       </details>
@@ -793,6 +921,334 @@ body.a-jogar .credito-proj{display:none!important}
 </section>
 
 <p class="credito-proj">&copy; 2026 Juliana Araújo &middot; julianaaraujo.pt</p>
+
+<script id="voz-analise">
+/* ======================================================================
+   Diz em voz alta: a análise do som. Funções puras, sem página, para
+   correrem também no teste (_testes/voz-analise.test.mjs). Tudo é feito
+   neste aparelho; nada é enviado.
+   ====================================================================== */
+(function(raiz){
+"use strict";
+
+const HOP = 0.01, JAN = 0.04, JAN_TOM = 0.03;
+const F0_MIN = 70, F0_MAX = 400;
+const CLAREZA = 0.55;   // autocorrelação mínima para haver tom (abaixo é ruído ou consoante surda)
+const PAUSA = 0.25;     // pausa a partir de 250 ms (De Jong & Bosker 2013)
+const DIP = 2;          // um núcleo silábico sobressai 2 dB do vale anterior (De Jong & Wempe 2009)
+/* Em português europeu as vogais átonas caem: os picos de energia são cerca de 60 % das
+   sílabas do dicionário (Voigt, Schüppert & Gooskens 2013: 3,94 contra 6,60 por segundo).
+   O ritmo mostra-se em sílabas do dicionário, para bater com as referências. */
+const SILABAS_POR_PICO = 1 / 0.6;
+
+function db(ms){ return 10 * Math.log10(ms + 1e-10); }
+function ordenar(a){ return Array.from(a).sort(function(x, y){ return x - y; }); }
+function percentil(a, p){ if(!a.length) return NaN; const s = ordenar(a); return s[Math.round(p * (s.length - 1))]; }
+function media(a){ let s = 0; for(let i = 0; i < a.length; i++) s += a[i]; return a.length ? s / a.length : NaN; }
+function desvio(a){ const m = media(a); let s = 0; for(let i = 0; i < a.length; i++) s += (a[i] - m) * (a[i] - m); return a.length > 1 ? Math.sqrt(s / (a.length - 1)) : 0; }
+
+/* Passa-baixo a 1,8 kHz e menos amostras (~11 kHz): o tom e a energia das vogais
+   cabem aí, e a autocorrelação fica muitas vezes mais rápida. */
+function reduzir(x, sr){
+  const f = Math.max(1, Math.round(sr / 11025));
+  const w = 2 * Math.PI * 1800 / sr, cw = Math.cos(w), al = Math.sin(w) / (2 * Math.SQRT1_2), a0 = 1 + al;
+  const b0 = (1 - cw) / 2 / a0, b1 = (1 - cw) / a0, a1 = -2 * cw / a0, a2 = (1 - al) / a0;
+  const n = Math.floor(x.length / f), y = new Float32Array(n);
+  let x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+  for(let i = 0, k = 0; i < n * f; i++){
+    const v = b0 * x[i] + b1 * x1 + b0 * x2 - a1 * y1 - a2 * y2;
+    x2 = x1; x1 = x[i]; y2 = y1; y1 = v;
+    if(i % f === 0) y[k++] = v;
+  }
+  return { y: y, sr: sr / f };
+}
+
+/* Tom de um bocado de som (a partir da amostra ini), por autocorrelação
+   normalizada entre 70 e 400 Hz. Devolve Hz, ou 0 quando não há tom. */
+function tom(y, ini, sr){
+  const jan = Math.round(JAN_TOM * sr), tMin = Math.max(2, Math.floor(sr / F0_MAX)), tMax = Math.ceil(sr / F0_MIN);
+  if(ini < 0 || ini + jan + tMax + 2 > y.length) return 0;
+  let e0 = 0, eT = 0;
+  for(let i = 0; i < jan; i++){ e0 += y[ini + i] * y[ini + i]; eT += y[ini + tMin - 1 + i] * y[ini + tMin - 1 + i]; }
+  if(e0 < 1e-10) return 0;
+  const r = new Float32Array(tMax + 2);
+  let melhor = 0;
+  for(let t = tMin - 1; t <= tMax + 1; t++){
+    let s = 0;
+    for(let i = 0; i < jan; i++) s += y[ini + i] * y[ini + t + i];
+    r[t] = s / Math.sqrt(e0 * eT + 1e-20);
+    if(t >= tMin && t <= tMax && r[t] > melhor) melhor = r[t];
+    eT += y[ini + t + jan] * y[ini + t + jan] - y[ini + t] * y[ini + t];
+  }
+  if(melhor < CLAREZA) return 0;
+  // o primeiro pico perto do máximo: o dobro do período também correlaciona bem
+  for(let t = tMin; t <= tMax; t++){
+    if(r[t] >= 0.9 * melhor && r[t] >= r[t - 1] && r[t] >= r[t + 1]){
+      const d = r[t - 1] - 2 * r[t] + r[t + 1];
+      return sr / (d < 0 ? t + 0.5 * (r[t - 1] - r[t + 1]) / d : t);
+    }
+  }
+  return 0;
+}
+
+/* Um quadro de 40 ms a cada 10 ms: o nível em dB. */
+function quadros(x, sr){
+  const r = reduzir(x, sr), y = r.y, fs = r.sr;
+  const hop = Math.round(HOP * fs), jan = Math.round(JAN * fs);
+  const n = y.length >= jan ? Math.floor((y.length - jan) / hop) + 1 : 0;
+  const nivel = new Float32Array(n);
+  for(let k = 0; k < n; k++){
+    let s = 0; const a = k * hop;
+    for(let i = 0; i < jan; i++) s += y[a + i] * y[a + i];
+    nivel[k] = db(s / jan);
+  }
+  return { y: y, fs: fs, hop: hop, jan: jan, db: nivel, n: n };
+}
+
+/* Os núcleos silábicos: picos do nível com tom, que sobressaem DIP dB do vale
+   desde o núcleo anterior. env: nível suavizado; ok(k): o quadro conta. */
+function nucleos(env, ini, fim, minimo, ok){
+  const res = [];
+  let ult = -1, vale = Infinity;
+  for(let k = ini; k <= fim; k++){
+    vale = Math.min(vale, env[k]);
+    const antes = k > 0 ? env[k - 1] : -Infinity, depois = k + 1 < env.length ? env[k + 1] : -Infinity;
+    if(!(env[k] >= antes && env[k] > depois && env[k] >= minimo && ok(k))) continue;
+    if(ult < 0 || env[k] - vale >= DIP){ res.push(k); ult = k; vale = env[k]; }
+    else if(env[k] > env[ult]){ res[res.length - 1] = k; ult = k; vale = env[k]; }
+  }
+  return res;
+}
+
+/* A análise de uma gravação. x: amostras (-1 a 1); sr: amostras por segundo;
+   op.calib: segundos de silêncio no início, para medir o ruído da sala. */
+function analisar(x, sr, op){
+  op = op || {};
+  const calib = op.calib == null ? 1 : op.calib;
+  const q = quadros(x, sr), n = q.n, dt = q.hop / q.fs;
+  const T = function(k){ return (k * q.hop + q.jan / 2) / q.fs; };
+  const k0 = Math.min(n, Math.ceil(calib / dt));
+  const silencio = [], resto = [];
+  for(let k = 0; k < n; k++){
+    const t = T(k);
+    if(t >= 0.15 && t <= calib - 0.05) silencio.push(q.db[k]); else if(k >= k0) resto.push(q.db[k]);
+  }
+  if(!resto.length) return { ouviu: false };
+  // o ruído da sala: o segundo de silêncio, ou o mais baixo da gravação, se alguém falou antes do tempo
+  let ruido = percentil(resto, 0.05);
+  if(silencio.length) ruido = Math.min(ruido, percentil(silencio, 0.2));
+  const limiar = Math.max(ruido + 9, percentil(resto, 0.99) - 30);
+
+  // trechos com voz; buracos com menos de 250 ms não são pausas (são consoantes)
+  const voz = new Uint8Array(n);
+  let seg = [];
+  for(let k = k0; k < n; k++){
+    if(q.db[k] < limiar) continue;
+    voz[k] = 1;
+    const ult = seg[seg.length - 1];
+    if(ult && (k - ult[1] - 1) * dt < PAUSA) ult[1] = k; else seg.push([k, k]);
+  }
+  seg = seg.filter(function(s){ return (s[1] - s[0] + 1) * dt >= 0.1; });   // estalidos e toques na mesa
+  if(!seg.length) return { ouviu: false, ruido: ruido, limiar: limiar };
+
+  // o tom, só onde há voz; os saltos de oitava (erros) saem
+  const f0 = new Float32Array(n), dentro = (q.jan - Math.round(JAN_TOM * q.fs)) >> 1;
+  seg.forEach(function(s){ for(let k = s[0]; k <= s[1]; k++) if(voz[k]) f0[k] = tom(q.y, k * q.hop + dentro, q.fs); });
+  const hz = []; for(let k = 0; k < n; k++) if(f0[k]) hz.push(f0[k]);
+  const mediana = hz.length ? percentil(hz, 0.5) : 0;
+  const st = new Float32Array(n).fill(NaN);
+  for(let k = 0; k < n; k++) if(f0[k]){ const v = 12 * Math.log2(f0[k] / mediana); if(Math.abs(v) <= 9) st[k] = v; else f0[k] = 0; }
+  const liso = st.map(function(v, k){
+    if(isNaN(v)) return v;
+    const viz = [st[k - 1], v, st[k + 1]].filter(function(u){ return u === u && u !== undefined; });
+    return percentil(viz, 0.5);
+  });
+
+  const fala = { ini: T(seg[0][0]) - JAN / 2, fim: T(seg[seg.length - 1][1]) + JAN / 2 };
+  let tempoFala = 0; seg.forEach(function(s){ tempoFala += (s[1] - s[0] + 1) * dt; });
+  const pausas = [];
+  for(let i = 1; i < seg.length; i++) pausas.push({ ini: T(seg[i - 1][1]) + dt / 2, dur: (seg[i][0] - seg[i - 1][1] - 1) * dt });
+
+  // ritmo: núcleos silábicos por segundo de fala (sem contar as pausas)
+  const env = new Float32Array(n);
+  for(let k = 0; k < n; k++){ let s = 0, c = 0; for(let j = k - 2; j <= k + 2; j++) if(j >= 0 && j < n){ s += q.db[j]; c++; } env[k] = s / c; }
+  const comTom = function(k){ for(let j = k - 2; j <= k + 2; j++) if(f0[j]) return true; return false; };
+  let nuc = [];
+  seg.forEach(function(s){ nuc = nuc.concat(nucleos(env, s[0], s[1], limiar + 2, comTom)); });
+  const ritmoPicos = tempoFala ? nuc.length / tempoFala : 0;
+
+  // tom: variação em semitons e o que faz o fim (últimos 500 ms contra os 800 ms antes)
+  const vals = [], fimA = [], fimB = [], contorno = [];
+  for(let k = 0; k < n; k++){
+    const v = liso[k];
+    if(v !== v) continue;
+    const t = T(k);
+    vals.push(v); contorno.push([t - fala.ini, v]);
+    if(t >= fala.fim - 0.5) fimA.push(v); else if(t >= fala.fim - 1.3) fimB.push(v);
+  }
+  let delta = null, fim = null;
+  if(fimA.length >= 4 && fimB.length >= 4){
+    delta = percentil(fimA, 0.5) - percentil(fimB, 0.5);
+    fim = delta <= -1 ? "desce" : delta >= 1 ? "sobe" : "plano";
+  }
+
+  // volume: quanto sobressai do ruído, se é estável e se cai no fim
+  const nivelFala = [], picos = nuc.map(function(k){ return q.db[k]; });
+  for(let k = 0; k < n; k++) if(voz[k]) nivelFala.push(q.db[k]);
+  let queda = null;
+  if(picos.length >= 6){ const c = Math.floor(picos.length / 3); queda = media(picos.slice(0, picos.length - c)) - media(picos.slice(picos.length - c)); }
+  let altos = 0;
+  const a = Math.max(0, Math.floor(fala.ini * sr)), b = Math.min(x.length, Math.ceil(fala.fim * sr));
+  for(let i = a; i < b; i++) if(x[i] >= 0.98 || x[i] <= -0.98) altos++;
+  const snr = percentil(nivelFala, 0.9) - ruido, onda = [];
+  for(let k = 0; k < n; k += 2){ const t = T(k); if(t >= fala.ini && t <= fala.fim) onda.push([t - fala.ini, Math.max(0, Math.min(1, (q.db[k] - ruido) / Math.max(snr, 1)))]); }
+
+  return {
+    ouviu: true, curto: tempoFala < 0.6 || nuc.length < 3,
+    ruido: ruido, limiar: limiar, fala: fala, duracao: fala.fim - fala.ini, tempoFala: tempoFala,
+    nucleos: nuc.map(T), ritmoPicos: ritmoPicos, ritmo: ritmoPicos * SILABAS_POR_PICO,
+    pausas: pausas,
+    tom: { mediana: mediana, dp: vals.length >= 15 ? desvio(vals) : null, fim: fim, delta: delta },
+    volume: { snr: snr, dp: picos.length >= 3 ? desvio(picos) : null, queda: queda, satura: b > a ? altos / (b - a) : 0 },
+    contorno: contorno, onda: onda
+  };
+}
+
+/* ======================================================================
+   As intenções e o que se espera da voz em cada uma (ver o relatório
+   de 13/11/2026 para as fontes). Ritmo em sílabas por segundo, sem as
+   pausas; melodia: desvio-padrão do tom em semitons.
+   ====================================================================== */
+const PERFIS = {
+  acalmar: { nome: "Acalmar", verbo: "acalmar", alvo: "Devagar, voz estável e o fim a descer.",
+             ritmo: [3.5, 5], melodia: [1.5, 3.5], fim: "desce", saltos: 4, pausas: [1, 4],
+             ritmoOk: "Devagar e claro: dá tempo à outra pessoa para respirar." },
+  empatia: { nome: "Empatia", verbo: "mostrar empatia", alvo: "Suave e sem pressa, com pausas e alguma melodia.",
+             ritmo: [4, 5.5], melodia: [2, 4.5], fim: "desce", saltos: 4.5, pausas: [1, 4],
+             ritmoOk: "Sem pressa: soa a quem está mesmo a ouvir." },
+  limite:  { nome: "Pôr um limite", verbo: "pôr um limite", alvo: "Pausado, tom estável e o fim a descer, sem soar a pergunta.",
+             ritmo: [4, 5.5], melodia: [1, 3], fim: "desce", saltos: 4, pausas: [1, 3],
+             ritmoOk: "Ritmo seguro, sem atropelar." },
+  animar:  { nome: "Animar", verbo: "animar", alvo: "Mais vivo: mais melodia e um ritmo mais rápido.",
+             ritmo: [5.5, 7.5], melodia: [3.5, 99], fim: null, saltos: 7, pausas: [0, 2],
+             ritmoOk: "Ritmo vivo: puxa pela sala." }
+};
+const ESCALAS = { tom: [0, 8], ritmo: [2, 9], volume: [0, 45], pausas: [0, 5] };
+
+/* A intenção de cada frase, sem a escrever nas 200: a técnica manda; sem técnica
+   que decida, vale a do baralho. */
+const POR_TECNICA = [["limite", ["disco", "desc"]], ["animar", ["reforco", "agradecer"]], ["empatia", ["emocao", "cnv"]]];
+const POR_BARALHO = { atendimento: "acalmar", formacao: "animar", lideranca: "limite", familia: "limite", conflitos: "empatia" };
+function intencaoDe(area, tecnicas){
+  for(let i = 0; i < POR_TECNICA.length; i++){
+    const p = POR_TECNICA[i];
+    if((tecnicas || []).some(function(t){ return p[1].indexOf(t) >= 0; })){
+      // ao balcão, reconhecer a emoção serve sobretudo para baixar a tensão
+      return p[0] === "empatia" && area === "atendimento" ? "acalmar" : p[0];
+    }
+  }
+  return POR_BARALHO[area] || "empatia";
+}
+
+function nota(v, z, folga){ return v >= z[0] && v <= z[1] ? 1 : v >= z[0] - folga && v <= z[1] + folga ? 0.5 : 0; }
+function num(v, c){ return v.toFixed(c == null ? 1 : c).replace(".", ","); }
+
+/* A nota de uma gravação para uma intenção: 4 linhas (0, ½ ou 1 cada) e 1 a 5
+   estrelas. texto: o que a pessoa ia dizer, quando se sabe (conta as vírgulas
+   e os pontos, e uma pergunta pode acabar a subir). */
+function avaliar(med, chave, texto){
+  const p = PERFIS[chave];
+  if(!med || !med.ouviu) return { ouviu: false, titulo: "Não te ouvi. Chega-te ao microfone e tenta outra vez." };
+  if(med.curto) return { ouviu: false, titulo: "Foi muito curto. Diz a frase toda, do princípio ao fim." };
+  const linhas = {};
+
+  // tom: a melodia e o fim
+  const pergunta = /\?\s*[»"]?\s*$/.test(texto || "");
+  let nMel = 0.5, msgMel = "Não deu para medir bem a melodia.";
+  if(med.tom.dp != null){
+    nMel = nota(med.tom.dp, p.melodia, 0.75);
+    msgMel = med.tom.dp < p.melodia[0] ? (med.tom.dp < 1.5 ? "Voz muito plana: sobe e desce na palavra que mais importa." :
+                                          "Pouca melodia para " + p.verbo + ": sobe e desce mais nas palavras importantes.") :
+             med.tom.dp > p.melodia[1] ? "Muita subida e descida: para " + p.verbo + ", segura mais a voz." :
+             "Melodia na medida certa.";
+  }
+  let nFim = 1, msgFim = "";
+  if(pergunta) msgFim = "É uma pergunta: o fim pode subir.";
+  else if(p.fim === "desce"){
+    if(med.tom.fim === "sobe"){ nFim = 0; msgFim = "O fim subiu e soou a pergunta: acaba a descer."; }
+    else if(med.tom.fim === "plano"){ nFim = 0.5; msgFim = "O fim ficou no ar: deixa a última palavra descer."; }
+    else if(med.tom.fim === "desce") msgFim = "O fim desceu: soa seguro.";
+    else { nFim = 0.5; msgFim = "Não deu para ouvir bem o fim."; }
+  }
+  const melodia = med.tom.dp == null ? "–" : med.tom.dp < 1.5 ? "plana" : med.tom.dp < 3.5 ? "moderada" : "viva";
+  linhas.tom = { nota: (nMel + nFim) / 2, valor: melodia + ({ desce: " · fim a descer ↘", sobe: " · fim a subir ↗", plano: " · fim no ar →" }[med.tom.fim] || ""),
+    marca: med.tom.dp, zona: p.melodia, escala: ESCALAS.tom, fim: med.tom.fim, msg: (msgMel + " " + msgFim).trim(),
+    dica: nFim < nMel ? msgFim : msgMel };
+
+  // ritmo
+  const r = med.ritmo;
+  linhas.ritmo = { nota: nota(r, p.ritmo, 0.75), valor: "≈ " + num(r) + " sílabas/s", marca: r, zona: p.ritmo, escala: ESCALAS.ritmo,
+    msg: r < p.ritmo[0] ? "Mais lento do que pede " + p.verbo + ": dá-lhe um pouco mais de embalo." :
+         r > p.ritmo[1] ? "Depressa demais para " + p.verbo + ": abranda e deixa cada palavra chegar." : p.ritmoOk };
+
+  // volume
+  const v = med.volume;
+  let nVol = 1, msgVol = "Volume estável e bem audível.";
+  if(v.satura > 0.002){ nVol = 0; msgVol = "Alto demais ou perto demais do microfone: afasta-te um palmo."; }
+  else if(v.snr < 12){ nVol = 0; msgVol = "Quase a sumir: fala mais alto ou chega-te ao microfone."; }
+  else if(v.queda != null && v.queda > 6){ nVol = 0.5; msgVol = "A voz cai no fim: segura-a até à última palavra."; }
+  else if(v.dp != null && v.dp > p.saltos + 2){ nVol = 0.5; msgVol = "O volume andou aos saltos: tenta mantê-lo mais igual."; }
+  else if(chave === "animar" && v.snr < 20){ nVol = 0.5; msgVol = "Para animar, põe mais energia na voz."; }
+  linhas.volume = { nota: nVol, valor: v.satura > 0.002 ? "a saturar" : v.snr < 12 ? "baixo" : v.snr < 20 ? "médio" : "bom", marca: v.snr, zona: [15, 40], escala: ESCALAS.volume, msg: msgVol };
+
+  // pausas (as vírgulas e os pontos a meio da frase são sítios para respirar)
+  const pontos = ((texto || "").replace(/[.!?…»"\s]+$/, "").match(/[,.;:!?…—]/g) || []).length;
+  const n = med.pausas.length, maior = n ? Math.max.apply(null, med.pausas.map(function(x){ return x.dur; })) : 0;
+  const lim = [texto && pontos && p.pausas[0] ? 1 : p.pausas[0], Math.max(p.pausas[1], pontos + 2)];
+  let nPau = 1, msgPau = n ? "Boas pausas: dão tempo a quem ouve." : "Sem paragens: dá energia à frase.";
+  if(n < lim[0]){ nPau = 0; msgPau = "Sem pausas: para meio segundo antes da parte mais importante."; }
+  else if(n > lim[1]){ nPau = 0.5; msgPau = "Muitas paragens: lê a frase uma vez em silêncio antes de a dizer."; }
+  else if(maior > 1.5){ nPau = 0.5; msgPau = "Uma pausa muito longa: pode parecer que perdeste o fio."; }
+  linhas.pausas = { nota: nPau, valor: n + (n === 1 ? " pausa" : " pausas"), marca: n, zona: lim, escala: ESCALAS.pausas, msg: msgPau };
+
+  const soma = linhas.tom.nota + linhas.ritmo.nota + linhas.volume.nota + linhas.pausas.nota;
+  // 5 estrelas só com as quatro linhas certas; meia linha a menos já tira uma
+  const estrelas = Math.max(1, Math.min(5, 1 + Math.floor(soma + 1e-9)));
+  // uma dica de cada vez: a da linha mais fraca (o fim e o ritmo primeiro)
+  let fraca = null;
+  ["tom", "ritmo", "pausas", "volume"].forEach(function(d){ if(linhas[d].nota < 1 && (!fraca || linhas[d].nota < linhas[fraca].nota)) fraca = d; });
+  const titulo = estrelas === 5 ? "A tua voz combina com a intenção." : estrelas === 4 ? "Muito perto. Afina só um pormenor." :
+                 estrelas === 3 ? "Bom começo. Escolhe uma dica e repete." : "Vamos outra vez, com calma.";
+  return { ouviu: true, estrelas: estrelas, titulo: titulo, dica: fraca ? (fraca === "tom" ? linhas.tom.dica : linhas[fraca].msg) : "", linhas: linhas };
+}
+
+/* O desafio: a mesma frase com duas intenções. Mudou a voz para o lado certo? */
+function comparar(a, b, pa, pb){
+  const A = PERFIS[pa], B = PERFIS[pb], meio = function(z){ return (z[0] + Math.min(z[1], 6)) / 2; };
+  const linhas = [];
+  let certas = 0, contam = 0;
+  function ver(nome, va, vb, esperado, minimo, mais, menos){
+    if(va == null || vb == null) return;
+    const d = vb - va, sinal = Math.abs(esperado) < 0.4 ? 0 : Math.sign(esperado);
+    const ok = sinal ? Math.sign(d) === sinal && Math.abs(d) >= minimo : null;
+    if(sinal){ contam++; if(ok) certas++; }
+    linhas.push({ nome: nome, de: va, para: vb, ok: ok, texto: Math.abs(d) < minimo ? "quase igual" : d > 0 ? mais : menos });
+  }
+  ver("Ritmo", a.ritmo, b.ritmo, meio(B.ritmo) - meio(A.ritmo), 0.3, "mais rápido", "mais lento");
+  ver("Melodia", a.tom.dp, b.tom.dp, meio(B.melodia) - meio(A.melodia), 0.4, "mais variada", "mais estável");
+  const veredicto = contam && certas === contam ? "Ouve-se bem a diferença." :
+                    certas ? "Já se ouve alguma diferença. Exagera um pouco mais." :
+                    "Soaram parecidas. Exagera a diferença: na sala, o exagero ajuda a perceber.";
+  return { linhas: linhas, veredicto: veredicto, certas: certas, contam: contam };
+}
+
+const CONTRARIO = { acalmar: "animar", animar: "acalmar", empatia: "limite", limite: "empatia" };
+
+raiz.VOZ = { analisar: analisar, tom: tom, reduzir: reduzir, nucleos: nucleos, avaliar: avaliar, comparar: comparar,
+             intencaoDe: intencaoDe, PERFIS: PERFIS, ESCALAS: ESCALAS, CONTRARIO: CONTRARIO, db: db, percentil: percentil,
+             desvio: desvio, num: num, SILABAS_POR_PICO: SILABAS_POR_PICO, PAUSA: PAUSA };
+})(typeof window !== "undefined" ? window : globalThis);
+</script>
 
 <script>
 (function(){
@@ -1512,6 +1968,383 @@ $("btnFecharPainel").addEventListener("click", fecharPainel);
 veuPainel.addEventListener("click", fecharPainel);
 
 /* ======================================================================
+   Diz em voz alta: o microfone ouve a frase e mostra se a voz combina
+   com a intenção. O som fica neste aparelho e apaga-se ao fechar.
+   ====================================================================== */
+const VOZ = window.VOZ;
+const vozSec = $("voz"), vozGravar = $("vozGravar"), vozOuvir = $("vozOuvir"), vozDesafio = $("vozDesafio");
+const vozTela = $("vozTela"), vozEstado = $("vozEstado"), btnVoz = $("btnVoz");
+const CALIB = 1, MAX_FALA = 15, FIM_SILENCIO = 1.6, ESPERA = 7;
+const SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+const IC_MIC = SVG + '<path d="M9 5a3 3 0 0 1 6 0v5a3 3 0 0 1 -6 0z"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>';
+const IC_PARAR = SVG + '<rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
+const IC_OUVIR = SVG + '<path d="M7 4v16l13 -8z"/></svg>';
+const IC_TROCA = SVG + '<path d="M7 10h14l-4 -4"/><path d="M17 14h-14l4 4"/></svg>';
+btnVoz.innerHTML = IC_MIC + "Voz";
+vozDesafio.innerHTML = IC_TROCA + "Desafio";
+const DIMS = [["tom", "Tom"], ["ritmo", "Ritmo"], ["volume", "Volume"], ["pausas", "Pausas"]];
+$("vozLinhas").innerHTML = DIMS.map(function(d){
+  return '<li class="voz-linha" id="vl-' + d[0] + '"><span class="vl-nome">' + d[1] + '</span><span class="vl-valor"></span><span class="vl-selo"></span>' +
+    '<span class="medidor" aria-hidden="true"><span class="zona"></span><span class="agulha" hidden></span></span><p class="vl-msg"></p></li>';
+}).join("");
+
+let vz = { estado: "pronto", int: "acalmar", sugerida: "acalmar", textos: [], frase: 0, stream: null, ctx: null, src: null, an: null, amostras: null,
+           rec: null, partes: [], raf: 0, t0: 0, vivo: [], ruidoCalib: 0, ruido: 0, limiar: 0, falou: 0, ultimaVoz: 0,
+           buf: null, med: null, res: null, comp: null, desafio: null, fonte: null };
+let pausadoPelaVoz = false;
+
+function textoAtual(){ const o = vz.textos[vz.frase]; return o ? o.texto : ""; }
+function suportaVoz(){
+  return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder && (window.AudioContext || window.webkitAudioContext));
+}
+
+/* um medidor: a zona certa, a agulha (se houver valor) e uma frase */
+function pintarLinha(d, o){
+  const li = $("vl-" + d), e = o.escala || VOZ.ESCALAS[d], z = o.zona;
+  const pc = function(v){ return Math.max(0, Math.min(100, (v - e[0]) / (e[1] - e[0]) * 100)); };
+  const zona = li.querySelector(".zona"), ag = li.querySelector(".agulha"), selo = li.querySelector(".vl-selo");
+  zona.style.left = pc(z[0]) + "%"; zona.style.width = Math.max(2, pc(z[1]) - pc(z[0])) + "%";
+  ag.hidden = o.marca == null || o.marca !== o.marca;
+  if(!ag.hidden) ag.style.left = pc(o.marca) + "%";
+  li.querySelector(".vl-valor").textContent = o.valor || "";
+  if(o.nota == null){ selo.textContent = ""; selo.removeAttribute("data-n"); }
+  else { selo.dataset.n = o.nota >= 1 ? "1" : o.nota > 0 ? "m" : "0"; selo.textContent = o.nota >= 1 ? "certo" : o.nota > 0 ? "quase" : "a treinar"; }
+  if(o.msg != null) li.querySelector(".vl-msg").textContent = o.msg;
+}
+/* antes de gravar, os medidores ensinam o alvo */
+function alvos(){
+  const p = VOZ.PERFIS[vz.int], perg = /\?\s*$/.test(textoAtual());
+  const fim = perg ? "pode subir, porque é pergunta" : p.fim === "desce" ? "a descer" : "à vontade";
+  pintarLinha("tom", { zona: p.melodia, msg: (p.melodia[0] >= 3 ? "Melodia viva" : p.melodia[1] <= 3 ? "Melodia estável" : "Alguma melodia") + "; o fim " + fim + "." });
+  pintarLinha("ritmo", { zona: p.ritmo, msg: "Zona verde: " + VOZ.num(p.ritmo[0]) + " a " + VOZ.num(p.ritmo[1]) + " sílabas por segundo." });
+  pintarLinha("volume", { zona: [15, 40], msg: "Estável, nem a sumir nem a gritar." });
+  pintarLinha("pausas", { zona: p.pausas, msg: p.pausas[0] ? "Pelo menos uma, antes da parte mais importante." : "Poucas e curtas, para a energia não cair." });
+}
+
+function pintarEscolhas(){
+  $("vozFrase").innerHTML = vz.textos.map(function(o, i){ return '<button data-i="' + i + '" aria-pressed="' + (i === vz.frase) + '">' + esc(o.rotulo) + "</button>"; }).join("");
+  $("vozFrase").hidden = vz.textos.length < 2;
+  $("vozInts").innerHTML = Object.keys(VOZ.PERFIS).map(function(k){
+    return '<button data-k="' + k + '" aria-pressed="' + (k === vz.int) + '">' + esc(VOZ.PERFIS[k].nome) + (k === vz.sugerida ? " <small>(sugerida)</small>" : "") + "</button>";
+  }).join("");
+  const t = textoAtual(), p = VOZ.PERFIS[vz.int];
+  $("vozTexto").textContent = t ? "«" + t + "»" : "Diz a tua versão, pela positiva." + (revelada ? "" : " Para treinar com a versão sugerida, revela-a primeiro.");
+  $("vozTexto").classList.toggle("livre", !t);
+  $("vozAlvo").innerHTML = "<b>Para " + esc(p.verbo) + ":</b> " + esc(p.alvo);
+  caberVoz();
+}
+
+const AVISO_ESTADO = { pronto: "Carrega em Gravar e diz a frase.", calibrar: "Um segundo de silêncio…", falar: "Fala agora",
+                       analisar: "A ouvir-te…", feito: "" };
+function mudarEstado(e){
+  vz.estado = e;
+  const grava = e === "calibrar" || e === "falar";
+  vozGravar.classList.toggle("a-gravar", grava);
+  vozGravar.innerHTML = grava ? IC_PARAR + "Parar" : e === "analisar" ? "A ouvir…" : IC_MIC + (vz.buf ? "Outra vez" : "Gravar");
+  vozGravar.disabled = e === "analisar";
+  vozEstado.classList.toggle("fala", e === "falar");
+  vozEstado.textContent = e === "pronto" && vz.desafio ? "Desafio: agora para " + VOZ.PERFIS[vz.int].verbo + "." : AVISO_ESTADO[e];
+  vozDesafio.disabled = !(e === "feito" && vz.res && vz.res.ouviu);
+  // ouvir-se é metade do treino: o botão chama até ser usado
+  vozOuvir.classList.toggle("chama", e === "feito");
+  pintarOuvir();
+}
+function pintarOuvir(){
+  vozOuvir.innerHTML = vz.fonte ? IC_PARAR + "Parar" : IC_OUVIR + "Ouvir-me";
+  vozOuvir.disabled = !vz.buf || vz.estado === "calibrar" || vz.estado === "falar" || vz.estado === "analisar";
+}
+
+/* a linha do tom (semitons à volta do tom habitual da pessoa) por cima da onda do volume */
+function desenhar(pontos, onda, dur, cursor){
+  const r = vozTela.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+  if(!r.width) return;
+  if(vozTela.width !== Math.round(r.width * d) || vozTela.height !== Math.round(r.height * d)){ vozTela.width = Math.round(r.width * d); vozTela.height = Math.round(r.height * d); }
+  const g = vozTela.getContext("2d"), w = r.width, h = r.height, cs = getComputedStyle(document.documentElement);
+  g.setTransform(d, 0, 0, d, 0, 0); g.clearRect(0, 0, w, h);
+  const X = function(t){ return 6 + t / dur * (w - 12); }, Y = function(st){ return h / 2 - Math.max(-9, Math.min(9, st)) / 9 * (h / 2 - 8); };
+  g.strokeStyle = cs.getPropertyValue("--line-forte"); g.lineWidth = 1; g.setLineDash([4, 6]);
+  g.beginPath(); g.moveTo(0, h / 2); g.lineTo(w, h / 2); g.stroke(); g.setLineDash([]);
+  g.fillStyle = cs.getPropertyValue("--acc-linha");
+  onda.forEach(function(o){ const a = Math.max(1, o[1] * h * 0.4); g.fillRect(X(o[0]) - 1.2, h / 2 - a, 2.4, 2 * a); });
+  g.strokeStyle = cs.getPropertyValue("--acc"); g.lineWidth = 4; g.lineCap = "round"; g.lineJoin = "round";
+  g.beginPath();
+  let ant = -1;
+  pontos.forEach(function(p){ if(ant >= 0 && p[0] - ant < 0.06) g.lineTo(X(p[0]), Y(p[1])); else g.moveTo(X(p[0]), Y(p[1])); ant = p[0]; });
+  g.stroke();
+  if(cursor != null){ g.fillStyle = cs.getPropertyValue("--ink"); g.fillRect(X(cursor) - 1, 0, 2, h); }
+}
+/* em ecrãs largos (projetor) o cartão cabe sem rolar: o texto e o gráfico encolhem;
+   no telemóvel rola, com os botões presos em baixo */
+function caberVoz(){
+  if(vozSec.hidden) return;
+  const c = vozSec.querySelector(".voz-cartao");
+  if(window.innerWidth > 560) caber(c, "--v", .6); else c.style.removeProperty("--v");
+}
+function desenharFinal(cursor){
+  const m = vz.med;
+  if(m && m.ouviu) desenhar(m.contorno, m.onda, Math.max(1, m.duracao), cursor); else desenhar([], [], 4);
+}
+
+/* ---------- gravar ---------- */
+function semMicrofone(motivo){
+  const MOTIVOS = {
+    api: "Este navegador não deixa usar o microfone nesta página. Experimenta no Chrome, no Edge ou no Safari. O resto do exercício funciona como sempre.",
+    NotAllowedError: "O microfone está bloqueado para esta página. Para usar a voz, carrega no cadeado ou no ícone do microfone, ao lado do endereço, e escolhe Permitir. Sem microfone, o exercício funciona como sempre.",
+    SecurityError: "O microfone está bloqueado para esta página. Para usar a voz, carrega no cadeado ou no ícone do microfone, ao lado do endereço, e escolhe Permitir. Sem microfone, o exercício funciona como sempre.",
+    NotFoundError: "Não encontrei nenhum microfone. Liga um (ou usa o do portátil) e carrega em Tentar outra vez.",
+    NotReadableError: "O microfone está ocupado por outra aplicação, como o Teams ou o Zoom. Fecha-a e carrega em Tentar outra vez."
+  };
+  $("vozSem").textContent = MOTIVOS[motivo] || "Não consegui ligar o microfone. Carrega em Tentar outra vez; sem microfone, o exercício funciona como sempre.";
+  $("vozSem").hidden = false; $("vozMeio").hidden = true;
+  mudarEstado("pronto");
+  vozGravar.innerHTML = IC_MIC + "Tentar outra vez";
+  vozGravar.hidden = motivo === "api";
+}
+async function gravar(){
+  if(vz.estado === "calibrar" || vz.estado === "falar"){ parar(); return; }
+  if(vz.estado === "analisar") return;
+  pararOuvir();
+  if(!suportaVoz()){ semMicrofone("api"); return; }
+  const AC = window.AudioContext || window.webkitAudioContext;
+  try{
+    // o contexto de som nasce já no clique (o Safari só o deixa arrancar assim)
+    if(!vz.ctx) vz.ctx = new AC();
+    if(vz.ctx.state === "suspended") vz.ctx.resume();
+    if(!vz.stream) vz.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: true, autoGainControl: false } });
+  }catch(e){ semMicrofone(e && e.name); return; }
+  if(vozSec.hidden){ largarMicrofone(); return; }   // fechou enquanto o navegador pedia licença
+  $("vozSem").hidden = true; $("vozMeio").hidden = false;
+  if(!vz.an){
+    vz.an = vz.ctx.createAnalyser(); vz.an.fftSize = 4096; vz.amostras = new Float32Array(vz.an.fftSize);
+    vz.src = vz.ctx.createMediaStreamSource(vz.stream); vz.src.connect(vz.an);
+  }
+  try{ vz.rec = new MediaRecorder(vz.stream); }catch(e){ semMicrofone("api"); return; }
+  limparTake();
+  vz.partes = [];
+  vz.rec.ondataavailable = function(ev){ if(ev.data && ev.data.size) vz.partes.push(ev.data); };
+  vz.rec.onstop = acabou;
+  vz.rec.start();
+  vz.t0 = performance.now(); vz.vivo = []; vz.falou = 0; vz.ultimaVoz = 0;
+  mudarEstado("calibrar");
+  // um temporizador e não requestAnimationFrame: este pára quando a janela fica tapada
+  clearInterval(vz.raf); vz.raf = setInterval(ouvirVivo, 30);
+}
+function parar(){
+  if(vz.estado !== "calibrar" && vz.estado !== "falar") return;
+  clearInterval(vz.raf);
+  const cedo = vz.estado === "calibrar";
+  mudarEstado(cedo ? "pronto" : "analisar");   // parar durante o silêncio cancela
+  try{ vz.rec.stop(); }catch(e){}
+}
+function acabou(){
+  const partes = vz.partes, rec = vz.rec; vz.partes = [];
+  if(vz.estado !== "analisar") return;
+  const blob = new Blob(partes, { type: (rec && rec.mimeType) || "audio/webm" });
+  blob.arrayBuffer().then(function(ab){ return vz.ctx.decodeAudioData(ab); }).then(function(buf){
+    if(vz.estado !== "analisar") return;
+    vz.buf = buf;
+    vz.med = VOZ.analisar(buf.getChannelData(0), buf.sampleRate, { calib: CALIB });
+    avaliarTake();
+    mudarEstado("feito");
+    if(!vz.res.ouviu) vozEstado.textContent = "Carrega em Ouvir-me para ver se o som ficou gravado.";
+  }).catch(function(){
+    if(vz.estado !== "analisar") return;
+    mudarEstado("pronto");
+    $("vozRes").innerHTML = '<p class="voz-dica">Não consegui ler a gravação neste navegador. Tenta outra vez.</p>';
+  });
+}
+
+/* em direto: a linha do tom, a agulha do ritmo e do volume, as pausas */
+function ouvirVivo(){
+  if(vz.estado !== "calibrar" && vz.estado !== "falar"){ clearInterval(vz.raf); return; }
+  const t = (performance.now() - vz.t0) / 1000;
+  vz.an.getFloatTimeDomainData(vz.amostras);
+  const r = VOZ.reduzir(vz.amostras, vz.ctx.sampleRate), y = r.y, jan = Math.round(0.04 * r.sr);
+  let s = 0; for(let i = y.length - jan; i < y.length; i++) s += y[i] * y[i];
+  const nivel = VOZ.db(s / jan), f0 = VOZ.tom(y, y.length - Math.round(0.03 * r.sr) - Math.ceil(r.sr / 70) - 2, r.sr);
+  vz.vivo.push({ t: t, db: nivel, f0: f0 });
+  if(vz.estado === "calibrar"){
+    if(t >= CALIB){
+      vz.ruidoCalib = VOZ.percentil(vz.vivo.filter(function(v){ return v.t >= 0.15; }).map(function(v){ return v.db; }), 0.2);
+      vz.ruido = vz.ruidoCalib; vz.limiar = vz.ruido + 9;
+      mudarEstado("falar");
+    }
+    desenhar([], [], 4);
+    return;
+  }
+  // se alguém falou durante o silêncio, o ruído real é o mais baixo que já se ouviu
+  if(vz.vivo.length % 30 === 0){
+    vz.ruido = Math.min(vz.ruidoCalib, VOZ.percentil(vz.vivo.map(function(v){ return v.db; }), 0.05));
+    vz.limiar = vz.ruido + 9;
+  }
+  const dt = vz.vivo.length > 1 ? t - vz.vivo[vz.vivo.length - 2].t : 0;
+  if(nivel >= vz.limiar){ vz.falou += dt; vz.ultimaVoz = t; }
+  if((vz.falou > 0.5 && t - vz.ultimaVoz > FIM_SILENCIO) || t > CALIB + MAX_FALA || (!vz.falou && t > CALIB + ESPERA)){ parar(); return; }
+  medirVivo(t);
+}
+function medirVivo(t){
+  const fala = vz.vivo.filter(function(v){ return v.t >= CALIB; });
+  const ini = fala.findIndex(function(v){ return v.db >= vz.limiar; });
+  const p = VOZ.PERFIS[vz.int];
+  if(ini < 0){ desenhar([], [], 4); return; }
+  const t0 = fala[ini].t, hz = [];
+  fala.forEach(function(v){ if(v.f0 && v.db >= vz.limiar) hz.push(v.f0); });
+  const med = hz.length ? VOZ.percentil(hz, 0.5) : 0, pontos = [], onda = [], st = [];
+  let pausas = 0, ultima = t0, tempo = 0;
+  fala.forEach(function(v, i){
+    if(i < ini) return;
+    if(v.db >= vz.limiar){
+      if(v.t - ultima >= VOZ.PAUSA) pausas++;
+      tempo += i > 0 ? v.t - fala[i - 1].t : 0; ultima = v.t;
+      if(v.f0 && med){ const s = 12 * Math.log2(v.f0 / med); if(Math.abs(s) <= 9){ pontos.push([v.t - t0, s]); st.push(s); } }
+    }
+    onda.push([v.t - t0, Math.max(0, Math.min(1, (v.db - vz.ruido) / 40))]);
+  });
+  desenhar(pontos, onda, Math.max(4, t - t0 + 0.5));
+  // a cada 6 quadros chega para os medidores
+  if(vz.vivo.length % 6) return;
+  const env = fala.map(function(v){ return v.db; });
+  const nuc = VOZ.nucleos(env, ini, env.length - 1, vz.limiar + 2, function(k){ return !!(fala[k] && fala[k].f0) || !!(fala[k - 1] && fala[k - 1].f0) || !!(fala[k + 1] && fala[k + 1].f0); });
+  const ritmo = tempo > 0.8 ? nuc.length / tempo * VOZ.SILABAS_POR_PICO : null;
+  const dp = st.length >= 15 ? VOZ.desvio(st) : null, agora = vz.vivo[vz.vivo.length - 1].db - vz.ruido;
+  pintarLinha("tom", { zona: p.melodia, marca: dp, valor: dp == null ? "" : dp < 1.5 ? "plana" : dp < 3.5 ? "moderada" : "viva" });
+  pintarLinha("ritmo", { zona: p.ritmo, marca: ritmo, valor: ritmo == null ? "" : "≈ " + VOZ.num(ritmo) + " sílabas/s" });
+  pintarLinha("volume", { zona: [15, 40], marca: agora, valor: agora < 12 ? "baixo" : agora < 20 ? "médio" : "bom" });
+  pintarLinha("pausas", { zona: p.pausas, marca: pausas, valor: pausas + (pausas === 1 ? " pausa" : " pausas") });
+}
+
+/* ---------- resultado ---------- */
+function avaliarTake(){
+  vz.res = VOZ.avaliar(vz.med, vz.int, textoAtual());
+  if(vz.desafio && vz.res.ouviu){ vz.comp = { de: vz.desafio.int, para: vz.int, c: VOZ.comparar(vz.desafio.med, vz.med, vz.desafio.int, vz.int) }; vz.desafio = null; }
+  mostrarResultado();
+}
+function mostrarResultado(){
+  const r = vz.res;
+  if(!r) return;
+  if(!r.ouviu){
+    $("vozRes").innerHTML = '<p class="voz-estrelas"><b>' + esc(r.titulo) + "</b></p>";
+    alvos(); caberVoz(); desenharFinal(); return;
+  }
+  let h = '<p class="voz-estrelas"><span aria-hidden="true">' + "★".repeat(r.estrelas) + "<i>" + "★".repeat(5 - r.estrelas) + "</i></span>" +
+          '<span class="so-leitor">' + r.estrelas + " de 5 estrelas. </span><b>" + esc(r.titulo) + "</b></p>";
+  if(r.dica) h += '<p class="voz-dica"><b>Próximo passo:</b> ' + esc(r.dica) + "</p>";
+  if(vz.comp){
+    const c = vz.comp.c;
+    h += '<p class="voz-comp"><b>Desafio · ' + esc(VOZ.PERFIS[vz.comp.de].nome) + " → " + esc(VOZ.PERFIS[vz.comp.para].nome) + ":</b> " +
+      c.linhas.map(function(l){ return esc(l.nome) + " " + esc(l.texto) + (l.ok ? " ✓" : ""); }).join(" · ") + ". " + esc(c.veredicto) + "</p>";
+  }
+  $("vozRes").innerHTML = h;
+  DIMS.forEach(function(d){ const l = r.linhas[d[0]]; pintarLinha(d[0], l); });
+  caberVoz(); desenharFinal();
+}
+function limparTake(){
+  pararOuvir();
+  vz.buf = null; vz.med = null; vz.res = null; vz.comp = null;
+  $("vozRes").innerHTML = vz.desafio ? '<p class="voz-dica"><b>Desafio:</b> diz a mesma frase, agora para ' + esc(VOZ.PERFIS[vz.int].verbo) + ". Exagera um pouco: ajuda a sentir a diferença.</p>" : "";
+  alvos(); caberVoz(); desenhar([], [], 4);
+}
+
+/* ---------- ouvir-se ---------- */
+function ouvir(){
+  vozOuvir.classList.remove("chama");
+  if(vz.fonte){ pararOuvir(); return; }
+  if(!vz.buf || vozOuvir.disabled) return;
+  const m = vz.med && vz.med.ouviu ? vz.med : null;
+  const ini = m ? Math.max(0, m.fala.ini - 0.25) : 0, fim = m ? Math.min(vz.buf.duration, m.fala.fim + 0.35) : vz.buf.duration;
+  const f = vz.ctx.createBufferSource(), comeco = vz.ctx.currentTime;
+  f.buffer = vz.buf; f.connect(vz.ctx.destination);
+  f.onended = function(){ if(vz.fonte === f){ vz.fonte = null; pintarOuvir(); desenharFinal(); } };
+  f.start(0, ini, fim - ini);
+  vz.fonte = f; pintarOuvir();
+  (function cursor(){
+    if(vz.fonte !== f) return;
+    if(m) desenharFinal(ini + vz.ctx.currentTime - comeco - m.fala.ini);
+    requestAnimationFrame(cursor);
+  })();
+}
+function pararOuvir(){
+  if(!vz.fonte) return;
+  const f = vz.fonte; vz.fonte = null;
+  try{ f.stop(); }catch(e){}
+  pintarOuvir(); desenharFinal();
+}
+
+/* ---------- desafio: a mesma frase com a intenção contrária ---------- */
+function desafiar(){
+  if(vozDesafio.disabled || !vz.res || !vz.res.ouviu) return;
+  vz.desafio = { med: vz.med, int: vz.int };
+  vz.int = VOZ.CONTRARIO[vz.int];
+  pintarEscolhas(); limparTake(); mudarEstado("pronto");
+  vozGravar.focus();
+}
+
+/* ---------- abrir e fechar ---------- */
+function abrirVoz(){
+  if(jogo.hidden || !vozSec.hidden) return;
+  const c = POR_ID[hist[pos]];
+  vz.textos = (revelada ? c.versoes.map(function(v, i){ return { rotulo: c.versoes.length > 1 ? "Versão " + (i + 1) : "Versão sugerida", texto: v }; }) : [])
+    .concat([{ rotulo: "A minha versão", texto: "" }]);
+  vz.frase = 0;
+  vz.int = vz.sugerida = VOZ.intencaoDe(c.area, c.tecnicas);
+  vz.desafio = null;
+  if(rel.int && !rel.pausa){ alternarPausa(true); pausadoPelaVoz = true; }
+  document.querySelectorAll("body > *:not(#voz):not(script)").forEach(function(el){ el.inert = true; });
+  vozSec.hidden = false;
+  $("vozSem").hidden = true; $("vozMeio").hidden = false; vozGravar.hidden = false;
+  pintarEscolhas(); limparTake(); mudarEstado("pronto");
+  if(!suportaVoz()) semMicrofone("api");
+  vozGravar.focus({ preventScroll: true });
+}
+function largarMicrofone(){
+  if(vz.stream){ vz.stream.getTracks().forEach(function(t){ t.stop(); }); vz.stream = null; }
+  if(vz.src){ try{ vz.src.disconnect(); }catch(e){} vz.src = null; }
+  vz.an = null;
+  if(vz.ctx){ try{ vz.ctx.close(); }catch(e){} vz.ctx = null; }
+}
+function fecharVoz(){
+  if(vozSec.hidden) return;
+  clearInterval(vz.raf);
+  pararOuvir();
+  vz.estado = "fechado";
+  if(vz.rec && vz.rec.state !== "inactive"){ try{ vz.rec.stop(); }catch(e){} }
+  vz.rec = null; vz.partes = []; vz.desafio = null;
+  limparTake();
+  largarMicrofone();
+  vz.estado = "pronto";
+  vozSec.hidden = true;
+  document.querySelectorAll("body > *").forEach(function(el){ el.inert = false; });
+  if(pausadoPelaVoz){ pausadoPelaVoz = false; alternarPausa(false); }
+  btnVoz.focus({ preventScroll: true });
+}
+
+vozGravar.addEventListener("click", gravar);
+vozOuvir.addEventListener("click", ouvir);
+vozDesafio.addEventListener("click", desafiar);
+$("vozFechar").addEventListener("click", fecharVoz);
+btnVoz.addEventListener("click", abrirVoz);
+vozSec.addEventListener("click", function(ev){ if(ev.target === vozSec) fecharVoz(); });
+// mudar a frase ou a intenção volta a avaliar a mesma gravação: a voz é a mesma, o alvo muda
+$("vozFrase").addEventListener("click", function(ev){
+  const b = ev.target.closest("button"); if(!b) return;
+  vz.frase = parseInt(b.dataset.i, 10); escolheu();
+  $("vozFrase").querySelector('[data-i="' + vz.frase + '"]').focus();
+});
+$("vozInts").addEventListener("click", function(ev){
+  const b = ev.target.closest("button"); if(!b || vz.estado === "calibrar" || vz.estado === "falar") return;
+  vz.int = b.dataset.k; escolheu();
+  $("vozInts").querySelector('[data-k="' + vz.int + '"]').focus();
+});
+function escolheu(){
+  pintarEscolhas();
+  if(vz.med){ vz.res = VOZ.avaliar(vz.med, vz.int, textoAtual()); mostrarResultado(); }
+  else { alvos(); mudarEstado(vz.estado); }
+}
+document.addEventListener("visibilitychange", function(){ if(document.hidden) parar(); });
+window.addEventListener("pagehide", largarMicrofone);
+window.addEventListener("resize", function(){ if(!vozSec.hidden && vz.estado !== "falar"){ caberVoz(); desenharFinal(); } });
+
+/* ======================================================================
    Arranque e eventos
    ====================================================================== */
 function arrancar(){
@@ -1559,6 +2392,15 @@ if(document.fonts && document.fonts.ready) document.fonts.ready.then(ajustar);
    ficam para o botão. */
 document.addEventListener("keydown", function(ev){
   const k = ev.key;
+  // com a voz aberta: avançar grava e pára, recuar ou Esc fecha, O ouve
+  if(!vozSec.hidden){
+    if(ev.ctrlKey || ev.metaKey || ev.altKey) return;
+    const emBotao = document.activeElement.tagName === "BUTTON";
+    if(k === "Escape" || k === "PageUp" || k === "ArrowLeft"){ ev.preventDefault(); fecharVoz(); }
+    else if(k === "PageDown" || k === "ArrowRight" || ((k === "Enter" || k === " ") && !emBotao)){ ev.preventDefault(); gravar(); }
+    else if(k === "o" || k === "O"){ ev.preventDefault(); ouvir(); }
+    return;
+  }
   if(k === "Escape"){
     if(document.body.classList.contains("personalizar")) fecharPainel();
     return;
@@ -1573,6 +2415,7 @@ document.addEventListener("keydown", function(ev){
     else if(k === "ArrowLeft" || k === "PageUp"){ ev.preventDefault(); recuar(); }
     else if(k === "ArrowDown" || k === "d" || k === "D"){ ev.preventDefault(); darPista(); }
     else if(k === "p" || k === "P"){ ev.preventDefault(); alternarPausa(); }
+    else if(k === "v" || k === "V"){ ev.preventDefault(); abrirVoz(); }
     return;
   }
   if(frente){ ev.preventDefault(); comecar(); }
