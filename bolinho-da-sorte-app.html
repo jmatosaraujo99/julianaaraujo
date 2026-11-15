@@ -92,6 +92,9 @@ button{font:inherit;color:inherit}
 .bolinho.especial::before{content:"";position:absolute;left:4%;bottom:14%;width:18%;aspect-ratio:1;pointer-events:none;background:#fff;
   clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);animation:cintilar 2.3s ease-in-out calc(var(--atraso) - .8s) infinite}
 @keyframes cintilar{0%,100%{transform:scale(.3) rotate(0);opacity:.2}50%{transform:scale(1) rotate(45deg);opacity:1}}
+/* Tema «Portugal»: um rebordo claro para as peças escuras (galo, andorinha) se verem do fundo da sala; as que têm surpresa brilham a dourado */
+.tema-portugal .bolinho svg{filter:drop-shadow(0 0 2px rgba(255,247,232,.55))}
+.tema-portugal .bolinho.especial svg{filter:drop-shadow(0 0 2px rgba(255,247,232,.55)) drop-shadow(0 0 10px rgba(255,214,120,.8))}
 .contador{color:var(--texto-suave);font-size:14px;margin:0;font-variant-numeric:tabular-nums;text-align:center}
 .dica-teclado{color:var(--texto-suave);font-size:13px;margin:0;opacity:.8;text-align:center}
 @media (hover:none){.dica-teclado{display:none}}
@@ -120,6 +123,8 @@ button{font:inherit;color:inherit}
 .papel::before{top:12px}
 .papel::after{bottom:12px}
 .papel-conteudo{transform-origin:50% 50%}
+.papel-peca{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 0 8px;font-weight:700;font-size:clamp(13px,1.3vw,16px);letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-suave)}
+.papel-peca svg{width:2.8em;height:auto;overflow:visible}
 .papel-vez{margin:0 0 10px;font-weight:700;font-size:clamp(16px,1.8vw,20px);color:var(--coral-tinta)}
 .papel-pergunta{font-family:var(--f-pergunta);font-weight:400;font-size:clamp(25px,3.7vw,48px);line-height:1.16;margin:0;text-wrap:balance;letter-spacing:-.005em}
 .papel-sorte{display:flex;justify-content:center;align-items:baseline;gap:8px 14px;flex-wrap:wrap;margin:clamp(14px,2.4vw,22px) 0 0;font-size:14px;color:var(--tinta-suave);font-weight:600}
@@ -216,6 +221,8 @@ button{font:inherit;color:inherit}
 .modelo:has(input:checked){box-shadow:inset 0 0 0 2px var(--coral-tinta);background:#FFF3EC}
 .modelo input{margin:3px 0 0;width:18px;height:18px;accent-color:var(--coral-tinta);flex:none}
 .modelo b{display:block}
+.modelos legend{font-weight:700;font-size:15px;padding:0;margin-bottom:6px}
+.modelo svg{width:62px;height:auto;flex:none;overflow:visible;align-self:center}
 .modelo span{font-size:14px;color:var(--tinta-suave)}
 .previa{margin:0;padding:14px 16px 14px 36px;border-radius:14px;background:#FFFDF8;box-shadow:inset 0 0 0 1px var(--papel-linha);display:flex;flex-direction:column;gap:6px;font-size:15px}
 .erro{margin:0;color:#9E2A17;font-weight:700}
@@ -291,7 +298,7 @@ button{font:inherit;color:inherit}
       <div class="prato" id="prato" role="group" aria-label="Bolinhos da sorte" data-en-aria="Fortune cookies"></div>
       <div class="vazio-prato" id="vazio" hidden></div>
       <p class="contador" id="contador" aria-live="polite"></p>
-      <p class="dica-teclado" data-en="Space bar or presentation clicker: opens a random cookie and moves on to the next.">Barra de espaços ou comando de apresentações: abre um bolinho ao calhas e passa ao seguinte.</p>
+      <p class="dica-teclado" id="dica-teclado" data-en="Space bar or presentation clicker: opens a random cookie and moves on to the next.">Barra de espaços ou comando de apresentações: abre um bolinho ao calhas e passa ao seguinte.</p>
     </section>
 
     <section class="revelar" id="revelar" hidden aria-live="polite">
@@ -307,6 +314,7 @@ button{font:inherit;color:inherit}
           <div class="papel" id="papel">
             <div class="papel-personagem" id="papel-personagem" hidden></div>
             <div class="papel-conteudo" id="papel-conteudo">
+              <p class="papel-peca" id="papel-peca" hidden></p>
               <p class="papel-surpresa" id="papel-surpresa" hidden></p>
               <p class="papel-vez" id="papel-vez" hidden></p>
               <p class="papel-pergunta" id="papel-pergunta"></p>
@@ -781,6 +789,10 @@ const DEFS_PERSONAGENS = `
   <radialGradient id="gp-creme" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#FCE38A"/><stop offset=".7" stop-color="#F2C553"/><stop offset="1" stop-color="#D9A23A"/></radialGradient>
   <linearGradient id="gp-madeira" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E0A35E"/><stop offset="1" stop-color="#A86630"/></linearGradient>
   <linearGradient id="gp-bacalhau" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBF6EA"/><stop offset="1" stop-color="#E2D6BA"/></linearGradient>
+  <linearGradient id="gp-hostia" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFBF0"/><stop offset="1" stop-color="#EEDDB8"/></linearGradient>
+  <radialGradient id="gp-gema" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F7C843" stop-opacity=".8"/><stop offset="1" stop-color="#F7C843" stop-opacity="0"/></radialGradient>
+  <linearGradient id="gp-crosta" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D98D40"/><stop offset="1" stop-color="#8E4A1C"/></linearGradient>
+  <linearGradient id="gp-rei" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" stop-color="#F9D184"/><stop offset=".5" stop-color="#E9A243"/><stop offset="1" stop-color="#B8672A"/></linearGradient>
 `;
 
 const PERSONAGENS = [
@@ -938,6 +950,72 @@ const PERSONAGENS = [
     </svg>`
   }
 ];
+
+/* =========================================================
+   TEMA «PORTUGAL»
+   Em vez de bolinhos, o prato leva doces e objetos portugueses, que se partem ao meio como os bolinhos.
+   Oito desenhos são os das surpresas ("de" diz qual, para essa surpresa não saltar de dentro dela própria);
+   ovos moles, pão de ló e bolo-rei são desenhos novos, na mesma caixa de 160 x 160.
+   ========================================================= */
+const desenhoDe = id => PERSONAGENS.find(p => p.id === id).svg;
+const PECAS_PORTUGAL = [
+  { id: 'galo', de: 'galo', nome: 'Galo de Barcelos', en: 'Barcelos Rooster', migalhas: ['#1B1B1B', '#D7262E', '#F2B705', '#2E9A4B'] },
+  { id: 'nata', de: 'nata', nome: 'Pastel de nata', en: 'Pastel de nata', migalhas: ['#E7A64B', '#F2C553', '#6E3810'] },
+  { id: 'sardinha', de: 'sardinha', nome: 'Sardinha', en: 'Sardine', migalhas: ['#8FB3C7', '#EEF5F8', '#2F5A73'] },
+  { id: 'andorinha', de: 'andorinha', nome: 'Andorinha', en: 'Swallow', migalhas: ['#1F2533', '#F4EEDF', '#C0392B'] },
+  { id: 'azulejo', de: 'azulejo', nome: 'Azulejo', en: 'Azulejo tile', migalhas: ['#1F4E9A', '#F7F4EC', '#5B86C5'] },
+  { id: 'guitarra', de: 'fado', nome: 'Guitarra portuguesa', en: 'Portuguese guitar', migalhas: ['#E0A35E', '#A86630', '#F0D9A8'] },
+  { id: 'eletrico', de: 'eletrico', nome: 'Elétrico', en: 'Tram', migalhas: ['#F6C21B', '#FFF7E8', '#C0392B'] },
+  { id: 'manjerico', de: 'manjerico', nome: 'Manjerico', en: 'Manjerico (sweet basil)', migalhas: ['#4FB146', '#2F7F2E', '#C8643B'] },
+  {
+    id: 'ovos-moles', nome: 'Ovos moles', en: 'Ovos moles', migalhas: ['#FFFBF0', '#F7C843', '#EEDDB8'],
+    svg: `<svg viewBox="0 0 160 160" aria-hidden="true">
+      <path d="M56 116 L96 116 L100 136 C84 131 68 131 52 136 Z" fill="url(#gp-hostia)" stroke="#B89A62" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M62 122 L19 110 Q12 95 24 88 Q20 71 33 69 Q33 51 45 54 Q49 37 60 45 Q67 30 76 42 Q85 30 92 45 Q103 37 107 54 Q119 51 119 69 Q132 71 128 88 Q140 95 133 110 L90 122 Z" fill="url(#gp-hostia)" stroke="#B89A62" stroke-width="2.5" stroke-linejoin="round"/>
+      <ellipse cx="76" cy="84" rx="34" ry="28" fill="url(#gp-gema)"/>
+      <path d="M65 114 L25 89 M68 110 L34 71 M71 107 L46 57 M73 106 L60 48 M76 106 L76 44 M79 106 L92 48 M81 107 L106 57 M84 110 L118 71 M87 114 L127 89" stroke="#C9AD78" stroke-width="2" stroke-linecap="round" opacity=".8"/>
+      <path d="M54 103 L35 85 M65 90 L56 60 M80 87 L83 55 M93 96 L108 71" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".75"/>
+      <g transform="rotate(-12 122 130)">
+        <path d="M96 130 C102 117 124 114 136 126 L150 117 C147 126 147 134 150 143 L136 134 C124 145 102 143 96 130 Z" fill="url(#gp-hostia)" stroke="#B89A62" stroke-width="2.5" stroke-linejoin="round"/>
+        <ellipse cx="118" cy="130" rx="14" ry="7" fill="url(#gp-gema)"/>
+        <path d="M112 122 C116 127 116 134 112 139 M122 121 C126 126 126 135 122 140" stroke="#C9AD78" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <circle cx="104" cy="128" r="2.4" fill="#8F7445"/>
+      </g>
+    </svg>`
+  },
+  {
+    id: 'pao-de-lo', nome: 'Pão de ló', en: 'Pão de ló sponge cake', migalhas: ['#D98D40', '#F4C34A', '#FBF4E6'],
+    svg: `<svg viewBox="0 0 160 160" aria-hidden="true">
+      <path d="M20 96 C14 78 18 62 28 52 L42 68 C50 50 60 40 72 36 L80 56 L90 36 C104 40 114 48 122 60 L132 48 C144 58 148 78 140 96 Z" fill="#FBF4E6" stroke="#C9B48E" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M30 60 L40 74 M72 42 L76 58 M126 56 L120 66" stroke="#E2D3B3" stroke-width="2" stroke-linecap="round"/>
+      <path d="M22 92 A58 20 0 0 0 138 92 L134 122 A54 18 0 0 1 26 122 Z" fill="#F6EBD3" stroke="#C9B48E" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M40 108 L42 134 M60 112 L61 139 M80 113 L80 140 M100 112 L99 139 M120 108 L118 134" stroke="#E2D3B3" stroke-width="2" stroke-linecap="round"/>
+      <path d="M22 92 C24 66 136 66 138 92 A58 20 0 0 1 22 92 Z" fill="url(#gp-crosta)" stroke="#6E3810" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M34 86 C40 76 56 70 72 70" stroke="#F3C27C" stroke-width="4.5" fill="none" stroke-linecap="round" opacity=".6"/>
+      <path d="M58 86 C64 76 92 74 104 82 C98 94 68 96 58 86 Z" fill="#F4C34A" stroke="#A8641F" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M66 86 C74 82 88 82 96 85" stroke="#FCE38A" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <g fill="#6E3810" opacity=".45"><circle cx="44" cy="92" r="2"/><circle cx="114" cy="80" r="2.2"/><circle cx="122" cy="94" r="1.6"/><circle cx="90" cy="100" r="1.8"/></g>
+    </svg>`
+  },
+  {
+    id: 'bolo-rei', nome: 'Bolo-rei', en: 'Bolo-rei (king cake)', migalhas: ['#E9A243', '#D7262E', '#2E9A4B', '#F28C28'],
+    svg: `<svg viewBox="0 0 160 160" aria-hidden="true">
+      <path d="M16 88 A64 34 0 0 0 144 88 L144 100 A64 34 0 0 1 16 100 Z" fill="#A9602A" stroke="#7A3F16" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M16 88 A64 34 0 1 0 144 88 A64 34 0 1 0 16 88 Z M58 86 A22 10 0 1 0 102 86 A22 10 0 1 0 58 86 Z" fill="url(#gp-rei)" fill-rule="evenodd" stroke="#8F5420" stroke-width="2.5"/>
+      <path d="M59 85 A22 10 0 0 1 101 85" stroke="#7A3F16" stroke-width="5" fill="none" stroke-linecap="round" opacity=".55"/>
+      <path d="M26 82 C36 66 62 58 88 57" stroke="#FFF3CF" stroke-width="5" fill="none" stroke-linecap="round" opacity=".5"/>
+      <g stroke="#7A3F16" stroke-width="1.2">
+        <circle cx="123" cy="91" r="6" fill="#D7262E"/><circle cx="54" cy="105" r="6" fill="#D7262E"/><circle cx="64" cy="68" r="5.5" fill="#D7262E"/>
+        <rect x="108" y="98" width="13" height="7" rx="2" fill="#2E9A4B" transform="rotate(20 114 102)"/><rect x="31" y="82" width="13" height="7" rx="2" fill="#2E9A4B" transform="rotate(-25 37 85)"/><rect x="100" y="68" width="12" height="6.5" rx="2" fill="#2E9A4B" transform="rotate(15 106 71)"/>
+        <path d="M89 112 A8 8 0 0 1 103 106 Z" fill="#F28C28"/><path d="M40 77 A8 8 0 0 1 53 70 Z" fill="#F28C28"/>
+        <rect x="34" y="93" width="12" height="7" rx="2" fill="#F6C21B" transform="rotate(30 40 96)"/><rect x="114" y="77" width="12" height="6.5" rx="2" fill="#F6C21B" transform="rotate(-20 120 80)"/>
+        <path d="M68 106 C68 100 80 100 80 106 C80 113 68 113 68 106 Z" fill="#7A4314"/><path d="M80 63 C80 58 92 58 92 63 C92 69 80 69 80 63 Z" fill="#7A4314"/>
+      </g>
+      <g fill="#fff" opacity=".85"><circle cx="122" cy="89" r="1.8"/><circle cx="52" cy="103" r="1.6"/><circle cx="63" cy="66" r="1.5"/></g>
+      <g fill="#FFFDF5" opacity=".9"><circle cx="30" cy="96" r="1.4"/><circle cx="48" cy="88" r="1.2"/><circle cx="86" cy="104" r="1.4"/><circle cx="110" cy="88" r="1.2"/><circle cx="134" cy="84" r="1.3"/><circle cx="74" cy="60" r="1.2"/><circle cx="96" cy="62" r="1.3"/><circle cx="58" cy="112" r="1.2"/><circle cx="118" cy="110" r="1.3"/><circle cx="40" cy="70" r="1.1"/></g>
+    </svg>`
+  }
+].map(p => ({ ...p, svg: p.svg || desenhoDe(p.de) }));
 
 /* =========================================================
    VERSÃO INGLESA (quando se escolhe English)
@@ -1387,7 +1465,7 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const CHAVE = 'bolinho-da-sorte:v1';
 const PADRAO = { ativos: ['apresentacao', 'quebra-gelo'], nBolinhos: 12, surpresas: 'algumas', naoRepetir: true, numerosSorte: true, tempo: 0,
-  participantes: [], sortearPessoa: false, musica: true, efeitos: true, volume: 0.7, idioma: 'pt' };
+  participantes: [], sortearPessoa: false, musica: true, efeitos: true, volume: 0.7, idioma: 'pt', tema: 'bolinhos' };
 let cfg = { ...PADRAO }, proprios = [];
 try {
   const g = JSON.parse(localStorage.getItem(CHAVE) || 'null');
@@ -1437,6 +1515,9 @@ const reduzido = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const MAX_BOLINHOS = 40;
 cfg.nBolinhos = Math.min(MAX_BOLINHOS, Math.max(3, Number(cfg.nBolinhos) || 12));
 if (!['nenhuma', 'algumas', 'muitas'].includes(cfg.surpresas)) cfg.surpresas = 'algumas';
+if (!['bolinhos', 'portugal'].includes(cfg.tema)) cfg.tema = 'bolinhos';
+const portugal = () => cfg.tema === 'portugal';
+const PECA = Object.fromEntries(PECAS_PORTUGAL.map(p => [p.id, p]));
 // Quantas surpresas: parte dos bolinhos é dourada (surpresa garantida) e os outros têm uma pequena hipótese
 const SURPRESAS = { nenhuma: { dourados: 0, acaso: 0 }, algumas: { dourados: 1 / 8, acaso: 0.05 }, muitas: { dourados: 1 / 4, acaso: 0.15 } };
 let forcarSurpresa = null; // para testes: id de uma surpresa a sair no próximo bolinho
@@ -1483,6 +1564,14 @@ function gerarDefs() {
     d += `<symbol id="bolinho-${v}" viewBox="0 0 240 170"><ellipse cx="120" cy="150" rx="86" ry="11" fill="#000" opacity=".28"/><use href="#metade-esq-${v}"/><use href="#metade-dir-${v}"/></symbol>`;
   }
   d += `<symbol id="bolinho" viewBox="0 0 240 170"><use href="#metade-esq-classico"/><use href="#metade-dir-classico"/></symbol>`;
+  // Tema «Portugal»: cada peça inteira (no prato) e as duas metades que se separam por uma racha em ziguezague
+  const RACHA = 'L120 20 L112 38 L126 56 L110 76 L128 96 L112 116 L126 136 L116 156 L120 260';
+  d += `<clipPath id="corte-esq"><path d="M-80 -80 L120 -80 ${RACHA} L-80 260 Z"/></clipPath><clipPath id="corte-dir"><path d="M320 -80 L120 -80 ${RACHA} L320 260 Z"/></clipPath>`;
+  for (const p of PECAS_PORTUGAL) {
+    d += `<g id="peca-${p.id}">${p.svg.replace('<svg viewBox="0 0 160 160" aria-hidden="true">', '<svg x="40" y="-4" width="160" height="160" viewBox="0 0 160 160" overflow="visible">')}</g>`;
+    d += `<symbol id="bolinho-${p.id}" viewBox="0 0 240 170"><ellipse cx="120" cy="152" rx="72" ry="10" fill="#000" opacity=".28"/><use href="#peca-${p.id}"/></symbol>`;
+    for (const lado of ['esq', 'dir']) d += `<symbol id="metade-${lado}-${p.id}" viewBox="0 0 240 170"><g clip-path="url(#corte-${lado})"><use href="#peca-${p.id}"/></g></symbol>`;
+  }
   $('#defs').innerHTML = d;
 }
 gerarDefs();
@@ -1778,15 +1867,26 @@ function encherPrato() {
   const dourados = quota ? Math.max(1, Math.round(n * quota)) : 0;
   const quais = new Set();
   while (quais.size < Math.min(dourados, n)) quais.add(Math.floor(Math.random() * n));
+  // Tema «Portugal»: as peças saem de um baralho baralhado, para o prato ter de tudo antes de repetir
+  let baralho = [];
+  const peca = () => {
+    if (!baralho.length) { baralho = PECAS_PORTUGAL.map(p => p.id); for (let k = baralho.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [baralho[k], baralho[j]] = [baralho[j], baralho[k]]; } }
+    return baralho.pop();
+  };
   prato = Array.from({ length: n }, (_, i) => ({
     id: ++seq, rot: Math.round((Math.random() - 0.5) * 30), atraso: -(Math.random() * 3.4).toFixed(2),
     dx: Math.round((Math.random() - 0.5) * 10), dy: Math.round((Math.random() - 0.5) * 10),
-    especial: quais.has(i), sabor: quais.has(i) ? 'dourado' : sortearSabor()
+    especial: quais.has(i), sabor: portugal() ? peca() : quais.has(i) ? 'dourado' : sortearSabor()
   }));
+}
+function rotuloBolinho(b, i) {
+  const p = PECA[b.sabor];
+  if (p) return `${tr('Abrir', 'Open')} ${i + 1}: ${tr(p.nome, p.en)}${b.especial ? tr(', a brilhar', ', sparkling') : ''}`;
+  return `${tr('Abrir o bolinho', 'Open cookie')} ${i + 1}${b.especial ? tr(', dourado', ', golden') : `, ${tr(SABORES[b.sabor].nome, SABOR_EN[b.sabor])}`}`;
 }
 function desenharPrato(entrar = false) {
   const el = $('#prato'), passo = Math.min(70, Math.round(1500 / Math.max(1, prato.length)));
-  el.innerHTML = prato.map((b, i) => `<button class="bolinho${b.especial ? ' especial' : ''}${entrar ? ' entrar' : ''}" type="button" data-id="${b.id}" style="--rot:${b.rot}deg;--atraso:${b.atraso}s;--dx:${b.dx}px;--dy:${b.dy}px;--i:${i};--passo:${passo}ms" aria-label="${tr('Abrir o bolinho', 'Open cookie')} ${i + 1}${b.especial ? tr(', dourado', ', golden') : `, ${tr(SABORES[b.sabor].nome, SABOR_EN[b.sabor])}`}"><svg viewBox="0 0 240 170" aria-hidden="true"><use href="#bolinho-${b.sabor}"/></svg></button>`).join('');
+  el.innerHTML = prato.map((b, i) => `<button class="bolinho${b.especial ? ' especial' : ''}${entrar ? ' entrar' : ''}" type="button" data-id="${b.id}" style="--rot:${b.rot}deg;--atraso:${b.atraso}s;--dx:${b.dx}px;--dy:${b.dy}px;--i:${i};--passo:${passo}ms" aria-label="${esc(rotuloBolinho(b, i))}"><svg viewBox="0 0 240 170" aria-hidden="true"><use href="#bolinho-${b.sabor}"/></svg></button>`).join('');
   atualizarContador();
 }
 // Escolhe o tamanho dos bolinhos para caberem todos no ecrã (até 40)
@@ -1824,7 +1924,9 @@ function atualizarContador() {
   vazio.innerHTML = msg; vazio.hidden = !msg;
   $('#prato').hidden = !!msg; $('#titulo').hidden = !!msg; $('#subtitulo').hidden = !!msg;
   const dourados = prato.filter(b => b.especial).length;
-  $('#contador').textContent = msg ? '' : EN
+  $('#contador').textContent = msg ? '' : portugal() ? (EN
+    ? `${n} on the plate${dourados ? ` (${dourados} sparkling, with a surprise)` : ''}${cfg.naoRepetir ? `, ${resto} ${resto === 1 ? 'question' : 'questions'} left` : ''}`
+    : `${n} no prato${dourados ? ` (${dourados} a brilhar, com surpresa)` : ''}${cfg.naoRepetir ? `, ${resto} ${resto === 1 ? 'pergunta' : 'perguntas'} por sair` : ''}`) : EN
     ? `${n} ${n === 1 ? 'cookie' : 'cookies'} on the plate${dourados ? ` (${dourados} golden, with a surprise)` : ''}${cfg.naoRepetir ? `, ${resto} ${resto === 1 ? 'question' : 'questions'} left` : ''}`
     : `${n} ${n === 1 ? 'bolinho' : 'bolinhos'} no prato${dourados ? ` (${dourados} ${dourados === 1 ? 'dourado' : 'dourados'}, com surpresa)` : ''}${cfg.naoRepetir ? `, ${resto} ${resto === 1 ? 'pergunta' : 'perguntas'} por sair` : ''}`;
   requestAnimationFrame(ajustarPrato);
@@ -1851,6 +1953,9 @@ function escreverPapel() {
   const sp = atual.surpresa, faixa = $('#papel-surpresa'), boneco = $('#papel-personagem');
   faixa.hidden = !sp; boneco.hidden = !sp;
   if (sp) { faixa.innerHTML = `<b>${esc(sp.nome)}!</b> ${esc(sp.regra)}`; boneco.innerHTML = sp.svg; }
+  const pc = PECA[atual.sabor], nomePeca = $('#papel-peca');
+  nomePeca.hidden = !pc;
+  if (pc) nomePeca.innerHTML = `<svg viewBox="0 0 240 170" aria-hidden="true"><use href="#bolinho-${pc.id}"/></svg>${esc(tr(pc.nome, pc.en))}`;
   const vez = $('#papel-vez'); vez.hidden = !atual.pessoa; vez.textContent = atual.pessoa ? `${tr('Responde', 'Your turn')}: ${atual.pessoa}` : '';
   const sorte = $('#papel-sorte'); sorte.hidden = !cfg.numerosSorte;
   sorte.querySelectorAll('b').forEach((b, i) => { b.textContent = atual.numeros[i]; });
@@ -1871,7 +1976,7 @@ function escolherSurpresa(bolinho) {
   if (forcarSurpresa) { const p = PERSONAGENS.find(x => x.id === forcarSurpresa); forcarSurpresa = null; if (p) return (ultimaSurpresa = p); }
   const regra = SURPRESAS[cfg.surpresas];
   if (!bolinho.especial && !(regra.acaso && Math.random() < regra.acaso)) return null;
-  const opcoes = PERSONAGENS.filter(p => p !== ultimaSurpresa);
+  const opcoes = PERSONAGENS.filter(p => p !== ultimaSurpresa && p.id !== PECA[bolinho.sabor]?.de); // o galo não salta de dentro do galo
   return (ultimaSurpresa = opcoes[Math.floor(Math.random() * opcoes.length)]);
 }
 async function abrir(id) {
@@ -1910,7 +2015,7 @@ async function abrir(id) {
   await anim(grande, tremer, { duration: 1050, easing: 'ease-in' });
   // partir
   const [cx0, cy0] = centro(grande);
-  Som.partir(); Part.migalhas(cx0, cy0 + 10, 30, SABORES[atual.sabor].migalhas); Part.brilhos(cx0, cy0);
+  Som.partir(); Part.migalhas(cx0, cy0 + 10, 30, (SABORES[atual.sabor] || PECA[atual.sabor]).migalhas); Part.brilhos(cx0, cy0);
   anim(brilho, [{ opacity: 1, transform: 'scale(1.1)' }, { opacity: 0, transform: 'scale(1.8)' }], { duration: 500 });
   anim(esq, [{ transform: 'none' }, { transform: 'translate(-34%, -6%) rotate(-22deg)', offset: 0.35 }, { transform: 'translate(-152%, 58%) rotate(-48deg) scale(.86)' }], { duration: 900, easing: 'cubic-bezier(.25,.7,.3,1)' });
   anim(dir, [{ transform: 'none' }, { transform: 'translate(34%, -6%) rotate(22deg)', offset: 0.35 }, { transform: 'translate(152%, 58%) rotate(48deg) scale(.86)' }], { duration: 900, easing: 'cubic-bezier(.25,.7,.3,1)' });
@@ -1936,7 +2041,7 @@ async function abrir(id) {
   ], { duration: 820, easing: 'cubic-bezier(.2,.85,.25,1)', manter: true });
   Som.brilho();
   const [px, py] = centro(papel);
-  Part.papelinhos(px, py - 40, 70, sp ? CORES_PT : undefined); Part.brilhos(px, py, 10);
+  Part.papelinhos(px, py - 40, 70, sp || portugal() ? CORES_PT : undefined); Part.brilhos(px, py, 10);
   if (sp) anim($('#papel-personagem'), [{ opacity: 0, transform: 'scale(0) rotate(-30deg)' }, { opacity: 1, transform: 'scale(1.15) rotate(6deg)', offset: 0.7 }, { opacity: 1, transform: 'none' }], { duration: 460, easing: 'ease-out', manter: true });
   rolarNumeros();
   await anim(acoes, [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], { duration: 320, manter: true });
@@ -2108,6 +2213,11 @@ function vistaDefinicoes() {
   return `<h2 id="painel-titulo">${tr('Definições', 'Settings')}</h2>
     <div class="campo"><label for="d-idioma">${tr('Idioma', 'Language')} · ${tr('Language', 'Idioma')}</label><select id="d-idioma" data-def="idioma"><option value="pt" ${EN ? '' : 'selected'}>Português</option><option value="en" ${EN ? 'selected' : ''}>English</option></select>
       <p class="ajuda">${tr('Muda os botões e as perguntas de origem. Os conjuntos que escreveste ficam como estão.', 'Changes the buttons and the built-in questions. Sets you wrote stay as they are.')}</p></div>
+    <fieldset class="modelos"><legend>${tr('Tema', 'Theme')}</legend>
+      ${[['bolinhos', 'classico', tr('Bolinhos da sorte', 'Fortune cookies'), tr('Bolinhos de vários sabores.', 'Cookies in several flavours.')],
+         ['portugal', 'galo', 'Portugal', tr('Doces e objetos portugueses: galo de Barcelos, pastel de nata, sardinha, ovos moles, pão de ló e mais.', 'Portuguese sweets and objects: the Barcelos rooster, pastel de nata, sardine, ovos moles, pão de ló and more.')]]
+        .map(([v, des, nome, txt]) => `<label class="modelo"><input type="radio" name="tema" value="${v}" data-def="tema" ${cfg.tema === v ? 'checked' : ''}><svg viewBox="0 0 240 170" aria-hidden="true"><use href="#bolinho-${des}"/></svg><span><b>${nome}</b><span>${txt}</span></span></label>`).join('')}
+    </fieldset>
     <div class="campo"><label for="d-n">${tr('Bolinhos no prato', 'Cookies on the plate')}</label><div class="linha-range"><input type="range" id="d-n" min="3" max="${MAX_BOLINHOS}" step="1" value="${cfg.nBolinhos}" data-def="nBolinhos"><output id="d-n-v">${cfg.nBolinhos}</output></div>
       ${cfg.participantes.length ? `<div><button class="bp bp-linha" type="button" data-acao="porParticipante">${tr('Um bolinho por participante', 'One cookie per participant')} (${Math.min(MAX_BOLINHOS, cfg.participantes.length)})</button></div>` : `<p class="ajuda">${tr('Até 40. Com a lista de participantes preenchida, podes pôr um bolinho por pessoa.', 'Up to 40. Once the participant list is filled in, you can have one cookie per person.')}</p>`}</div>
     <div class="campo"><label for="d-surpresas">${tr('Surpresas portuguesas', 'Portuguese surprises')}</label><select id="d-surpresas" data-def="surpresas">${(EN ? [['nenhuma', 'No surprises'], ['algumas', 'Now and then'], ['muitas', 'Lots']] : [['nenhuma', 'Sem surpresas'], ['algumas', 'De vez em quando'], ['muitas', 'Muitas']]).map(([v, t]) => `<option value="${v}" ${cfg.surpresas === v ? 'selected' : ''}>${t}</option>`).join('')}</select>
@@ -2217,6 +2327,12 @@ function mudarDefinicao(t) {
   const k = t.dataset.def;
   if (k === 'nBolinhos') { cfg.nBolinhos = Number(t.value); if (estado === 'prato') { encherPrato(); desenharPrato(true); } }
   else if (k === 'surpresas') { cfg.surpresas = t.value; if (estado === 'prato') { encherPrato(); desenharPrato(true); } }
+  else if (k === 'tema') {
+    // enche já o prato novo; se houver um aberto, o novo aparece ao fechar
+    cfg.tema = t.value; aplicarTema(); encherPrato();
+    if (estado === 'prato') { desenharPrato(true); Som.encher(prato.length); }
+    aviso(portugal() ? tr('Tema «Portugal» no prato.', '"Portugal" theme on the plate.') : tr('Bolinhos da sorte no prato.', 'Fortune cookies on the plate.'));
+  }
   else if (k === 'tempo') cfg.tempo = Number(t.value);
   else if (k === 'participantes') { cfg.participantes = t.value.split('\n').map(x => x.trim()).filter(Boolean); jaRespondeu.clear(); gravar(); desenharPainel(); }
   else if (k === 'volume') { cfg.volume = Number(t.value); Som.volume(cfg.volume); }
@@ -2236,6 +2352,17 @@ function recomecar() {
 /* =========================================================
    TOPO, TECLADO E ARRANQUE
    ========================================================= */
+const TEXTOS_TEMA = {
+  bolinhos: { titulo: ['Escolhe um bolinho', 'Pick a cookie'], subtitulo: ['Cada bolinho tem uma pergunta escondida lá dentro.', 'Each cookie has a question hidden inside.'], proximo: ['Próximo bolinho', 'Next cookie'],
+    dica: ['Barra de espaços ou comando de apresentações: abre um bolinho ao calhas e passa ao seguinte.', 'Space bar or presentation clicker: opens a random cookie and moves on to the next.'] },
+  portugal: { titulo: ['Escolhe um pedaço de Portugal', 'Pick a piece of Portugal'], subtitulo: ['Cada doce e cada objeto tem uma pergunta escondida lá dentro.', 'Each sweet and each object has a question hidden inside.'], proximo: ['Escolher outro', 'Pick another'],
+    dica: ['Barra de espaços ou comando de apresentações: abre um ao calhas e passa ao seguinte.', 'Space bar or presentation clicker: opens one at random and moves on to the next.'] }
+};
+function aplicarTema() {
+  const t = TEXTOS_TEMA[cfg.tema];
+  document.documentElement.classList.toggle('tema-portugal', portugal());
+  $('#titulo').textContent = tr(...t.titulo); $('#subtitulo').textContent = tr(...t.subtitulo); $('#btn-proximo span').textContent = tr(...t.proximo); $('#dica-teclado').textContent = tr(...t.dica);
+}
 let tAviso;
 function aviso(msg) { const el = $('#aviso'); el.textContent = msg; el.classList.add('ver'); clearTimeout(tAviso); tAviso = setTimeout(() => el.classList.remove('ver'), 2800); }
 function atualizarBotaoMusica() {
@@ -2290,6 +2417,7 @@ addEventListener('keydown', primeiroToque, true);
 document.addEventListener('visibilitychange', () => { if (document.hidden) Som.suspender(); else Som.retomar(); });
 
 atualizarBotaoMusica();
+aplicarTema();
 encherPrato();
 desenharPrato(true);
 </script>
