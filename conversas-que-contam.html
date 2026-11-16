@@ -161,7 +161,9 @@ body.a-jogar .topo-acts .btn-voltar{display:none}
   align-items:center;width:100%;max-width:max(1140px, calc(112 * var(--u)))}
 .titulo-sec{font-family:var(--fonte-etiqueta);font-size:clamp(11px,calc(1.3 * var(--u)),15px);font-weight:600;text-transform:uppercase;
   letter-spacing:var(--ls-etiqueta);color:var(--ink-3);margin:0 0 clamp(8px,calc(1.2 * var(--u)),14px)}
-.cartoes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(6px,calc(1.1 * var(--u)),14px)}
+/* 14 cenários: 5 colunas, para caberem em 3 filas num ecrã 16:9 */
+.cartoes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(6px,calc(1.1 * var(--u)),14px)}
+.cartoes .cena-mini{width:clamp(38px,calc(5 * var(--u)),76px)}
 .cartao{display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(4px,calc(.7 * var(--u)),9px);min-height:44px;
   padding:clamp(8px,calc(1.3 * var(--u)),16px) clamp(6px,calc(.9 * var(--u)),12px);border-radius:clamp(12px,calc(1.8 * var(--u)),20px);
   border:1px solid var(--vidro-borda);background:var(--vidro);backdrop-filter:var(--vidro-desfoque);-webkit-backdrop-filter:var(--vidro-desfoque);
@@ -7773,6 +7775,1116 @@ HISTORIAS.push({
   ]
 });
 </script>
+<script data-historia="sem-hora-marcada">
+HISTORIAS.push({
+  id: "sem-hora-marcada",
+  titulo: "Sem hora marcada",
+  area: "Pais e escola",
+  cena: "sala",
+  pessoa: "Sérgio",
+  artigo: "o",
+  rosto: "sergio",
+  filme: [
+    { img: "media/conversas/sem-hora-marcada-1.webp", legenda: "Terça, à noite. Há três semanas que o Tomás, de 12 anos, não quer ir à escola. Não diz porquê.", som: null },
+    { img: "media/conversas/sem-hora-marcada-2.webp", legenda: "O pai, o Sérgio, abriu o grupo da turma no telemóvel do filho: um vídeo do Tomás a cair, uma alcunha, gargalhadas.", som: null },
+    { img: "media/conversas/sem-hora-marcada-tu.webp", legenda: "Quarta, 16h50. Na pasta do 7.º B, duas participações deste período: o Tomás empurrou o mesmo colega no recreio.", som: "relogio", lado: "tu" },
+    { img: "media/conversas/sem-hora-marcada-3.webp", legenda: "Quarta, 17h05. O Sérgio veio sem marcar, direto do trabalho. Espera por ti na sala de atendimento.", som: "relogio" }
+  ],
+  sabias: "Este período, o Tomás foi duas vezes à direção por empurrar o mesmo colega no recreio. As duas participações estavam na pasta da turma, e já as tinhas lido.",
+  faltava: "Os empurrões eram a resposta do Tomás a semanas de troça no grupo da turma, que nenhum adulto da escola tinha visto. E ninguém tinha ligado ao pai: cabia-te a ti.",
+  papel: "Tens a direção de turma do 7.º B. O Tomás, de 12 anos, é teu aluno; o pai, o Sérgio, é o encarregado de educação.",
+  abertura: "Quarta, 17h05. Um funcionário vem avisar-te: o pai do Tomás está na sala de atendimento, sem marcação. Quando entras, ele não tira o casaco.",
+  impaciencia: {
+    calma: "Está a pensar em quê? Saí do trabalho para estar aqui.",
+    dura: "Então? Também não tem nada para me dizer?"
+  },
+  pistas: {
+    p1: {
+      principal: true,
+      texto: "O Tomás pediu ao pai para não vir à escola. Tem medo de que, se se souber que o pai se queixou, fique pior.",
+      sozinha: "E sabe que mais? Ele pediu-me para não vir. Tem medo de que, se souberem que vim cá queixar-me, seja pior."
+    },
+    p2: {
+      principal: false,
+      texto: "Os empurrões vinham depois de semanas de troça no grupo da turma, que nenhum adulto da escola tinha visto."
+    }
+  },
+  necessidade: "Que a escola levasse a sério o que o Tomás vive, sem o tratar como o problema, e um plano discreto: quem o ouve, quem está no recreio e quando voltam a falar, até sexta.",
+
+  momentos: [
+
+    /* 1 · Acolher */
+    {
+      etapa: "Acolher",
+      so: null,
+      evento: null,
+      eventosSe: [],
+      fala: {
+        calma: "Há três semanas que o Tomás não quer vir à escola. Ontem vi porquê: um vídeo dele no grupo da turma. Ninguém aqui vê nada?",
+        dura: "Três semanas sem querer vir à escola, e ontem vejo um vídeo dele com a turma toda a rir. Ninguém aqui vê nada?"
+      },
+      opcoes: [
+        {
+          texto: "Compreendo a sua preocupação. A escola leva estas situações muito a sério.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "guiao",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: true,
+          reacao: {
+            calma: "«Muito a sério.» Encosta-se na cadeira. «Então como é que ninguém deu por nada?»",
+            dura: "«A sério?» Ri-se, sem vontade. «Três semanas e ninguém deu por nada. É isso, levar a sério?»"
+          },
+          fechada: null,
+          porque: "«Compreendo a sua preocupação», antes de saber o que aconteceu, soa a frase feita. E «estas situações» faz do Tomás um caso entre outros."
+        },
+        {
+          texto: "Peço desculpa, Sr. Sérgio. Falhámos: não vimos nada disto.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "desculpa-cega",
+          efeito: { facil: { c: 1, t: -1 }, medio: { c: 0, t: -1 }, dificil: { c: 0, t: -1 }, semrede: { c: 0, t: -1 } },
+          problema: null,
+          pista: null,
+          marca: "nao-vimos",
+          cai: false,
+          reacao: {
+            calma: "«Pois não viram.» Descruza os braços. «Então agora quero saber quem fez o vídeo, e o que lhe acontece.»",
+            dura: "«Não viram, não.» Respira fundo. «Quero saber quem fez o vídeo e o que lhe vão fazer.»"
+          },
+          fechada: null,
+          porque: "Alivia agora e cobra-se mais tarde: pediste desculpa por não terem visto nada, e calaste o que a escola tinha visto. Lamentar o que o Tomás viveu já era certo; dizer de quem foi a falha, ainda não."
+        },
+        {
+          texto: "Sr. Sérgio, o Tomás também já esteve duas vezes na direção este período.",
+          tipo: "escala",
+          tecnicas: [],
+          erro: "contra-ataque",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«O Tomás?» Fica a olhar para ti. «Venho falar de um vídeo e responde-me com o meu filho?»",
+            dura: "«Agora a culpa é dele?» Inclina-se para a frente. «Fizeram dele uma anedota e o problema é o Tomás?»"
+          },
+          fechada: null,
+          porque: "Sabias das participações e puseste-as à frente antes de ele se sentir ouvido: soou a «o seu filho também não é nenhum santo». E era um facto a meio: não dizia porque é que ele empurrou."
+        },
+        {
+          texto: "Três semanas a não querer vir, e agora o vídeo. Como é que ele está?",
+          tipo: "bom",
+          tecnicas: ["reformular", "pergunta"],
+          erro: null,
+          efeito: null,
+          problema: 1,
+          pista: "p1",
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "Demora. «Mal. Nem sabe que estou aqui.» Baixa os olhos. «Pediu-me para não vir. Tem medo de que fique pior.»",
+            dura: "«Como acha?» Pausa. «…Pediu-me para não vir. Tem medo de que, se souberem, seja pior.»"
+          },
+          fechada: "«Como acha que está?» Cruza os braços. «Não vim falar dele. Vim saber o que a escola faz.»",
+          porque: "Pegaste no pormenor dele (as três semanas, o vídeo) e perguntaste pelo Tomás, não pelo caso. Não defendeste a escola nem prometeste nada, por isso não falhaste nada."
+        }
+      ]
+    },
+
+    /* 2 · Descobrir */
+    {
+      etapa: "Descobrir",
+      so: null,
+      evento: null,
+      eventosSe: [],
+      fala: {
+        calma: "O vídeo anda no grupo desde a semana passada, com uma alcunha que não vou repetir. O que é que a escola vai fazer?",
+        dura: "A turma toda viu, dezenas a rir. E a escola vai fazer o quê? Ficar a ver?"
+      },
+      opcoes: [
+        {
+          texto: "Antes de fazermos alguma coisa: o que é que o Tomás quer?",
+          tipo: "bom",
+          tecnicas: ["interesses", "pergunta"],
+          erro: null,
+          efeito: null,
+          problema: 1,
+          pista: "p1",
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«O Tomás?» Pausa longa. «Não quer nada. Pediu-me para não vir. Tem medo de que, se souberem, seja pior.»",
+            dura: "«O que ele quer?» Respira. «Que eu não estivesse aqui. Tem medo de que, se souberem, seja pior.»"
+          },
+          fechada: "«Quer que isto pare. Como toda a gente.» Olha para a porta.",
+          porque: "Antes de propor, perguntaste o que quer o Tomás. Foi a pergunta que trouxe o que muda o plano: qualquer coisa feita às claras podia virar-se contra ele."
+        },
+        {
+          texto: "Há uma coisa que deve saber: o Tomás esteve duas vezes na direção. Sabe o que houve antes?",
+          tipo: "perguntar",
+          tecnicas: ["facto", "pergunta"],
+          erro: null,
+          efeito: null,
+          problema: 1,
+          pista: "p2",
+          marca: null,
+          cai: true,
+          reacao: {
+            calma: "«Na direção?» Fica calado. Depois mostra-te no telemóvel as fotografias que tirou ao ecrã do filho: «Antes houve isto.» Semanas de troça.",
+            dura: "«Na direção? E só sei agora?» Mostra-te as fotografias que tirou ao ecrã do filho: «Veja o que houve antes.» Semanas de troça."
+          },
+          fechada: null,
+          porque: "Disseste o que sabias como informação, depois de o ouvir, e perguntaste o que veio antes: assim apareceu o que faltava. Mas o teu facto chegou antes de saberes o que o Tomás precisava."
+        },
+        {
+          texto: "Amanhã peço à turma que apague o vídeo. Isso resolve-se já.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "resolver-cedo",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Apagar.» Pensa. «Já toda a gente o viu. Mas pronto, já é alguma coisa.»",
+            dura: "«Apagar? Já o viram todos!» Abana a cabeça. «Isso resolve o quê?»"
+          },
+          fechada: null,
+          porque: "Uma solução rápida, antes de saber o que o Tomás precisava. Pedir à turma que apague o vídeo diz a todos que alguém se queixou."
+        },
+        {
+          texto: "Nesta idade gozam todos uns com os outros, Sr. Sérgio. Costuma passar.",
+          tipo: "escala",
+          tecnicas: [],
+          erro: "minimizar",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Costuma passar?» Pousa o telemóvel na mesa. «Há três semanas que ele não quer sair de casa.»",
+            dura: "«Passar?!» A voz sobe. «Isto tem nome: é bullying. E vocês ficam à espera que passe?»"
+          },
+          fechada: null,
+          porque: "Para a escola é «nesta idade»; para o Tomás são três semanas sem querer sair de casa. «Costuma passar» diz ao pai que o problema é pequeno."
+        }
+      ]
+    },
+
+    /* 3 · Viragem */
+    {
+      etapa: "Viragem",
+      so: null,
+      evento: "Abres a pasta do 7.º B para ver o horário do Tomás. Por cima, à vista, estão as duas participações. Fechas a pasta, mas o Sérgio já leu o nome do filho.",
+      eventosSe: [
+        {
+          marca: "nao-vimos",
+          texto: "O Sérgio aponta para a pasta: «Há bocado pediu desculpa por não terem visto nada. Afinal viram. Só não me disseram.»",
+          efeito: { c: -2, t: 1 }
+        }
+      ],
+      fala: {
+        calma: "Duas vezes na direção, e a mim ninguém me ligou. Quem é que me devia ter ligado?",
+        dura: "Duas participações, e eu não sei de nada! Quem é que me devia ter ligado? Diga-me."
+      },
+      opcoes: [
+        {
+          texto: "Quem lhe devia ter ligado era eu, e não liguei. Peço desculpa.",
+          tipo: "bom",
+          tecnicas: ["assumir", "parte"],
+          erro: null,
+          efeito: null,
+          problema: null,
+          pista: "p2",
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "Fica um momento calado. Depois mostra-te as fotografias que tirou ao ecrã do filho: «Veja desde quando gozam com ele.» Semanas de troça.",
+            dura: "«Pede desculpa, pronto.» Mostra-te as fotografias do ecrã do filho: «Veja o que houve antes dos empurrões.» Semanas de troça."
+          },
+          fechada: null,
+          porque: "Não passaste a culpa nem te defendeste: disseste o que era teu. Com isso, ele deixou de defender o filho e mostrou o que faltava: os empurrões vinham depois de semanas de troça."
+        },
+        {
+          texto: "O Tomás nunca lhe contou nada do recreio?",
+          tipo: "perguntar",
+          tecnicas: ["pergunta"],
+          erro: null,
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: true,
+          reacao: {
+            calma: "«Do recreio?» Abana a cabeça. «Não conta nada há três semanas. Era para isso que eu precisava de vocês.»",
+            dura: "«Agora a pergunta é para mim?» Encosta-se. «Ele não conta nada. Contavam vocês, se tivessem ligado.»"
+          },
+          fechada: null,
+          porque: "Pareceu ir aos factos, mas fizeste a pergunta a quem não sabia, e devolveste-lhe a falha. Quem tinha a informação era a escola."
+        },
+        {
+          texto: "Isso é com a direção: são eles que tratam das participações.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "passar-culpa",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Com a direção.» Encolhe os ombros. «E quem é que trata da turma do meu filho?»",
+            dura: "«A direção, sempre a direção!» Descruza os braços. «Então quem é que trata do meu filho nesta escola?»"
+          },
+          fechada: null,
+          porque: "Afastaste-te para não ficares com a culpa. Mas, para ele, quem tem a turma és tu: «é com a direção» deixou-o outra vez sem ninguém."
+        },
+        {
+          texto: "Está tudo registado no processo do aluno, como manda o regulamento.",
+          tipo: "escala",
+          tecnicas: [],
+          erro: "sistema",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Registado.» Olha para a pasta. «No processo. E eu? Onde é que eu estou registado?»",
+            dura: "«Como manda o regulamento?» A voz sobe. «O regulamento manda ligar ao pai, ou só arquivar?»"
+          },
+          fechada: null,
+          porque: "Os papéis existiam, mas usados como escudo soaram a «está tudo em ordem». Ele não perguntou se havia registo; perguntou porque é que ninguém lhe disse."
+        }
+      ]
+    },
+
+    /* 4 · Propor */
+    {
+      etapa: "Propor",
+      so: null,
+      evento: null,
+      eventosSe: [],
+      fala: {
+        calma: "Pronto. E agora? O que é que a escola vai fazer, em concreto?",
+        dura: "E agora? Vão fazer o quê? Pôr mais um papel nessa pasta?"
+      },
+      opcoes: [
+        {
+          texto: "Primeiro, falo com o Tomás a sós. Ele sabe que o senhor veio cá?",
+          tipo: "bom",
+          tecnicas: ["posso", "pergunta"],
+          erro: null,
+          efeito: null,
+          problema: 2,
+          pista: "p1",
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Não sabe.» Baixa a voz. «Pediu-me para não vir. Tem medo de que, se souberem que me queixei, seja pior.»",
+            dura: "«Não sabe, não.» Desvia o olhar. «Pediu-me para não vir. Diz que, se souberem que me queixei, é pior.»"
+          },
+          fechada: "«A sós, como quiser.» Encolhe os ombros. «Desde que façam alguma coisa.»",
+          porque: "Começaste pelo Tomás, não pela turma, e perguntaste o que ele sabia. A resposta mudou o plano: qualquer coisa feita às claras podia virar-se contra ele."
+        },
+        {
+          texto: "O que é que gostava que a escola fizesse?",
+          tipo: "perguntar",
+          tecnicas: ["pergunta"],
+          erro: null,
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Que castigassem quem fez o vídeo.» Cruza os braços. «À frente da turma toda, para aprenderem.»",
+            dura: "«Que castigassem quem fez aquilo, à frente de todos!» Bate com o dedo na mesa."
+          },
+          fechada: null,
+          porque: "Perguntar o que ele quer é justo, mas ele respondeu com a raiva de ontem. Um castigo à frente de todos podia virar-se contra o Tomás."
+        },
+        {
+          texto: "Hoje ainda ligo aos pais da turma toda, e amanhã falo com os alunos.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "resolver-cedo",
+          efeito: null,
+          problema: 2,
+          pista: null,
+          marca: "ligar-aos-pais",
+          cai: true,
+          reacao: {
+            calma: "«Isso.» Acena. «Que os pais saibam o que os filhos andam a fazer.»",
+            dura: "«Já devia ter sido feito.» Descruza os braços. «Liguem a todos.»"
+          },
+          fechada: null,
+          porque: "Pareceu o mais firme, e era o que ele queria ouvir. Mas ligar aos pais todos e falar à turma diz a todos que alguém se queixou, e quem paga é o Tomás."
+        },
+        {
+          texto: "E atenção: se o Tomás voltar a empurrar alguém, a direção tem de agir.",
+          tipo: "escala",
+          tecnicas: [],
+          erro: "ameaca",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Se ele voltar a…?» Fica a olhar para ti. «Gozam com ele há semanas e o aviso é para ele?»",
+            dura: "«Está a ameaçar o meu filho?» Levanta-se. «Fizeram dele uma anedota e quem leva o aviso é ele?»"
+          },
+          fechada: null,
+          porque: "Juntar um aviso a um plano soou a ameaça, e para o lado errado: ele ouviu que o problema era o Tomás. Os empurrões existiram, mas sem o que veio antes eram meia história."
+        }
+      ]
+    },
+
+    /* 5 · Segunda viragem (só no «Sem rede»; fica antes do Fechar, como no modelo) */
+    {
+      etapa: "Segunda viragem",
+      so: ["semrede"],
+      evento: "O telemóvel do Sérgio vibra. Ele lê e vira o ecrã para ti. É o Tomás: «pai estás na escola?? disseram no grupo»",
+      eventosSe: [
+        {
+          marca: "ligar-aos-pais",
+          texto: "O Sérgio olha para ti: «E ia ligar hoje aos pais da turma toda. Amanhã era o quê?»",
+          efeito: { c: -1, t: 1 }
+        }
+      ],
+      fala: {
+        calma: "Já sabem que estou aqui. O que é que eu lhe respondo?",
+        dura: "Já sabem que vim cá! Amanhã ele entra naquela sala como?"
+      },
+      opcoes: [
+        {
+          texto: "Responda-lhe já. Amanhã às 8h15 falo com ele, antes das aulas.",
+          tipo: "bom",
+          tecnicas: ["posso", "prazo"],
+          erro: null,
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "Escreve, apaga, escreve: «Estou. Está tudo bem. Amanhã explico.» Pousa o telemóvel. «8h15. Eu digo-lhe.»",
+            dura: "Respira. Escreve: «Estou. Não te preocupes.» Pousa o telemóvel. «8h15. E se ele não quiser vir?»"
+          },
+          fechada: null,
+          porque: "Não fingiste que nada tinha acontecido nem prometeste o que não controlas. Deste um passo para amanhã de manhã, antes de ele entrar na sala."
+        },
+        {
+          texto: "Fique descansado. Eu garanto que amanhã ninguém lhe toca.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "prometer",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: true,
+          reacao: {
+            calma: "«Garante?» Olha para o telemóvel. «E no grupo? Também garante?»",
+            dura: "«Garante?» Abana a cabeça. «Também viam tudo, e ninguém viu nada.»"
+          },
+          fechada: null,
+          porque: "Uma promessa para acalmar, que não podias cumprir: não estás no recreio o tempo todo nem dentro do grupo da turma. Quando falhar, falha duas vezes."
+        },
+        {
+          texto: "Talvez seja melhor não lhe responder já. Deixe passar a noite.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "evitar",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Não responder ao meu filho?» Fica a olhar para o ecrã. «Ele vai passar a noite a pensar nisto.»",
+            dura: "«Deixá-lo sem resposta?» Guarda o telemóvel. «É o que ele tem tido há semanas.»"
+          },
+          fechada: null,
+          porque: "Esperar pode ajudar quando os adultos estão a ferver, mas aqui quem ficava à espera, sozinho a noite toda, era o Tomás. Calar não protegeu ninguém."
+        },
+        {
+          texto: "Se tivesse marcado, ninguém o tinha visto entrar à hora da saída.",
+          tipo: "escala",
+          tecnicas: [],
+          erro: "contra-ataque",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Agora a culpa é minha?» Guarda o telemóvel. «Vim porque o meu filho não sai do quarto.»",
+            dura: "«Se eu tivesse marcado?» Levanta-se. «Esperava mais uma semana, como ele esperou?»"
+          },
+          fechada: null,
+          porque: "Podia até ser verdade, mas atiraste-lhe a culpa no pior momento. Ele veio sem marcar porque já não aguentava esperar, e isso dizia quanto lhe custava."
+        }
+      ]
+    },
+
+    /* 6 · Fechar */
+    {
+      etapa: "Fechar",
+      so: null,
+      evento: null,
+      eventosSe: [],
+      fala: {
+        calma: "Então como é que fica? Não quero sair daqui só com palavras.",
+        dura: "Diga-me como é que fica. Palavras já ouvi muitas hoje."
+      },
+      opcoes: [
+        {
+          texto: "Vamos escrever: quem o ouve, quem fica no recreio e quando lhe ligo. Até sexta.",
+          tipo: "bom",
+          tecnicas: ["prazo", "nos"],
+          erro: null,
+          efeito: null,
+          problema: 3,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Escreva.» Dita o número do telemóvel, devagar. «Até sexta, então. Eu atendo.»",
+            dura: "«Escreva, sim.» Dita o número. «Sexta. Se não ligar, volto cá, e outra vez sem marcar.»"
+          },
+          fechada: null,
+          porque: "Um plano só conta com quem, o quê e quando, escrito à frente dele. E era discreto: ninguém da turma precisava de saber que o pai veio cá."
+        },
+        {
+          texto: "Quer que marquemos uma reunião com a direção para a semana?",
+          tipo: "perguntar",
+          tecnicas: ["encaminhar", "pergunta"],
+          erro: null,
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: true,
+          reacao: {
+            calma: "«Mais uma reunião.» Suspira. «E até lá? Amanhã ele vem à escola.»",
+            dura: "«Para a semana?» Abana a cabeça. «E amanhã? Ele entra amanhã naquela sala.»"
+          },
+          fechada: null,
+          porque: "Pôr a direção ao corrente pode ser preciso, mas ofereceste uma reunião em vez de um plano. Ele precisava de saber o que muda amanhã."
+        },
+        {
+          texto: "Os testes desta semana, ele pode fazê-los noutra data. Disso trato eu, fique descansado.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "compensar",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Os testes.» Acena. «Obrigado. E no recreio? Quem é que está de olho nele?»",
+            dura: "«Não vim por causa de testes.» Abana a cabeça. «Quem é que o ouve? Quem está no recreio?»"
+          },
+          fechada: null,
+          porque: "Adiar os testes ajuda, mas é compensar, não reparar. Ele saiu sem saber quem ouve o Tomás, quem está no recreio nem quando voltam a falar."
+        },
+        {
+          texto: "Fica tudo registado e eu depois ligo-lhe. Tenho uma reunião às 17h30.",
+          tipo: "escala",
+          tecnicas: [],
+          erro: "evitar",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Depois liga.» Levanta-se devagar. «Como ligaram das outras vezes.»",
+            dura: "«Depois?» Fecha o casaco. «Das outras duas vezes também era “depois”.»"
+          },
+          fechada: null,
+          porque: "Despachar para ir para a reunião deixou-o sem nome nem dia. E ele acabava de saber que, das outras vezes, «depois» quis dizer nunca."
+        }
+      ]
+    }
+  ],
+
+  finais: {
+    verdadeiro: "Uma semana depois, o Tomás já falou duas vezes com a psicóloga da escola, e no recreio há sempre um adulto por perto. Ninguém na turma sabe que o pai lá foi. Na sexta, ligaste ao Sérgio, como combinado. O Tomás ainda não gosta de ir, mas já vai todos os dias.",
+    fragil: "Uma semana depois, o plano está no papel e ligaste ao Sérgio na sexta. Ele ouviu e respondeu «vamos ver». O Tomás voltou às aulas, mas continua calado, em casa e na escola. Ninguém sabe ao certo como é que ele está.",
+    meio: "Uma semana depois, o vídeo continua no grupo da turma e o Tomás faltou mais dois dias. O Sérgio saiu da escola sem saber quem ia fazer o quê. Escreveu à direção a pedir uma reunião, e ainda espera pela resposta.",
+    rutura: "Uma semana depois, o Sérgio entregou uma queixa por escrito na direção do agrupamento e pediu outra direção de turma para o 7.º B. Saiu da sala a meio da conversa, sem tirar o casaco. O Tomás continua sem querer ir à escola."
+  },
+  perguntas: [
+    "Sabiam das duas participações, e eram verdade. Quando é que as diriam ao pai, e como?",
+    "Falar amanhã à turma toda parecia o mais firme. O que é que o tornava perigoso para o Tomás?"
+  ]
+});
+</script>
+<script data-historia="quase-todas-as-noites">
+HISTORIAS.push({
+  id: "quase-todas-as-noites",
+  titulo: "Quase todas as noites",
+  area: "Colega de casa",
+  cena: "casa",
+  pessoa: "Leonor",
+  artigo: "a",
+  rosto: "leonor",
+  filme: [
+    { img: "media/conversas/quase-todas-as-noites-1.webp", legenda: "Outubro. O casaco do Gonçalo passou a ficar no cabide quase todas as noites. Ninguém falou disso.", som: null },
+    { img: "media/conversas/quase-todas-as-noites-2.webp", legenda: "De manhã, duas canecas que não são tuas e a conta da luz em cima da mesa. Veio mais alta.", som: null },
+    { img: "media/conversas/quase-todas-as-noites-tu.webp", legenda: "Setembro. A tua irmã dormiu três semanas no sofá-cama da sala. Não perguntaste nada à Leonor.", som: null, lado: "tu" },
+    { img: "media/conversas/quase-todas-as-noites-3.webp", legenda: "Domingo, 22h. O Gonçalo foi às compras. Tu estás à porta da cozinha.", som: "relogio" }
+  ],
+  sabias: "Em setembro, a tua irmã ficou três semanas na sala, no sofá-cama, e tu não perguntaste nada à Leonor. Também usou o duche, a cozinha e a máquina da roupa.",
+  faltava: "A Leonor nunca se queixou da tua irmã: achou que era o que se faz numa casa partilhada. E o Gonçalo não está cá por gosto: ficou sem quarto em outubro e ainda não encontrou outro.",
+  papel: "Divides um T2 alugado com a Leonor há dois anos. Desde outubro, o Gonçalo, namorado dela, dorme cá quase todas as noites.",
+  abertura: "Domingo, 22h. O Gonçalo foi ao supermercado. A Leonor faz chá na cozinha. É a primeira vez em semanas que a casa é só tua e dela.",
+  impaciencia: {
+    calma: "Então? Vais dizer alguma coisa?",
+    dura: "Se não dizes nada, eu vou para o quarto."
+  },
+  pistas: {
+    p1: {
+      principal: true,
+      texto: "O Gonçalo ficou sem quarto em outubro: o senhorio vendeu a casa. Ela achou que eram uns dias e teve vergonha de te pedir.",
+      sozinha: "Sabes porque é que ele está cá sempre? O senhorio vendeu a casa em outubro e ele ficou sem quarto. Tive vergonha de te pedir."
+    },
+    p2: {
+      principal: false,
+      texto: "O Gonçalo quis pagar a luz e a água desde o primeiro dia. Foi a Leonor que não deixou, para não ter de te falar disso."
+    }
+  },
+  necessidade: "Não ser tratada como quem se aproveita: o Gonçalo ficou sem quarto e ela teve vergonha de pedir. Precisava de um prazo e de uma regra justa para as contas, que valesse também para ti.",
+
+  momentos: [
+
+    /* 1 · Acolher (és tu quem começa a conversa) */
+    {
+      etapa: "Acolher",
+      so: null,
+      evento: null,
+      eventosSe: [],
+      fala: {
+        calma: "Há água quente, se quiseres chá. Passa-se alguma coisa?",
+        dura: "Diz lá o que é. Andas com essa cara desde o almoço."
+      },
+      opcoes: [
+        {
+          texto: "Eu nunca trouxe ninguém para cá dormir, mas não me importo. Só queria combinar.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "evitar",
+          efeito: { facil: { c: 1, t: -1 }, medio: { c: 0, t: -1 }, dificil: { c: 0, t: -1 }, semrede: { c: 0, t: -1 } },
+          problema: null,
+          pista: null,
+          marca: "nunca-trouxe",
+          cai: false,
+          reacao: {
+            calma: "«Eu sei. Nunca trouxeste.» Baixa os olhos para a caneca. «Tens razão, devia ter falado contigo.»",
+            dura: "«Pois, tu nunca trouxeste ninguém.» Respira fundo. «Está bem. Devia ter falado contigo.»"
+          },
+          fechada: null,
+          porque: "Soou justo e acalmou: ela até te deu razão. Mas calaste a tua parte, e a tua irmã dormiu três semanas na sala. Alivia agora e cobra-se quando ela se lembrar."
+        },
+        {
+          texto: "Sinto que deixaste de pensar em mim quando decides as coisas da casa.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "eu-acusador",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: true,
+          reacao: {
+            calma: "«Deixei de pensar em ti?» Pousa a colher. «Isso não é justo.»",
+            dura: "«Eu não penso em ti?» Vira-se para a chaleira. «Dois anos a dividir tudo, e é isso que achas?»"
+          },
+          fechada: null,
+          porque: "Tinha um «sinto», mas por baixo estava um juízo: «tu não pensas em mim». Ela defendeu-se do juízo, e o que te incomodava (as noites, as contas) ficou por dizer."
+        },
+        {
+          texto: "Tu fazes sempre isto, Leonor: decides sozinha e os outros que se adaptem.",
+          tipo: "escala",
+          tecnicas: [],
+          erro: "rotulo",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Sempre?» Pousa a caneca devagar. «Em dois anos, diz-me uma vez.»",
+            dura: "«Sempre?!» A colher bate na bancada. «Em dois anos, diz-me uma vez que eu tenha feito isto.»"
+          },
+          fechada: null,
+          porque: "«Sempre» fala de quem ela é, e não do que aconteceu. E não era verdade: em dois anos, isto começou em outubro. Uma generalização convida a pessoa a provar o contrário."
+        },
+        {
+          texto: "O Gonçalo tem dormido cá quase todas as noites. Está tudo bem?",
+          tipo: "bom",
+          tecnicas: ["comportamento", "pergunta"],
+          erro: null,
+          efeito: null,
+          problema: 1,
+          pista: "p1",
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "Fica calada um bocado. «…Não está. O senhorio vendeu a casa em outubro e ele ficou sem quarto.»",
+            dura: "«Pronto, cá está.» Suspira. «…Ficou sem quarto em outubro. O senhorio vendeu a casa. Tive vergonha de te dizer.»"
+          },
+          fechada: "«Está tudo ótimo. Gostamos de estar juntos.» Volta-se para a chaleira.",
+          porque: "Descreveste o que acontece (quase todas as noites), sem rótulos nem contas, e perguntaste por eles em vez de acusar. Pareceu pouco, mas deixou espaço para o que ela não tinha contado."
+        }
+      ]
+    },
+
+    /* 2 · Descobrir */
+    {
+      etapa: "Descobrir",
+      so: null,
+      evento: null,
+      eventosSe: [],
+      fala: {
+        calma: "Eu sei que ele tem estado cá muito. Mas não faz barulho, e até traz as compras.",
+        dura: "Ele não faz barulho, lava a loiça, traz as compras. O que é que queres mais?"
+      },
+      opcoes: [
+        {
+          texto: "O que é que mudou em outubro?",
+          tipo: "bom",
+          tecnicas: ["interesses", "pergunta"],
+          erro: null,
+          efeito: null,
+          problema: 1,
+          pista: "p1",
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "Encosta-se à bancada. «O senhorio dele vendeu a casa. Ficou sem quarto.» Pausa. «Tive vergonha de te pedir.»",
+            dura: "«O que mudou?» Suspira. «Ficou sem quarto. O senhorio vendeu a casa. Pronto, já sabes.»"
+          },
+          fechada: "«Nada. Estamos juntos há um ano, é normal.» Mexe o chá.",
+          porque: "Em vez de discutir as noites, perguntaste pelo que mudou. A pergunta não a pôs a defender-se, e trouxe a razão que ela tinha guardado."
+        },
+        {
+          texto: "Quantas noites por semana é que ele cá fica, mais ou menos?",
+          tipo: "perguntar",
+          tecnicas: ["pergunta"],
+          erro: null,
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: true,
+          reacao: {
+            calma: "«Não sei, não ando a contar.» Encolhe os ombros. «Quase todas, pronto.»",
+            dura: "«Agora contas as noites?» Cruza os braços. «Quase todas. Satisfaz?»"
+          },
+          fechada: null,
+          porque: "Uma pergunta justa, mas sobre quantas noites, e não sobre porquê. A resposta já a sabias, e a pergunta soou a contabilidade."
+        },
+        {
+          texto: "Então fazemos assim: a partir deste mês ele paga um terço da luz e da água.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "resolver-cedo",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Um terço…» Faz contas de cabeça. «Está bem. Eu digo-lhe.»",
+            dura: "«Já tens as contas feitas?» Pousa a caneca. «Antes de falares comigo?»"
+          },
+          fechada: null,
+          porque: "Uma solução justa nas contas, mas antes de saber porque é que ele está cá. O que estava por trás das noites ficou por perguntar."
+        },
+        {
+          texto: "Traz as compras, e gasta a água quente toda de manhã.",
+          tipo: "escala",
+          tecnicas: [],
+          erro: "contra-ataque",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Agora contas os minutos do duche?» Endireita-se.",
+            dura: "«A água quente?!» Pousa a caneca com força. «Andas a cronometrar os banhos?»"
+          },
+          fechada: null,
+          porque: "Ela defendeu-o com um facto (as compras) e respondeste com uma queixa nova. A conversa passou a ser uma lista, e cada queixa pede outra."
+        }
+      ]
+    },
+
+    /* 3 · Viragem (é ela que se lembra da tua irmã) */
+    {
+      etapa: "Viragem",
+      so: null,
+      evento: "A Leonor pousa a caneca na bancada e fica a olhar para ti um bocado. Lembrou-se de uma coisa.",
+      eventosSe: [
+        {
+          marca: "nunca-trouxe",
+          texto: "«Nunca trouxeste ninguém?», repete ela, devagar.",
+          efeito: { c: -2, t: 1 }
+        }
+      ],
+      fala: {
+        calma: "E a tua irmã, em setembro? Três semanas no sofá-cama. Eu não disse nada.",
+        dura: "E a tua irmã, em setembro? Três semanas na sala. Alguém me perguntou alguma coisa?"
+      },
+      opcoes: [
+        {
+          texto: "É verdade, e não te perguntei nada. A regra tem de valer para mim também.",
+          tipo: "bom",
+          tecnicas: ["parte", "nos"],
+          erro: null,
+          efeito: null,
+          problema: null,
+          pista: "p2",
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "Fica calada um momento. «…Ele quis pagar a luz desde o primeiro dia. Eu é que disse que não.» Baixa os olhos.",
+            dura: "«Pois tem.» Cruza os braços, mas a voz baixa. «…Ele quis pagar a luz logo no início. Eu é que não deixei.»"
+          },
+          fechada: null,
+          porque: "Não te defendeste com «era família»: assumiste o que fizeste e puseste-te debaixo da mesma regra. Ela deixou de se proteger e contou o que não sabias: ele quis pagar."
+        },
+        {
+          texto: "E porque é que não disseste nada na altura?",
+          tipo: "perguntar",
+          tecnicas: ["pergunta"],
+          erro: null,
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: true,
+          reacao: {
+            calma: "«Porque ela precisava.» Encolhe os ombros. «Achei que era o que se fazia, numa casa partilhada.»",
+            dura: "«Porque achei que era o que se fazia!» Pousa a caneca com força. «Pelos vistos, enganei-me.»"
+          },
+          fechada: null,
+          porque: "A pergunta era sincera, mas soou a «a culpa é tua por não teres falado». Ela calou-se por consideração, e a pergunta tratou isso como um erro dela."
+        },
+        {
+          texto: "Era a minha irmã, Leonor. Família é diferente, e foram só três semanas.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "minimizar",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Só três semanas.» Acena devagar. «E se fosse a minha irmã, também era diferente?»",
+            dura: "«Família é diferente?» Ri-se, sem vontade. «Então o Gonçalo não conta porque não é família?»"
+          },
+          fechada: null,
+          porque: "Era verdade, e mesmo assim pesou: puseste uma regra para ti e outra para ela. Ela aceitou a tua irmã sem perguntar nada; tu fizeste disso uma exceção."
+        },
+        {
+          texto: "Três semanas, Leonor! O Gonçalo já vai em mês e meio, quase todas as noites.",
+          tipo: "escala",
+          tecnicas: [],
+          erro: "contra-ataque",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Estás a fazer contas?» Pousa a caneca. «Eu não contei as noites da tua irmã.»",
+            dura: "«Estás a fazer contas?!» A voz sobe. «Eu nunca contei as noites da tua irmã!»"
+          },
+          fechada: null,
+          porque: "Comparar quem abusou mais fez da conversa uma competição. E ela tinha razão num ponto: em setembro, não fez contas a ninguém."
+        }
+      ]
+    },
+
+    /* 4 · Propor */
+    {
+      etapa: "Propor",
+      so: null,
+      evento: null,
+      eventosSe: [],
+      fala: {
+        calma: "Pronto. E agora? Queres que ele deixe de vir?",
+        dura: "Diz lá o que queres. Que o ponha na rua, é isso?"
+      },
+      opcoes: [
+        {
+          texto: "Não quero isso. Só preciso de saber até quando, para combinarmos as contas.",
+          tipo: "bom",
+          tecnicas: ["eu", "interesses"],
+          erro: null,
+          efeito: null,
+          problema: 2,
+          pista: "p1",
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Até ele encontrar quarto.» Solta o ar. «O senhorio vendeu a casa em outubro. Ele anda à procura.»",
+            dura: "«Até quando?» Hesita. «…Até encontrar quarto. Ficou sem casa em outubro: o senhorio vendeu-a.»"
+          },
+          fechada: "«Não sei. Umas semanas.» Encolhe os ombros. «Logo se vê.»",
+          porque: "Disseste o que não querias e o que precisavas, sem exigir nada. Sem medo de o perder, ela contou porque é que ele estava cá, e a proposta passou a ter um prazo possível."
+        },
+        {
+          texto: "Preferes que ele venha menos noites, ou que ajude nas contas?",
+          tipo: "perguntar",
+          tecnicas: ["escolha"],
+          erro: null,
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Nenhuma das duas é fácil.» Suspira. «Não é assim tão simples.»",
+            dura: "«Escolher como?» Abana a cabeça. «Não é uma questão de preferir.»"
+          },
+          fechada: null,
+          porque: "Parece dar escolha, mas as duas opções eram tuas e nenhuma partia do que se passa com ele. Uma escolha só ajuda quando se sabe o que está em jogo."
+        },
+        {
+          texto: "Deixa comigo. Amanhã falo eu com o Gonçalo e fica tudo resolvido.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "prometer",
+          efeito: null,
+          problema: 2,
+          pista: null,
+          marca: "falo-com-ele",
+          cai: true,
+          reacao: {
+            calma: "«Falas tu com ele?» Mexe o chá devagar. «Está bem. Se achas que resolve.»",
+            dura: "«Por cima de mim?» Abana a cabeça. «Faz como quiseres.»"
+          },
+          fechada: null,
+          porque: "Prometeste resolver o que depende de outra pessoa, e tiraste a conversa à Leonor, que é quem divide a casa contigo. Se ele não puder, falhas tu."
+        },
+        {
+          texto: "Ou ele começa a pagar, ou falo com o senhorio. O contrato é para duas pessoas.",
+          tipo: "escala",
+          tecnicas: [],
+          erro: "ameaca",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Com o senhorio?» Fica pálida. «Fazias isso?»",
+            dura: "«Com o senhorio?!» Pousa a caneca com força. «Por causa da conta da luz?»"
+          },
+          fechada: null,
+          porque: "Uma consequência dita como ameaça fecha a conversa. Ela ouviu «ou cedes, ou meto-te em sarilhos», e deixou de ter razões para te contar o resto."
+        }
+      ]
+    },
+
+    /* 5 · Segunda viragem (só no «Sem rede»; fica antes do Fechar) */
+    {
+      etapa: "Segunda viragem",
+      so: ["semrede"],
+      evento: "A porta da rua abre-se. Entra o Gonçalo, com dois sacos de compras. Ouviu o fim da conversa: «Se é por minha causa, eu vou-me embora.»",
+      eventosSe: [
+        {
+          marca: "falo-com-ele",
+          texto: "O Gonçalo pousa os sacos: «Ias falar comigo amanhã? Eu estou aqui.»",
+          efeito: { c: -1, t: 1 }
+        }
+      ],
+      fala: {
+        calma: "Ninguém disse isso, Gonçalo. Pois não?",
+        dura: "Pronto. Ouviu tudo. Era isto que querias?"
+      },
+      opcoes: [
+        {
+          texto: "Fica, Gonçalo. Isto resolve-se melhor com os três à mesa.",
+          tipo: "bom",
+          tecnicas: ["nos"],
+          erro: null,
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "O Gonçalo pousa os sacos e puxa uma cadeira. A Leonor solta o ar. «Está bem. Os três.»",
+            dura: "O Gonçalo hesita, de sacos na mão. A Leonor olha para ti e, por fim, para ele. «…Senta-te.»"
+          },
+          fechada: null,
+          porque: "Não fingiste que não era nada nem fizeste um discurso: chamaste à conversa a pessoa de quem se estava a falar. Com todos à mesa, ninguém tem de defender ninguém."
+        },
+        {
+          texto: "Não é nada contigo, Gonçalo. Fica o tempo que precisares, a sério.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "ceder-tudo",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: true,
+          reacao: {
+            calma: "O Gonçalo agradece, sem jeito. A Leonor fica calada: há um minuto falavas de contas.",
+            dura: "«Há um minuto não era isso.» A Leonor pousa a caneca. O Gonçalo não sabe para onde olhar."
+          },
+          fechada: null,
+          porque: "Para apagar o mal-estar, desdisseste o que tinhas dito. Ele fica sem saber o que é verdade, e o problema das contas volta daqui a umas semanas, maior."
+        },
+        {
+          texto: "Não é nada, Gonçalo. Isto é entre mim e a Leonor.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "evitar",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "O Gonçalo leva os sacos para o quarto, calado. A Leonor fecha os olhos um segundo.",
+            dura: "O Gonçalo pousa os sacos e fecha-se no quarto. «Boa», diz a Leonor, baixinho."
+          },
+          fechada: null,
+          porque: "Pô-lo fora da conversa parecia proteger a Leonor, mas ele ouviu o fim e ficou a imaginar o resto. Agora há três pessoas pouco à vontade, e só duas a falar."
+        },
+        {
+          texto: "Ainda bem que ouviste. Já que vives cá, ao menos podias perguntar.",
+          tipo: "escala",
+          tecnicas: [],
+          erro: "rotulo",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "O Gonçalo fica de sacos na mão. A Leonor olha para ti como se não te conhecesse.",
+            dura: "O Gonçalo pousa os sacos e sai sem dizer nada. A Leonor vai atrás dele, e a porta bate."
+          },
+          fechada: null,
+          porque: "Uma farpa a quem acabou de entrar com as compras na mão. Atacaste a pessoa, não o problema, e a Leonor ficou do lado de quem foi atacado."
+        }
+      ]
+    },
+
+    /* 6 · Fechar */
+    {
+      etapa: "Fechar",
+      so: null,
+      evento: null,
+      eventosSe: [],
+      fala: {
+        calma: "Então como fica? Não quero que isto fique esquisito cá em casa.",
+        dura: "Diz lá como fica. Não quero ter esta conversa outra vez daqui a um mês."
+      },
+      opcoes: [
+        {
+          texto: "Escrevemos já: até quando, quanto ele paga, e que a regra vale para mim também.",
+          tipo: "bom",
+          tecnicas: ["prazo", "nos"],
+          erro: null,
+          efeito: null,
+          problema: 3,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "Tira um bloco da gaveta. «Até ao fim de janeiro, um terço da luz e da água.» Escreve. «E vale para ti também.»",
+            dura: "Tira um bloco da gaveta, sem sorrir. «Fim de janeiro. Um terço das contas.» Escreve. «E vale para ti. Vamos ver.»"
+          },
+          fechada: null,
+          porque: "Um acordo só conta com prazo, valor e quem faz o quê, por escrito. E a regra vale para ti também: foi isso que a tornou justa, e não um castigo para ela."
+        },
+        {
+          texto: "Fazemos uma experiência e vamos vendo como corre?",
+          tipo: "perguntar",
+          tecnicas: ["pergunta"],
+          erro: null,
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: true,
+          reacao: {
+            calma: "«Uma experiência de quê?» Encolhe os ombros. «Está bem. Vamos vendo.»",
+            dura: "«Vamos vendo?» Pousa a caneca. «Foi o que fizemos desde outubro.»"
+          },
+          fechada: null,
+          porque: "Parece flexível, mas «vamos vendo» foi o que deixou isto crescer desde outubro. Sem prazo nem valor, não há nada para ver."
+        },
+        {
+          texto: "Fica assim: a partir de hoje dividimos tudo por três, luz, água e gás. Está resolvido.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "resolver-cedo",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«Por três.» Faz contas de cabeça. «Está bem. E até quando?»",
+            dura: "«Resolvido?» Abana a cabeça. «E até quando? Passamos a ser três de vez?»"
+          },
+          fechada: null,
+          porque: "Dividir por três é justo nas contas, mas falta o resto: até quando, e se a regra vale para ti. Sem prazo, a casa passa a ser de três sem ninguém o ter decidido."
+        },
+        {
+          texto: "Faz como quiseres. Eu passo a estar mais no meu quarto, e pronto.",
+          tipo: "escala",
+          tecnicas: [],
+          erro: "evitar",
+          efeito: null,
+          problema: null,
+          pista: null,
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "«No teu quarto.» Desliga a chaleira. «Está bem.»",
+            dura: "«Pronto.» Pega na caneca. «Se era para me fazeres sentir mal, conseguiste.»"
+          },
+          fechada: null,
+          porque: "Fechar-te no quarto parece paz, mas é uma queixa calada. Ela fica com a culpa, tu com o incómodo, e nada fica combinado."
+        }
+      ]
+    }
+  ],
+
+  finais: {
+    verdadeiro: "Um mês depois, o Gonçalo paga um terço das contas, como ficou escrito, e já tem um quarto visto para janeiro. A regra está colada no frigorífico e vale para ti também. A tua irmã vem no Natal, e desta vez perguntaste primeiro.",
+    fragil: "Um mês depois, o Gonçalo paga um terço das contas, como ficou escrito. A casa está em ordem; vocês, nem por isso. A Leonor janta no quarto e já não te pergunta se queres chá. Ninguém voltou a falar de outubro.",
+    meio: "Um mês depois, o Gonçalo continua cá quase todas as noites e a conta da luz voltou a subir. Não ficou nada combinado. Tu e a Leonor cruzam-se no corredor e falam do tempo.",
+    rutura: "Um mês depois, a Leonor avisou o senhorio de que sai em janeiro. Deixou-te na cozinha a meio da conversa e, desde então, só falam por mensagem. Vais ter de procurar outra pessoa para dividir a casa."
+  },
+  perguntas: [
+    "A irmã dormiu três semanas na sala e ninguém se queixou. Porque é que nos lembramos tão mal do que fizemos, quando é o outro a fazer o mesmo?",
+    "Como começariam esta conversa sem que a Leonor se sentisse acusada? Que primeira frase escolheriam?"
+  ]
+});
+</script>
 
 <script>
 (function(){
@@ -7820,7 +8932,7 @@ const CENAS = {
 };
 function cenaSvg(k){ return '<svg viewBox="0 0 100 100" aria-hidden="true">' + (CENAS[k] || "") + "</svg>"; }
 
-/* Os 12 cenários (ondina.md). Só abrem os que já têm história escrita. */
+/* Os 14 cenários (ondina.md e pedido-2.md). Só abrem os que já têm história escrita. */
 const CENARIOS = [
   ["terceira-visita", "A terceira visita", "Atendimento", "balcao"],
   ["fim-de-semana", "O fim de semana que não houve", "Amigos", "mesa"],
@@ -7833,7 +8945,9 @@ const CENARIOS = [
   ["nota-do-trabalho", "A nota do trabalho", "Formação", "sala"],
   ["turnos-dezembro", "Os turnos de dezembro", "Liderança", "calendario"],
   ["no-meio", "No meio dos dois", "Mediação", "reuniao"],
-  ["uma-estrela", "Uma estrela", "Online", "ecra"]
+  ["uma-estrela", "Uma estrela", "Online", "ecra"],
+  ["sem-hora-marcada", "Sem hora marcada", "Pais e escola", "sala"],
+  ["quase-todas-as-noites", "Quase todas as noites", "Colega de casa", "casa"]
 ];
 HIST.forEach(function(h){ if(!CENARIOS.some(function(c){ return c[0] === h.id; })) CENARIOS.push([h.id, h.titulo, h.area, h.cena]); });
 const CORES = ["var(--acento-turquesa)", "var(--acento-amarelo)", "var(--acento-roxo)", "var(--acento-rosa)", "var(--acento-laranja)", "var(--acento-ciano)"];
