@@ -275,6 +275,12 @@ kbd{font-family:var(--fonte-etiqueta);font-size:10px;letter-spacing:var(--ls-dis
 .filme-passos li.feito{background:var(--creme)}
 .filme-ia{position:absolute;top:clamp(22px,calc(2.8 * var(--u)),40px);left:clamp(12px,calc(1.8 * var(--u)),26px);text-align:left;
   color:rgba(242,239,234,.92);text-shadow:0 1px 3px rgba(0,0,0,.8)}
+/* a fotografia do lado de quem joga («O que tu sabes», formato.md secção 7) */
+.filme-tu{position:absolute;top:clamp(46px,calc(5.6 * var(--u)),80px);left:clamp(12px,calc(1.8 * var(--u)),26px);margin:0;
+  padding:.35em .85em;border-radius:999px;background:var(--cobalto);color:var(--creme);box-shadow:0 2px 10px rgba(0,0,0,.35);
+  font-family:var(--fonte-etiqueta);font-weight:600;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);
+  font-size:clamp(13px,calc(1.9 * var(--u)),28px)}
+.filme-tu[hidden]{display:none}
 .filme-saltar{position:absolute;top:clamp(20px,calc(2.6 * var(--u)),36px);right:clamp(12px,calc(1.8 * var(--u)),26px);
   background:rgba(10,10,10,.5);border-color:rgba(242,239,234,.55);color:var(--creme)}
 .filme-saltar:hover{background:rgba(10,10,10,.75)}
@@ -356,6 +362,8 @@ kbd{font-family:var(--fonte-etiqueta);font-size:10px;letter-spacing:var(--ls-dis
 .pt[data-tipo="resultou"]{border-left-color:var(--acento-verde)}
 .pt[data-tipo="custou"]{border-left-color:var(--fechado)}
 .pt[data-tipo="descobrir"]{border-left-color:var(--acento-amarelo)}
+.pt[data-tipo="sabias"]{border-left-color:var(--cobalto)}
+.pt[data-tipo="sabias"] p.pt-tit ~ p.pt-tit{margin-top:.45em}
 .pt-tit{font-family:var(--fonte-etiqueta);font-weight:600;font-size:.72em;text-transform:uppercase;letter-spacing:var(--ls-etiqueta);color:var(--ink-3)}
 .pt-nome{font-family:var(--fonte-etiqueta);font-weight:600;color:var(--ink)}
 .pt-porque{color:var(--ink-2)}
@@ -684,6 +692,7 @@ body.a-jogar .credito-proj{display:none!important}
             <div class="filme-fotos" id="filmeFotos"></div>
             <ol class="filme-passos" id="filmePassos" aria-hidden="true"></ol>
             <p class="ia-nota filme-ia">Pessoas fictícias · imagens geradas por IA</p>
+            <p class="filme-tu" id="filmeTu" hidden>O que tu sabes</p>
             <button class="btn-linha filme-saltar" id="btnSaltar">Saltar</button>
           </div>
           <p class="filme-legenda" id="filmeLegenda" aria-live="polite"></p>
@@ -754,7 +763,7 @@ body.a-jogar .credito-proj{display:none!important}
     <h2>Como se usa</h2>
     <ol>
       <li><b>Escolham a história e o nível.</b> Cada história é um conflito a acontecer: um cliente ao balcão, um colega, um amigo, alguém da família.</li>
-      <li><b>Vejam o que aconteceu.</b> Antes da conversa, três ou quatro fotografias com legenda contam o que se passou até ali. A seta para a direita passa à seguinte e há um botão para saltar.</li>
+      <li><b>Vejam o que aconteceu.</b> Antes da conversa, quatro ou cinco fotografias com legenda contam o que se passou até ali. A que diz «O que tu sabes» mostra o vosso lado: um facto verdadeiro, mas que pode não ser tudo. A seta para a direita passa à seguinte e há um botão para saltar.</li>
       <li><b>Alguém lê a fala em voz alta.</b> A sala conversa trinta segundos, a pares: o que diriam a seguir?</li>
       <li><b>Votem de braço no ar.</b> Com o comando de apresentações, a seta para a esquerda passa o realce de opção em opção (A, B, C, D) enquanto contas os braços; a seta para a direita confirma a mais votada. Em caso de empate, decide quem ainda não falou.</li>
       <li><b>Vejam a reação.</b> A outra pessoa responde com palavras e um gesto, nunca com números. Se confirmaram a opção errada por engano, a seta para a esquerda desfaz.</li>
@@ -862,7 +871,8 @@ const TECNICAS = {
   disco:         ["Disco riscado", "Repete o limite com calma, sem subir o tom nem juntar mais justificações.", "pratica"],
   encaminhar:    ["Assumir e encaminhar", "Mesmo quando não é contigo, a pessoa não sai sozinha com o problema.", "pratica"],
   escolha:       ["Dar escolha", "Duas opções que te servem; a outra pessoa decide.", "pratica"],
-  porque:        ["Explicar o porquê", "Uma regra com razão custa menos a aceitar.", "pratica"]
+  porque:        ["Explicar o porquê", "Uma regra com razão custa menos a aceitar.", "pratica"],
+  facto:         ["O facto, depois de ouvir", "Primeiro o que a pessoa viveu; depois o que tu sabes, dito como informação e não como defesa.", "pratica"]
 };
 const ERROS = {
   "guiao":         ["Guião cedo demais", "Uma frase feita, dita antes de saber o que aconteceu, soa a decorada e a «quero despachar isto».", "promissor"],
@@ -877,7 +887,8 @@ const ERROS = {
   "ameaca":        ["Ameaçar", "Uma consequência dita como ameaça fecha a conversa.", "pratica"],
   "eu-acusador":   ["Mensagem-eu que acusa", "«Eu sinto que tu és…» tem um «eu», mas por baixo está um rótulo.", "promissor"],
   "ceder-tudo":    ["Ceder em tudo", "Dar tudo para acabar com a conversa resolve hoje e deixa ressentimento.", "pratica"],
-  "compensar":     ["Compensar em vez de reparar", "Um vale ou um desconto ajuda, mas não substitui resolver o que a pessoa precisa.", "bem"]
+  "compensar":     ["Compensar em vez de reparar", "Um vale ou um desconto ajuda, mas não substitui resolver o que a pessoa precisa.", "bem"],
+  "passar-culpa":  ["Passar a culpa", "«Não fui eu, foi a oficina.» Para quem está à tua frente, tu és a empresa; afastares-te não resolve nada.", "pratica"]
 };
 
 /* os níveis: confiança (c) e tensão (t) ao começar, a tensão máxima e o relógio */
@@ -1104,8 +1115,11 @@ HISTORIAS.push({
     { img: "media/conversas/terceira-visita-1.webp", legenda: "Terça-feira, 8h55. A Sandra tirou a manhã ao trabalho para esperar o técnico.", som: "relogio" },
     { img: "media/conversas/terceira-visita-2.webp", legenda: "Quinta-feira, 12h50. Outra manhã à espera. Ninguém tocou à campainha e o telemóvel não tocou.", som: "relogio" },
     { img: "media/conversas/terceira-visita-3.webp", legenda: "Três semanas sem máquina. A roupa vai para casa da mãe.", som: null },
+    { img: "media/conversas/terceira-visita-tu.webp", legenda: "Sexta, 18h. Abres a ficha da Sandra, que vem amanhã: o técnico ligou-lhe duas vezes e ninguém atendeu.", som: null, lado: "tu" },
     { img: "media/conversas/terceira-visita-4.webp", legenda: "Sábado, 10h20. Tu estás do outro lado do balcão.", som: null }
   ],
+  sabias: "O técnico ligou duas vezes para o número da ficha, na terça e na quinta, e ninguém atendeu. Estava na nota da oficina antes de a Sandra chegar.",
+  faltava: "O número da ficha era o antigo: a Sandra deu-o há três anos, mudou de telemóvel há um, e a loja nunca o confirmou ao marcar as visitas. A nota dizia «ligou», não para onde.",
   papel: "Trabalhas no balcão da assistência técnica de uma loja de eletrodomésticos.",
   abertura: "Sábado, 10h20. Três pessoas na fila. A Sandra pousa no balcão a fatura da máquina de lavar. O técnico não apareceu nas duas visitas marcadas.",
   impaciencia: {
@@ -1120,7 +1134,7 @@ HISTORIAS.push({
     },
     p2: {
       principal: false,
-      texto: "O número na ficha é o antigo. O técnico ligou para um telemóvel que ela já não usa."
+      texto: "O número na ficha é de há três anos e a loja nunca o confirmou. O técnico ligou para um telemóvel que ela já não usa."
     }
   },
   necessidade: "Não voltar a faltar ao trabalho, porque a chefe já a avisou. Precisava de uma hora fora do horário dela e de um nome que respondesse pela visita.",
@@ -1170,10 +1184,10 @@ HISTORIAS.push({
             dura: "«Pois foi, e duas vezes.» Respira fundo. «Quero a máquina arranjada hoje e as duas manhãs pagas.»"
           },
           fechada: null,
-          porque: "Alivia agora e cobra-se mais tarde: assumiste a culpa antes de saber o que aconteceu. Pedir desculpa pelo incómodo já era certo; dizer de quem foi a falha, ainda não."
+          porque: "Alivia agora e cobra-se mais tarde: assumiste uma culpa sem saber o que aconteceu, e calaste a nota que conhecias. Pedir desculpa pelo incómodo já era certo; dizer de quem foi a falha, ainda não."
         },
         {
-          texto: "Deixe-me ver no sistema… Diz aqui que o técnico lhe ligou na terça e ninguém atendeu.",
+          texto: "O técnico ligou-lhe na terça e na quinta, e ninguém atendeu.",
           tipo: "escala",
           tecnicas: [],
           erro: "sistema",
@@ -1187,7 +1201,7 @@ HISTORIAS.push({
             dura: "«Está a dizer que a culpa é minha? Tive o telemóvel na mão a manhã toda!» Levanta a voz, e a fila olha."
           },
           fechada: null,
-          porque: "Um facto dito antes de a pessoa se sentir ouvida soa a acusação. E nem era bem um facto: o sistema regista uma chamada, não o número para onde foi."
+          porque: "Sabias da nota e disseste-a antes de ela se sentir ouvida: soou a acusação. E era um facto a meio: diz que ligaram, não para que número."
         },
         {
           texto: "Duas manhãs perdidas. Isso pesa mais do que a máquina, não pesa?",
@@ -1252,7 +1266,7 @@ HISTORIAS.push({
             dura: "«Já contei isto duas vezes ao telefone!» Respira. «Esperei a manhã toda. Ninguém veio.»"
           },
           fechada: null,
-          porque: "Pedir a história é bom, mas ela já a contou ao telefone. Pedir tudo de novo, sem mostrar o que já se sabe, cansa. Ajudava começar pelo que está na ficha."
+          porque: "Pedir a história é bom, mas ela já a contou duas vezes ao telefone. Pedir tudo de novo, sem mostrar o que já ouviste, cansa."
         },
         {
           texto: "Marco-lhe já uma visita prioritária: segunda às 9h, a primeira do dia.",
@@ -1295,7 +1309,7 @@ HISTORIAS.push({
     {
       etapa: "Viragem",
       so: null,
-      evento: "Abres a ficha para marcar a visita. Há uma nota: «Técnico ligou 2x (terça e quinta). Cliente não atendeu.» A Sandra vê o ecrã.",
+      evento: "Rodas o ecrã para lhe mostrares os dias livres. Ela lê a nota que tu já conhecias: «Técnico ligou 2x (terça e quinta). Cliente não atendeu.»",
       eventosSe: [
         {
           marca: "desculpa-as-cegas",
@@ -1311,7 +1325,7 @@ HISTORIAS.push({
         {
           texto: "Do seu lado não houve chamada. Vamos ver para que número ligaram.",
           tipo: "bom",
-          tecnicas: ["escuta", "nos"],
+          tecnicas: ["escuta", "facto"],
           erro: null,
           efeito: null,
           problema: null,
@@ -1319,11 +1333,11 @@ HISTORIAS.push({
           marca: null,
           cai: false,
           reacao: {
-            calma: "Lê o número no ecrã. «Esse é o antigo! Mudei há um ano.» Tira o telemóvel da mala.",
-            dura: "«Esse número?» Ri-se, sem vontade. «É o antigo! Mudei há um ano.»"
+            calma: "Lê o número no ecrã. «Esse é o antigo! Mudei há um ano, e ninguém mo perguntou.» Tira o telemóvel da mala.",
+            dura: "«Esse número?» Ri-se, sem vontade. «É o antigo! Mudei há um ano. Ninguém mo perguntou.»"
           },
           fechada: null,
-          porque: "Não escolheste um culpado. Aceitaste o que ela viveu e foste ao facto que faltava: o sistema dizia «ligou», não dizia para onde."
+          porque: "Não escolheste um culpado. Aceitaste o que ela viveu e só depois foste ao facto, como informação: a nota dizia «ligou», não dizia para onde."
         },
         {
           texto: "Pode mostrar-me as chamadas do seu telemóvel? Assim confirmamos.",
@@ -1343,21 +1357,21 @@ HISTORIAS.push({
           porque: "Pediste-lhe uma prova. Ela mostrou e ficou a sentir que tinha de se defender. E era o telemóvel errado: a ficha da loja é que tinha de se ver."
         },
         {
-          texto: "Peço desculpa, o sistema às vezes regista mal. Deve ter sido erro nosso.",
+          texto: "A nota é da oficina, não é minha. Eu só vejo o que eles escrevem.",
           tipo: "certo",
           tecnicas: [],
-          erro: "desculpa-cega",
+          erro: "passar-culpa",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: false,
           reacao: {
-            calma: "«Pois deve.» Encolhe os ombros. «Então registem bem desta vez.»",
-            dura: "«Regista mal? E a próxima visita, vai ficar registada como?» Abana a cabeça."
+            calma: "«Da oficina.» Encolhe os ombros. «E a oficina não é desta loja?»",
+            dura: "«Não é sua? Então é de quem? Eu comprei a máquina aqui!» A fila olha."
           },
           fechada: null,
-          porque: "Querias pôr-te do lado dela, mas culpaste o sistema sem o ver. Se o sistema «regista mal», porque havia ela de confiar na próxima marcação?"
+          porque: "Afastaste-te da nota para não ficares com a culpa. Mas, para ela, tu és a loja: «não fui eu» deixou-a sem ninguém a quem pedir contas."
         },
         {
           texto: "O técnico ligou duas vezes, minha senhora. Também é preciso atender.",
@@ -1374,7 +1388,7 @@ HISTORIAS.push({
             dura: "«Está a chamar-me mentirosa?» A voz sobe, e a senhora da fila abana a cabeça."
           },
           fechada: null,
-          porque: "Respondeste a uma acusação com outra. E a nota estava incompleta: ligaram, sim, mas para um número que já não era o dela."
+          porque: "Respondeste a uma acusação com outra, e com um facto a meio: ligaram, sim, mas para um número que já não era o dela."
         }
       ]
     },
@@ -1656,8 +1670,11 @@ HISTORIAS.push({
   filme: [
     { img: "media/conversas/fim-de-semana-1.webp", legenda: "Outubro. O Rui marcou uma casa no Gerês para os dois e pagou 120 € de sinal.", som: null },
     { img: "media/conversas/fim-de-semana-2.webp", legenda: "Quinta à noite, desmarcaste: «Estou de rastos.» No sábado, sobrou um bilhete para um concerto e foste.", som: null },
+    { img: "media/conversas/fim-de-semana-tu.webp", legenda: "Nessa semana fizeste 60 horas de trabalho, e o Gerês fica a três horas de carro. O cansaço era verdade.", som: null, lado: "tu" },
     { img: "media/conversas/fim-de-semana-3.webp", legenda: "Três semanas sem resposta. Sexta, 18h30. Tu estás na esplanada do café do costume.", som: "relogio" }
   ],
+  sabias: "Vinhas de uma semana de 60 horas de trabalho, e o Gerês fica a três horas de carro. O cansaço era verdade.",
+  faltava: "O cansaço não explicava o concerto de sábado. E o Rui tinha sido despedido há um mês: aquele fim de semana era a única coisa boa que tinha marcada.",
   papel: "Conheces o Rui desde o secundário. Desmarcaste à última hora o fim de semana que ele tinha pago.",
   abertura: "Sexta-feira, 18h40. Esplanada coberta do café do costume. O Rui chega dez minutos atrasado, senta-se e não pede nada.",
   impaciencia: {
@@ -1708,21 +1725,21 @@ HISTORIAS.push({
           porque: "Uma frase grande, dita antes de saber o que ele passou, soa a fórmula para fechar o assunto. E choca com o que aconteceu: a amizade não apareceu na quinta."
         },
         {
-          texto: "Desculpa, a sério. Aquela semana de trabalho deixou-me mesmo de rastos.",
+          texto: "Desculpa. Fiz sessenta horas nessa semana, e eram três horas de carro.",
           tipo: "certo",
           tecnicas: [],
-          erro: "evitar",
+          erro: "passar-culpa",
           efeito: { facil: { c: 1, t: -1 }, medio: { c: 0, t: -1 }, dificil: { c: 0, t: -1 }, semrede: { c: 0, t: -1 } },
           problema: null,
           pista: null,
           marca: "cansaco",
           cai: false,
           reacao: {
-            calma: "«Pois.» Olha para a rua. «Toda a gente anda de rastos.» Os ombros descem um bocadinho.",
-            dura: "«De rastos.» Respira fundo. «Está bem. Toda a gente anda.»"
+            calma: "«Sessenta horas.» Olha para a rua. «Pois. Acredito.» Os ombros descem um bocadinho.",
+            dura: "«Sessenta horas.» Respira fundo. «Está bem. Acredito em ti.»"
           },
           fechada: null,
-          porque: "Alivia agora e cobra-se mais tarde. Pedir desculpa estava certo; repetir o «de rastos» e calar o sábado deixou a verdade à espera de aparecer por outro lado."
+          porque: "O cansaço era verdade, e por isso convenceu. Mas usaste-o para explicar o que ele não explicava: o sábado. Alivia agora e cobra-se quando o concerto aparecer."
         },
         {
           texto: "Se vais estar assim a conversa toda, mais vale irmos já embora.",
@@ -1851,7 +1868,7 @@ HISTORIAS.push({
       eventosSe: [
         {
           marca: "cansaco",
-          texto: "O Rui pousa o telemóvel na mesa: «De rastos, disseste. Há bocado.»",
+          texto: "O Rui pousa o telemóvel na mesa: «Sessenta horas, disseste. Há bocado.»",
           efeito: { c: -2, t: 1 }
         }
       ],
@@ -1861,9 +1878,9 @@ HISTORIAS.push({
       },
       opcoes: [
         {
-          texto: "Fui. Não estava assim tão de rastos. Devia ter-te dito a verdade.",
+          texto: "Fui. O cansaço era verdade, mas não explica o sábado. Devia ter-te dito.",
           tipo: "bom",
-          tecnicas: ["parte"],
+          tecnicas: ["parte", "facto"],
           erro: null,
           efeito: null,
           problema: null,
@@ -1875,7 +1892,7 @@ HISTORIAS.push({
             dura: "«Pois devias.» Silêncio. «Soube pela fotografia do Marco. Foi isso que mais custou.»"
           },
           fechada: null,
-          porque: "Assumiste a tua parte sem «mas» e sem desculpas. Disseste o que ele já sabia, em vez de o obrigar a provar. E apareceu o que lhe custou de verdade."
+          porque: "Assumiste a tua parte e disseste o cansaço como informação, não como defesa: era verdade e não explicava o sábado. Não o obrigaste a provar nada, e apareceu o que lhe custou."
         },
         {
           texto: "Quem é que te mandou essa fotografia?",
@@ -1912,21 +1929,21 @@ HISTORIAS.push({
           porque: "Pagar a tua parte é justo. Mas veio no lugar de responder ao que ele perguntou: o dinheiro fechou a conta, não a conversa."
         },
         {
-          texto: "Andas a vigiar as fotografias dos outros? Estás a ficar paranoico.",
+          texto: "Fiz sessenta horas nessa semana, Rui! Um concerto não são três horas de carro.",
           tipo: "escala",
           tecnicas: [],
-          erro: "rotulo",
+          erro: "passar-culpa",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: false,
           reacao: {
-            calma: "«Paranoico.» Ri-se, seco. «Estava no grupo. Toda a gente viu.»",
-            dura: "«Paranoico?!» Levanta-se meio e volta a sentar-se. «Mentiste-me e o maluco sou eu?»"
+            calma: "«Sessenta horas.» Ri-se, seco. «Ao menos tens onde as fazer.» Guarda o telemóvel.",
+            dura: "«Não são três horas.» Bate com o telemóvel na mesa. «Mentiste-me e ainda tens razão?»"
           },
           fechada: null,
-          porque: "Um rótulo («paranoico») em vez de uma resposta. Leva a conversa do que fizeste para o que ele é, e aí ninguém recua."
+          porque: "Era verdade, mas, depois da fotografia, explicar porquê soa a defesa: ele pediu a verdade, não razões. E, sem saberes, falaste de trabalho a mais a quem tinha perdido o seu."
         }
       ]
     },
@@ -2208,6 +2225,7 @@ HISTORIAS.push({
   filme: [
     { img: "media/conversas/seis-da-tarde-1.webp", legenda: "Quinta-feira, 18h02. Chega a parte da Helena do relatório semanal. A chefe quer o relatório amanhã às 9h.", som: "relogio" },
     { img: "media/conversas/seis-da-tarde-2.webp", legenda: "Na semana passada ficaste até às 21h a juntar tudo. Na outra, também.", som: "relogio" },
+    { img: "media/conversas/seis-da-tarde-tu.webp", legenda: "A Teresa já te perguntou duas vezes pelo atraso. Das duas, disseste-lhe que a culpa era da parte da Helena.", som: null, lado: "tu" },
     { img: "media/conversas/seis-da-tarde-3.webp", legenda: "18h10. O open space está quase vazio. Tu estás junto à secretária da Helena.", som: null }
   ],
   papel: "Trabalhas no departamento comercial de uma distribuidora. Tu e a Helena fazem em conjunto o relatório semanal para a chefe.",
@@ -2228,6 +2246,8 @@ HISTORIAS.push({
     }
   },
   necessidade: "Deixar de fazer sozinha o trabalho de dois, sem passar por quem não dá conta. Precisava de um prazo possível e de alguém ao lado para o dizer à chefe.",
+  sabias: "A Teresa perguntou-te duas vezes porque é que o relatório chegava atrasado. Das duas vezes, disseste-lhe que a culpa era da parte da Helena.",
+  faltava: "O porquê. As horas eram verdade, mas desde setembro a Helena faz também os clientes do Jorge, que está de baixa. Deste à chefe meio facto, sem lho perguntares.",
 
   momentos: [
 
@@ -2260,21 +2280,21 @@ HISTORIAS.push({
           porque: "Alivia agora e cobra-se mais tarde: disseste que não fazia mal, e fazia. O incómodo não desaparece por se calar; fica guardado até sair na pior altura."
         },
         {
-          texto: "Eu sinto que não respeitas o meu tempo, Helena.",
+          texto: "A Teresa já perguntou duas vezes. Eu só lhe disse a que horas chega a tua parte.",
           tipo: "certo",
           tecnicas: [],
-          erro: "eu-acusador",
+          erro: "sistema",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: true,
           reacao: {
-            calma: "«Não é isso.» Tira os óculos. «Desculpa. Sei que é em cima da hora.»",
-            dura: "«Respeitar?» Vira-se para ti. «Eu estou aqui desde as oito da manhã.»"
+            calma: "«Disseste-lhe a hora?» Tira os óculos devagar. «Então ela acha que sou eu.»",
+            dura: "«Só a hora?» Vira-se para ti. «Eu estou aqui desde as oito da manhã.»"
           },
           fechada: null,
-          porque: "Tem um «eu sinto», mas por baixo diz «tu não me respeitas». É um rótulo com outra roupa, e ela defendeu-se dele em vez de ouvir o que te custa."
+          porque: "Parecia franqueza, mas foi o facto antes de a ouvir, e usado como escudo: «eu só disse a verdade». E era meia verdade: sabias a hora a que a parte chegava, não sabias porquê."
         },
         {
           texto: "É sempre a mesma coisa contigo, Helena. Sempre às seis.",
@@ -2399,23 +2419,23 @@ HISTORIAS.push({
     {
       etapa: "Viragem",
       so: null,
-      evento: "Chega uma mensagem da Teresa, a chefe, para ti e para a Helena: «O relatório vai outra vez atrasado? Porquê?» A Helena lê-a e olha para ti.",
+      evento: "Chega uma mensagem da Teresa, a chefe, para ti e para a Helena: «Outra vez atrasado? Helena, é outra vez a tua parte?» A Helena lê-a e olha para ti.",
       eventosSe: [
         {
           marca: "nao-faz-mal",
-          texto: "A Helena vira-se para ti: «Há bocado disseste que não fazia mal. Vais dizer-lhe isso a ela?»",
+          texto: "A Helena vira-se para ti: «Há bocado disseste que não fazia mal. E à Teresa dizes que é a minha parte?»",
           efeito: { c: -2, t: 1 }
         }
       ],
       fala: {
-        calma: "Pronto. Agora vai parecer que a culpa é minha.",
-        dura: "Vá, responde-lhe. Diz-lhe que a Helena é que atrasa tudo."
+        calma: "Outra vez a minha parte. Foi isso que lhe disseste, não foi?",
+        dura: "Então é isso. Andas a dizer à Teresa que a culpa é minha."
       },
       opcoes: [
         {
-          texto: "Respondo que sai às 9h. O porquê, falamos primeiro entre nós.",
+          texto: "Disse, e disse sem te perguntar nada. Isso corrijo eu.",
           tipo: "bom",
-          tecnicas: ["nos"],
+          tecnicas: ["parte"],
           erro: null,
           efeito: null,
           problema: null,
@@ -2423,11 +2443,11 @@ HISTORIAS.push({
           marca: null,
           cai: false,
           reacao: {
-            calma: "Respira. «Obrigada.» Pausa. «Sabes que os números da faturação só me chegam à quinta depois do almoço?»",
-            dura: "«Sai às nove.» Olha para ti, desconfiada. «…E sabes que os números da faturação só me chegam hoje à tarde?»"
+            calma: "Fica calada um momento. «…Ao menos dizes.» Pausa. «Sabes que os números da faturação só me chegam à quinta depois do almoço?»",
+            dura: "«Corriges.» Olha para ti, desconfiada. «…E sabes que os números da faturação só me chegam hoje à tarde?»"
           },
           fechada: null,
-          porque: "Não apontaste um culpado à chefe, nem mentiste: o relatório sai a horas. Ao pores-te do mesmo lado, ela contou uma coisa que não sabias: os números chegam tarde."
+          porque: "Disseste o que tinhas dito à chefe e assumiste a tua parte, sem te defenderes e sem a acusar. Ela deixou de se proteger e contou o que não sabias: os números chegam tarde."
         },
         {
           texto: "Queres responder tu, ou respondo eu?",
@@ -2440,31 +2460,31 @@ HISTORIAS.push({
           marca: null,
           cai: true,
           reacao: {
-            calma: "«Responde tu.» Desvia o olhar. «É em ti que ela acredita.»",
+            calma: "«Responde tu.» Desvia o olhar. «A tua versão ela já tem.»",
             dura: "«Eu?» Ri-se, sem vontade. «Para eu explicar à chefe porque é que atraso tudo?»"
           },
           fechada: null,
-          porque: "Parecia dar-lhe escolha, mas deixou-a sozinha com a pergunta da chefe. Uma escolha só ajuda quando as duas opções servem à outra pessoa."
+          porque: "Parecia dar-lhe escolha, mas deixou-a sozinha com a pergunta da chefe e com a versão que já lhe tinhas dado. Uma escolha só ajuda quando as duas opções servem à outra pessoa."
         },
         {
-          texto: "Respondo só com os factos: a que horas chegou cada parte. Sem acusar ninguém.",
+          texto: "Desculpa. Digo-lhe já que a culpa é minha, e pronto.",
           tipo: "certo",
           tecnicas: [],
-          erro: "sistema",
+          erro: "ceder-tudo",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: false,
           reacao: {
-            calma: "«Os factos.» Fica calada. «Está bem. Manda.» Volta-se para o ecrã.",
-            dura: "«As horas de cada parte?» Ri-se, sem vontade. «Ótimo. Fica tudo registado.»"
+            calma: "«Tua?» Abana a cabeça. «Também não é verdade.» Volta-se para o ecrã.",
+            dura: "«Agora é tua?» Ri-se, sem vontade. «Ontem era minha. Decide-te.»"
           },
           fechada: null,
-          porque: "Os factos estavam certos, mas não eram neutros: as horas dizem à chefe quem atrasou, sem dizer porquê. Usaste o registo como escudo, e ela ficou sozinha."
+          porque: "Trocar uma culpa por outra pareceu generoso, mas também não era verdade. Assumir a tua parte era dizer o que disseste à chefe; assumir tudo só fecha a conversa, e o porquê fica por saber."
         },
         {
-          texto: "Explica-lhe tu. A minha parte estava pronta na terça.",
+          texto: "Disse, porque é verdade. A minha parte estava pronta na terça.",
           tipo: "escala",
           tecnicas: [],
           erro: "contra-ataque",
@@ -2475,10 +2495,10 @@ HISTORIAS.push({
           cai: false,
           reacao: {
             calma: "«Pois estava.» Fecha o portátil devagar. «A tua está sempre pronta.»",
-            dura: "«Ótimo.» Levanta-se. «Então explico eu, e explico tudo.»"
+            dura: "«Ótimo.» Levanta-se. «Então explico eu à Teresa, e explico tudo.»"
           },
           fechada: null,
-          porque: "Ela tinha medo de levar a culpa, e tu confirmaste-o. Responder a uma acusação com outra fez subir o conflito, e a chefe vai receber duas versões."
+          porque: "Ela tinha medo de levar a culpa, e tu confirmaste-o com o facto que tinhas. Responder a uma acusação com outra fez subir o conflito, e a chefe vai receber duas versões."
         }
       ]
     },
@@ -2744,7 +2764,7 @@ HISTORIAS.push({
   },
   perguntas: [
     "Quando alguém se atrasa sempre, o que é que costumamos pensar primeiro? E o que fica por perguntar?",
-    "A chefe pediu um porquê. Como se responde a uma chefia sem atirar um colega para a frente?"
+    "O que disseste à Teresa era verdade: a parte chegava às seis. O que lhe faltava? Como se corrige uma versão que já se deu a uma chefia?"
   ]
 });
 </script>
@@ -2760,8 +2780,11 @@ HISTORIAS.push({
   filme: [
     { img: "media/conversas/parte-que-falta-1.webp", legenda: "Domingo, 23h50. O prazo para juntar as partes acaba à meia-noite. Chegam três. A do Diogo, não.", som: "relogio" },
     { img: "media/conversas/parte-que-falta-2.webp", legenda: "Segunda e terça. Mensagens no grupo, duas chamadas. O Diogo vê tudo e não responde.", som: null },
+    { img: "media/conversas/parte-que-falta-tu.webp", legenda: "Terça à noite. No Instagram de um amigo, fotografias de uma festa de sábado. Ao fundo, a rir, o Diogo.", som: null, lado: "tu" },
     { img: "media/conversas/parte-que-falta-3.webp", legenda: "Quarta, 15h30. Faltam dois dias para a apresentação. Tu encontras o Diogo no bar da faculdade.", som: null }
   ],
+  sabias: "No sábado à noite, com a parte dele por entregar, o Diogo estava numa festa. Viste-o numa fotografia, a rir, com copos na mão.",
+  faltava: "Estava a trabalhar nessa festa, a servir às mesas. É assim que paga o quarto, à noite e ao fim de semana. A fotografia mostrava onde ele estava, não o que lá fazia.",
   papel: "Estás num grupo de quatro com o Diogo. A apresentação de Métodos de Investigação é na sexta e vale 40 % da nota.",
   abertura: "Quarta-feira, 15h30, bar da faculdade. O Diogo está numa mesa ao fundo, com um café e o portátil fechado. Sentas-te à frente dele.",
   impaciencia: {
@@ -2771,15 +2794,15 @@ HISTORIAS.push({
   pistas: {
     p1: {
       principal: true,
-      texto: "Trabalha de noite num armazém para pagar o quarto e anda a pensar desistir do curso.",
-      sozinha: "Sabes porque não respondi? Passo as noites a descarregar camiões. É o que paga o quarto. Já nem sei se quero continuar no curso."
+      texto: "Serve às mesas em festas e casamentos, à noite e ao fim de semana, para pagar o quarto. Anda a pensar desistir do curso.",
+      sozinha: "Sabes porque não respondi? Passo as noites a servir às mesas em festas. É o que paga o quarto. Já nem sei se quero continuar no curso."
     },
     p2: {
       principal: false,
       texto: "A parte dele não está a zero: os inquéritos estão tratados. Faltam os gráficos e as conclusões."
     }
   },
-  necessidade: "Trabalha de noite para pagar o quarto e anda a pensar desistir. Não precisava de pena nem de castigo: precisava de uma parte que conseguisse mesmo cumprir.",
+  necessidade: "Serve às mesas à noite para pagar o quarto e anda a pensar desistir. Não precisava de pena nem de castigo: precisava de uma parte que conseguisse mesmo cumprir.",
 
   momentos: [
 
@@ -2790,8 +2813,8 @@ HISTORIAS.push({
       evento: null,
       eventosSe: [],
       fala: {
-        calma: "Já sei. Vens por causa do trabalho. Eu vi as mensagens.",
-        dura: "Já sei ao que vens. Escusas de começar. Eu vi as mensagens todas."
+        calma: "Já sei. Vens por causa do trabalho. Eu vi as mensagens, só não tive tempo.",
+        dura: "Já sei ao que vens. Não tive tempo, pronto. Escusas de começar."
       },
       opcoes: [
         {
@@ -2812,21 +2835,21 @@ HISTORIAS.push({
           porque: "Alivia agora e cobra-se depois: prometeste o que não dependia de ti. O nome no trabalho decide-se em grupo, e talvez com a professora."
         },
         {
-          texto: "Porque é que não respondeste a ninguém?",
-          tipo: "perguntar",
-          tecnicas: ["pergunta"],
-          erro: null,
+          texto: "Tempo? Diogo, eu vi-te numa festa no sábado. Só quero que sejas honesto.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "contra-ataque",
           efeito: null,
           problema: null,
           pista: null,
-          marca: null,
+          marca: "a-festa",
           cai: true,
           reacao: {
-            calma: "«Não tinha nada para dizer.» Mexe no café. «A parte não está feita, pronto.»",
-            dura: "«Agora vens pedir contas?» Encolhe os ombros. «Não respondi porque não.»"
+            calma: "«A festa.» Fica muito quieto. «Pois. Já tiraste as tuas conclusões.» Fecha o portátil, devagar.",
+            dura: "«Andas a ver fotografias minhas?» Afasta a chávena. «Pensa o que quiseres.»"
           },
           fechada: null,
-          porque: "Era uma pergunta, mas «porque é que não…» soa a pedido de contas. Ele respondeu ao tom, e não ao que lhe perguntaste."
+          porque: "Ele defendeu-se e tu respondeste com uma prova. Era verdade que estava na festa, mas não sabias o que lá fazia. Dito antes de o ouvires, um facto soa a acusação."
         },
         {
           texto: "Se não mandas a tua parte até amanhã, tiramos o teu nome do trabalho.",
@@ -2856,8 +2879,8 @@ HISTORIAS.push({
           marca: null,
           cai: false,
           reacao: {
-            calma: "Olha para o café. «Ando a trabalhar de noite, num armazém. É o que paga o quarto.» Pausa. «Às vezes penso em largar isto.»",
-            dura: "«O que se passa?» Ri-se, sem vontade. «Descarrego camiões até às seis. Pago o quarto assim.» Baixa a voz. «Já pensei em desistir.»"
+            calma: "Olha para o café. «Ando a servir às mesas em festas, à noite. É o que paga o quarto.» Pausa. «Às vezes penso em largar isto.»",
+            dura: "«O que se passa?» Ri-se, sem vontade. «Sirvo às mesas em festas até às quatro. Pago o quarto assim.» Baixa a voz. «Já pensei em desistir.»"
           },
           fechada: "«Nada. Ando cansado, só isso.» Puxa a mochila para o colo.",
           porque: "Descreveste o que viste (não responde desde segunda) sem lhe chamar nada, e perguntaste. Lembrar que não é costume dele diz que o conheces, não que o julgas."
@@ -2887,8 +2910,8 @@ HISTORIAS.push({
           marca: null,
           cai: false,
           reacao: {
-            calma: "Demora a responder. «Arranjei trabalho à noite, num armazém. Para pagar o quarto.» Encolhe os ombros. «Já pensei em largar o curso.»",
-            dura: "«Mudou tudo.» Olha para a janela. «Descarrego camiões à noite, para pagar o quarto. Já pensei em desistir.»"
+            calma: "Demora a responder. «Arranjei trabalho à noite, a servir às mesas em festas. Para pagar o quarto.» Encolhe os ombros. «Já pensei em largar o curso.»",
+            dura: "«Mudou tudo.» Olha para a janela. «Sirvo às mesas em festas, à noite, para pagar o quarto. Já pensei em desistir.»"
           },
           fechada: "«Nada. Muita coisa ao mesmo tempo, só isso.» Mexe no café.",
           porque: "Antes de discutir a tarefa, perguntaste pela vida à volta dela. Ele só falhou este mês, e a pergunta foi ao que mudou, sem acusar."
@@ -2928,21 +2951,21 @@ HISTORIAS.push({
           porque: "Parece generoso, mas resolve a sexta e não o Diogo. Ele fica a apresentar um trabalho que não fez, e tu com duas partes e algum ressentimento."
         },
         {
-          texto: "Toda a gente anda cansada, Diogo. Eu também tenho outras cadeiras.",
+          texto: "Não consegues? Para a festa de sábado conseguiste.",
           tipo: "escala",
           tecnicas: [],
-          erro: "minimizar",
+          erro: "contra-ataque",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: false,
           reacao: {
-            calma: "«Pois.» Fecha o portátil. «Toda a gente.»",
-            dura: "«Tu não sabes nada da minha vida.» Pega no café e não bebe."
+            calma: "«A festa.» Ri-se, sem vontade. «Tu não fazes ideia do que eu lá estava a fazer.» Fecha o portátil.",
+            dura: "«Viste a fotografia, foi?» Fecha o portátil com força. «Tu não sabes nada da minha vida.»"
           },
           fechada: null,
-          porque: "Comparar cansaços diz-lhe que o dele não conta. E ainda não sabias porque é que ele estava cansado."
+          porque: "Ele tinha acabado de admitir que falhou, e respondeste com uma meia verdade. Estava na festa, sim, mas a trabalhar, a servir às mesas. A ironia tirou-lhe a vontade de o dizer."
         }
       ]
     },
@@ -2957,6 +2980,11 @@ HISTORIAS.push({
           marca: "prometeste-o-nome",
           texto: "O Diogo vira o telemóvel para ti: «Ninguém tirava o meu nome, não era?»",
           efeito: { c: -2, t: 1 }
+        },
+        {
+          marca: "a-festa",
+          texto: "O Diogo levanta os olhos do ecrã: «Também lhe mostraste a fotografia da festa?»",
+          efeito: { c: -1, t: 1 }
         }
       ],
       fala: {
@@ -2965,8 +2993,25 @@ HISTORIAS.push({
       },
       opcoes: [
         {
-          texto: "Também soube agora. Antes de alguém decidir, mostras-me o que tens?",
+          texto: "Vi-te numa festa no sábado e pensei o pior. Enganei-me?",
           tipo: "bom",
+          tecnicas: ["facto", "parte"],
+          erro: null,
+          efeito: null,
+          problema: 1,
+          pista: "p1",
+          marca: null,
+          cai: false,
+          reacao: {
+            calma: "Fica a olhar para ti. «Enganaste.» Pausa. «Eu estava a servir às mesas nessa festa. É o que paga o quarto.» Baixa a voz. «Já pensei em desistir.»",
+            dura: "«O pior, claro.» Ri-se, sem vontade. «Eu estava lá a servir às mesas. É o que paga o quarto.» Olha para a mesa. «Já pensei em largar isto.»"
+          },
+          fechada: "«Pensa o que quiseres.» Guarda o telemóvel no bolso. «Eu sei o que lá estava a fazer.»",
+          porque: "Disseste o que sabias como informação, não como prova, e admitiste o que tinhas pensado. Ele não teve de se defender e contou o que faltava: estava lá a trabalhar."
+        },
+        {
+          texto: "Também soube agora. Antes de alguém decidir, mostras-me o que tens?",
+          tipo: "perguntar",
           tecnicas: ["nos", "pergunta"],
           erro: null,
           efeito: null,
@@ -2979,10 +3024,10 @@ HISTORIAS.push({
             dura: "«Mostrar para quê?» Mas abre o portátil. «Os dados estão tratados. Faltam os gráficos e as conclusões.»"
           },
           fechada: null,
-          porque: "Não defendeste a Carolina nem a atacaste. Disseste o que sabias e voltaste ao concreto: o que existe. E existia mais do que parecia."
+          porque: "Não defendeste a Carolina nem a atacaste, e voltaste ao concreto: existia mais do que parecia. Mas ficou por perguntar porque é que ele deixou de responder."
         },
         {
-          texto: "Vou falar com a professora e explicar que andas com problemas.",
+          texto: "Deixa comigo: vou falar com a professora e explicar que andas com problemas.",
           tipo: "certo",
           tecnicas: [],
           erro: "resolver-cedo",
@@ -2997,23 +3042,6 @@ HISTORIAS.push({
           },
           fechada: null,
           porque: "Querias ajudar, mas decidiste por ele e com a vida dele. Ninguém lhe perguntou se queria que a professora soubesse. Ele não queria pena."
-        },
-        {
-          texto: "Calma, ela escreveu isso a quente. Amanhã já pensa de outra maneira.",
-          tipo: "certo",
-          tecnicas: [],
-          erro: "minimizar",
-          efeito: null,
-          problema: null,
-          pista: null,
-          marca: null,
-          cai: false,
-          reacao: {
-            calma: "«A quente?» Mostra-te o ecrã. «Ela diz que já falou com a professora.»",
-            dura: "«Calma?» Empurra o telemóvel para o meio da mesa. «Está escrito que eu saio!»"
-          },
-          fechada: null,
-          porque: "Para ele não era «uma coisa da Carolina»: era a professora a saber que ele falhou. Desvalorizar o que leu não faz a mensagem desaparecer."
         },
         {
           texto: "O que esperavas? Três dias calado também não se faz.",
@@ -3057,8 +3085,8 @@ HISTORIAS.push({
           marca: null,
           cai: false,
           reacao: {
-            calma: "«À tarde.» Solta o ar. «De manhã durmo. Trabalho de noite num armazém, para pagar o quarto.» Pausa. «Já pensei em desistir.»",
-            dura: "«À tarde.» Pausa. «De manhã durmo. Faço noites num armazém.» Olha para a mesa. «Já pensei em largar isto.»"
+            calma: "«À tarde.» Solta o ar. «De manhã durmo. Sirvo às mesas em festas, à noite, para pagar o quarto.» Pausa. «Já pensei em desistir.»",
+            dura: "«À tarde.» Pausa. «De manhã durmo. Faço noites a servir às mesas.» Olha para a mesa. «Já pensei em largar isto.»"
           },
           fechada: "«À tarde, pode ser.» Encolhe os ombros. «Vou tentar.»",
           porque: "Uma parte do tamanho do que ele consegue, com duas horas à escolha. Ao escolher, disse porquê, e ficaste a saber o que faltava."
@@ -3295,7 +3323,7 @@ HISTORIAS.push({
     rutura: "Na sexta, a Carolina apresentou com o nome do Diogo riscado. Ele saiu do bar a meio da conversa e saiu do grupo. Duas semanas depois, anulou a matrícula. No grupo, ninguém soube porquê."
   },
   perguntas: [
-    "Em que momento é que «não responde» deixou de parecer desleixo? O que vos fez mudar de ideia?",
+    "A fotografia da festa era verdadeira. O que lhe faltava? Em que momento é que «não responde» deixou de parecer desleixo?",
     "Tirar o nome de alguém de um trabalho: quando é justo, e quem deve falar com essa pessoa antes?"
   ]
 });
@@ -3312,8 +3340,11 @@ HISTORIAS.push({
   filme: [
     { img: "media/conversas/cuida-do-pai-1.webp", legenda: "Agosto. O pai caiu na casa de banho. Desde esse dia, o Nuno passa lá todas as manhãs e todas as noites.", som: null },
     { img: "media/conversas/cuida-do-pai-2.webp", legenda: "Tu moras a uma hora de carro. Vens ao domingo, para o almoço, e voltas antes de escurecer.", som: null },
+    { img: "media/conversas/cuida-do-pai-tu.webp", legenda: "Em agosto prometeste vir também às quartas. Ainda não vieste nenhuma vez: o teu horário mudou.", som: null, lado: "tu" },
     { img: "media/conversas/cuida-do-pai-3.webp", legenda: "Domingo, 15h. O pai foi descansar. Tu estás à mesa da cozinha dele, a tomar café com o Nuno.", som: "relogio" }
   ],
+  sabias: "Em agosto prometeste ao Nuno vir também às quartas. Ainda não vieste nenhuma vez: no trabalho, mudaram-te o horário e passaste a sair às sete.",
+  faltava: "O horário explicava as quartas, não o silêncio: a promessa era tua e não avisaste. E o Nuno tinha recusado uma promoção em setembro para cuidar do pai.",
   papel: "O Nuno é teu irmão. Cuida do pai todos os dias desde a queda; tu moras a uma hora e vens ao domingo.",
   abertura: "Domingo, 15h10. Cozinha da casa do pai, café na mesa. O pai foi descansar. Dizes que ele está com melhor cara. O Nuno pousa a chávena com força.",
   impaciencia: {
@@ -3347,21 +3378,21 @@ HISTORIAS.push({
       },
       opcoes: [
         {
-          texto: "Eu sei, Nuno. E agradeço-te muito tudo o que tens feito pelo pai.",
+          texto: "Eu sei. As quartas eram para ser minhas, mas mudaram-me o horário.",
           tipo: "certo",
           tecnicas: [],
-          erro: "guiao",
+          erro: "passar-culpa",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: true,
           reacao: {
-            calma: "«Agradeces.» Roda a chávena nas mãos. «Agradecer não lhe dá banho.»",
-            dura: "«Agradeces. Obrigado, então.» Olha para a janela."
+            calma: "«Mudaram-te o horário.» Roda a chávena nas mãos. «E o telefone, também to mudaram?»",
+            dura: "«O horário.» Ri-se, sem vontade. «Desde agosto. Nem uma quarta, nem uma mensagem.»"
           },
           fechada: null,
-          porque: "Um obrigado em geral, antes de saber o que lhe custa, soa a frase para fechar o assunto. O reconhecimento conta quando diz o que a pessoa fez, em concreto."
+          porque: "O horário mudou mesmo, mas a promessa era tua. Ao pores a culpa no trabalho, falaste de ti quando ele falava dos seis dias dele, e as quartas falhadas ficaram sem dono."
         },
         {
           texto: "Tens razão, isto não pode continuar. Se calhar o pai tem de ir para um lar.",
@@ -3595,13 +3626,13 @@ HISTORIAS.push({
       eventosSe: [],
       fala: {
         calma: "Então? O que é que propões? Tu, que vens ao domingo.",
-        dura: "Então? Tens alguma ideia, ou vais só dizer que é complicado?"
+        dura: "Então? Vais prometer outra vez as quartas?"
       },
       opcoes: [
         {
-          texto: "Posso ficar com o pai um dia por semana: quarta ou sábado. Qual te serve?",
+          texto: "Falhei as quartas: o horário mudou e não te avisei. O sábado consigo cumprir.",
           tipo: "bom",
-          tecnicas: ["escolha", "posso"],
+          tecnicas: ["parte", "facto", "posso"],
           erro: null,
           efeito: null,
           problema: 2,
@@ -3609,11 +3640,11 @@ HISTORIAS.push({
           marca: null,
           cai: false,
           reacao: {
-            calma: "«Sábado.» Solta o ar. «Recusei uma promoção para estar aqui, sabes? Um dia meu já era muito.»",
-            dura: "«Sábado. Mas é mesmo?» Pausa. «Recusei uma promoção para estar aqui. Um dia meu já era muito.»"
+            calma: "«O sábado.» Solta o ar. «Recusei uma promoção para estar aqui, sabes? Um dia meu já era muito.»",
+            dura: "«O sábado. Mas é mesmo?» Pausa. «Recusei uma promoção para estar aqui. Um dia meu já era muito.»"
           },
-          fechada: "«Sábado, pode ser.» Encolhe os ombros. «Vamos ver quanto tempo dura.»",
-          porque: "Ofereceste um dia fixo que depende de ti e deixaste-o escolher. Ao escolher, ele disse o que isto já lhe tinha custado."
+          fechada: "«Pode ser.» Encolhe os ombros. «As quartas também eram para ser.»",
+          porque: "Assumiste a promessa falhada e disseste o horário como explicação, não como desculpa. Só depois propuseste um dia que consegues cumprir. E ele contou o que isto já lhe tinha custado."
         },
         {
           texto: "Diz-me tu o que precisas que eu faça.",
@@ -3644,10 +3675,10 @@ HISTORIAS.push({
           cai: true,
           reacao: {
             calma: "«Todos?» Olha para ti. «Está bem. Logo se vê quanto tempo aguentas.»",
-            dura: "«Todos os fins de semana? Tu?» Ri-se, sem vontade. «Está bem.»"
+            dura: "«Todos os fins de semana? Tu, que não vieste a uma quarta?» Ri-se, sem vontade."
           },
           fechada: null,
-          porque: "Dar tudo de uma vez acaba com a discussão hoje, mas é uma promessa que ninguém aguenta a uma hora de carro. Um dia fixo cumprido vale mais do que dois prometidos."
+          porque: "Dar tudo acaba com a discussão hoje, mas ninguém aguenta esta promessa a uma hora de carro, e as quartas já tinham falhado. Um dia fixo cumprido vale mais do que dois prometidos."
         },
         {
           texto: "Se isto é para ser sempre esta conversa, deixo de vir ao domingo.",
@@ -3677,7 +3708,7 @@ HISTORIAS.push({
       eventosSe: [
         {
           marca: "promessa",
-          texto: "O Nuno, baixinho: «Todos os fins de semana, disseste. Aguenta primeiro um.»",
+          texto: "O Nuno, baixinho: «Todos os fins de semana, disseste. Como as quartas?»",
           efeito: { c: -1, t: 1 }
         }
       ],
@@ -3847,7 +3878,7 @@ HISTORIAS.push({
     rutura: "Um mês depois, o Nuno deixou de te responder. Ao domingo, quando chegas, ele sai. O pai pergunta porque é que já não almoçam juntos, e ninguém lhe responde. O calendário do frigorífico continua em branco."
   },
   perguntas: [
-    "«Só apareces para o almoço.» O que estava por baixo desta frase? Em que momento o perceberam?",
+    "«Mudaram-me o horário» era verdade. Porque é que não chegava como resposta às quartas que falharam?",
     "Quando o pai entrou na conversa, o que mudou? Como se fala de alguém que está a ouvir?"
   ]
 });
@@ -3864,6 +3895,7 @@ HISTORIAS.push({
   filme: [
     { img: "media/conversas/projeto-mudou-1.webp", legenda: "Segunda-feira, 9h14. Um e-mail para toda a empresa: o projeto Farol passa para a equipa do Porto.", som: "relogio" },
     { img: "media/conversas/projeto-mudou-2.webp", legenda: "Lideras o Farol desde março. A tua equipa começa a perguntar-te o que se passa. Não sabes responder.", som: null },
+    { img: "media/conversas/projeto-mudou-tu.webp", legenda: "Este trimestre, o Farol falhou duas entregas. Ao ler o e-mail, foi a primeira coisa em que pensaste.", som: null, lado: "tu" },
     { img: "media/conversas/projeto-mudou-3.webp", legenda: "10h30. Pediste para falar com a Cristina. Tu estás no gabinete dela, de porta fechada.", som: null }
   ],
   papel: "Coordenas uma equipa de cinco pessoas numa empresa de software. A Cristina é a tua chefe direta há três anos.",
@@ -3884,6 +3916,8 @@ HISTORIAS.push({
     }
   },
   necessidade: "Não te perder. O Farol vai parar em janeiro e ela tirou-te de lá a tempo. Não o podia contar, e precisava de que confiasses nela sem saber tudo.",
+  sabias: "O Farol falhou duas entregas este trimestre. Quando leste o e-mail das 9h14, pensaste logo que te tiravam o projeto por isso.",
+  faltava: "O Farol vai ser suspenso em janeiro. A Cristina tirou-te de lá para o teu nome não ficar no fecho. A mudança não era castigo pelas entregas: protegia-te.",
 
   momentos: [
 
@@ -3916,7 +3950,7 @@ HISTORIAS.push({
           porque: "Disseste o facto e o que te custou, sem dizer o que ela é. Uma mensagem-eu simples, sem acusação escondida. Ela pôde explicar o e-mail em vez de se defender."
         },
         {
-          texto: "Se falhei alguma coisa no Farol, peço desculpa. Prefiro saber o quê.",
+          texto: "Sei que falhámos duas entregas este trimestre. Se é por isso, peço desculpa.",
           tipo: "certo",
           tecnicas: [],
           erro: "desculpa-cega",
@@ -3926,11 +3960,11 @@ HISTORIAS.push({
           marca: "culpa-minha",
           cai: false,
           reacao: {
-            calma: "«Não falhaste nada.» Abana a cabeça. «Não tem nada a ver com o teu trabalho.»",
-            dura: "«Não é isso.» Solta o ar. «Não falhaste nada. Não é sobre o teu trabalho.»"
+            calma: "«As entregas?» Abana a cabeça. «Não tem nada a ver com isso. Nem com o teu trabalho.»",
+            dura: "«Não é isso.» Solta o ar. «As entregas não têm nada a ver. Não é sobre o teu trabalho.»"
           },
           fechada: null,
-          porque: "Alivia agora e cobra-se mais tarde: pediste desculpa por uma falha que ninguém viu. A partir daí, o que ela te propuser vai parecer um castigo, para ti e para ela."
+          porque: "Alivia agora e cobra-se mais tarde: o facto era verdade, mas ninguém o tinha posto na mesa. Pediste desculpa pelo motivo que imaginaste, e o que ela propuser vai parecer castigo."
         },
         {
           texto: "Compreendo que são decisões da empresa. Só gostava de perceber os critérios.",
@@ -4015,21 +4049,21 @@ HISTORIAS.push({
           porque: "Uma pergunta legítima, mas à procura de um culpado. Ela assumiu, e a conversa ficou presa em quem decidiu, em vez de passar ao que te preocupava."
         },
         {
-          texto: "Eu sinto que deixaste de contar comigo para as coisas importantes.",
+          texto: "Se é pelas entregas, a culpa não foi minha: o cliente mudou os requisitos duas vezes.",
           tipo: "certo",
           tecnicas: [],
-          erro: "eu-acusador",
+          erro: "passar-culpa",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: false,
           reacao: {
-            calma: "«Não é verdade.» Inclina-se para a frente. «Não é nada disso.»",
-            dura: "«Não ponhas as coisas assim.» Endireita-se. «Não é justo.»"
+            calma: "«Ninguém falou das entregas.» Inclina-se para a frente. «Não é nada disso.»",
+            dura: "«Eu falei em culpas?» Endireita-se. «Estás a defender-te de quê?»"
           },
           fechada: null,
-          porque: "Tem um «eu sinto», mas por baixo diz «tu puseste-me de lado». Ela defendeu-se da acusação, e o que não podia dizer ficou ainda mais fechado."
+          porque: "Defendeste-te de uma acusação que ninguém fez e passaste a culpa para o cliente. O facto pesava-te, mas não era o assunto: ela teve de te sossegar, e o que não podia dizer ficou mais fechado."
         },
         {
           texto: "Confiar? Tu nunca explicas nada a ninguém, Cristina.",
@@ -4059,7 +4093,7 @@ HISTORIAS.push({
       eventosSe: [
         {
           marca: "culpa-minha",
-          texto: "Antes de responderes, ela acrescenta: «E não é castigo nenhum. Já sei que vais pensar isso.»",
+          texto: "Antes de responderes, ela acrescenta: «E não é castigo pelas entregas. Já sei que vais pensar isso.»",
           efeito: { c: -2, t: 1 }
         }
       ],
@@ -4069,9 +4103,9 @@ HISTORIAS.push({
       },
       opcoes: [
         {
-          texto: "Porque é que pensaste em mim para este?",
+          texto: "Falhámos duas entregas e mesmo assim pensas em mim. Porquê?",
           tipo: "bom",
-          tecnicas: ["pergunta", "interesses"],
+          tecnicas: ["facto", "pergunta"],
           erro: null,
           efeito: null,
           problema: null,
@@ -4079,11 +4113,11 @@ HISTORIAS.push({
           marca: null,
           cai: false,
           reacao: {
-            calma: "«Porque este vai contar no próximo ano.» Hesita. «O Farol não. Não quero o teu nome lá quando parar.»",
-            dura: "«Porque havia de ser?» Pausa longa. «O Farol vai parar. Não te queria lá quando isso acontecesse.»"
+            calma: "«As entregas não contam para isto.» Hesita. «Este vai contar no próximo ano. O Farol não. Não quero o teu nome lá quando parar.»",
+            dura: "«Não é pelas entregas.» Pausa longa. «O Farol vai parar. Não te queria lá quando isso acontecesse.»"
           },
-          fechada: "«Porque és a pessoa certa.» Fecha a pasta. «Não há mais nada.»",
-          porque: "Em vez de aceitares ou recusares logo, perguntaste porquê, sem acusar. Ela pôde dizer porque te escolheu, e o que estava por trás de te tirar do Farol."
+          fechada: "«Porque és a pessoa certa.» Fecha a pasta. «As entregas não contam para isto.»",
+          porque: "Disseste o facto que te pesava como informação, sem pedir desculpa nem te defenderes, e perguntaste porquê. Ela pôde responder ao teu medo: não era castigo, era proteção."
         },
         {
           texto: "E a minha equipa? O que é que lhes acontece?",
@@ -4120,7 +4154,7 @@ HISTORIAS.push({
           porque: "Aceitar logo pareceu profissional, mas ficaste sem saber porque te davam um projeto mais pequeno. E ela ficou sem saber se aceitavas por vontade ou por medo."
         },
         {
-          texto: "Mais pequeno. Um prémio de consolação, portanto.",
+          texto: "Mais pequeno. É o que se ganha por falhar duas entregas, portanto.",
           tipo: "escala",
           tecnicas: [],
           erro: "contra-ataque",
@@ -4130,11 +4164,11 @@ HISTORIAS.push({
           marca: null,
           cai: false,
           reacao: {
-            calma: "«Consolação?» Fica séria. «Não fazes ideia do que estás a dizer.»",
-            dura: "«Prémio de consolação?» Fecha a pasta com força. «Então esquece.»"
+            calma: "«É isso que achas?» Fica séria. «Não fazes ideia do que estás a dizer.»",
+            dura: "«Um castigo?» Fecha a pasta com força. «Então esquece.»"
           },
           fechada: null,
-          porque: "A ironia pareceu uma defesa, mas foi um ataque. Ela ouviu que a proposta era uma esmola, e fechou-se no que não podia dizer."
+          porque: "Leste a proposta pelo facto que te pesava, e a ironia pareceu uma defesa, mas foi um ataque. Ela ouviu que a proposta era um castigo, e fechou-se no que não podia dizer."
         }
       ]
     },
@@ -4400,7 +4434,7 @@ HISTORIAS.push({
   },
   perguntas: [
     "Quando uma chefia diz «não te posso contar tudo», o que é que ainda se pode perguntar?",
-    "O e-mail saiu antes do tempo. Isso muda o que a Cristina fez? Muda o que tu sentiste?"
+    "As duas entregas falhadas eram verdade. Em que momento esse facto vos fez ler mal a decisão da Cristina?"
   ]
 });
 </script>
@@ -4416,8 +4450,11 @@ HISTORIAS.push({
   filme: [
     { img: "media/conversas/cao-do-vizinho-1.webp", legenda: "Terça-feira, 10h05. Reunião com um cliente. Do outro lado da parede, o cão do vizinho ladra sem parar.", som: null },
     { img: "media/conversas/cao-do-vizinho-2.webp", legenda: "Quarta-feira, 16h30. Três horas de latidos. No grupo do prédio já se fala em fazer queixa.", som: "relogio" },
+    { img: "media/conversas/cao-do-vizinho-tu.webp", legenda: "No grupo do prédio, mais três vizinhos já se queixaram do cão. Não és só tu.", som: null, lado: "tu" },
     { img: "media/conversas/cao-do-vizinho-3.webp", legenda: "Quinta-feira, 20h10. Ouves a chave na porta do lado. Tu estás no patamar.", som: null }
   ],
+  sabias: "No grupo do prédio, mais três vizinhos já se tinham queixado do cão. Não eras só tu a ouvir os latidos.",
+  faltava: "As queixas diziam que o cão ladrava, não porquê. O Tiago faz turnos dobrados desde que a equipa encolheu e procura quem o passeie, com medo de ter de o dar.",
   papel: "Vives no 1.º esquerdo e trabalhas a partir de casa. O cão do vizinho do lado ladra horas seguidas.",
   abertura: "Quinta-feira, 20h10. O Tiago, do 1.º direito, chega do hospital de farda, com olheiras. Lá dentro, o cão já ladra.",
   impaciencia: {
@@ -4567,21 +4604,21 @@ HISTORIAS.push({
           porque: "Uma pergunta de facto, e trouxe uma pista. Mas «quanto tempo fica sozinho» soa a contagem de mau dono, e ele pôs-se na defensiva antes de responder."
         },
         {
-          texto: "Achei melhor avisar-te: no grupo do prédio já se fala em queixa.",
+          texto: "Não sou só eu, Tiago. Mais três vizinhos já se queixaram no grupo.",
           tipo: "certo",
           tecnicas: [],
-          erro: "ameaca",
+          erro: "contra-ataque",
           efeito: null,
           problema: null,
           pista: null,
           marca: "aviso-queixa",
           cai: true,
           reacao: {
-            calma: "«Queixa?» Fica calado um momento. «Está bem. Obrigado pelo aviso.»",
-            dura: "«Queixa.» Endireita-se. «Então foi a isso que vieste. Avisar-me.»"
+            calma: "«Três.» Fica calado um momento. «Está bem. Não sabia que era tanta gente.»",
+            dura: "«Mais três.» Endireita-se. «Então vieste em nome do prédio.»"
           },
           fechada: null,
-          porque: "Parecia franqueza, mas chegou como ameaça: o problema passou a ser «o prédio contra ti», e foste tu a trazê-lo. Ele deixou de conversar e começou a defender-se."
+          porque: "Era verdade, e por isso pareceu justo dizê-lo. Mas «não sou só eu» pôs o prédio do teu lado e ele sozinho do outro. A partir daí, ele já não conversava contigo: defendia-se de todos."
         },
         {
           texto: "Quem não tem tempo para um cão não devia ter cão.",
@@ -4611,7 +4648,7 @@ HISTORIAS.push({
       eventosSe: [
         {
           marca: "aviso-queixa",
-          texto: "O Tiago levanta os olhos do telemóvel: «Era este o teu aviso? Já estava tudo combinado.»",
+          texto: "O Tiago levanta os olhos do telemóvel: «Não és só tu, pois não? Já estava tudo combinado.»",
           efeito: { c: -2, t: 1 }
         }
       ],
@@ -4621,7 +4658,7 @@ HISTORIAS.push({
       },
       opcoes: [
         {
-          texto: "Não fui eu. Mas, se o prédio todo se queixa, alguma razão há.",
+          texto: "Não fui eu. Mas, se já somos quatro a queixar-nos, alguma razão há de haver.",
           tipo: "escala",
           tecnicas: [],
           erro: "contra-ataque",
@@ -4635,7 +4672,7 @@ HISTORIAS.push({
             dura: "«Então façam queixa!» O cão ladra lá dentro. «É mais fácil do que perguntar.»"
           },
           fechada: null,
-          porque: "Ele sentia-se atacado por um vídeo e tu juntaste-te ao ataque. Passou a ser ele contra o prédio, e tu do lado do prédio."
+          porque: "Ele sentia-se atacado por um vídeo e tu juntaste-te ao ataque: contar quantos se queixam fez dele o problema do prédio. Passou a ser ele contra quatro, e tu do lado dos quatro."
         },
         {
           texto: "Queres que eu responda no grupo?",
@@ -4672,9 +4709,9 @@ HISTORIAS.push({
           porque: "Querias acalmá-lo, mas disseste-lhe que o que o assusta não conta. Para ele não era «o grupo»: eram cinco vizinhos a concordar com uma queixa."
         },
         {
-          texto: "Não sabia. E prefiro resolver isto contigo, não no grupo.",
+          texto: "Sabia das queixas, não do vídeo. Prefiro falar contigo, não no grupo.",
           tipo: "bom",
-          tecnicas: ["nos", "eu"],
+          tecnicas: ["facto", "nos"],
           erro: null,
           efeito: null,
           problema: null,
@@ -4686,7 +4723,7 @@ HISTORIAS.push({
             dura: "«Contigo.» Respira fundo. «Se há queixa, dou o cão. Ando à procura de quem o passeie e não encontro ninguém.»"
           },
           fechada: "«Contigo, pronto.» Guarda o telemóvel no bolso. «Mas eu não tenho como resolver isto já.»",
-          porque: "Disseste a verdade sobre o vídeo e o que preferias, sem atacar o vizinho do 2.º. Ele deixou de estar contra dois e disse o que mais teme."
+          porque: "Disseste o que sabias e o que não sabias, como informação e não como arma, e de que lado ficavas: o da conversa. Ele deixou de estar contra o prédio inteiro e disse o que mais teme."
         }
       ]
     },
@@ -4952,7 +4989,7 @@ HISTORIAS.push({
   },
   perguntas: [
     "«Eu passeio-o todos os dias» parecia a resposta mais generosa. Porque é que não era a melhor?",
-    "Antes do vídeo no grupo, havia uma conversa à porta para ter. O que a torna difícil, e o que a facilita?"
+    "«Não sou só eu» era verdade: mais três vizinhos queixavam-se. Porque é que, dito ao Tiago, jogou contra ti?"
   ]
 });
 </script>
@@ -4968,8 +5005,11 @@ HISTORIAS.push({
   filme: [
     { img: "media/conversas/fatura-em-dobro-1.webp", legenda: "Segunda-feira, 8h30. Na cozinha, a Marta abre a aplicação do banco. A fatura da luz saiu duas vezes.", som: null },
     { img: "media/conversas/fatura-em-dobro-2.webp", legenda: "17h20. Liga para a linha de apoio. Música de espera. Dez minutos. Quinze. Vinte.", som: "relogio" },
+    { img: "media/conversas/fatura-em-dobro-tu.webp", legenda: "Desde as 9h, um alerta no teu ecrã: um erro da faturação cobrou outubro duas vezes a muitos clientes.", som: null, lado: "tu" },
     { img: "media/conversas/fatura-em-dobro-3.webp", legenda: "17h40. A chamada passa para ti. Tu estás no centro de contacto, de auscultadores.", som: null }
   ],
+  sabias: "Desde manhã, um alerta no sistema: um erro da faturação cobrou a fatura de outubro duas vezes a muitos clientes. Não foi culpa de ninguém no centro de contacto.",
+  faltava: "Para a Marta não interessava quantos foram: amanhã paga a renda e tem a conta a zero. «Aconteceu a muita gente» explicava o erro, mas não lhe resolvia a semana.",
   papel: "Trabalhas no centro de contacto de uma empresa de eletricidade. Atendes clientes ao telefone.",
   abertura: "Segunda-feira, 17h40. Entra a chamada da Marta Ferreira, cliente há seis anos, depois de vinte minutos em espera. Do lado dela, ouve-se uma cozinha.",
   impaciencia: {
@@ -5003,21 +5043,21 @@ HISTORIAS.push({
       },
       opcoes: [
         {
-          texto: "Para sua segurança, preciso primeiro do NIF e do código postal.",
+          texto: "Já sabemos: foi um erro do sistema. Aconteceu a muitos clientes este mês.",
           tipo: "certo",
           tecnicas: [],
-          erro: "sistema",
+          erro: "passar-culpa",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: false,
           reacao: {
-            calma: "Silêncio do outro lado. «…Já marquei isso tudo na máquina.» Dita o NIF, número a número.",
-            dura: "«Outra vez? Já marquei tudo na máquina!» Ouve-se uma gaveta a bater. Dita o NIF, seca."
+            calma: "Silêncio do outro lado. «A muitos.» Uma pausa. «E isso devolve-me o dinheiro?»",
+            dura: "«A muitos?! Então sabiam, e ninguém me avisou?» Ouve-se uma gaveta a bater."
           },
           fechada: null,
-          porque: "Confirmar os dados é obrigatório, mas, antes de uma palavra sobre o problema, soou a «primeiro o procedimento». Bastava reconhecer a espera e dizer porque precisavas dos dados."
+          porque: "Era verdade, e querias tirar-lhe o peso. Mas «foi o sistema» afasta-te do problema, e «a muitos» faz dela mais um número. Do lado dela, só há uma conta a zero."
         },
         {
           texto: "Vinte minutos à espera e a fatura em dobro. Vamos ver isso.",
@@ -5136,9 +5176,9 @@ HISTORIAS.push({
           porque: "Uma pergunta curta e concreta: em vez de «quanto», «para quando». Foi o prazo dela que mudou tudo o que veio a seguir."
         },
         {
-          texto: "É a primeira vez que isto lhe acontece connosco?",
+          texto: "Foi, sim: um erro da nossa faturação. Quer que lhe explique o que houve?",
           tipo: "perguntar",
-          tecnicas: ["pergunta"],
+          tecnicas: ["assumir", "facto"],
           erro: null,
           efeito: null,
           problema: null,
@@ -5146,11 +5186,11 @@ HISTORIAS.push({
           marca: null,
           cai: true,
           reacao: {
-            calma: "«Em seis anos, é.» Uma pausa. «E espero que seja a última.»",
-            dura: "«Em seis anos, é a primeira. E a última, que eu mudo de empresa.»"
+            calma: "«Explique, se quiser.» Suspira. «Eu só queria saber quando tenho o dinheiro.»",
+            dura: "«Não quero explicações!» Uma criança chama ao fundo. «Quero saber quando tenho o dinheiro.»"
           },
           fechada: null,
-          porque: "Saber o histórico ajuda o pedido, mas não a ajuda a ela. Tinha acabado de dizer que precisava do dinheiro, e a pergunta foi para outro lado."
+          porque: "Disseste «nossa» e não te escondeste atrás do sistema: isso conta. Mas ela falou de dinheiro e tu ofereceste uma explicação. Para quando precisava dele, ficou por perguntar."
         }
       ]
     },
@@ -5306,9 +5346,9 @@ HISTORIAS.push({
           porque: "Dar a escolha é bom, e as duas opções eram reais. Mas ela perguntou por amanhã, e nenhuma das duas chegava a amanhã."
         },
         {
-          texto: "Posso mandar-lhe hoje um comprovativo. Serve-lhe para amanhã?",
+          texto: "Mando-lhe hoje um comprovativo do erro. Serve-lhe para amanhã?",
           tipo: "bom",
-          tecnicas: ["posso", "pergunta"],
+          tecnicas: ["facto", "posso"],
           erro: null,
           efeito: null,
           problema: 2,
@@ -5320,7 +5360,7 @@ HISTORIAS.push({
             dura: "«Um papel?» Pausa comprida. «…Se calhar serve. É a renda. Mostro-o ao senhorio.»"
           },
           fechada: "«Mande. Logo vejo o que faço com ele.»",
-          porque: "Ofereceste uma coisa que está nas tuas mãos e que ela pode usar já, e perguntaste se servia. Ao responder, ela disse para que era o dinheiro."
+          porque: "O erro já estava confirmado: em vez de o usares para te defender, puseste-o por escrito do lado dela. Está nas tuas mãos e ela pode usá-lo já. Ao responder, disse para que era."
         }
       ]
     },
@@ -5329,7 +5369,7 @@ HISTORIAS.push({
     {
       etapa: "Segunda viragem",
       so: ["semrede"],
-      evento: "No teu ecrã, uma mensagem do supervisor: «Reembolsos parados até quarta, por causa de uma atualização do sistema.» Do outro lado, a Marta espera.",
+      evento: "No teu ecrã, uma mensagem do supervisor: «Reembolsos do erro de faturação parados até quarta: há pedidos a mais.» Do outro lado, a Marta espera.",
       eventosSe: [
         {
           marca: "sexta",
@@ -5360,10 +5400,10 @@ HISTORIAS.push({
           porque: "Esconder a má notícia poupa-te este minuto e custa-te a confiança depois. Ela vai saber do atraso quando o dinheiro não chegar, e vai lembrar-se desta pausa."
         },
         {
-          texto: "Os reembolsos estão parados. É com a área financeira, daqui não consigo fazer nada.",
+          texto: "São tantos clientes que os reembolsos pararam. É com a financeira, não comigo.",
           tipo: "escala",
           tecnicas: [],
-          erro: "sistema",
+          erro: "passar-culpa",
           efeito: null,
           problema: null,
           pista: null,
@@ -5374,7 +5414,7 @@ HISTORIAS.push({
             dura: "«Parados?! E eu?» A voz sobe. «Quero falar com alguém que consiga fazer alguma coisa!»"
           },
           fechada: null,
-          porque: "Disseste a verdade, mas escondida atrás da área financeira. E «daqui não consigo fazer nada» não era verdade: o acerto e o comprovativo continuavam nas tuas mãos."
+          porque: "Disseste a verdade, mas escondida atrás dos «tantos clientes» e da área financeira. E «não comigo» não era verdade: o acerto e o comprovativo continuavam nas tuas mãos."
         },
         {
           texto: "Estou. Os reembolsos vão atrasar. O acerto e o comprovativo, não.",
@@ -5504,7 +5544,7 @@ HISTORIAS.push({
   },
   perguntas: [
     "«Até 10 dias úteis» era verdade. O que é que ainda estava ao vosso alcance nessa semana?",
-    "Já prometeram (ou ouviram prometer) um prazo que não dependia de quem prometia? O que aconteceu depois?"
+    "«Foi um erro do sistema, aconteceu a muita gente» era verdade. Porque é que não acalmou a Marta?"
   ]
 });
 </script>
@@ -5520,8 +5560,11 @@ HISTORIAS.push({
   filme: [
     { img: "media/conversas/nota-do-trabalho-1.webp", legenda: "Há duas semanas, à noite. O Paulo acaba o trabalho final na mesa da cozinha, folha a folha.", som: "relogio" },
     { img: "media/conversas/nota-do-trabalho-2.webp", legenda: "Ontem à noite. Corriges os trabalhos da turma, um a um, com a grelha ao lado.", som: "relogio" },
+    { img: "media/conversas/nota-do-trabalho-tu.webp", legenda: "O trabalho do Paulo chegou um dia depois do prazo. Aceitaste-o sem descontar, com a grelha de todos.", som: null, lado: "tu" },
     { img: "media/conversas/nota-do-trabalho-3.webp", legenda: "Hoje, 10h30. Entregaste as notas antes do intervalo. Tu estás à secretária quando o Paulo se levanta.", som: null }
   ],
+  sabias: "O Paulo entregou um dia depois do prazo, e aceitaste o trabalho sem descontar nada. A grelha foi a mesma para a turma toda.",
+  faltava: "Contaste mal um critério: as fontes estavam na última página, depois dos anexos, e deste 0. O atraso e a grelha eram verdade, mas o erro era teu.",
   papel: "Dás formação a uma turma de adultos. Hoje entregaste as notas do trabalho final da UFCD.",
   abertura: "Intervalo da manhã. Acabaste de entregar os trabalhos com a nota. O Paulo levanta-se com as folhas na mão. Cinco pessoas da turma ainda estão na sala.",
   impaciencia: {
@@ -5555,7 +5598,7 @@ HISTORIAS.push({
       },
       opcoes: [
         {
-          texto: "As notas seguem a grelha de avaliação, que está no Moodle desde o primeiro dia.",
+          texto: "A grelha foi a mesma para todos, Paulo. Está no Moodle desde o primeiro dia.",
           tipo: "certo",
           tecnicas: [],
           erro: "sistema",
@@ -5569,7 +5612,7 @@ HISTORIAS.push({
             dura: "«A grelha!» Vira-se para a turma. «Ouviram? A culpa é da grelha.»"
           },
           fechada: null,
-          porque: "A grelha é justa, mas usada como escudo antes de o ouvires diz-lhe «não há nada a discutir». E ainda não a tinhas voltado a ver com o trabalho dele à frente."
+          porque: "A grelha foi igual para todos, mas usada como escudo antes de o ouvires diz-lhe «não há nada a discutir». E ainda não a tinhas voltado a ver com o trabalho dele à frente."
         },
         {
           texto: "Que trabalhos é que acha que tiveram mais do que deviam?",
@@ -5671,21 +5714,21 @@ HISTORIAS.push({
           porque: "Boa pergunta, e trouxe um facto. Mas ficou-se pela nota: ainda não sabias porque é que, para ele, esta nota não podia esperar."
         },
         {
-          texto: "Pode sempre fazer a recuperação em janeiro, como os outros.",
+          texto: "Fui justo: aceitei o seu trabalho fora do prazo e não descontei nada.",
           tipo: "certo",
           tecnicas: [],
-          erro: "resolver-cedo",
+          erro: "contra-ataque",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: false,
           reacao: {
-            calma: "«Janeiro.» Faz contas de cabeça. «Pois. Logo vejo.»",
-            dura: "«Janeiro? Eu preciso disto este mês!»"
+            calma: "«Não descontou.» Pousa as folhas na mesa. «Então agora tenho de agradecer o oito?»",
+            dura: "«Agora é o prazo?» Vira-se para a turma. «Um dia de atraso e já sou eu o culpado.»"
           },
           fechada: null,
-          porque: "Uma solução antes de saberes o que ele precisava. Janeiro serve o calendário da formação; para quem precisa do certificado este mês, é tarde demais."
+          porque: "Era verdade, e até foste generoso. Mas dito em resposta à queixa dele soa a «ainda devia agradecer». E o atraso não explicava os pontos que ele queria ver."
         },
         {
           texto: "É só uma UFCD, Paulo. Ninguém fica marcado por um oito.",
@@ -5715,7 +5758,7 @@ HISTORIAS.push({
       eventosSe: [
         {
           marca: "grelha-escudo",
-          texto: "O Paulo aponta para o ecrã: «A tal grelha do Moodle. Afinal, quem é que não a seguiu?»",
+          texto: "O Paulo aponta para o ecrã: «A tal grelha igual para todos. Afinal, quem é que não a seguiu?»",
           efeito: { c: -2, t: 1 }
         }
       ],
@@ -5725,9 +5768,9 @@ HISTORIAS.push({
       },
       opcoes: [
         {
-          texto: "Nas fontes tem razão: não vi a última página. Erro meu. Fica com 9.",
+          texto: "Nas fontes tem razão: não vi a última página. Erro meu. Pela grelha, fica com 9.",
           tipo: "bom",
-          tecnicas: ["parte"],
+          tecnicas: ["parte", "facto"],
           erro: null,
           efeito: null,
           problema: null,
@@ -5739,7 +5782,7 @@ HISTORIAS.push({
             dura: "«Nove. Chumbo na mesma.» Pausa. «As conclusões cortei-as eu, por causa das páginas. Tenho-as noutro ficheiro.»"
           },
           fechada: null,
-          porque: "Disseste o teu erro em concreto, à frente da turma, e deste o número certo sem prometer o resto. Ao assumires a tua parte, ele assumiu a dele."
+          porque: "Disseste o teu erro em concreto, à frente da turma, e a grelha passou de escudo a informação: deu o número certo, sem prometer o resto. Ao assumires a tua parte, ele assumiu a dele."
         },
         {
           texto: "Peço desculpa. Se errei nisto, posso ter errado no resto. Revejo tudo.",
@@ -5759,21 +5802,21 @@ HISTORIAS.push({
           porque: "Assumir o erro das fontes era justo; dizer que podes ter errado em tudo, sem o ver, já não. À frente da turma, puseste todas as notas em dúvida."
         },
         {
-          texto: "É um critério só, vale um valor. Os outros estão bem avaliados.",
+          texto: "Errei, sim. Mas o seu chegou fora do prazo e foi o último que corrigi, já tarde.",
           tipo: "certo",
           tecnicas: [],
-          erro: "minimizar",
+          erro: "contra-ataque",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: true,
           reacao: {
-            calma: "«Só um valor.» Ri-se, sem vontade. «Para quem chumba, um valor é muito.»",
-            dura: "«Só?» Bate com as folhas na mesa. «Errou e ainda diz que é só!»"
+            calma: "«A culpa é do atraso?» Ri-se, sem vontade. «Um dia. E foi por isso que não virou a página?»",
+            dura: "«Foi o último?» Bate com as folhas na mesa. «Então o seu erro é culpa do meu atraso?»"
           },
           fechada: null,
-          porque: "Era verdade que os outros critérios estavam bem. Mas dito antes de assumires o erro, soou a desvalorizar. E para quem está a chumbar, um valor não é «só»."
+          porque: "Assumiste e logo devolveste. O atraso era verdade, mas não te fez saltar a última página. À frente da turma, o erro voltou a ser dele."
         },
         {
           texto: "E as conclusões, Paulo? Também não estão lá, pois não?",
@@ -5897,7 +5940,7 @@ HISTORIAS.push({
         {
           texto: "Revejo a de quem pedir, com a mesma grelha. Por ordem de pedido.",
           tipo: "bom",
-          tecnicas: ["porque"],
+          tecnicas: ["porque", "facto"],
           erro: null,
           efeito: null,
           problema: null,
@@ -5909,7 +5952,7 @@ HISTORIAS.push({
             dura: "A Rute encolhe os ombros e senta-se. O Paulo continua de pé, mas pousa as folhas."
           },
           fechada: null,
-          porque: "A mesma regra para todos, dita em voz alta, sem recuar com o Paulo nem prometer mais à Rute. A turma não precisava de notas mais altas: precisava de ver que a regra era igual."
+          porque: "A grelha igual para todos voltou, agora como informação e não como escudo. Sem recuar com o Paulo nem prometer mais à Rute: a turma precisava de ver que a regra era igual."
         },
         {
           texto: "Está bem, Rute. Esta semana revejo os trabalhos de toda a gente, um a um.",
@@ -6056,7 +6099,7 @@ HISTORIAS.push({
   },
   perguntas: [
     "Quando é que já admitiram um erro à frente de uma turma ou de uma equipa? O que aconteceu à vossa autoridade?",
-    "Arredondar para 10 resolvia o Paulo. O que custava à turma?"
+    "«Entregou fora do prazo» e «a grelha foi igual para todos» eram verdade. Porque é que não chegavam para defender o oito?"
   ]
 });
 </script>
@@ -6072,9 +6115,10 @@ HISTORIAS.push({
   filme: [
     { img: "media/conversas/turnos-dezembro-1.webp", legenda: "Segunda-feira, 8h45. Afixas a escala de dezembro na sala do pessoal. O dia 24 tem quatro nomes.", som: "relogio" },
     { img: "media/conversas/turnos-dezembro-2.webp", legenda: "11h20. O Ricardo pára em frente à escala e fica muito tempo a olhar para o dia 24.", som: "relogio" },
+    { img: "media/conversas/turnos-dezembro-tu.webp", legenda: "Ao vê-lo ali, lembras-te: no Natal passado, prometeste-lhe por mensagem este 24 de folga. Esqueceste-te.", som: null, lado: "tu" },
     { img: "media/conversas/turnos-dezembro-3.webp", legenda: "13h05. Hora de almoço. Tu entras na sala do pessoal, e o Ricardo está à tua espera.", som: null }
   ],
-  papel: "És responsável por uma loja de roupa num centro comercial. Fazes a escala da equipa, que tem oito pessoas.",
+  papel: "És responsável por uma loja de roupa num centro comercial. Fazes a escala da equipa, de oito pessoas, e a gerência aprova-a.",
   abertura: "Segunda-feira, 13h05. Sala do pessoal, hora de almoço. A escala de dezembro está na parede desde manhã. O Ricardo está sentado por baixo dela, à tua espera.",
   impaciencia: {
     calma: "Então? Diz alguma coisa.",
@@ -6092,6 +6136,8 @@ HISTORIAS.push({
     }
   },
   necessidade: "Estar com os filhos na tarde de 24: este ano, na guarda partilhada, o Natal é dele. E que alguém reconhecesse os dois Natais que fez sem ninguém agradecer.",
+  sabias: "No Natal passado, prometeste ao Ricardo, por mensagem, que este ano ficava de folga no 24. Esqueceste-te, e a gerência aprovou a escala sem reparar.",
+  faltava: "Porque é que tinha de ser este ano: pela guarda partilhada, os filhos ficam com ele no dia 24. A promessa era tua, e a gerência não a conhecia.",
 
   momentos: [
 
@@ -6141,21 +6187,21 @@ HISTORIAS.push({
           porque: "Alivia agora e cobra-se mais tarde: «eu vejo isso» soa a sim, e não era. Quem ouve um sim conta com ele, e os colegas também acabam por saber."
         },
         {
-          texto: "A escala é feita por ordem. Este ano calhou-te o 24.",
+          texto: "A escala vem aprovada da gerência. Eu só a afixei.",
           tipo: "certo",
           tecnicas: [],
-          erro: "sistema",
+          erro: "passar-culpa",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: true,
           reacao: {
-            calma: "«Por ordem?» Abana a cabeça. «Então a ordem está mal feita.»",
-            dura: "«Calhou-me?» Ri-se, sem vontade. «Calha-me sempre a mim.»"
+            calma: "«Da gerência?» Fica a olhar para ti. «Não foste tu que me prometeste o 24?»",
+            dura: "«Da gerência.» Tira o telemóvel do bolso. «Então lê o que tu me escreveste no Natal passado.»"
           },
           fechada: null,
-          porque: "A regra pode ser justa, mas dita antes de o ouvir soa a «não há nada a falar». E nem tinhas visto se a ordem tinha mesmo funcionado nos outros anos."
+          porque: "Era meia verdade: a gerência aprova, mas a escala é tua, e a promessa também. Passar a culpa para cima não apaga uma mensagem escrita, e ele ficou a saber que te esqueceste e o escondias."
         },
         {
           texto: "Trabalhar no Natal faz parte do retalho. Já sabias quando vieste.",
@@ -6277,9 +6323,9 @@ HISTORIAS.push({
       },
       opcoes: [
         {
-          texto: "Vamos ver as escalas dos últimos anos. Quem fez o 24?",
+          texto: "É comigo, Vera. Prometi-lhe este 24 e esqueci-me.",
           tipo: "bom",
-          tecnicas: ["nos", "comportamento"],
+          tecnicas: ["assumir", "parte"],
           erro: null,
           efeito: null,
           problema: null,
@@ -6287,11 +6333,11 @@ HISTORIAS.push({
           marca: null,
           cai: false,
           reacao: {
-            calma: "Tiras a pasta das escalas antigas. O Ricardo aponta: «2024, eu. 2025, eu.» A Vera fica calada.",
-            dura: "«Vê.» Abre ele a pasta. «2024, eu. 2025, eu. E ninguém disse nada.» A Vera cala-se."
+            calma: "A Vera fica calada. O Ricardo olha para ti. «Afinal lembras-te.» Pausa. «Fiz o 24 em 2024 e em 2025. Ninguém disse nada.»",
+            dura: "O Ricardo pára. «Afinal lembras-te.» Abre a pasta das escalas. «2024, eu. 2025, eu.» A Vera cala-se."
           },
           fechada: null,
-          porque: "Em vez de escolher entre os dois, foste aos factos que os dois podiam ver. As escalas antigas mostraram o que ninguém tinha dito: o 24 tinha calhado sempre ao mesmo."
+          porque: "Assumiste a promessa como tua, à frente da Vera, em vez de a esconder atrás da gerência. O pedido dele deixou de parecer um favor, e ele pôde dizer o que ninguém tinha agradecido."
         },
         {
           texto: "Vera, tens alguma razão especial para este ano?",
@@ -6311,21 +6357,21 @@ HISTORIAS.push({
           porque: "Perguntar pelas razões de cada um parece justo, mas transforma a escala num concurso de vidas pessoais. Quem tem de provar que merece fica pior, ganhe ou perca."
         },
         {
-          texto: "Calma, ninguém vai ficar a perder. Prometo.",
+          texto: "Vera, isto não é comigo: quem aprova a escala é a gerência regional.",
           tipo: "certo",
           tecnicas: [],
-          erro: "prometer",
+          erro: "passar-culpa",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: false,
           reacao: {
-            calma: "O Ricardo e a Vera olham um para o outro. «Ninguém?», diz ele. «Alguém vai ter de vir.»",
-            dura: "«Calma?» O Ricardo levanta a voz. «Há dois anos que tenho calma.»"
+            calma: "O Ricardo olha para ti. «Não é contigo?» Pausa. «Foste tu que me prometeste o 24.» A Vera franze a testa.",
+            dura: "«Não é contigo?» O Ricardo levanta a voz. «Prometeste-mo por escrito!» A Vera olha para os dois."
           },
           fechada: null,
-          porque: "Querias sossegar os dois, mas prometeste o impossível: alguém vai ter de trabalhar no 24. E «calma», dito a quem está zangado, raramente acalma."
+          porque: "Pôr a gerência à frente pareceu tirar-te do meio, mas a promessa era tua. Ele teve de a contar diante da Vera, e o pedido dele passou a parecer um favor às escondidas."
         },
         {
           texto: "Foste tu que começaste, Ricardo. Agora vês o que acontece.",
@@ -6403,11 +6449,11 @@ HISTORIAS.push({
           marca: "para-o-ano",
           cai: true,
           reacao: {
-            calma: "«Para o ano.» Olha para a escala. «Isso já me disseram.»",
-            dura: "«Para o ano?» Abana a cabeça. «Disseram-me isso o ano passado.»"
+            calma: "«Para o ano.» Olha para a escala. «Foi o que me escreveste o ano passado.»",
+            dura: "«Para o ano?» Abana a cabeça. «Prometeste-me este. Por escrito.»"
           },
           fechada: null,
-          porque: "Prometeste o futuro em troca do presente. Para o ano a escala pode nem ser tua, e ele já tinha ouvido aquela promessa. E continuavas sem saber porque é que era este ano."
+          porque: "Prometeste o futuro em troca do presente, e era a mesma promessa que já tinhas falhado. Para o ano a escala pode nem ser tua. E continuavas sem saber porque é que era este ano."
         },
         {
           texto: "Fica como está na escala. Se não concordas, fala com os recursos humanos.",
@@ -6608,7 +6654,7 @@ HISTORIAS.push({
   },
   perguntas: [
     "Numa escala, ser justo é tratar todos por igual, ou olhar para quem já fez mais? Como se explica a escolha à equipa?",
-    "Ele disse «este ano não». O que é que essas três palavras vos podiam ter feito perguntar?"
+    "Ele disse «este ano não», e tu sabias da promessa. Porque é que «a escala é da gerência» parecia uma boa saída? O que custou?"
   ]
 });
 </script>
@@ -6624,8 +6670,11 @@ HISTORIAS.push({
   filme: [
     { img: "media/conversas/no-meio-1.webp", legenda: "Segunda-feira, 16h05. No quarto 12, o Sr. Armando ficou por mudar. O Hugo já tinha saído.", som: null },
     { img: "media/conversas/no-meio-2.webp", legenda: "Terça-feira, 15h58. O Hugo acaba a última ronda a olhar para o relógio.", som: "relogio" },
+    { img: "media/conversas/no-meio-tu.webp", legenda: "A folha de passagem de turno nova é tua, do mês passado. A linha das mudas das 16h não diz de que turno são.", som: null, lado: "tu" },
     { img: "media/conversas/no-meio-3.webp", legenda: "Hoje, 16h02. Na sala do pessoal, os dois já discutem. Tu estás à porta.", som: null }
   ],
+  sabias: "A folha de passagem de turno nova foi feita por ti, no mês passado. A linha das mudas das 16h não diz se são da manhã ou da tarde.",
+  faltava: "O Hugo sai às 16h em ponto para ir buscar a mãe ao centro de dia, que fecha às 16h30. Com a tua linha confusa, a muda das 16h não era de ninguém, e as culpas iam para a Paula.",
   papel: "Coordenas a equipa de auxiliares de um lar. O Hugo faz o turno da manhã; a Paula, o da tarde.",
   abertura: "16h02, sala do pessoal do lar. O Hugo já picou o ponto de saída. A Paula ainda não assinou a passagem de turno. Os dois olham para ti.",
   impaciencia: {
@@ -6640,7 +6689,7 @@ HISTORIAS.push({
     },
     p2: {
       principal: false,
-      texto: "A Paula levou as culpas de uma queixa da filha do Sr. Armando, por uma muda que era do turno da manhã."
+      texto: "A filha do Sr. Armando fez queixa da muda das 16h, e quem levou as culpas foi a Paula."
     }
   },
   necessidade: "O Hugo precisava de sair às 16h em ponto: vai buscar a mãe ao centro de dia. A Paula precisava de deixar de levar as culpas do que fica por fazer.",
@@ -6693,21 +6742,21 @@ HISTORIAS.push({
           porque: "Decidiste antes de ouvir. Dez minutos parecem pouco, mas não sabias o que o Hugo tinha às 16h. Numa mediação, decidir cedo tira aos dois a hipótese de chegarem lá."
         },
         {
-          texto: "Quem é que deixou o Sr. Armando por mudar?",
-          tipo: "perguntar",
-          tecnicas: ["pergunta"],
-          erro: null,
+          texto: "Vamos à folha de passagem. Lá diz de quem é a muda das 16h.",
+          tipo: "certo",
+          tecnicas: [],
+          erro: "sistema",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: true,
           reacao: {
-            calma: "Os dois falam ao mesmo tempo. «Ele.» «Às 15h30 estava tudo feito!» No corredor, toca uma campainha.",
-            dura: "«Ele!» «Não fui eu!» Os dois apontam um para o outro, e a campainha do quarto 12 toca."
+            calma: "A Paula abre a pasta e aponta a linha. «Diz 16h. É da manhã.» O Hugo: «Às 16h já saí. É da tarde.» Cada um lê a linha à sua maneira.",
+            dura: "«Lá diz?» A Paula abre a folha. «Da manhã!» O Hugo: «Da tarde!» Os dois apontam para a mesma linha, e a campainha do quarto 12 toca."
           },
           fechada: null,
-          porque: "Era uma pergunta, mas à procura de um culpado. «Quem foi?» põe cada um a defender-se, e ninguém diz o que precisa."
+          porque: "Ir à folha parecia justo, mas a folha é tua e a linha das 16h não diz de que turno é a muda. Usaste-a como escudo, e os dois puseram-se a discutir a tua linha."
         },
         {
           texto: "Outra vez isto? Resolvam entre vocês, que eu tenho mais que fazer.",
@@ -6863,21 +6912,21 @@ HISTORIAS.push({
           porque: "Ela pediu-te que decidisses, e decidir parece liderar. Mas decidiste sem saber o que o Hugo tinha às 16h, e a decisão só mudou o conflito de sítio."
         },
         {
-          texto: "Paula, não é preciso ir aos recursos humanos por causa de uma fralda.",
+          texto: "Os recursos humanos não resolvem isto. Foi a direção que pediu a folha nova assim.",
           tipo: "certo",
           tecnicas: [],
-          erro: "minimizar",
+          erro: "passar-culpa",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: false,
           reacao: {
-            calma: "«Uma fralda.» A Paula fecha a pasta. «A queixa ficou com o meu nome, não com o da fralda.»",
-            dura: "«Por causa de uma fralda?!» A Paula pega no telemóvel. «Vou já marcar.»"
+            calma: "«A direção?» A Paula franze a testa. «Quem a escreveu foste tu. Vi-te a fazê-la.» O Hugo cruza os braços.",
+            dura: "«A direção?» A Paula ri-se. «A folha tem a tua letra!» Pega no telemóvel. «Vou já marcar.»"
           },
           fechada: null,
-          porque: "Para ti era uma fralda; para ela, o nome numa queixa. Desvalorizar o motivo não lhe tira a vontade de ir aos recursos humanos: dá-lhe razão."
+          porque: "A folha é tua, e a linha das 16h também. Atirar a culpa para a direção não tira o nome da Paula da queixa, e mostra-lhes que, quando aperta, ninguém responde."
         },
         {
           texto: "Vai, se quiseres. Os recursos humanos também vão querer ver os teus registos.",
@@ -6911,9 +6960,9 @@ HISTORIAS.push({
       },
       opcoes: [
         {
-          texto: "O que tinha de estar feito às 15h45 para a passagem correr bem?",
+          texto: "A linha das 16h da folha é minha, e está confusa. Como a escrevemos?",
           tipo: "bom",
-          tecnicas: ["interesses", "nos"],
+          tecnicas: ["parte", "nos"],
           erro: null,
           efeito: null,
           problema: 2,
@@ -6921,11 +6970,11 @@ HISTORIAS.push({
           marca: null,
           cai: false,
           reacao: {
-            calma: "O Hugo pensa. «Se a passagem fosse às 15h45… Às 16h tenho mesmo de ir: a minha mãe sai do centro de dia às 16h30.» A Paula olha para ele.",
-            dura: "«Às 15h45 faço a passagem, se quiserem.» Pausa. «Às 16h é a minha mãe. O centro de dia fecha às 16h30.»"
+            calma: "A Paula olha para ti, surpreendida. O Hugo pensa. «Se a passagem fosse às 15h45… Às 16h tenho mesmo de ir: a minha mãe sai do centro de dia às 16h30.»",
+            dura: "«É tua?» A Paula pousa a pasta. O Hugo: «Às 15h45 faço a passagem, se quiserem.» Pausa. «Às 16h é a minha mãe. O centro de dia fecha às 16h30.»"
           },
-          fechada: "O Hugo encolhe os ombros. «Às 15h45 ainda estou na ronda. Não sei.»",
-          porque: "Não decidiste por eles: perguntaste-lhes o que tinha de acontecer. A solução começou a sair deles, e com ela a razão que o Hugo não tinha dito."
+          fechada: "O Hugo encolhe os ombros. «Escreve o que quiseres. Às 16h eu saio.»",
+          porque: "Assumiste a tua parte, a linha confusa, sem culpar nenhum dos dois, e convidaste-os a reescrevê-la. Sem terem de se defender, saiu a razão que o Hugo não tinha dito."
         },
         {
           texto: "Preferem trocar de turnos ou pedir mais uma pessoa à direção?",
@@ -6962,7 +7011,7 @@ HISTORIAS.push({
           porque: "Garantiste o que é da direção. Se o reforço não vier, falhas aos dois, e a passagem de turno continua igual."
         },
         {
-          texto: "As regras são claras: a passagem faz-se às 16h. Cumpram o regulamento.",
+          texto: "Está tudo na folha de passagem. Cumpram o que lá está.",
           tipo: "escala",
           tecnicas: [],
           erro: "sistema",
@@ -6972,11 +7021,11 @@ HISTORIAS.push({
           marca: null,
           cai: false,
           reacao: {
-            calma: "«O regulamento.» A Paula fecha a pasta. «O regulamento não muda fraldas.»",
-            dura: "«Cumpram?» O Hugo e a Paula olham um para o outro, pela primeira vez do mesmo lado."
+            calma: "A Paula tira a folha da pasta e aponta uma linha. «Então diz-nos tu: a muda das 16h é de quem?»",
+            dura: "«Cumpram?» O Hugo e a Paula olham um para o outro, pela primeira vez do mesmo lado. A Paula abana a folha."
           },
           fechada: null,
-          porque: "O regulamento estava a ser cumprido: era esse o problema. Usá-lo como escudo pôs os dois contra ti."
+          porque: "A folha é tua, e era a linha das 16h que os punha um contra o outro. Mandar cumprir o que está confuso pôs os dois contra ti."
         }
       ]
     },
@@ -6999,7 +7048,7 @@ HISTORIAS.push({
       },
       opcoes: [
         {
-          texto: "Vou eu. A passagem de turno é minha.",
+          texto: "Vou eu. A folha de passagem é minha, e a falha também.",
           tipo: "bom",
           tecnicas: ["parte", "encaminhar"],
           erro: null,
@@ -7013,13 +7062,13 @@ HISTORIAS.push({
             dura: "«Vais tu?» A Paula pousa a pasta. «Está bem.» Não sorri, mas fica."
           },
           fechada: null,
-          porque: "A falha estava na passagem de turno, e a passagem é da tua responsabilidade. Ao ires tu, tiraste o nome dela da queixa sem lá pôr o do Hugo."
+          porque: "A falha estava na tua folha, por isso foste tu dar a cara. Assumiste pela equipa, tiraste o nome da Paula da queixa e não lá puseste o do Hugo."
         },
         {
-          texto: "Vai o Hugo, que era o turno dele. É o mais justo.",
+          texto: "Vai o Hugo: pela folha, a muda era do turno dele.",
           tipo: "certo",
           tecnicas: [],
-          erro: "resolver-cedo",
+          erro: "passar-culpa",
           efeito: null,
           problema: null,
           pista: null,
@@ -7030,7 +7079,7 @@ HISTORIAS.push({
             dura: "«Eu?» O Hugo fica branco. «São 16h20! Não posso!» A Paula: «Lá está.»"
           },
           fechada: null,
-          porque: "Parece justo, mas mudaste a culpa de sítio em vez de a resolver. E àquela hora, o Hugo tinha outro sítio onde estar."
+          porque: "Leste a tua linha confusa a favor de um deles e puseste o Hugo a pagar por ela. Mudaste a culpa de sítio, e àquela hora ele tinha outro sítio onde estar."
         },
         {
           texto: "Hoje não dá. Falamos com a filha amanhã, com calma.",
@@ -7153,14 +7202,14 @@ HISTORIAS.push({
   ],
 
   finais: {
-    verdadeiro: "Uma semana depois, a passagem faz-se às 15h45, com uma folha assinada pelos dois. O Hugo chega ao centro de dia antes de a mãe ficar à porta. A Paula não voltou a levar culpas do turno da manhã. Não são amigos, mas falam.",
+    verdadeiro: "Uma semana depois, a passagem faz-se às 15h45, com a linha da folha reescrita e assinada pelos dois. O Hugo chega ao centro de dia antes de a mãe ficar à porta. A Paula não voltou a levar culpas do turno da manhã. Não são amigos, mas falam.",
     fragil: "Uma semana depois, há uma folha de passagem e é assinada todos os dias, mas à pressa e sem conversa. A Paula ainda desconfia do turno da manhã, e o Hugo sente-se vigiado. A folha aguenta. A equipa, menos.",
     meio: "Uma semana depois, está tudo igual. O Hugo sai às 16h em ponto, a Paula encontra coisas por fazer e aponta-as num caderno só dela. Já fala em pedir para passar para o turno da noite.",
     rutura: "Uma semana depois, a Paula fez queixa aos recursos humanos, contra o Hugo e contra a coordenação. O Hugo pediu para mudar de piso. Na passagem de turno, deixam recados escritos e não se falam."
   },
   perguntas: [
     "O Hugo nunca tinha dito porque saía às 16h. O que fez a diferença para ele o dizer?",
-    "Quando vos pedem «decide tu», quando é que decidir ajuda, e quando é que só muda o conflito de sítio?"
+    "A folha confusa era tua. Em que momento a podiam ter assumido, e o que mudava se fosse logo no início?"
   ]
 });
 </script>
@@ -7176,8 +7225,11 @@ HISTORIAS.push({
   filme: [
     { img: "media/conversas/uma-estrela-1.webp", legenda: "Sábado, 10h. A Inês abre em casa a caixa do bolo de anos que encomendou. Não é o bolo que pediu.", som: "relogio" },
     { img: "media/conversas/uma-estrela-2.webp", legenda: "Voltou à pastelaria com a caixa. Não havia tempo para outro bolo. A festa fez-se com aquele.", som: null },
+    { img: "media/conversas/uma-estrela-tu.webp", legenda: "Segunda, 8h. A funcionária nova, há três semanas na casa, conta-te que no sábado confundiu duas encomendas.", som: null, lado: "tu" },
     { img: "media/conversas/uma-estrela-3.webp", legenda: "Segunda, 21h. Fechaste a pastelaria. Tu estás ao balcão e abres as avaliações no telemóvel.", som: null }
   ],
+  sabias: "A funcionária nova, há três semanas na casa, contou-te que no sábado confundiu duas encomendas: o bolo da Inês e o de uma criança de 8 anos.",
+  faltava: "Ao balcão, quem atendeu a Inês riu-se quando ela abriu a caixa, e tu não estavas lá. E a troca não era só da nova: em setembro, antes de ela entrar, já tinha havido outra.",
   papel: "A pastelaria é tua. Respondes às avaliações no Google e às mensagens que chegam à página.",
   abertura: "Segunda-feira, 21h. Avaliação nova no Google: uma estrela, da Inês, com a fotografia de um bolo de anos que não era o dela. Já 4 pessoas a marcaram como útil.",
   impaciencia: {
@@ -7192,7 +7244,7 @@ HISTORIAS.push({
     },
     p2: {
       principal: false,
-      texto: "No talão dela está «80». Na folha que foi para a cozinha, alguém escreveu «8»."
+      texto: "A folha da cozinha é escrita à mão, com o «8» e o «80» na mesma linha. A troca podia ter sido de qualquer pessoa."
     }
   },
   necessidade: "Era o bolo dos 80 anos da mãe, e ao balcão sentiu que se riram dela. Precisava de uma desculpa por isso, não só pelo bolo, e de uma reparação com dia marcado.",
@@ -7245,21 +7297,21 @@ HISTORIAS.push({
           porque: "Pedir desculpa estava certo. Garantir em público que «não se repete», sem saber o que falhou, deixou uma frase à vista de todos, à espera de ser desmentida."
         },
         {
-          texto: "Segundo os nossos registos, o bolo foi feito de acordo com a encomenda.",
+          texto: "Uma funcionária nova confundiu duas encomendas. Já foi chamada à atenção.",
           tipo: "escala",
           tecnicas: [],
-          erro: "sistema",
+          erro: "passar-culpa",
           efeito: null,
           problema: null,
           pista: null,
-          marca: null,
+          marca: "culpa-da-nova",
           cai: false,
           reacao: {
-            calma: "Acrescenta à avaliação: «Então a culpa é minha. Fica registado.»",
-            dura: "Acrescenta, em maiúsculas: «DE ACORDO COM A ENCOMENDA?» Mais cinco pessoas marcam como útil."
+            calma: "Acrescenta à avaliação: «Agora a culpa é da funcionária nova. E ao balcão, também foi ela?»",
+            dura: "Acrescenta, em maiúsculas: «A CULPA É SEMPRE DA NOVA.» Mais cinco pessoas marcam como útil."
           },
           fechada: null,
-          porque: "Responder em público com o registo, antes de ouvir, diz a quem lê que a cliente está errada. E nem tinhas visto o talão dela."
+          porque: "Era verdade, mas em público ficou à vista de todos que a casa se defende com quem está por baixo. E a Inês não se queixou só da troca: também de como a trataram ao balcão."
         },
         {
           texto: "Inês, um bolo trocado num dia de anos estraga a festa. Posso falar consigo por mensagem?",
@@ -7373,6 +7425,11 @@ HISTORIAS.push({
           marca: "nao-se-repete",
           texto: "A Inês cola a tua resposta pública: «“Garantimos que não se volta a repetir.” Pelos vistos, já se tinha repetido.»",
           efeito: { c: -2, t: 1 }
+        },
+        {
+          marca: "culpa-da-nova",
+          texto: "A avaliação nova continua: «Agora dizem que foi a funcionária nova. Em setembro também era nova?»",
+          efeito: { c: -1, t: 1 }
         }
       ],
       fala: {
@@ -7381,9 +7438,9 @@ HISTORIAS.push({
       },
       opcoes: [
         {
-          texto: "Tem razão, não foi só consigo. Vou ver onde se perdeu a encomenda.",
+          texto: "Não foi só consigo. A falha é da casa, e vou ver porque se repete.",
           tipo: "bom",
-          tecnicas: ["assumir", "nos"],
+          tecnicas: ["assumir", "parte"],
           erro: null,
           efeito: null,
           problema: null,
@@ -7391,11 +7448,11 @@ HISTORIAS.push({
           marca: null,
           cai: false,
           reacao: {
-            calma: "Manda a fotografia do talão: «80». Na cozinha, a folha da encomenda diz «8». Ela escreve: «Então foi isso.»",
-            dura: "Manda o talão: diz «80». Na folha da cozinha está «8». «Um zero. Por causa de um zero.»"
+            calma: "Manda a fotografia do talão: «80». Na folha da cozinha, escrita à mão, o «8» e o «80» estão na mesma linha. «Então foi isso.»",
+            dura: "Manda o talão: diz «80». Na folha da cozinha, à mão, o «8» e o «80» estão lado a lado. «Um zero. Por causa de um zero.»"
           },
           fechada: null,
-          porque: "Não defendeste a casa nem procuraste um culpado. Reconheceste o que estava à vista e foste ao facto que faltava: onde é que o pedido se perdeu."
+          porque: "Sabias quem tinha trocado e não a puseste à frente: disseste «da casa». E foste ao que faltava: a folha escrita à mão deixava a troca ao alcance de qualquer pessoa."
         },
         {
           texto: "Lembra-se de quem a atendeu quando fez a encomenda?",
@@ -7415,21 +7472,21 @@ HISTORIAS.push({
           porque: "Procurar quem atendeu pareceu ir aos factos, mas levou a conversa para dentro da casa. Ela não quer fazer parte de um inquérito."
         },
         {
-          texto: "Peço desculpa. Deve ter sido a funcionária nova, já vou falar com ela.",
+          texto: "Foi a funcionária nova: confundiu duas encomendas. Já falei com ela.",
           tipo: "certo",
           tecnicas: [],
-          erro: "desculpa-cega",
+          erro: "passar-culpa",
           efeito: null,
           problema: null,
           pista: null,
           marca: null,
           cai: false,
           reacao: {
-            calma: "«Deve ter sido.» Visto. «E quem manda aí não sabe o que se passa?»",
-            dura: "«A culpa é sempre da nova, não é?» Visto."
+            calma: "«A nova.» Visto. Depois: «E a de setembro? Também foi ela?»",
+            dura: "«A culpa é sempre da nova, não é?» Visto. «E em setembro, quem foi?»"
           },
           fechada: null,
-          porque: "Querias pôr-te do lado dela, mas culpaste alguém sem ver o que aconteceu. E ela ficou a saber que aí a culpa cai em quem está por baixo."
+          porque: "Era verdade, e mesmo assim não ajudou: passaste a culpa para quem está por baixo, e para a Inês a pastelaria és tu. A troca de setembro mostrava que não era só a nova."
         },
         {
           texto: "Duas trocas em centenas de encomendas não é desleixo, Inês.",
@@ -7712,7 +7769,7 @@ HISTORIAS.push({
   },
   perguntas: [
     "A resposta pública e a mensagem privada pediam coisas diferentes. O que escreveriam em cada uma?",
-    "Responder bem em público resolveu alguma coisa à Inês? O que é que só se resolve a dois?"
+    "Sabiam que tinha sido a funcionária nova, e era verdade. O que muda quando isso se diz em público?"
   ]
 });
 </script>
@@ -7999,7 +8056,8 @@ function pintarFilme(h){
   fotos.querySelectorAll("img").forEach(function(im, k){ im.classList.toggle("ativa", k === i); });
   $("filmePassos").querySelectorAll("li").forEach(function(li, k){ li.classList.toggle("feito", k <= i); });
   $("filmeLegenda").textContent = f[i].legenda;
-  $("etapa").innerHTML = "O que aconteceu<small>" + (i + 1) + " de " + f.length + "</small>";
+  $("filmeTu").hidden = f[i].lado !== "tu";
+  $("etapa").innerHTML = (f[i].lado === "tu" ? "O que tu sabes" : "O que aconteceu") + "<small>" + (i + 1) + " de " + f.length + "</small>";
   btnVoltar.classList.toggle("fantasma", i === 0); btnVoltar.tabIndex = i === 0 ? -1 : 0;
   btnVoltar.innerHTML = i === 0 ? "" : IC_VOLTA + "Anterior";
   btnAvancar.classList.remove("espera", "fantasma"); btnAvancar.tabIndex = 0;
@@ -8106,12 +8164,15 @@ function porqueHtml(h, s){
     return '<li class="pt" data-tipo="' + p.tipo + '"><p class="pt-tit">' + (p.tipo === "resultou" ? "O que resultou" : "O que custou") +
       " · momento " + (p.x.m + 1) + ", opção " + p.x.letra + "</p>" +
       '<p class="pt-nome">' + p.nomes.map(forca).join(" · ") + '</p><p class="pt-porque">' + esc(p.porque) + "</p></li>";
-  }).join("") + "</ul>" +
+  }).join("") + (h.sabias && h.faltava ? '<li class="pt" data-tipo="sabias"><p class="pt-tit">O que sabias</p><p>' + esc(h.sabias) +
+      '</p><p class="pt-tit">O que te faltava saber</p><p>' + esc(h.faltava) + "</p></li>" : "") + "</ul>" +
     '<div class="precisava"><p class="pt-tit">O que ' + esc(quemDe(h)) + " precisava de verdade</p><p>" + esc(h.necessidade) + "</p></div>";
 }
 function conversarHtml(h){
   const qs = ["Em que momento perceberam o que " + quemDe(h) + " precisava? O que vos fez perceber?",
-              "Que opção parecia certa e não era? Porque é que aqui não resultou?"].concat(h.perguntas || []);
+              "Que opção parecia certa e não era? Porque é que aqui não resultou?"]
+    .concat(h.sabias ? ["O que sabiam antes de começar? Ajudou ou atrapalhou?"] : [])
+    .concat(h.perguntas || []);
   return '<ol class="perguntas">' + qs.map(function(q){ return "<li>" + esc(q) + "</li>"; }).join("") + "</ol>" +
     '<div class="fim-botoes"><button class="btn-linha" data-acao="outra">Jogar outra vez</button>' +
     '<button class="btn-linha" data-acao="inicio">Escolher história ou nível</button></div>';

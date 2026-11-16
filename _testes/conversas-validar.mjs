@@ -69,12 +69,21 @@ function validarCampos(h){
     else C.CARAS.forEach((c) => ficheiro("rosto", `media/conversas/${h.rosto}-${c}.webp`));
   }
   if(h.filme != null){
-    if(!Array.isArray(h.filme) || h.filme.length < 3 || h.filme.length > 4) erro(id, "filme: 3 ou 4 fotografias");
+    if(!Array.isArray(h.filme) || h.filme.length < 3 || h.filme.length > 5) erro(id, "filme: 3 a 5 fotografias");
     else h.filme.forEach((q, i) => {
       ficheiro(`filme[${i}]`, q.img);
       texto(id, `filme[${i}].legenda`, q.legenda, 120);
       if(q.som != null && q.som !== "relogio") erro(id, `filme[${i}].som: «relogio» ou null`);
+      if(q.lado != null && q.lado !== "tu") erro(id, `filme[${i}].lado: «tu» ou null`);
     });
+    // «O que tu sabes» (secção 7 do formato.md): uma fotografia do lado de quem joga, e o que sabias e o que faltava
+    const tus = h.filme.filter((q) => q.lado === "tu").length;
+    if(tus > 1) erro(id, "filme: no máximo uma fotografia com lado «tu»");
+    if(tus === 1 || h.sabias != null || h.faltava != null){
+      if(tus !== 1) erro(id, "sabias/faltava pedem uma fotografia do filme com lado «tu»");
+      texto(id, "sabias", h.sabias, 200);
+      texto(id, "faltava", h.faltava, 200);
+    }
   }
 
   const pistas = h.pistas || {};

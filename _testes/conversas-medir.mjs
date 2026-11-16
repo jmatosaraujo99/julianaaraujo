@@ -241,15 +241,16 @@ for(const [w, hgt] of TAMANHOS){
     await page.keyboard.press("ArrowRight");
     // o filme: → seguinte, ← anterior, passa sozinho ao fim de 5 s, a última espera, recarregar mantém
     assert.equal(await fase(), "vezFilme", "→ começa pelo filme");
-    assert.match(await etapa(), /1 de 4/);
-    await page.keyboard.press("ArrowRight"); assert.match(await etapa(), /2 de 4/, "→ passa à fotografia seguinte");
-    await page.keyboard.press("ArrowLeft"); assert.match(await etapa(), /1 de 4/, "← volta à anterior");
-    await page.keyboard.press("ArrowLeft"); assert.match(await etapa(), /1 de 4/, "← na primeira não faz nada");
-    await page.clock.runFor(5100); assert.match(await etapa(), /2 de 4/, "ao fim de 5 s passa sozinho");
+    const NF = await page.evaluate(() => HISTORIAS[0].filme.length);
+    assert.match(await etapa(), new RegExp(`1 de ${NF}`));
+    await page.keyboard.press("ArrowRight"); assert.match(await etapa(), new RegExp(`2 de ${NF}`), "→ passa à fotografia seguinte");
+    await page.keyboard.press("ArrowLeft"); assert.match(await etapa(), new RegExp(`1 de ${NF}`), "← volta à anterior");
+    await page.keyboard.press("ArrowLeft"); assert.match(await etapa(), new RegExp(`1 de ${NF}`), "← na primeira não faz nada");
+    await page.clock.runFor(5100); assert.match(await etapa(), new RegExp(`2 de ${NF}`), "ao fim de 5 s passa sozinho");
     await page.keyboard.press("PageDown"); await page.reload();
-    assert.match(await etapa(), /3 de 4/, "recarregar volta à mesma fotografia");
+    assert.match(await etapa(), new RegExp(`3 de ${NF}`), "recarregar volta à mesma fotografia");
     await page.keyboard.press("ArrowRight"); await page.clock.runFor(12000);
-    assert.match(await etapa(), /4 de 4/, "a última fica à espera");
+    assert.match(await etapa(), new RegExp(`${NF} de ${NF}`), "a última fica à espera");
     assert.equal(await page.evaluate(() => document.getElementById("filmeLegenda").textContent.length > 0), true, "a legenda aparece");
     await page.keyboard.press("ArrowRight");
     assert.equal(await fase(), "vezMomento", "→ na última leva ao momento 1");
