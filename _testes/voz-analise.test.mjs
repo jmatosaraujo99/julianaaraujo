@@ -269,7 +269,7 @@ caso("progresso: o final passou a descer → «o final agora desce»", () => {
 });
 
 console.log("Baralhos");
-caso("seis baralhos de 40 frases completas, com técnicas e cenas que existem", () => {
+caso("seis baralhos de 40 frases completas, com técnicas, cenas que existem e nível", () => {
   const B = Function(`return (${pagina.match(/const BARALHO = (\{[\s\S]*?\n\});/)[1]})`)();
   const T = Function(`return (${pagina.match(/const TECNICAS = (\{[\s\S]*?\n\});/)[1]})`)();
   const cenas = new Set([...pagina.match(/const CENAS = \{([\s\S]*?)\n\};/)[1].matchAll(/^\s{2}(\w+):/gm)].map((m) => m[1]));
@@ -280,10 +280,11 @@ caso("seis baralhos de 40 frases completas, com técnicas e cenas que existem", 
     assert.equal(linhas.length, 40, a);
     for(const l of linhas){
       const p = l.split("|");
-      assert.equal(p.length, 8, l);
+      assert.equal(p.length, 9, l);
       assert.ok(p[0] && p[1] && p[2] && p[3] && p[4] && p[6], l);
       p[6].split(",").forEach((t) => assert.ok(T[t], `técnica ${t} em ${p[0]}`));
       assert.ok(cenas.has(p[7]), `cena ${p[7]} em ${p[0]}`);
+      assert.ok(["1", "2", "3"].includes(p[8]), `nível ${p[8]} em ${p[0]}`);
       const chave = p[0].toLowerCase().replace(/[^a-zà-ú]/g, "");
       assert.ok(!vistas.has(chave), `frase repetida: ${p[0]}`); vistas.add(chave);
     }
