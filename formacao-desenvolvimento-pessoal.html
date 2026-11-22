@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Formação em Gestão do Tempo e Stress | Juliana Araújo</title>
-<meta name="description" content="Formação à medida em gestão do tempo, inteligência emocional, gestão de stress e criatividade, para funções exigentes. Presencial e online em todo o país.">
+<meta name="description" content="Formação à medida em gestão do tempo, inteligência emocional, gestão de stress e criatividade, para funções exigentes. Em Barcelos, Braga e online.">
 <link rel="canonical" href="https://julianaaraujo.pt/formacao-desenvolvimento-pessoal.html">
 <meta property="og:title" content="Formação em Gestão do Tempo, Stress e Inteligência Emocional | Juliana Araújo">
 <meta property="og:description" content="Formação à medida em gestão do tempo, inteligência emocional, gestão de stress e criatividade, para profissionais em funções exigentes.">
@@ -268,6 +268,26 @@
   .caso { max-width:68ch; font-family:var(--fonte-corpo); font-size:17px; line-height:1.6; }
   .caso p { margin:0 0 12px; }
   .caso .quem { font-family:var(--fonte-etiqueta); font-size:12px; letter-spacing:var(--ls-etiqueta-16); text-transform:uppercase; color:var(--cinza); }
+
+  /* Avaliação de 22/11/2026: quem dá a formação, fotografias de sala e pedido de proposta na própria página */
+  .formadora { display:grid; grid-template-columns:minmax(120px,200px) minmax(0,1fr); gap:clamp(18px,calc(3 * var(--fluido)),40px); align-items:start; max-width:860px; }
+  .formadora-foto { display:block; width:100%; height:auto; filter:grayscale(1) contrast(1.06); }
+  .formadora-nome { font-family:var(--fonte-display); font-size:clamp(21px,calc(2.2 * var(--fluido)),30px); line-height:1.06; letter-spacing:var(--ls-display); text-transform:uppercase; margin:0 0 12px; }
+  .sala { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; max-width:860px; margin-top:clamp(24px,calc(3 * var(--fluido)),40px); }
+  .sala img { display:block; width:100%; height:clamp(170px,calc(24 * var(--fluido)),320px); object-fit:cover; filter:grayscale(1) contrast(1.05); }
+  .pedido { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:clamp(18px,calc(2.5 * var(--fluido)),28px); max-width:860px; margin-top:clamp(18px,calc(2.4 * var(--fluido)),28px); }
+  .pedido label { display:flex; flex-direction:column; gap:8px; }
+  .pedido .meta-label { margin-bottom:0; }
+  .pedido input[type=text], .pedido input[type=email], .pedido textarea { background:none; border:0; border-bottom:1px solid rgba(10,10,10,.35); border-radius:0; min-height:44px; padding:10px 0; font-family:var(--fonte-corpo); font-size:17px; color:var(--preto); }
+  .pedido textarea { border:1px solid rgba(10,10,10,.35); padding:14px; resize:vertical; }
+  .pedido input:focus-visible, .pedido textarea:focus-visible { outline:2px solid var(--cobalto); outline-offset:2px; }
+  .pedido .largo { grid-column:1 / -1; }
+  .pedido .consent { flex-direction:row; align-items:flex-start; gap:12px; font-size:15px; line-height:1.5; }
+  .pedido .consent input { flex:none; width:18px; height:18px; margin-top:3px; accent-color:var(--cobalto); }
+  .pedido .envio { display:flex; flex-wrap:wrap; align-items:center; gap:18px; }
+  .pedido button.cta { margin-top:0; border:0; cursor:pointer; }
+  .pedido button.cta[disabled] { opacity:.55; }
+  @media (max-width:560px) { .formadora { grid-template-columns:96px minmax(0,1fr); } }
 </style>
 </head>
 <body>
@@ -313,7 +333,7 @@
     </div>
     <div>
       <p class="meta-label">Modalidade</p>
-      <p class="meta-value">Presencial e online em todo o país.</p>
+      <p class="meta-value">Presencial e online em todo o país, com base em Barcelos, no Minho (distrito de Braga).</p>
     </div>
     <div>
       <p class="meta-label">Desenho à medida</p>
@@ -348,8 +368,43 @@
     <p class="nota">Podem ser realizadas de forma independente ou integradas num percurso formativo à medida da organização.</p>
   </section>
 
-  <a class="cta" href="/#contactos">Pedir uma proposta<span aria-hidden="true" style="display:block;width:22px;height:8px;background:currentColor;clip-path:polygon(0 3px,14px 3px,14px 0,22px 4px,14px 8px,14px 5px,0 5px)"></span></a>
-  <p class="intro">Indique os objetivos e o perfil dos participantes. A proposta é construída a partir dessa informação.</p>
+  <section class="bloco">
+    <h2>Quem dá a formação</h2>
+    <div class="formadora">
+      <img class="formadora-foto" src="media/juliana-retrato-480.jpg" width="480" height="679" loading="lazy" decoding="async" alt="Retrato de Juliana Araújo, formadora e Learning Designer">
+      <div>
+        <p class="formadora-nome">Juliana Araújo</p>
+        <p class="meta-value">Formadora certificada (CCP F727580/2022) e Learning Designer, licenciada e mestre em Educação pela Universidade do Minho. Mais de 300 horas de formação ministradas para o IEFP, entidades formadoras e empresas.</p>
+        <p class="nota"><a href="/#sobre">Sobre mim</a></p>
+      </div>
+    </div>
+    <div class="sala">
+      <img src="media/galeria-3.jpg" width="480" height="720" loading="lazy" decoding="async" alt="Participante a registar ideias numa ficha de reflexão com ícones desenhados à mão">
+      <img src="media/galeria-4.jpg" width="480" height="720" loading="lazy" decoding="async" alt="Mãos a preencher uma ficha de reflexão com notas manuscritas durante uma formação">
+    </div>
+  </section>
+
+  <section class="bloco" id="proposta">
+    <h2>Pedir uma proposta</h2>
+    <p class="nota" style="margin-top:0">Indique os objetivos e o perfil dos participantes. A proposta é construída a partir dessa informação.</p>
+    <form class="pedido" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="db983289-e272-4d74-87d5-8410e56630ea">
+      <input type="hidden" name="subject" value="Pedido de formação — Desenvolvimento Pessoal e Criatividade">
+      <input type="hidden" name="from_name" value="Site julianaaraujo.pt">
+      <input type="hidden" name="area" value="Desenvolvimento Pessoal e Criatividade">
+      <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
+      <label><span class="meta-label">Nome</span><input type="text" name="nome" autocomplete="name" required></label>
+      <label><span class="meta-label">E-mail</span><input type="email" name="email" autocomplete="email" required></label>
+      <label><span class="meta-label">Organização · opcional</span><input type="text" name="organizacao" autocomplete="organization"></label>
+      <label class="largo"><span class="meta-label">Mensagem</span><textarea name="mensagem" rows="4" placeholder="Descreva o contexto, o perfil dos participantes e os objetivos da formação."></textarea></label>
+      <label class="largo consent"><input type="checkbox" name="consentimento" required><span>Li e aceito a <a href="privacidade.html">Política de Privacidade</a>.</span></label>
+      <div class="largo envio">
+        <button type="submit" class="cta">Pedir uma proposta<span aria-hidden="true" style="display:block;width:22px;height:8px;background:currentColor;clip-path:polygon(0 3px,14px 3px,14px 0,22px 4px,14px 8px,14px 5px,0 5px)"></span></button>
+        <p class="nota" role="status" aria-live="polite" style="margin:0">Os dados enviados servem apenas para responder ao seu pedido.</p>
+      </div>
+    </form>
+    <p class="nota">Ou diretamente por <a href="https://api.whatsapp.com/send/?phone=351961955373&amp;text=Ol%C3%A1+Juliana%2C+gostaria+de+saber+mais+sobre+as+suas+forma%C3%A7%C3%B5es&amp;type=phone_number&amp;app_absent=0" target="_blank" rel="noopener">WhatsApp</a>. Os outros contactos estão na <a href="/#contactos">página inicial</a>.</p>
+  </section>
 
   <div style="margin-top:clamp(48px,calc(6 * var(--fluido)),80px);padding-top:clamp(28px,calc(4 * var(--fluido)),40px);border-top:1px solid rgba(10,10,10,.16)">
     <p class="meta-label">Atividades que levo às sessões</p>
@@ -377,6 +432,29 @@
     <span><a href="https://area-reservada.jmatosaraujo99.workers.dev/">Área reservada</a> &middot; <a href="/">Voltar ao site</a></span>
   </div>
 </footer>
+
+<script>
+/* Pedido de proposta: envia sem sair da página; sem JavaScript, o formulário segue pelo envio normal. */
+(function () {
+  var f = document.querySelector('form.pedido');
+  if (!f || !window.fetch) return;
+  var nota = f.querySelector('[role=status]'), botao = f.querySelector('button');
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    botao.disabled = true;
+    nota.textContent = 'A enviar…';
+    fetch(f.action, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(f) })
+      .then(function (r) { return r.json(); })
+      .then(function (c) {
+        if (!c || !c.success) throw new Error('envio recusado');
+        f.reset();
+        nota.textContent = 'Mensagem enviada. Obrigada — respondo assim que possível.';
+      })
+      .catch(function () { nota.textContent = 'Não foi possível enviar a mensagem. Tente novamente ou use o WhatsApp.'; })
+      .then(function () { botao.disabled = false; });
+  });
+})();
+</script>
 
 </body>
 </html>
