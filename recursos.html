@@ -30,7 +30,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css?v=20260915">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -157,12 +157,13 @@
     letter-spacing: var(--ls-etiqueta-14);
   }
 
+  /* títulos de cartões como na página inicial: Space Grotesk fina, sem maiúsculas */
   .item-title {
-    font-family: var(--fonte-display);
-    font-size: clamp(21px, calc(2.6 * var(--fluido)), 38px);
-    line-height: 1.06;
-    letter-spacing: var(--ls-display);
-    text-transform: uppercase;
+    font-family: var(--fonte-etiqueta);
+    font-weight: 300;
+    font-size: clamp(21px, calc(1.875 * var(--fluido)), 27px);
+    line-height: 1.12;
+    letter-spacing: var(--ls-corpo);
     text-wrap: balance;
     color: var(--preto);
   }
@@ -246,12 +247,11 @@
   }
 
   .ferramenta-titulo {
-    font-family: var(--fonte-display);
-    font-size: clamp(22px, calc(2.16 * var(--fluido)), 28px);
-    font-weight: 400; /* a Anton só tem um peso: sem isto o h2 fica com negrito falso, borrado */
-    line-height: 1.08;
-    letter-spacing: var(--ls-display);
-    text-transform: uppercase;
+    font-family: var(--fonte-etiqueta);
+    font-weight: 300;
+    font-size: clamp(20px, calc(1.67 * var(--fluido)), 24px);
+    line-height: 1.12;
+    letter-spacing: var(--ls-corpo);
     text-wrap: balance;
     color: var(--creme);
     margin-bottom: 10px;
@@ -414,6 +414,28 @@
   }
 
   #a-medida, #ferramentas { scroll-margin-top: 24px; }
+
+  /* «Falar comigo» no fim dos serviços: o mesmo botão azul cheio da página inicial */
+  .falar-wrap { margin-top: clamp(28px, calc(4 * var(--fluido)), 44px); }
+
+  .falar {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 19px 28px;
+    background: var(--cobalto);
+    color: var(--creme);
+    font-family: var(--fonte-etiqueta);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: var(--ls-etiqueta-20);
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background .2s ease;
+  }
+
+  .falar:hover { background: var(--preto); }
+  .falar:focus-visible { outline: 2px solid var(--cobalto); outline-offset: 3px; }
   /* botão da Área reservada, no canto do cabeçalho */
   header .area-bt { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; margin-left: clamp(14px, calc(2 * var(--fluido)), 28px); border: 1px solid currentColor; color: inherit; font-family: var(--fonte-etiqueta); font-size: 12px; letter-spacing: var(--ls-etiqueta-16); text-transform: uppercase; text-decoration: none; white-space: nowrap; transition: background .2s ease, color .2s ease, border-color .2s ease; }
   header .area-bt:hover { background: var(--cobalto); border-color: var(--cobalto); color: var(--creme); }
@@ -551,6 +573,7 @@
       </div>
     </div>
   </div>
+  <p class="falar-wrap"><a class="falar" href="/#contactos">Falar comigo</a></p>
 
   <section class="ferramenta" id="ferramentas">
     <p class="ferramenta-etiqueta">Ferramentas de sala</p>
