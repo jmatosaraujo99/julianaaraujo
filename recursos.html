@@ -415,6 +415,29 @@
 
   #a-medida, #ferramentas { scroll-margin-top: 24px; }
 
+  /* topo: texto e atalhos à esquerda, imagem dos materiais à direita; no telemóvel a imagem fica entre o texto e os atalhos */
+  .topo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "texto" "img" "atalhos";
+  }
+  .topo-texto { grid-area: texto; }
+  .topo-img { grid-area: img; margin: clamp(28px, calc(4 * var(--fluido)), 40px) auto 0; width: 100%; max-width: 440px; }
+  .topo-img img { display: block; width: 100%; height: auto; }
+  .topo .atalhos { grid-area: atalhos; }
+
+  @media (min-width: 900px) {
+    .topo {
+      grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+      grid-template-areas: "texto img" "atalhos img";
+      column-gap: clamp(32px, calc(4 * var(--fluido)), 64px);
+      align-items: center;
+    }
+    .topo-img { margin: 0; max-width: none; }
+    /* a coluna do texto é mais estreita: o título desce um pouco para ficar nas mesmas três linhas */
+    .topo h1 { font-size: clamp(32px, calc(4 * var(--fluido)), 58px); }
+  }
+
   /* «Falar comigo» no fim dos serviços: o mesmo botão azul cheio da página inicial */
   .falar-wrap { margin-top: clamp(28px, calc(4 * var(--fluido)), 44px); }
 
@@ -469,11 +492,18 @@
 </header>
 
 <main>
+  <div class="topo">
+  <div class="topo-texto">
   <p class="etiqueta">Design de Recursos Pedagógicos</p>
   <h1>Material que funciona<br>na sala, não só no papel</h1>
 
   <p class="intro">Muitas organizações têm formadores competentes e referenciais bem definidos, e mesmo assim entregam formação com materiais improvisados na véspera. Não é falta de vontade: é falta de tempo e de estrutura.</p>
   <p class="intro">É esse o trabalho que faço. Concebo programas de formação, manuais e recursos pedagógicos à medida para empresas, escolas e entidades formadoras — para que os formadores possam concentrar-se em facilitar.</p>
+  </div>
+
+  <figure class="topo-img">
+    <img src="media/recursos-topo.jpg" width="1120" height="1000" alt="Duas páginas do toolkit «Conceber recursos educativos» e o ecrã do Positive Switch, pousados sobre um círculo azul" fetchpriority="high">
+  </figure>
 
   <nav class="atalhos" aria-label="Nesta página">
     <a class="atalho" href="#a-medida">
@@ -485,6 +515,7 @@
       <span class="atalho-nome">Ferramentas de sala <span aria-hidden="true">&darr;</span></span>
     </a>
   </nav>
+  </div>
 
   <div class="lista" id="a-medida">
     <div class="item">
