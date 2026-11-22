@@ -438,6 +438,19 @@
     .topo h1 { font-size: clamp(32px, calc(4 * var(--fluido)), 58px); }
   }
 
+  /* uma página de toolkit em cada serviço: inteira ao lado do texto; no telemóvel só o topo da página */
+  .item-img { margin: 0; }
+  .item-img img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; box-shadow: 0 1px 3px rgba(10, 10, 10, 0.08), 0 16px 32px -14px rgba(10, 10, 10, 0.32); }
+  .item-img figcaption { margin-top: 10px; font-family: var(--fonte-etiqueta); font-size: 11px; font-weight: 500; letter-spacing: var(--ls-etiqueta-14); text-transform: uppercase; color: var(--cinza); }
+
+  @media (min-width: 900px) {
+    .item { display: grid; grid-template-columns: minmax(0, 1fr) clamp(160px, calc(14 * var(--fluido)), 200px); grid-template-rows: auto auto 1fr; column-gap: clamp(32px, calc(5 * var(--fluido)), 80px); }
+    .item > :not(.item-img) { grid-column: 1; }
+    .item-meta { align-self: start; }
+    .item-img { grid-column: 2; grid-row: 1 / 4; }
+    .item-img img { aspect-ratio: auto; }
+  }
+
   /* «Falar comigo» no fim dos serviços: o mesmo botão azul cheio da página inicial */
   .falar-wrap { margin-top: clamp(28px, calc(4 * var(--fluido)), 44px); }
 
@@ -523,6 +536,7 @@
         <span class="badge badge-1">01</span>
         <span class="item-title">Desenho de programas de formação</span>
       </div>
+      <figure class="item-img"><img src="media/servico-programas.jpg" width="640" height="905" alt="Primeira página do toolkit, com o título «A IA responde sempre. Nem sempre tem razão.» e os quatro passos explicados com um caso" loading="lazy" decoding="async"><figcaption>Toolkit · Pensamento crítico na IA</figcaption></figure>
       <p class="item-desc">Do referencial ao plano de sessão. Estrutura de módulos, distribuição de horas, sequência pedagógica, atividades, instrumentos de avaliação e grelhas de observação.</p>
       <div class="item-meta">
         <div>
@@ -541,6 +555,7 @@
         <span class="badge badge-2">02</span>
         <span class="item-title">Manuais e materiais de apoio</span>
       </div>
+      <figure class="item-img"><img src="media/servico-manuais.jpg" width="640" height="905" alt="Primeira página do toolkit, com o título «O conflito não se ganha. Transforma-se num acordo.» e os quatro passos explicados com um caso" loading="lazy" decoding="async"><figcaption>Toolkit · Gestão de conflitos</figcaption></figure>
       <p class="item-desc">Manuais do formando e guias do formador, escritos para serem usados e não arquivados. Adaptados ao nível de literacia real do público a que se destinam.</p>
       <div class="item-meta">
         <div>
@@ -559,6 +574,7 @@
         <span class="badge badge-3">03</span>
         <span class="item-title">Kits de atividades e dinâmicas</span>
       </div>
+      <figure class="item-img"><img src="media/servico-kits.jpg" width="640" height="905" alt="Página de prática do toolkit, com sete exercícios curtos, dúvidas comuns e um treino de frases" loading="lazy" decoding="async"><figcaption>Toolkit · Gestão de conflitos</figcaption></figure>
       <p class="item-desc">Atividades experienciais desenhadas de raiz ou adaptadas, com todos os materiais necessários: cartas, fichas, grelhas de registo e guiões de debrief.</p>
       <div class="item-meta">
         <div>
@@ -577,6 +593,7 @@
         <span class="badge badge-4">04</span>
         <span class="item-title">Conteúdos para e-learning</span>
       </div>
+      <figure class="item-img"><img src="media/servico-elearning.jpg" width="640" height="905" alt="Página de prática do toolkit, com um exercício por dia durante sete dias, erros comuns e um compromisso a preencher antes de sair da sala" loading="lazy" decoding="async"><figcaption>Toolkit · Pensamento crítico na IA</figcaption></figure>
       <p class="item-desc">Desenho instrucional para formação à distância: estrutura do percurso, guiões de conteúdo, materiais de apoio e atividades para plataformas LMS.</p>
       <div class="item-meta">
         <div>
@@ -595,6 +612,7 @@
         <span class="badge badge-5">05</span>
         <span class="item-title">Formação de formadores e supervisão</span>
       </div>
+      <figure class="item-img"><img src="media/servico-formadores.jpg" width="640" height="905" alt="Página de prática do toolkit para formadores, com exercícios, dúvidas comuns e erros comuns na conceção de recursos" loading="lazy" decoding="async"><figcaption>Toolkit · Conceber recursos educativos</figcaption></figure>
       <p class="item-desc">Capacitação de equipas de formadores internos e acompanhamento de quem está a começar. Inclui observação de sessões e devolução estruturada.</p>
       <div class="item-meta">
         <div>
